@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import mapboxgl from 'mapbox-gl'
 
-import { initializeMapboxConfig } from 'src/mapbox.config'
+import { initializeMapbox } from 'src/mapbox.config'
 
-import { addSourcesAndLayers, fetchAndSetShapefiles } from './maputils'
+import { addSourcesLayersAndMarkers, fetchShapefiles } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -14,17 +14,17 @@ export const Map = () => {
 
   // Initialize Map
   useEffect(() => {
-    initializeMapboxConfig('map-container', setMap)
-    fetchAndSetShapefiles(setGeoJson)
+    initializeMapbox('map-container', setMap)
+    fetchShapefiles(setGeoJson)
   }, [])
 
   useEffect(() => {
     if (map && geoJson) {
       map.on('load', () => {
-        addSourcesAndLayers(map, geoJson)
+        addSourcesLayersAndMarkers(map, geoJson)
       })
     }
-  }, [geoJson, map])
+  }, [map, geoJson])
 
   return <div style={{ height: '100%', width: '100%' }} id="map-container" />
 }

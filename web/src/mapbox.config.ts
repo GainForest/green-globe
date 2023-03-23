@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl'
 
-export const initializeMapboxConfig = (
+export const initializeMapbox = (
   containerId: string,
   setMap: React.Dispatch<mapboxgl.Map>,
   bounds?: mapboxgl.LngLatBoundsLike

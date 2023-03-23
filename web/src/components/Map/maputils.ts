@@ -7,7 +7,7 @@ import {
   projectSource,
 } from 'src/mapbox.config'
 
-export const fetchAndSetShapefiles = (setGeoJson) => {
+export const fetchShapefiles = (setGeoJson) => {
   fetch(
     'https://gainforest-transparency-dashboard.s3.amazonaws.com/shapefiles/gainforest-all-shapefiles.geojson'
   )
@@ -15,7 +15,7 @@ export const fetchAndSetShapefiles = (setGeoJson) => {
     .then((newGeojson) => setGeoJson(newGeojson))
 }
 
-export const addMarkers = (geoJson: mapboxgl.geoJson, map: mapboxgl.Map) => {
+export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
   for (const feature of geoJson.features) {
     // create a HTML element for each feature
     const el = document.createElement('div')
@@ -28,9 +28,9 @@ export const addMarkers = (geoJson: mapboxgl.geoJson, map: mapboxgl.Map) => {
   }
 }
 
-export const addSourcesAndLayers = (map, geoJson) => {
+export const addSourcesLayersAndMarkers = (map, geoJson) => {
   map.addSource('project', projectSource(geoJson))
   map.addLayer(projectOutlineLayer('#00FF00'))
   map.addLayer(projectFillLayer('#00FF00'))
-  addMarkers(geoJson, map)
+  addMarkers(map, geoJson)
 }

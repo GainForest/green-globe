@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import turf from '@turf/center'
 import mapboxgl from 'mapbox-gl'
 
 import {
@@ -30,14 +31,13 @@ export const Map = () => {
         map.addLayer(projectOutlineLayer('#00FF00'))
         map.addLayer(projectFillLayer('#00FF00'))
         for (const feature of geoJson.features) {
-          console.log(geoJson)
           // create a HTML element for each feature
           const el = document.createElement('div')
           el.className = 'map-marker'
-
+          const centerpoint = turf(feature)
           // make a marker for each feature and add to the map
           new mapboxgl.Marker(el)
-            .setLngLat(feature.geometry.coordinates[0][1])
+            .setLngLat(centerpoint.geometry.coordinates)
             .addTo(map)
         }
       })

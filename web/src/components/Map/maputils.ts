@@ -1,4 +1,5 @@
-import turf from '@turf/center'
+import bbox from '@turf/bbox'
+import center from '@turf/center'
 import mapboxgl from 'mapbox-gl'
 
 import {
@@ -20,7 +21,13 @@ export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
     // create a HTML element for each feature
     const el = document.createElement('div')
     el.className = 'map-marker'
-    const centerpoint = turf(feature)
+
+    const centerpoint = center(feature)
+    const boundingBox = bbox(feature)
+
+    el.addEventListener('click', () => {
+      map.fitBounds(boundingBox)
+    })
     // make a marker for each feature and add to the map
     new mapboxgl.Marker(el)
       .setLngLat(centerpoint.geometry.coordinates)

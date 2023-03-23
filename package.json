@@ -22,6 +22,7 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
+    "@turf/bbox": "^6.5.0",
     "@turf/center": "^6.5.0",
     "mapbox-gl": "^2.13.0",
     "web": "workspace:^",

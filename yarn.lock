@@ -21160,6 +21160,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@redwoodjs/core": 4.3.1
+    "@turf/bbox": ^6.5.0
     "@turf/center": ^6.5.0
     mapbox-gl: ^2.13.0
     web: "workspace:^"

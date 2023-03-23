@@ -29,9 +29,6 @@
     "web": "workspace:^",
     "workspace": "^0.0.1-preview.1"
   },
-  "scripts": {
-    "chromatic": "yarn chromatic"
-  },
   "msw": {
     "workerDirectory": "web/public/storybook"
   }

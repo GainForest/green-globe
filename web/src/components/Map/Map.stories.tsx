@@ -16,7 +16,11 @@ import type { ComponentMeta } from '@storybook/react'
 import Map from './Map'
 
 export const generated = () => {
-  return <Map />
+  return (
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <Map />
+    </div>
+  )
 }
 
 export default {

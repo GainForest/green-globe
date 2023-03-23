@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import turf from '@turf/center'
 import mapboxgl from 'mapbox-gl'
 
-import {
-  initializeMapboxConfig,
-  projectFillLayer,
-  projectOutlineLayer,
-} from 'src/mapbox.config'
+import { initializeMapboxConfig } from 'src/mapbox.config'
+
+import { addSourcesAndLayers, fetchAndSetShapefiles } from './maputils'
+
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 export const Map = () => {
@@ -16,30 +14,14 @@ export const Map = () => {
 
   // Initialize Map
   useEffect(() => {
-    const initializedMap = initializeMapboxConfig('map-container')
-    setMap(initializedMap)
+    initializeMapboxConfig('map-container', setMap)
     fetchAndSetShapefiles(setGeoJson)
   }, [])
 
   useEffect(() => {
     if (map && geoJson) {
       map.on('load', () => {
-        map.addSource('project', {
-          type: 'geojson',
-          data: geoJson,
-        })
-        map.addLayer(projectOutlineLayer('#00FF00'))
-        map.addLayer(projectFillLayer('#00FF00'))
-        for (const feature of geoJson.features) {
-          // create a HTML element for each feature
-          const el = document.createElement('div')
-          el.className = 'map-marker'
-          const centerpoint = turf(feature)
-          // make a marker for each feature and add to the map
-          new mapboxgl.Marker(el)
-            .setLngLat(centerpoint.geometry.coordinates)
-            .addTo(map)
-        }
+        addSourcesAndLayers(map, geoJson)
       })
     }
   }, [geoJson, map])
@@ -48,11 +30,3 @@ export const Map = () => {
 }
 
 export default Map
-
-const fetchAndSetShapefiles = (setGeoJson) => {
-  fetch(
-    'https://gainforest-transparency-dashboard.s3.amazonaws.com/shapefiles/gainforest-all-shapefiles.geojson'
-  )
-    .then((response) => response.json())
-    .then((newGeojson) => setGeoJson(newGeojson))
-}

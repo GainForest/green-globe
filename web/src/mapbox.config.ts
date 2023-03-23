@@ -2,6 +2,7 @@ import mapboxgl from 'mapbox-gl'
 
 export const initializeMapboxConfig = (
   containerId: string,
+  setMap: React.Dispatch<mapboxgl.Map>,
   bounds?: mapboxgl.LngLatBoundsLike
 ) => {
   mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
@@ -15,7 +16,7 @@ export const initializeMapboxConfig = (
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())
-    return map
+    setMap(map)
   } else {
     const map = new mapboxgl.Map({
       container: containerId,
@@ -24,7 +25,7 @@ export const initializeMapboxConfig = (
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())
-    return map
+    setMap(map)
   }
 }
 
@@ -46,4 +47,9 @@ export const projectFillLayer = (lineColor: string) => ({
     'fill-color': lineColor, // gainforest color fill
     'fill-opacity': 0.05,
   },
+})
+
+export const projectSource = (geoJson) => ({
+  type: 'geojson',
+  data: geoJson,
 })

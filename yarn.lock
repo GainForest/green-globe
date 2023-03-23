@@ -21125,6 +21125,8 @@ __metadata:
   dependencies:
     "@redwoodjs/core": 4.3.1
     mapbox-gl: ^2.13.0
+    web: "workspace:^"
+    workspace: ^0.0.1-preview.1
   languageName: unknown
   linkType: soft
 
@@ -24110,7 +24112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web@workspace:web":
+"web@workspace:^, web@workspace:web":
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
@@ -24693,6 +24695,13 @@ __metadata:
   dependencies:
     microevent.ts: ~0.1.1
   checksum: 986406dbed4a2fd25d21e05e5a16a2db5051735df4011848366bb9488ecf19f44b43a90072171e509580fafd0565a7759543966496b8c18322efa5440dea1e6c
+  languageName: node
+  linkType: hard
+
+"workspace@npm:^0.0.1-preview.1":
+  version: 0.0.1-preview.1
+  resolution: "workspace@npm:0.0.1-preview.1"
+  checksum: 8c2a2d67ff7d02edbbdde587ca010e9e1fbd57e96faf8ce91092ad4ca94ff61f26342de113152e8e890e24a808376aef4453a9f99c5d96710e0fad26e39f21bf
   languageName: node
   linkType: hard
 

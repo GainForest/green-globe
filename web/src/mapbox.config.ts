@@ -9,7 +9,7 @@ export const initializeMapbox = (
   if (!bounds) {
     const map = new mapboxgl.Map({
       container: containerId,
-      style: 'mapbox://styles/mapbox/light-v10',
+      style: 'mapbox://styles/mapbox/dark-v10',
       fitBoundsOptions: { padding: 24 },
       zoom: 1,
       center: [0, 20],
@@ -20,7 +20,7 @@ export const initializeMapbox = (
   } else {
     const map = new mapboxgl.Map({
       container: containerId,
-      style: 'mapbox://styles/mapbox/light-v10',
+      style: 'mapbox://styles/mapbox/dark-v10',
       fitBoundsOptions: { padding: 24 },
       bounds,
     })

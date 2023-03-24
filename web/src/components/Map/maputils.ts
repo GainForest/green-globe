@@ -33,7 +33,7 @@ export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
       anchor: 'left',
     })
       .setLngLat(centerpoint.geometry.coordinates)
-      .setHTML(`<p>${feature.properties.name}</p>`)
+      .setText(feature.properties.name)
 
     el.addEventListener('mouseenter', () => popup.addTo(map))
     el.addEventListener('mouseleave', () => popup.remove())

@@ -16,7 +16,11 @@ export const fetchShapefiles = (setGeoJson) => {
     .then((newGeojson) => setGeoJson(newGeojson))
 }
 
-export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
+export const addMarkers = (
+  map: mapboxgl.Map,
+  geoJson: mapboxgl.geoJson,
+  setActiveFeature
+) => {
   for (const feature of geoJson.features) {
     // create the marker HTML element
     const el = document.createElement('div')
@@ -40,6 +44,7 @@ export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
 
     el.addEventListener('click', () => {
       map.fitBounds(boundingBox, { duration: 2500, padding: 40 })
+      setActiveFeature(feature)
     })
 
     // finally, add the marker to the map
@@ -49,9 +54,9 @@ export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
   }
 }
 
-export const addSourcesLayersAndMarkers = (map, geoJson) => {
+export const addSourcesLayersAndMarkers = (map, geoJson, setActiveFeature) => {
   map.addSource('project', projectSource(geoJson))
   map.addLayer(projectOutlineLayer('#00FF00'))
   map.addLayer(projectFillLayer('#00FF00'))
-  addMarkers(map, geoJson)
+  addMarkers(map, geoJson, setActiveFeature)
 }

@@ -12,6 +12,34 @@ export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [geoJson, setGeoJson] = useState()
   const [activeFeature, setActiveFeature] = useState()
+  const [result, setResult] = useState()
+  console.log(geoJson)
+
+  useEffect(() => {
+    const projectId = activeFeature?.properties?.projectId
+
+    fetch('https://staging.gainforest.app/api/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+          query {
+            project(id:${projectId}) {
+              id
+              name
+              country
+              description
+            }
+          }
+        `,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => setResult(result))
+  }, [activeFeature])
+  console.log(result)
 
   // Initialize Map
   useEffect(() => {
@@ -40,12 +68,13 @@ export const Map = () => {
     }
   }, [map, geoJson])
 
+  console.log(activeFeature?.properties)
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <div
         style={{
-          height: '40px',
+          height: '400px',
           width: '300px',
           position: 'absolute',
           bottom: 40,
@@ -55,6 +84,9 @@ export const Map = () => {
         }}
       >
         {activeFeature?.properties?.name || ''}
+        {activeFeature?.properties?.projectId}
+        {result?.data.project?.country}
+        {result?.data.project?.description}
       </div>
     </>
   )

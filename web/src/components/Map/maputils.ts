@@ -18,17 +18,31 @@ export const fetchShapefiles = (setGeoJson) => {
 
 export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
   for (const feature of geoJson.features) {
-    // create a HTML element for each feature
+    // create the marker HTML element
     const el = document.createElement('div')
     el.className = 'map-marker'
 
     const centerpoint = center(feature)
     const boundingBox = bbox(feature)
 
+    // display a popup with the project name on hover
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 20,
+      anchor: 'left',
+    })
+      .setLngLat(centerpoint.geometry.coordinates)
+      .setHTML(`<p>${feature.properties.name}</p>`)
+
+    el.addEventListener('mouseenter', () => popup.addTo(map))
+    el.addEventListener('mouseleave', () => popup.remove())
+
     el.addEventListener('click', () => {
       map.fitBounds(boundingBox)
     })
-    // make a marker for each feature and add to the map
+
+    // finally, add the marker to the map
     new mapboxgl.Marker(el)
       .setLngLat(centerpoint.geometry.coordinates)
       .addTo(map)

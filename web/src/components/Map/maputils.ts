@@ -39,7 +39,7 @@ export const addMarkers = (map: mapboxgl.Map, geoJson: mapboxgl.geoJson) => {
     el.addEventListener('mouseleave', () => popup.remove())
 
     el.addEventListener('click', () => {
-      map.fitBounds(boundingBox)
+      map.fitBounds(boundingBox, { duration: 2500, padding: 40 })
     })
 
     // finally, add the marker to the map

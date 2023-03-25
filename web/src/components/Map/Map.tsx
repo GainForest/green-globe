@@ -13,7 +13,6 @@ export const Map = () => {
   const [geoJson, setGeoJson] = useState()
   const [activeFeature, setActiveFeature] = useState()
   const [result, setResult] = useState()
-  console.log(geoJson)
 
   useEffect(() => {
     const projectId = activeFeature?.properties?.projectId
@@ -37,9 +36,8 @@ export const Map = () => {
       }),
     })
       .then((res) => res.json())
-      .then((result) => setResult(result))
+      .then((result) => setResult(result.data))
   }, [activeFeature])
-  console.log(result)
 
   // Initialize Map
   useEffect(() => {
@@ -68,26 +66,27 @@ export const Map = () => {
     }
   }, [map, geoJson])
 
-  console.log(activeFeature?.properties)
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <div
-        style={{
-          height: '400px',
-          width: '300px',
-          position: 'absolute',
-          bottom: 40,
-          left: 40,
-          backgroundColor: '#ffffff',
-          borderRadius: '0.75em',
-        }}
-      >
-        {activeFeature?.properties?.name || ''}
-        {activeFeature?.properties?.projectId}
-        {result?.data.project?.country}
-        {result?.data.project?.description}
-      </div>
+      {result && (
+        <div
+          style={{
+            height: '400px',
+            width: '300px',
+            position: 'absolute',
+            padding: '24px',
+            bottom: 40,
+            left: 40,
+            backgroundColor: '#ffffff',
+            borderRadius: '0.5em',
+          }}
+        >
+          <h1>{activeFeature?.properties?.name || ''}</h1>
+          {result?.project?.country}
+          <p>{result?.project?.description}</p>
+        </div>
+      )}
     </>
   )
 }

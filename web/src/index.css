@@ -10,3 +10,7 @@
 .mapboxgl-ctrl-bottom-right {
   margin: 4px 12px;
 }
+
+h1 {
+  font-size: 24px;
+}

@@ -1,4 +1,4 @@
-export const ProjectButton = ({
+export const Button = ({
   buttonIcon,
   position,
   active,

@@ -1,7 +1,6 @@
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 export const ProjectCard = ({ result, activeFeature }) => {
-  console.log(result, activeFeature)
   return (
     <div
       style={{

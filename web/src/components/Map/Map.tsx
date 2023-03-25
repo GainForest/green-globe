@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 
 import { initializeMapbox } from 'src/mapbox.config'
-import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import {
   addSourcesLayersAndMarkers,
@@ -13,6 +12,7 @@ import {
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { ProjectCard } from './components/ProjectCard'
+import { ProjectButton } from './components/ProjectButtons'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -60,7 +60,7 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <div></div>
+      <ProjectButton />
       {result && <ProjectCard result={result} activeFeature={activeFeature} />}
     </>
   )

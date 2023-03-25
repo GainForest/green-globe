@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button } from './ProjectButtons'
+import { Button } from './Button'
 import { ProjectCard } from './ProjectCard'
 
 export const InfoOverlay = ({ result, activeFeature }) => {

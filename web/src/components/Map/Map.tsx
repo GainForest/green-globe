@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 
 import { initializeMapbox } from 'src/mapbox.config'
+import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import { addSourcesLayersAndMarkers, fetchShapefiles } from './maputils'
 
@@ -83,7 +84,10 @@ export const Map = () => {
           }}
         >
           <h1>{activeFeature?.properties?.name || ''}</h1>
-          {result?.project?.country}
+          <p>
+            {`${countryToEmoji[result?.project?.country].emoji}
+            ${countryToEmoji[result?.project?.country].name}`}
+          </p>
           <p>{result?.project?.description}</p>
         </div>
       )}

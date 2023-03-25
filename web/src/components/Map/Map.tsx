@@ -4,6 +4,8 @@ import mapboxgl from 'mapbox-gl'
 
 import { initializeMapbox } from 'src/mapbox.config'
 
+import { ProjectButton } from './components/ProjectButtons'
+import { ProjectCard } from './components/ProjectCard'
 import {
   addSourcesLayersAndMarkers,
   fetchProjectInfo,
@@ -11,8 +13,6 @@ import {
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { ProjectCard } from './components/ProjectCard'
-import { ProjectButton } from './components/ProjectButtons'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -60,7 +60,9 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <ProjectButton />
+      <ProjectButton buttonIcon={'forest'} position={1} active={true} />
+      <ProjectButton buttonIcon={'photo'} position={2} active={false} />
+      <ProjectButton buttonIcon={'folder'} position={3} active={false} />
       {result && <ProjectCard result={result} activeFeature={activeFeature} />}
     </>
   )

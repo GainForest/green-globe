@@ -67,7 +67,10 @@ export const addMarkers = (
     el.addEventListener('mouseleave', () => popup.remove())
 
     el.addEventListener('click', () => {
-      map.fitBounds(boundingBox, { duration: 2500, padding: 40 })
+      map.fitBounds(boundingBox, {
+        duration: 2500,
+        padding: { top: 40, bottom: 40, left: 420, right: 40 },
+      })
       setActiveFeature(feature)
     })
 

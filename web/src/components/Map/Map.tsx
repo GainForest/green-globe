@@ -5,7 +5,11 @@ import mapboxgl from 'mapbox-gl'
 import { initializeMapbox } from 'src/mapbox.config'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-import { addSourcesLayersAndMarkers, fetchShapefiles } from './maputils'
+import {
+  addSourcesLayersAndMarkers,
+  fetchProjectInfo,
+  fetchShapefiles,
+} from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -18,26 +22,11 @@ export const Map = () => {
   useEffect(() => {
     const projectId = activeFeature?.properties?.projectId
 
-    fetch('https://staging.gainforest.app/api/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `
-          query {
-            project(id:${projectId}) {
-              id
-              name
-              country
-              description
-            }
-          }
-        `,
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) => setResult(result.data))
+    const fetchData = async () => {
+      await fetchProjectInfo(projectId, setResult)
+    }
+
+    fetchData().catch(console.error)
   }, [activeFeature])
 
   // Initialize Map
@@ -85,8 +74,8 @@ export const Map = () => {
         >
           <h1>{activeFeature?.properties?.name || ''}</h1>
           <p>
-            {`${countryToEmoji[result?.project?.country].emoji}
-            ${countryToEmoji[result?.project?.country].name}`}
+            {`${countryToEmoji[result?.project?.country]?.emoji}
+            ${countryToEmoji[result?.project?.country]?.name}`}
           </p>
           <p>{result?.project?.description}</p>
         </div>

@@ -21,6 +21,7 @@ export const Button = ({
         textAlign: 'center',
         bottom: 500,
         left: position * 60 - 20,
+        cursor: 'pointer',
       }}
       onClick={onClick}
     >

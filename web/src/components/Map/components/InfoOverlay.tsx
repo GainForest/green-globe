@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { Button } from './Button'
 import { ProjectCard } from './ProjectCard'
+import { WildlifeCard } from './WildlifeCard'
 
 export const InfoOverlay = ({ result, activeFeature }) => {
   const [active, setActive] = useState<number>(1) // The currently active button
@@ -26,7 +27,10 @@ export const InfoOverlay = ({ result, activeFeature }) => {
         active={active == 3}
         onClick={() => setActive(3)}
       />
-      <ProjectCard result={result} activeFeature={activeFeature} />
+      {active == 1 && (
+        <ProjectCard result={result} activeFeature={activeFeature} />
+      )}
+      {active == 2 && <WildlifeCard />}
     </div>
   )
 }

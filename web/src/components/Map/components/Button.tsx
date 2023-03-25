@@ -7,17 +7,18 @@ export const Button = ({
   buttonIcon: string
   position: number
   active: boolean
+  onClick: () => void
 }) => {
   return (
-    <div
+    <button
       style={{
         position: 'absolute',
         height: '48px',
         width: '48px',
         borderRadius: '0.5em',
+        border: 'none',
         backgroundColor: active ? '#67962A' : '#ffffff',
         textAlign: 'center',
-        cursor: 'pointer',
         bottom: 500,
         left: position * 60 - 20,
       }}
@@ -33,6 +34,6 @@ export const Button = ({
       >
         {buttonIcon}
       </span>
-    </div>
+    </button>
   )
 }

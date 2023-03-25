@@ -2,6 +2,7 @@ export const Button = ({
   buttonIcon,
   position,
   active,
+  onClick,
 }: {
   buttonIcon: string
   position: number
@@ -20,6 +21,7 @@ export const Button = ({
         bottom: 500,
         left: position * 60 - 20,
       }}
+      onClick={onClick}
     >
       <span
         className="material-icons-round"

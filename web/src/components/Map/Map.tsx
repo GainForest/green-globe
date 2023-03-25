@@ -12,6 +12,7 @@ import {
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { ProjectCard } from './components/ProjectCard'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -59,27 +60,8 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      {result && (
-        <div
-          style={{
-            height: '400px',
-            width: '300px',
-            position: 'absolute',
-            padding: '24px',
-            bottom: 40,
-            left: 40,
-            backgroundColor: '#ffffff',
-            borderRadius: '0.5em',
-          }}
-        >
-          <h1>{activeFeature?.properties?.name || ''}</h1>
-          <p>
-            {`${countryToEmoji[result?.project?.country]?.emoji}
-            ${countryToEmoji[result?.project?.country]?.name}`}
-          </p>
-          <p>{result?.project?.description}</p>
-        </div>
-      )}
+      <div></div>
+      {result && <ProjectCard result={result} activeFeature={activeFeature} />}
     </>
   )
 }

@@ -16,18 +16,18 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [projectPolygons, setAllProjectPolygons] = useState()
-  const [activeFeature, setActiveFeature] = useState()
-  const [result, setResult] = useState()
+  const [activeProjectPolygon, setActiveProjectPolygon] = useState()
+  const [activeProjectData, setActiveProjectData] = useState()
 
   useEffect(() => {
-    const projectId = activeFeature?.properties?.projectId
+    const projectId = activeProjectPolygon?.properties?.projectId
 
     const fetchData = async () => {
-      await fetchProjectInfo(projectId, setResult)
+      await fetchProjectInfo(projectId, setActiveProjectData)
     }
 
     fetchData().catch(console.error)
-  }, [activeFeature])
+  }, [activeProjectPolygon])
 
   // Initialize Map
   useEffect(() => {
@@ -38,7 +38,11 @@ export const Map = () => {
   useEffect(() => {
     if (map && projectPolygons) {
       map.on('load', () => {
-        addSourcesLayersAndMarkers(map, projectPolygons, setActiveFeature)
+        addSourcesLayersAndMarkers(
+          map,
+          projectPolygons,
+          setActiveProjectPolygon
+        )
       })
     }
   }, [map, projectPolygons])
@@ -46,7 +50,12 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      {result && <InfoOverlay result={result} activeFeature={activeFeature} />}
+      {activeProjectData && (
+        <InfoOverlay
+          result={activeProjectData}
+          activeFeature={activeProjectPolygon}
+        />
+      )}
     </>
   )
 }

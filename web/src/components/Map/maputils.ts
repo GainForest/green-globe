@@ -40,6 +40,10 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
   return response
 }
 
+// export const fetchTreesPlanted = async (projectId: number) => {
+//   const response = fetch('')
+// }
+
 export const addMarkers = (
   map: mapboxgl.Map,
   geoJson: mapboxgl.geoJson,

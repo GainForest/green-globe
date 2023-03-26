@@ -5,11 +5,8 @@ import mapboxgl from 'mapbox-gl'
 import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
-import {
-  addSourcesLayersAndMarkers,
-  fetchProjectInfo,
-  fetchShapefiles,
-} from './maputils'
+import { fetchProjectInfo, fetchShapefiles } from './mapfetch'
+import { addSourcesLayersAndMarkers } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -18,6 +15,7 @@ export const Map = () => {
   const [projectPolygons, setAllProjectPolygons] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
+  const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
 
   useEffect(() => {
     const projectId = activeProjectPolygon?.properties?.projectId
@@ -34,6 +32,13 @@ export const Map = () => {
     initializeMapbox('map-container', setMap)
     fetchShapefiles(setAllProjectPolygons)
   }, [])
+
+  useEffect(() => {
+    const endpoint = activeProjectData?.project?.assets?.filter((d) =>
+      d.name.includes('planted')
+    )[0].awsCID
+    console.log(endpoint)
+  }, [activeProjectData])
 
   useEffect(() => {
     if (map && projectPolygons) {

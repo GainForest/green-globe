@@ -15,7 +15,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [geoJson, setGeoJson] = useState()
+  const [projectPolygons, setAllProjectPolygons] = useState()
   const [activeFeature, setActiveFeature] = useState()
   const [result, setResult] = useState()
 
@@ -32,16 +32,16 @@ export const Map = () => {
   // Initialize Map
   useEffect(() => {
     initializeMapbox('map-container', setMap)
-    fetchShapefiles(setGeoJson)
+    fetchShapefiles(setAllProjectPolygons)
   }, [])
 
   useEffect(() => {
-    if (map && geoJson) {
+    if (map && projectPolygons) {
       map.on('load', () => {
-        addSourcesLayersAndMarkers(map, geoJson, setActiveFeature)
+        addSourcesLayersAndMarkers(map, projectPolygons, setActiveFeature)
       })
     }
-  }, [map, geoJson])
+  }, [map, projectPolygons])
 
   return (
     <>

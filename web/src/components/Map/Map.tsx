@@ -36,7 +36,7 @@ export const Map = () => {
   useEffect(() => {
     const endpoint = activeProjectData?.project?.assets?.filter((d) =>
       d.name.includes('planted')
-    )[0].awsCID
+    )[0]?.awsCID
     console.log(endpoint)
   }, [activeProjectData])
 

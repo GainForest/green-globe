@@ -1,3 +1,15 @@
+html {
+  font-family: 'Karla', sans-serif;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+p {
+  font-size: 16px;
+}
+
 .map-marker {
   background-image: url('../public/gainforest_marker.jpeg');
   background-size: cover;
@@ -11,12 +23,4 @@
   margin: 4px 12px;
 }
 
-h1 {
-  font-family: 'Karla', sans-serif;
-  font-size: 24px;
-}
 
-p {
-  font-family: 'Karla', sans-serif;
-  font-size: 16px;
-}

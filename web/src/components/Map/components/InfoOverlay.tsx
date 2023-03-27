@@ -13,7 +13,7 @@ export const InfoOverlay = ({ result, activeFeature }) => {
     <div>
       {
         <>
-          <ExitProjectView />
+          {!minimized && <ExitProjectView setDisplayBox={setMinimized} />}{' '}
           <Button
             buttonIcon={'forest'}
             position={1}

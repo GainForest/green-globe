@@ -8,12 +8,12 @@ export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
   const [toggle, setToggle] = useState<'photo' | 'video'>('photo')
 
   const projectId = activeFeature?.properties?.projectId
-  const wildlifePhoto =
+  const photoEndpoint =
     activeProjectData?.project?.assets?.filter(
       (d) =>
         d.classification.includes('Camera Traps') && d.awsCID.includes('.jpg')
     )?.[0]?.awsCID || ''
-  const wildlifeVideo =
+  const videoEndpoint =
     activeProjectData?.project?.assets?.filter(
       (d) =>
         d.classification.includes('Camera Traps') && d.awsCID.includes('.mp4')
@@ -22,53 +22,63 @@ export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
   return (
     <InfoBox>
       <ToggleButton active={toggle} setToggle={setToggle} />
-      {wildlifePhoto.length ? (
-        <>
-          <img
-            alt="Wildlife camera still"
-            src={`${process.env.AWS_STORAGE}/${wildlifePhoto}`}
-            style={{
-              width: '100%',
-              height: '280px',
-              objectFit: 'cover',
-              paddingTop: '20px',
-            }}
-          />
-          <p>
-            {wildlifePhoto}
-            For more, visit the{' '}
-            <a href={`https://gainforest.app/data/${projectId}`}>
-              transparency dashboard
-            </a>
-            .
-          </p>
-        </>
-      ) : (
-        'This project has not uploaded a wildlife photo.'
+      {toggle == 'photo' && (
+        <PhotoCard projectId={projectId} photoEndpoint={photoEndpoint} />
       )}
-      {wildlifeVideo.length ? (
-        <>
-          <video
-            src={`${process.env.AWS_STORAGE}/${wildlifeVideo}`}
-            style={{
-              width: '100%',
-              height: '280px',
-              objectFit: 'cover',
-              paddingTop: '20px',
-            }}
-          />
-          <p>
-            {wildlifePhoto}
-            For more, visit the{' '}
-            <a href={`https://gainforest.app/data/${projectId}`}>
-              transparency dashboard
-            </a>
-            .
-          </p>
-        </>
-      ) : (
-        'This project has not uploaded a wildlife video.'
+      {toggle == 'video' && (
+        <VideoCard projectId={projectId} videoEndpoint={videoEndpoint} />
       )}
     </InfoBox>
+  )
+}
+
+const PhotoCard = ({ projectId, photoEndpoint }) => {
+  return photoEndpoint.length ? (
+    <>
+      <img
+        alt="Wildlife camera still"
+        src={`${process.env.AWS_STORAGE}/${photoEndpoint}`}
+        style={{
+          width: '100%',
+          height: '280px',
+          objectFit: 'cover',
+          paddingTop: '20px',
+        }}
+      />
+      <p>
+        For more, visit the{' '}
+        <a href={`https://gainforest.app/data/${projectId}`}>
+          transparency dashboard
+        </a>
+        .
+      </p>
+    </>
+  ) : (
+    <>This project has not uploaded a wildlife photo.</>
+  )
+}
+
+const VideoCard = ({ projectId, videoEndpoint }) => {
+  return videoEndpoint.length ? (
+    <>
+      <video
+        src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}
+        style={{
+          width: '100%',
+          height: '280px',
+          objectFit: 'cover',
+          paddingTop: '20px',
+        }}
+      />
+      <p>
+        For more, visit the{' '}
+        <a href={`https://gainforest.app/data/${projectId}`}>
+          transparency dashboard
+        </a>
+        .
+      </p>
+    </>
+  ) : (
+    <>This project has not uploaded a wildlife video.</>
   )
 }

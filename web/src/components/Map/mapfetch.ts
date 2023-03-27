@@ -1,6 +1,6 @@
 export const fetchShapefiles = (setGeoJson) => {
   fetch(
-    'https://gainforest-transparency-dashboard.s3.amazonaws.com/shapefiles/gainforest-all-shapefiles.geojson'
+    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
   )
     .then((response) => response.json())
     .then((newGeojson) => setGeoJson(newGeojson))

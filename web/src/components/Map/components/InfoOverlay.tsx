@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { Button } from './Button'
+import { ExitProjectView } from './ExitProjectView'
 import { ProjectCard } from './ProjectCard'
 import { WildlifeCard } from './WildlifeCard'
 
@@ -12,6 +13,7 @@ export const InfoOverlay = ({ result, activeFeature }) => {
     <div>
       {
         <>
+          <ExitProjectView />
           <Button
             buttonIcon={'forest'}
             position={1}

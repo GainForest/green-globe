@@ -21,7 +21,7 @@ export const Button = ({
         border: 'none',
         backgroundColor: active ? '#67962A' : '#ffffff',
         textAlign: 'center',
-        bottom: 40,
+        bottom: 500,
         left: position * 60 - 20,
         cursor: 'pointer',
       }}

@@ -11,7 +11,8 @@ import {
 export const addMarkers = (
   map: mapboxgl.Map,
   geoJson: mapboxgl.geoJson,
-  setActiveFeature
+  setActiveFeature,
+  setDisplayOverlay
 ) => {
   for (const feature of geoJson.features) {
     // create the marker HTML element
@@ -40,6 +41,7 @@ export const addMarkers = (
         padding: { top: 40, bottom: 40, left: 420, right: 40 },
       })
       setActiveFeature(feature)
+      setDisplayOverlay(true)
     })
 
     // finally, add the marker to the map
@@ -49,9 +51,14 @@ export const addMarkers = (
   }
 }
 
-export const addSourcesLayersAndMarkers = (map, geoJson, setActiveFeature) => {
+export const addSourcesLayersAndMarkers = (
+  map,
+  geoJson,
+  setActiveFeature,
+  setDisplayOverlay
+) => {
   map.addSource('project', projectSource(geoJson))
   map.addLayer(projectOutlineLayer('#00FF00'))
   map.addLayer(projectFillLayer('#00FF00'))
-  addMarkers(map, geoJson, setActiveFeature)
+  addMarkers(map, geoJson, setActiveFeature, setDisplayOverlay)
 }

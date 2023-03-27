@@ -13,7 +13,7 @@ export const ExitProjectView = ({
         right: 80,
         top: 60,
       }}
-      onClick={() => setDisplayBox(true)}
+      onClick={() => setDisplayBox(false)}
     >
       <p style={{ lineHeight: '40px', margin: 0 }}>Exit Project View</p>
     </UnstyledButton>

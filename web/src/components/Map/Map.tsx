@@ -12,6 +12,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
+  const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   const [projectPolygons, setAllProjectPolygons] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
@@ -46,7 +47,8 @@ export const Map = () => {
         addSourcesLayersAndMarkers(
           map,
           projectPolygons,
-          setActiveProjectPolygon
+          setActiveProjectPolygon,
+          setDisplayOverlay
         )
       })
     }
@@ -55,10 +57,11 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      {activeProjectData && (
+      {activeProjectData && displayOverlay && (
         <InfoOverlay
           result={activeProjectData}
           activeFeature={activeProjectPolygon}
+          setDisplayOverlay={setDisplayOverlay}
         />
       )}
     </>

@@ -9,12 +9,13 @@ export const ExitProjectView = ({
         position: 'absolute',
         border: 'none',
         backgroundColor: '#ffffff',
-        height: '40px',
-        width: '140px',
+        height: '48px',
+        width: '160px',
         textAlign: 'center',
         right: 80,
         top: 60,
         cursor: 'pointer',
+        borderRadius: '0.5em',
       }}
       onClick={() => setDisplayBox(true)}
     >

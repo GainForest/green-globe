@@ -15,7 +15,6 @@ export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
         d.classification.includes('Camera Traps') && d.awsCID.includes('.mp4')
     )?.[0]?.awsCID || ''
 
-  console.log(wildlifePhoto, wildlifeVideo, activeProjectData?.project?.assets)
   return (
     <InfoBox>
       <ToggleButton />
@@ -53,7 +52,7 @@ export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
               objectFit: 'cover',
               paddingTop: '20px',
             }}
-          ></video>
+          />
           <p>
             {wildlifePhoto}
             For more, visit the{' '}

@@ -1,8 +1,12 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { useState } from 'react'
+
 import { InfoBox } from './InfoBox'
 import { ToggleButton } from './ToggleButton'
 
 export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
+  const [toggle, setToggle] = useState<'photo' | 'video'>('photo')
+
   const projectId = activeFeature?.properties?.projectId
   const wildlifePhoto =
     activeProjectData?.project?.assets?.filter(
@@ -17,7 +21,7 @@ export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
 
   return (
     <InfoBox>
-      <ToggleButton />
+      <ToggleButton active={toggle} setToggle={setToggle} />
       {wildlifePhoto.length ? (
         <>
           <img

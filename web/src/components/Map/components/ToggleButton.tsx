@@ -1,29 +1,45 @@
-export const ToggleButton = () => {
+import styled from 'styled-components'
+
+export const ToggleButton = ({
+  active,
+  setToggle,
+}: {
+  active: 'photo' | 'video'
+  setToggle: (toggle: 'photo' | 'video') => void
+}) => {
   return (
-    <div style={{ padding: '0px 10px' }}>
-      <button
-        style={{
-          border: 'none',
-          height: '36px',
-          width: '140px',
-          borderRadius: '0.5em 0 0 0.5em',
-          backgroundColor: '#67962A',
-          color: '#ffffff',
-        }}
+    <>
+      <HalfButton
+        active={active == 'photo'}
+        style={{ borderRadius: '0.5em 0 0 0.5em' }}
+        onClick={() => setToggle('photo')}
       >
         Photos
-      </button>
-      <button
+      </HalfButton>
+      <HalfButton
         style={{
-          border: 'none',
-          height: '36px',
-          width: '140px',
           borderRadius: '0 0.5em 0.5em 0',
-          color: '#808080',
         }}
+        active={active == 'video'}
+        onClick={() => setToggle('video')}
       >
         Videos
-      </button>
-    </div>
+      </HalfButton>
+    </>
   )
 }
+
+export const HalfButton = styled.button<{ active: boolean }>`
+  postiion: static;
+  border: none;
+  width: 140px;
+  max-width: 200px;
+  height: 36px;
+  cursor: pointer;
+  color: ${(props) => (props.active ? '#ffffff' : '#808080')};
+  background-color: ${(props) => (props.active ? '#67962A' : '#f5f5f5')};
+  :hover {
+    background-color: ${(props) =>
+      props.active ? '#67962A' : 'rgba(103, 150, 42, 0.15)'};
+  }
+`

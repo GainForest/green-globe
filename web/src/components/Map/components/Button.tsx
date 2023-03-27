@@ -1,3 +1,5 @@
+import { UnstyledButton } from './UnstyledButton'
+
 export const Button = ({
   buttonIcon,
   position,
@@ -13,18 +15,13 @@ export const Button = ({
 }) => {
   return (
     !minimized && (
-      <button
+      <UnstyledButton
         style={{
-          position: 'absolute',
           height: '48px',
           width: '48px',
-          borderRadius: '0.5em',
-          border: 'none',
           backgroundColor: active ? '#67962A' : '#ffffff',
-          textAlign: 'center',
           bottom: 500,
           left: position * 60 - 20,
-          cursor: 'pointer',
         }}
         onClick={onClick}
       >
@@ -38,7 +35,7 @@ export const Button = ({
         >
           {buttonIcon}
         </span>
-      </button>
+      </UnstyledButton>
     )
   )
 }

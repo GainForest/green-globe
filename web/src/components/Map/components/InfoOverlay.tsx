@@ -5,9 +5,12 @@ import { ExitProjectView } from './ExitProjectView'
 import { ProjectCard } from './ProjectCard'
 import { WildlifeCard } from './WildlifeCard'
 
-export const InfoOverlay = ({ result, activeFeature, setDisplayOverlay }) => {
+export const InfoOverlay = ({
+  activeProjectData,
+  activeFeature,
+  setDisplayOverlay,
+}) => {
   const [active, setActive] = useState<number>(1) // The currently active button
-  const projectId = activeFeature?.properties?.projectId
   // Position of the buttons go from left to right
   return (
     <>
@@ -27,9 +30,18 @@ export const InfoOverlay = ({ result, activeFeature, setDisplayOverlay }) => {
         onClick={() => setActive(2)}
       />
       {active == 1 && (
-        <ProjectCard result={result} activeFeature={activeFeature} />
+        <ProjectCard
+          activeProjectData={activeProjectData}
+          activeFeature={activeFeature}
+        />
       )}
-      {active == 2 && <WildlifeCard projectId={projectId} />})
+      {active == 2 && (
+        <WildlifeCard
+          activeFeature={activeFeature}
+          activeProjectData={activeProjectData}
+        />
+      )}
+      )
     </>
   )
 }

@@ -2,15 +2,15 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import { InfoBox } from './InfoBox'
 
-export const ProjectCard = ({ result, activeFeature }) => {
+export const ProjectCard = ({ activeProjectData, activeFeature }) => {
   return (
     <InfoBox>
       <h1>{activeFeature?.properties?.name || ''}</h1>
       <p>
-        {`${countryToEmoji[result?.project?.country]?.emoji}
-      ${countryToEmoji[result?.project?.country]?.name}`}
+        {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
+      ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
       </p>
-      <p>{result?.project?.description}</p>
+      <p>{activeProjectData?.project?.description}</p>
     </InfoBox>
   )
 }

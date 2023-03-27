@@ -19,13 +19,14 @@ export const Map = () => {
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
 
   useEffect(() => {
-    const projectId = activeProjectPolygon?.properties?.projectId
+    if (activeProjectPolygon) {
+      const projectId = activeProjectPolygon?.properties?.projectId
 
-    const fetchData = async () => {
-      await fetchProjectInfo(projectId, setActiveProjectData)
+      const fetchData = async () => {
+        await fetchProjectInfo(projectId, setActiveProjectData)
+      }
+      fetchData().catch(console.error)
     }
-
-    fetchData().catch(console.error)
   }, [activeProjectPolygon])
 
   // Initialize Map
@@ -59,7 +60,7 @@ export const Map = () => {
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
       {activeProjectData && displayOverlay && (
         <InfoOverlay
-          result={activeProjectData}
+          activeProjectData={activeProjectData}
           activeFeature={activeProjectPolygon}
           setDisplayOverlay={setDisplayOverlay}
         />

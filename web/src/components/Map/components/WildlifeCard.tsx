@@ -1,7 +1,7 @@
 import { InfoBox } from './InfoBox'
 import { ToggleButton } from './ToggleButton'
 
-export const WildlifeCard = () => {
+export const WildlifeCard = ({ projectId }) => {
   return (
     <InfoBox>
       <ToggleButton />
@@ -17,6 +17,13 @@ export const WildlifeCard = () => {
           paddingTop: '20px',
         }}
       />
+      <p>
+        For more, visit the{' '}
+        <a href={`https://gainforest.app/data/${projectId}`}>
+          transparency dashboard
+        </a>
+        .
+      </p>
     </InfoBox>
   )
 }

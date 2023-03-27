@@ -7,6 +7,7 @@ import { WildlifeCard } from './WildlifeCard'
 
 export const InfoOverlay = ({ result, activeFeature, setDisplayOverlay }) => {
   const [active, setActive] = useState<number>(1) // The currently active button
+  const projectId = activeFeature?.properties?.projectId
   // Position of the buttons go from left to right
   return (
     <>
@@ -28,7 +29,7 @@ export const InfoOverlay = ({ result, activeFeature, setDisplayOverlay }) => {
       {active == 1 && (
         <ProjectCard result={result} activeFeature={activeFeature} />
       )}
-      {active == 2 && <WildlifeCard />})
+      {active == 2 && <WildlifeCard projectId={projectId} />})
     </>
   )
 }

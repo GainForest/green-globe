@@ -1,4 +1,4 @@
-export const InfoBox = ({ children, setDisplayBox }) => {
+export const InfoBox = ({ children }) => {
   return (
     <div
       style={{
@@ -12,13 +12,6 @@ export const InfoBox = ({ children, setDisplayBox }) => {
         borderRadius: '0.5em',
       }}
     >
-      <div
-        style={{ cursor: 'pointer', marginLeft: '288px' }}
-        className="material-icons-round"
-        onClick={() => setDisplayBox(true)}
-      >
-        close
-      </div>
       {children}
     </div>
   )

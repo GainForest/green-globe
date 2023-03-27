@@ -2,9 +2,9 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import { InfoBox } from './InfoBox'
 
-export const ProjectCard = ({ result, activeFeature, setDisplayBox }) => {
+export const ProjectCard = ({ result, activeFeature }) => {
   return (
-    <InfoBox setDisplayBox={setDisplayBox}>
+    <InfoBox>
       <h1>{activeFeature?.properties?.name || ''}</h1>
       <p>
         {`${countryToEmoji[result?.project?.country]?.emoji}

@@ -49,7 +49,50 @@ export const projectFillLayer = (lineColor: string) => ({
   },
 })
 
+export const clusteredTreesLayer = {
+  id: 'clusteredTrees',
+  type: 'circle',
+  source: 'trees',
+  filter: ['has', 'point_count'],
+  paint: {
+    'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+    'circle-opacity': 0.5,
+    'circle-color': 'green',
+    'circle-stroke-color': 'green',
+    'circle-stroke-opacity': 1,
+  },
+}
+
+export const clusteredTreesCountTextLayer = {
+  id: 'clusteredTreesCountText',
+  type: 'symbol',
+  source: 'trees',
+  filter: ['has', 'point_count'],
+  layout: {
+    'text-field': '{point_count_abbreviated}',
+    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+    'text-size': 12,
+  },
+}
+
+export const unclusteredTreesLayer = {
+  id: 'unclusteredTrees',
+  type: 'circle',
+  source: 'trees',
+  filter: ['!', ['has', 'point_count']],
+  paint: {
+    'circle-color': 'green',
+    'circle-radius': 4,
+    'circle-stroke-color': 'green',
+  },
+}
+
 export const projectSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,
+})
+
+export const treesSource = (treesGeoJson) => ({
+  type: 'geoJson',
+  data: treesGeoJson,
 })

@@ -3,9 +3,13 @@ import center from '@turf/center'
 import mapboxgl from 'mapbox-gl'
 
 import {
+  clusteredTreesCountTextLayer,
+  clusteredTreesLayer,
   projectFillLayer,
   projectOutlineLayer,
   projectSource,
+  treesSource,
+  unclusteredTreesLayer,
 } from 'src/mapbox.config'
 
 export const addMarkers = (
@@ -54,10 +58,15 @@ export const addMarkers = (
 export const addSourcesLayersAndMarkers = (
   map,
   geoJson,
+  treesGeoJson,
   setActiveFeature,
   setDisplayOverlay
 ) => {
   map.addSource('project', projectSource(geoJson))
+  map.addSource('trees', treesSource(treesGeoJson))
+  map.addLayer(clusteredTreesLayer)
+  map.addLayer(clusteredTreesCountTextLayer)
+  map.addLayer(unclusteredTreesLayer)
   map.addLayer(projectOutlineLayer('#00FF00'))
   map.addLayer(projectFillLayer('#00FF00'))
   addMarkers(map, geoJson, setActiveFeature, setDisplayOverlay)

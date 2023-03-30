@@ -70,11 +70,24 @@ export const Map = () => {
     }
   }, [map, activeProjectData])
 
+  // Add trees planted source and layers
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
     }
-  }, [activeProjectTreesPlanted, map])
+  }, [map, activeProjectTreesPlanted])
+
+  // Remove layers when you exit the display overlay
+  useEffect(() => {
+    if (map && map.getLayer('unclusteredTrees')) {
+      if (!displayOverlay) {
+        map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
+      }
+      if (displayOverlay) {
+        map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
+      }
+    }
+  }, [map, displayOverlay])
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />

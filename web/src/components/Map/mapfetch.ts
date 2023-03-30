@@ -40,9 +40,7 @@ export const fetchTreeShapefile = async (
   endpoint: string,
   setActiveProjectTreesPlanted
 ) => {
-  const response = fetch(
-    'https://gainforest-transparency-dashboard.s3.amazonaws.com/shapefiles/million-trees-project-planted.geojson'
-  )
+  const response = fetch(`${process.env.AWS_STORAGE}/${endpoint}`)
     .then((res) => res.json())
     .then((result) => {
       setActiveProjectTreesPlanted(result)

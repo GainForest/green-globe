@@ -16,6 +16,7 @@ import {
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { SearchOverlay } from './components/SearchOverlay'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -91,6 +92,7 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
+      <SearchOverlay />
       {activeProjectData && displayOverlay && (
         <InfoOverlay
           activeProjectData={activeProjectData}

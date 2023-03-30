@@ -6,8 +6,8 @@ export const InfoBox = ({ children }) => {
         width: '300px',
         position: 'absolute',
         padding: '16px 24px',
-        bottom: 60,
-        left: 40,
+        bottom: 40,
+        left: 8,
         backgroundColor: '#ffffff',
         borderRadius: '0.5em',
       }}

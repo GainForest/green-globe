@@ -17,8 +17,8 @@ export const Button = ({
         height: '48px',
         width: '48px',
         backgroundColor: active ? '#67962A' : '#ffffff',
-        bottom: 500,
-        left: position * 60 - 20,
+        bottom: 480,
+        left: position * 60 - 52,
       }}
       onClick={onClick}
     >

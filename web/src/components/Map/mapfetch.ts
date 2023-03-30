@@ -7,7 +7,7 @@ export const fetchShapefiles = (setGeoJson) => {
 }
 
 export const fetchProjectInfo = async (projectId: number, setResult) => {
-  const response = fetch('https://staging.gainforest.app/api/graphql', {
+  const response = fetch('https://gainforest.app/api/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

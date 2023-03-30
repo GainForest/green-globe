@@ -36,11 +36,16 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
   return response
 }
 
-export const fetchTreeShapefile = async (endpoint: string, setResult) => {
+export const fetchTreeShapefile = async (
+  endpoint: string,
+  setActiveProjectTreesPlanted
+) => {
   const response = fetch(
-    'https://gainforest-transparency-dashboard.s3.amazonaws.com/shapefiles/million-trees-project-planted.geojson/'
+    'https://gainforest-transparency-dashboard.s3.amazonaws.com/shapefiles/million-trees-project-planted.geojson'
   )
     .then((res) => res.json())
-    .then((result) => setResult(result.data))
+    .then((result) => {
+      setActiveProjectTreesPlanted(result)
+    })
   return response
 }

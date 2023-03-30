@@ -93,6 +93,6 @@ export const projectSource = (geoJson) => ({
 })
 
 export const treesSource = (treesGeoJson) => ({
-  type: 'geoJson',
+  type: 'geojson',
   data: treesGeoJson,
 })

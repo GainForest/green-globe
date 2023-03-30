@@ -56,18 +56,25 @@ export const addMarkers = (
 }
 
 export const addSourcesLayersAndMarkers = (
-  map,
+  map: mapboxgl.Map,
   geoJson,
-  treesGeoJson,
   setActiveFeature,
   setDisplayOverlay
 ) => {
+  console.log('geojson', geoJson)
   map.addSource('project', projectSource(geoJson))
+  map.addLayer(projectOutlineLayer('#00FF00'))
+  map.addLayer(projectFillLayer('#00FF00'))
+  addMarkers(map, geoJson, setActiveFeature, setDisplayOverlay)
+}
+
+export const addTreesPlantedSourceAndLayers = (
+  map: mapboxgl.Map,
+  treesGeoJson
+) => {
+  console.log('active trees planted', treesGeoJson)
   map.addSource('trees', treesSource(treesGeoJson))
   map.addLayer(clusteredTreesLayer)
   map.addLayer(clusteredTreesCountTextLayer)
   map.addLayer(unclusteredTreesLayer)
-  map.addLayer(projectOutlineLayer('#00FF00'))
-  map.addLayer(projectFillLayer('#00FF00'))
-  addMarkers(map, geoJson, setActiveFeature, setDisplayOverlay)
 }

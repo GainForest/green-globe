@@ -21,13 +21,16 @@ export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
 
   return (
     <InfoBox>
-      <ToggleButton active={toggle} setToggle={setToggle} />
-      {toggle == 'photo' && (
-        <PhotoCard projectId={projectId} photoEndpoint={photoEndpoint} />
-      )}
-      {toggle == 'video' && (
-        <VideoCard projectId={projectId} videoEndpoint={videoEndpoint} />
-      )}
+      <div style={{ margin: '16px 24px' }}>
+        <ToggleButton active={toggle} setToggle={setToggle} />
+        <div style={{ height: '24px', width: '100%' }} />
+        {toggle == 'photo' && (
+          <PhotoCard projectId={projectId} photoEndpoint={photoEndpoint} />
+        )}
+        {toggle == 'video' && (
+          <VideoCard projectId={projectId} videoEndpoint={videoEndpoint} />
+        )}
+      </div>
     </InfoBox>
   )
 }

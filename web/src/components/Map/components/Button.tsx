@@ -14,20 +14,20 @@ export const Button = ({
   return (
     <UnstyledButton
       style={{
-        height: '48px',
-        width: '48px',
+        height: '44px',
+        width: '44px',
         backgroundColor: active ? '#67962A' : '#ffffff',
-        bottom: 480,
-        left: position * 60 - 52,
+        bottom: 550,
+        left: position * 54 - 48,
       }}
       onClick={onClick}
     >
       <span
         className="material-icons-round"
         style={{
-          fontSize: '32px',
+          fontSize: '24px',
           color: active ? '#ffffff' : '#000000',
-          lineHeight: '48px',
+          lineHeight: '44px',
         }}
       >
         {buttonIcon}

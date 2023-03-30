@@ -2,10 +2,9 @@ export const InfoBox = ({ children }) => {
   return (
     <div
       style={{
-        height: '400px',
-        width: '300px',
+        height: '500px',
+        width: '360px',
         position: 'absolute',
-        padding: '16px 24px',
         bottom: 40,
         left: 8,
         backgroundColor: '#ffffff',

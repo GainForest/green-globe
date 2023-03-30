@@ -3,6 +3,7 @@ export const SearchOverlay = () => {
     <>
       <input
         style={{
+          zIndex: 2,
           border: 'none',
           height: '24px',
           width: '300px',
@@ -20,6 +21,7 @@ export const SearchOverlay = () => {
       <span
         className="material-icons-round"
         style={{
+          zIndex: 3,
           fontSize: '18px',
           lineHeight: '18px',
           position: 'absolute',

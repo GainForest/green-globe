@@ -5,7 +5,11 @@ import mapboxgl from 'mapbox-gl'
 import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
-import { fetchProjectInfo, fetchShapefiles } from './mapfetch'
+import {
+  fetchProjectInfo,
+  fetchShapefiles,
+  fetchTreeShapefile,
+} from './mapfetch'
 import { addSourcesLayersAndMarkers } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -24,6 +28,7 @@ export const Map = () => {
 
       const fetchData = async () => {
         await fetchProjectInfo(projectId, setActiveProjectData)
+        await fetchTreeShapefile('', setActiveProjectTreesPlanted)
       }
       fetchData().catch(console.error)
     }

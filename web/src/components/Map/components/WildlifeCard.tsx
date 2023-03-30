@@ -69,6 +69,7 @@ const VideoCard = ({ projectId, videoEndpoint }) => {
           objectFit: 'cover',
           paddingTop: '20px',
         }}
+        controls
       />
       <p>
         For more, visit the{' '}

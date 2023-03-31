@@ -17,6 +17,7 @@ export const SearchOverlay = () => {
           fontFamily: 'Karla',
         }}
         placeholder={'Search for projects'}
+        list={'gainforest-project-datalist'}
       />
       <span
         className="material-icons-round"
@@ -32,6 +33,28 @@ export const SearchOverlay = () => {
       >
         search
       </span>
+      <datalist
+        style={{
+          zIndex: 2,
+          border: 'none',
+          height: '24px',
+          width: '300px',
+          position: 'absolute',
+          padding: '8px 12px',
+          top: 8,
+          left: 8,
+          backgroundColor: '#ffffff',
+          borderRadius: '8px',
+          fontSize: '14px',
+          fontFamily: 'Karla',
+        }}
+        id="gainforest-project-datalist"
+      >
+        <option value="Defensores del Chaco" />
+        <option value="Kayapo Project" />
+        <option value="Million Trees Project" />
+        <option value="Oceanus Conservation" />
+      </datalist>
     </>
   )
 }

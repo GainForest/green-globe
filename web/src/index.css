@@ -28,3 +28,8 @@ p {
 }
 
 
+/* Remove dropdown arrow in the search component */
+/* TODO: check in all browsers */
+input::-webkit-calendar-picker-indicator {
+  display: none !important;
+}

@@ -1,4 +1,10 @@
-export const SearchOverlay = () => {
+const allProjects = [
+  'Defensores del Chaco',
+  'Kayapo Project',
+  'Million Trees Project',
+]
+
+export const SearchOverlay = ({ setActiveProject }) => {
   return (
     <>
       <input
@@ -18,6 +24,11 @@ export const SearchOverlay = () => {
         }}
         placeholder={'Search for projects'}
         list={'gainforest-project-datalist'}
+        onChange={(e) => {
+          if (allProjects.find((d) => d == e.target.value)) {
+            setActiveProject(e.target.value)
+          }
+        }}
       />
       <span
         className="material-icons-round"

@@ -23,6 +23,7 @@ export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   const [projectPolygons, setAllProjectPolygons] = useState()
+  const [activeProject, setActiveProject] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
@@ -46,6 +47,19 @@ export const Map = () => {
       })
     }
   }, [map, activeProjectTreesPlanted, projectPolygons])
+
+  // If the active project changes, always display overlay again
+  useEffect(() => {
+    // TODO: a lot of error checking
+    const projectPolygon = projectPolygons?.features.find((d) =>
+      d.properties.name.includes(activeProject)
+    )
+
+    setActiveProjectPolygon(projectPolygon)
+    if (projectPolygon) {
+      setDisplayOverlay(true)
+    }
+  }, [activeProject, projectPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {
@@ -101,7 +115,7 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <SearchOverlay />
+      <SearchOverlay setActiveProject={setActiveProject} />
       {activeProjectData && displayOverlay && (
         <InfoOverlay
           activeProjectData={activeProjectData}

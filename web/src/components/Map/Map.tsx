@@ -47,7 +47,7 @@ export const Map = () => {
         )
       })
     }
-  }, [map, activeProjectTreesPlanted, projectPolygons])
+  }, [map, projectPolygons])
 
   // If the active project changes, always display overlay again
   useEffect(() => {
@@ -97,20 +97,18 @@ export const Map = () => {
   // Remove layers when you exit the display overlay
   useEffect(() => {
     if (map) {
-      map.on('click', () => {
-        if (displayOverlay) {
-          setDisplayOverlay(false)
-          map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
-        }
-      })
+      // map.on('click', (e) => {
+      //   console.log(map.getCanvas().style)
+      //   if (displayOverlay) {
+      //     setDisplayOverlay(false)
+      //     map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
+      //   }
+      // })
     }
     if (map && map.getLayer('unclusteredTrees')) {
       if (!displayOverlay) {
         map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
       }
-      // if (displayOverlay) {
-      //   map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
-      // }
     }
     if (map) {
       map.on('mousemove', 'unclusteredTrees', (e) => {

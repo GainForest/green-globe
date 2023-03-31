@@ -85,8 +85,11 @@ export const addTreesPlantedSourceAndLayers = (
   map: mapboxgl.Map,
   treesGeoJson
 ) => {
-  console.log('active trees planted', treesGeoJson)
-  map.addSource('trees', treesSource(treesGeoJson))
+  if (!map.getSource('trees')) {
+    map.addSource('trees', treesSource(treesGeoJson))
+  } else {
+    map.getSource('trees').setData(treesGeoJson)
+  }
   map.addLayer(clusteredTreesLayer)
   map.addLayer(clusteredTreesCountTextLayer)
   map.addLayer(unclusteredTreesLayer)

@@ -48,6 +48,8 @@ export const addMarkers = (
       setActiveProject(feature?.properties?.name)
       setActiveFeature(feature)
       setDisplayOverlay(true)
+      map.setLayoutProperty('clusteredTrees', 'visibility', 'visible')
+      map.setLayoutProperty('clusteredTreesCountText', 'visibility', 'visible')
       map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
     })
 

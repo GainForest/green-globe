@@ -14,6 +14,7 @@ import {
 import {
   addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
+  getPopupTreeInformation,
   popup,
 } from './maputils'
 
@@ -111,35 +112,14 @@ export const Map = () => {
         map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
       }
     }
+
     if (map) {
+      // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
         popup.remove()
-        const upperCaseEveryWord = (name: string) =>
-          name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
-        const tree = e?.features[0]?.properties
 
-        const treeName = tree?.Plant_Name
-          ? upperCaseEveryWord(tree?.Plant_Name)
-          : 'unknown'
-        const treeHeight = tree?.Height
-          ? `${(Math.round(tree?.Height) * 100) / 100}cm`
-          : 'unknown'
-        // const treeID = tree?.ID || 'unknown'
-        const treeDBH = tree?.DBH || 'unknown'
-        const treeID =
-          tree?.['FCD-tree_records-tree_photo']?.split('?id=')?.[1] ||
-          tree?.ID ||
-          'unknown'
-
-        const activeProject = activeProjectPolygon?.properties?.name
-
-        // TODO: process in the backend
-        const treePhoto = tree?.tree_photo
-          ? tree?.tree_photo
-          : activeProject == 'Oceanus Conservation'
-          ? `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
-          : `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
-
+        const { treePhoto, treeID, treeName, treeHeight, treeDBH } =
+          getPopupTreeInformation(e, activeProject)
         const lngLat = [e.lngLat.lng, e.lngLat.lat]
 
         if (treeID != 'unknown') {
@@ -157,7 +137,7 @@ export const Map = () => {
         popup.remove()
       })
     }
-  }, [map, displayOverlay])
+  }, [map, activeProject, displayOverlay])
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />

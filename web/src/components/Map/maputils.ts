@@ -63,6 +63,34 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
+export const getPopupTreeInformation = (e, activeProject) => {
+  const upperCaseEveryWord = (name: string) =>
+    name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
+
+  const tree = e?.features[0]?.properties
+
+  const treeName = tree?.Plant_Name
+    ? upperCaseEveryWord(tree?.Plant_Name)
+    : 'unknown'
+  const treeHeight = tree?.Height
+    ? `${(Math.round(tree?.Height) * 100) / 100}cm`
+    : 'unknown'
+  // const treeID = tree?.ID || 'unknown'
+  const treeDBH = tree?.DBH || 'unknown'
+  const treeID =
+    tree?.['FCD-tree_records-tree_photo']?.split('?id=')?.[1] ||
+    tree?.ID ||
+    'unknown'
+
+  // TODO: process in the backend
+  const treePhoto = tree?.tree_photo
+    ? tree?.tree_photo
+    : activeProject == 'Oceanus Conservation'
+    ? `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
+    : `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+  return { treeName, treeHeight, treeDBH, treeID, treePhoto }
+}
+
 export const addSourcesLayersAndMarkers = (
   map: mapboxgl.Map,
   geoJson,

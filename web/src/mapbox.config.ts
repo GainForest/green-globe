@@ -95,4 +95,7 @@ export const projectSource = (geoJson) => ({
 export const treesSource = (treesGeoJson) => ({
   type: 'geojson',
   data: treesGeoJson,
+  cluster: true,
+  clusterMaxZoom: 15, // Max zoom to cluster points on
+  clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
 })

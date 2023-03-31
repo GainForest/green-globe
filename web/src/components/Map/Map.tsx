@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl'
 import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
+import { SearchOverlay } from './components/SearchOverlay'
 import {
   fetchProjectInfo,
   fetchShapefiles,
@@ -16,7 +17,6 @@ import {
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { SearchOverlay } from './components/SearchOverlay'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -44,7 +44,7 @@ export const Map = () => {
         )
       })
     }
-  }, [activeProjectTreesPlanted, map, projectPolygons])
+  }, [map, activeProjectTreesPlanted, projectPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {
@@ -80,13 +80,21 @@ export const Map = () => {
 
   // Remove layers when you exit the display overlay
   useEffect(() => {
+    if (map) {
+      map.on('click', () => {
+        if (displayOverlay) {
+          setDisplayOverlay(false)
+          map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
+        }
+      })
+    }
     if (map && map.getLayer('unclusteredTrees')) {
       if (!displayOverlay) {
         map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
       }
-      if (displayOverlay) {
-        map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
-      }
+      // if (displayOverlay) {
+      //   map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
+      // }
     }
   }, [map, displayOverlay])
   return (

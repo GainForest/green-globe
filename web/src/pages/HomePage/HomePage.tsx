@@ -1,6 +1,7 @@
 import { MetaTags } from '@redwoodjs/web'
 
 import Map from 'src/components/Map/Map'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const HomePage = () => {
   return (

@@ -1,8 +1,17 @@
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import { InfoBox } from './InfoBox'
+import ThemedSkeleton from './Skeleton'
 
 export const ProjectCard = ({ activeProjectData }) => {
+  if (!activeProjectData) {
+    return (
+      <InfoBox>
+        <ThemedSkeleton height={250} />
+      </InfoBox>
+    )
+  }
+
   const splash = activeProjectData?.project?.assets?.filter((d) =>
     d.classification?.includes('Splash')
   )[0]?.awsCID

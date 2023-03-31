@@ -21114,6 +21114,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-loading-skeleton@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "react-loading-skeleton@npm:3.2.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: cade7363afb771e04f636cacd048bc4500d4216a35c5fa07d7fb9999aef40ebcf2121a10604deb107d02743d0a809298e26f99ee22b70bb9ca5c8b3005cdb3b6
+  languageName: node
+  linkType: hard
+
 "react-refresh@npm:0.14.0":
   version: 0.14.0
   resolution: "react-refresh@npm:0.14.0"
@@ -21850,6 +21859,7 @@ __metadata:
     "@turf/center": ^6.5.0
     chromatic: ^6.17.2
     mapbox-gl: ^2.13.0
+    react-loading-skeleton: ^3.2.0
     styled-components: ^5.3.9
     web: "workspace:^"
     workspace: ^0.0.1-preview.1

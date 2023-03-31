@@ -5,7 +5,6 @@ import mapboxgl from 'mapbox-gl'
 import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
-import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import {
   fetchProjectInfo,
@@ -84,7 +83,7 @@ export const Map = () => {
       }
       fetchData().catch(console.error)
     }
-  }, [map, activeProjectData])
+  }, [activeProjectData])
 
   // Add trees planted source and layers
   useEffect(() => {
@@ -116,7 +115,7 @@ export const Map = () => {
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <SearchOverlay setActiveProject={setActiveProject} />
-      {activeProjectData && displayOverlay && (
+      {displayOverlay && (
         <InfoOverlay
           activeProjectData={activeProjectData}
           setDisplayOverlay={setDisplayOverlay}

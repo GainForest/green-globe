@@ -26,6 +26,7 @@
     "@turf/bbox": "^6.5.0",
     "@turf/center": "^6.5.0",
     "mapbox-gl": "^2.13.0",
+    "react-loading-skeleton": "^3.2.0",
     "styled-components": "^5.3.9",
     "web": "workspace:^",
     "workspace": "^0.0.1-preview.1"

@@ -14,6 +14,7 @@ import {
 import {
   addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
+  popup,
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -41,6 +42,7 @@ export const Map = () => {
           map,
           projectPolygons,
           setActiveProjectPolygon,
+          setActiveProject,
           setDisplayOverlay
         )
       })
@@ -109,6 +111,52 @@ export const Map = () => {
       // if (displayOverlay) {
       //   map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
       // }
+    }
+    if (map) {
+      map.on('mousemove', 'unclusteredTrees', (e) => {
+        popup.remove()
+        const upperCaseEveryWord = (name: string) =>
+          name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
+        const tree = e?.features[0]?.properties
+
+        const treeName = tree?.Plant_Name
+          ? upperCaseEveryWord(tree?.Plant_Name)
+          : 'unknown'
+        const treeHeight = tree?.Height
+          ? `${(Math.round(tree?.Height) * 100) / 100}cm`
+          : 'unknown'
+        // const treeID = tree?.ID || 'unknown'
+        const treeDBH = tree?.DBH || 'unknown'
+        const treeID =
+          tree?.['FCD-tree_records-tree_photo']?.split('?id=')?.[1] ||
+          tree?.ID ||
+          'unknown'
+
+        const activeProject = activeProjectPolygon?.properties?.name
+
+        // TODO: process in the backend
+        const treePhoto = tree?.tree_photo
+          ? tree?.tree_photo
+          : activeProject == 'Oceanus Conservation'
+          ? `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
+          : `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+
+        const lngLat = [e.lngLat.lng, e.lngLat.lat]
+
+        if (treeID != 'unknown') {
+          popup
+            .setLngLat(lngLat)
+            .setHTML(
+              `<object width="200" height="200" data="${treePhoto}">
+            <img width="200" height="200" src="${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png" />
+            </object> <br /><b>ID:</b> <div overflowWrap="break-word"> ${treeID} </div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH} cm`
+            )
+            .addTo(map)
+        }
+      })
+      map.on('mouseleave', 'unclusteredTrees', (e) => {
+        popup.remove()
+      })
     }
   }, [map, displayOverlay])
   return (

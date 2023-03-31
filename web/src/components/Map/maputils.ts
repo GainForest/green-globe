@@ -16,6 +16,7 @@ export const addMarkers = (
   map: mapboxgl.Map,
   geoJson: mapboxgl.geoJson,
   setActiveFeature,
+  setActiveProject,
   setDisplayOverlay
 ) => {
   for (const feature of geoJson.features) {
@@ -44,6 +45,7 @@ export const addMarkers = (
         duration: 2500,
         padding: { top: 40, bottom: 40, left: 420, right: 40 },
       })
+      setActiveProject(feature?.properties?.name)
       setActiveFeature(feature)
       setDisplayOverlay(true)
     })
@@ -55,17 +57,28 @@ export const addMarkers = (
   }
 }
 
+export const popup = new mapboxgl.Popup({
+  closeButton: false,
+  closeOnClick: false,
+})
+
 export const addSourcesLayersAndMarkers = (
   map: mapboxgl.Map,
   geoJson,
   setActiveFeature,
+  setActiveProject,
   setDisplayOverlay
 ) => {
-  console.log('geojson', geoJson)
   map.addSource('project', projectSource(geoJson))
   map.addLayer(projectOutlineLayer('#00FF00'))
   map.addLayer(projectFillLayer('#00FF00'))
-  addMarkers(map, geoJson, setActiveFeature, setDisplayOverlay)
+  addMarkers(
+    map,
+    geoJson,
+    setActiveFeature,
+    setActiveProject,
+    setDisplayOverlay
+  )
 }
 
 export const addTreesPlantedSourceAndLayers = (

@@ -16,6 +16,7 @@ import {
   addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
   popup,
+  toggleTreesPlantedLayer,
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -60,9 +61,7 @@ export const Map = () => {
     setActiveProjectPolygon(projectPolygon)
     if (map && projectPolygon) {
       setDisplayOverlay(true)
-      map.setLayoutProperty('clusteredTrees', 'visibility', 'visible')
-      map.setLayoutProperty('clusteredTreesCountText', 'visibility', 'visible')
-      map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
+      toggleTreesPlantedLayer(map, 'visible')
     }
   }, [map, activeProject, projectPolygons])
 
@@ -111,9 +110,7 @@ export const Map = () => {
     }
     if (map && map.getLayer('unclusteredTrees')) {
       if (!displayOverlay) {
-        map.setLayoutProperty('clusteredTrees', 'visibility', 'none')
-        map.setLayoutProperty('clusteredTreesCountText', 'visibility', 'none')
-        map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
+        toggleTreesPlantedLayer(map, 'none')
       }
     }
 

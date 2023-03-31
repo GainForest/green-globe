@@ -48,9 +48,7 @@ export const addMarkers = (
       setActiveProject(feature?.properties?.name)
       setActiveFeature(feature)
       setDisplayOverlay(true)
-      map.setLayoutProperty('clusteredTrees', 'visibility', 'visible')
-      map.setLayoutProperty('clusteredTreesCountText', 'visibility', 'visible')
-      map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
+      toggleTreesPlantedLayer(map, 'visible')
     })
 
     // finally, add the marker to the map
@@ -124,4 +122,13 @@ export const addTreesPlantedSourceAndLayers = (
   map.addLayer(clusteredTreesLayer)
   map.addLayer(clusteredTreesCountTextLayer)
   map.addLayer(unclusteredTreesLayer)
+}
+
+export const toggleTreesPlantedLayer = (
+  map: mapboxgl.Map,
+  visibility: 'visible' | 'none'
+) => {
+  map.setLayoutProperty('clusteredTrees', 'visibility', visibility)
+  map.setLayoutProperty('clusteredTreesCountText', 'visibility', visibility)
+  map.setLayoutProperty('unclusteredTrees', 'visibility', visibility)
 }

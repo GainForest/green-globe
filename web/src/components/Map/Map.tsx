@@ -49,7 +49,7 @@ export const Map = () => {
     }
   }, [map, projectPolygons])
 
-  // If the active project changes, always display overlay again
+  // If the active project changes, always display overlay and tree data again
   useEffect(() => {
     // TODO: a lot of error checking
     const projectPolygon = projectPolygons?.features.find((d) =>
@@ -57,10 +57,11 @@ export const Map = () => {
     )
 
     setActiveProjectPolygon(projectPolygon)
-    if (projectPolygon) {
+    if (map && projectPolygon) {
       setDisplayOverlay(true)
+      map.setLayoutProperty('unclusteredTrees', 'visibility', 'visible')
     }
-  }, [activeProject, projectPolygons])
+  }, [map, activeProject, projectPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {

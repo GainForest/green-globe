@@ -119,7 +119,6 @@ export const Map = () => {
       {activeProjectData && displayOverlay && (
         <InfoOverlay
           activeProjectData={activeProjectData}
-          activeFeature={activeProjectPolygon}
           setDisplayOverlay={setDisplayOverlay}
         />
       )}

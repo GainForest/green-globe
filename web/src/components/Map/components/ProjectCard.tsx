@@ -2,7 +2,7 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import { InfoBox } from './InfoBox'
 
-export const ProjectCard = ({ activeProjectData, activeFeature }) => {
+export const ProjectCard = ({ activeProjectData }) => {
   const splash = activeProjectData?.project?.assets?.filter((d) =>
     d.classification?.includes('Splash')
   )[0]?.awsCID
@@ -21,7 +21,7 @@ export const ProjectCard = ({ activeProjectData, activeFeature }) => {
         alt="Project Splash"
       />
       <div style={{ margin: '8px 24px' }}>
-        <h1>{activeFeature?.properties?.name || ''}</h1>
+        <h1>{activeProjectData?.project?.name || ''}</h1>
         <p>
           {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
       ${countryToEmoji[activeProjectData?.project?.country]?.name}`}

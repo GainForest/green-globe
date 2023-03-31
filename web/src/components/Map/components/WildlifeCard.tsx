@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { InfoBox } from './InfoBox'
 import { ToggleButton } from './ToggleButton'
 
-export const WildlifeCard = ({ activeFeature, activeProjectData }) => {
+export const WildlifeCard = ({ activeProjectData }) => {
   const [toggle, setToggle] = useState<'photo' | 'video'>('photo')
 
-  const projectId = activeFeature?.properties?.projectId
+  const projectId = activeProjectData?.id
   const photoEndpoint =
     activeProjectData?.project?.assets?.filter(
       (d) =>

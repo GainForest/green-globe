@@ -8,6 +8,17 @@ export const ProjectCard = ({ activeProjectData }) => {
     return (
       <InfoBox>
         <ThemedSkeleton height={250} />
+        <div style={{ margin: '8px 24px' }}>
+          <h1>
+            <ThemedSkeleton width={'80%'} />
+          </h1>
+          <p>
+            <ThemedSkeleton width={'100px'} />
+          </p>
+          <p>
+            <ThemedSkeleton count={3.5} />
+          </p>
+        </div>
       </InfoBox>
     )
   }

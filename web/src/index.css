@@ -33,3 +33,7 @@ p {
 input::-webkit-calendar-picker-indicator {
   display: none !important;
 }
+
+input:focus {
+  outline: none;
+}

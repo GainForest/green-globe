@@ -20,6 +20,7 @@ import {
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
+import bbox from '@turf/bbox'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -57,11 +58,15 @@ export const Map = () => {
     const projectPolygon = projectPolygons?.features.find((d) =>
       d.properties.name.includes(activeProject)
     )
-
     setActiveProjectPolygon(projectPolygon)
+
     if (map && projectPolygon) {
       setDisplayOverlay(true)
       toggleTreesPlantedLayer(map, 'visible')
+      const boundingBox = bbox(projectPolygon)
+      map.fitBounds(boundingBox, {
+        padding: { top: 40, bottom: 40, left: 420, right: 40 },
+      })
     }
   }, [map, activeProject, projectPolygons])
 

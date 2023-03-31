@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl'
 import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
+import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import {
   fetchProjectInfo,
@@ -108,6 +109,7 @@ export const Map = () => {
           setDisplayOverlay={setDisplayOverlay}
         />
       )}
+      {/* <LayerPickerOverlay /> */}
     </>
   )
 }

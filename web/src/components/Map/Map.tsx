@@ -8,6 +8,7 @@ import { initializeMapbox } from 'src/mapbox.config'
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
+import { TimeSlider } from './components/TimeSlider'
 import {
   fetchProjectInfo,
   fetchShapefiles,
@@ -164,6 +165,7 @@ export const Map = () => {
         />
       )}
       <LayerPickerOverlay map={map} displayOverlay={displayOverlay} />
+      <TimeSlider />
     </>
   )
 }

@@ -2,6 +2,7 @@ const allProjects = [
   'Defensores del Chaco',
   'Kayapo Project',
   'Million Trees Project',
+  'Oceanus Conservation',
 ]
 
 export const SearchOverlay = ({ setActiveProject }) => {

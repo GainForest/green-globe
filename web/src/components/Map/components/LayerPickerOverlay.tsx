@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import mapboxgl from 'mapbox-gl'
 
+import { toggleTreesPlantedLayer } from '../maputils'
+
 export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
   return (
     <div
@@ -36,9 +38,11 @@ const LayersBox = ({ map }) => {
         if (baseLayer == 'dark') {
           map.setStyle(`mapbox://styles/mapbox/light-v10`)
           setBaseLayer('light')
+          toggleTreesPlantedLayer(map, 'visible')
         } else {
           map.setStyle(`mapbox://styles/mapbox/dark-v10`)
           setBaseLayer('dark')
+          toggleTreesPlantedLayer(map, 'visible')
         }
       }}
     >
@@ -56,7 +60,8 @@ const SatelliteLayerBox = ({ map }) => {
       }}
       onClick={() => {
         map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
+        toggleTreesPlantedLayer(map, 'visible')
       }}
-    ></button>
+    />
   )
 }

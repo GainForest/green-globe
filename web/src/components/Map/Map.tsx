@@ -96,10 +96,13 @@ export const Map = () => {
     }
   }, [activeProjectData])
 
-  // Add trees planted source and layers
+  // Add trees planted source and layers on every stsyle change
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
+      map.on('styledata', () => {
+        addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
+      })
     }
   }, [map, activeProjectTreesPlanted])
 

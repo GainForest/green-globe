@@ -26,7 +26,7 @@ export const InfoOverlay = ({ activeProjectData, setDisplayOverlay }) => {
         onClick={() => setActive(2)}
       />
       {active == 1 && <ProjectCard activeProjectData={activeProjectData} />}
-      {active == 2 && <WildlifeCard activeProjectData={activeProjectData} />})
+      {active == 2 && <WildlifeCard activeProjectData={activeProjectData} />}
     </>
   )
 }

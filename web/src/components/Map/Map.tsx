@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 
+import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
 
 import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
+import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import {
   fetchProjectInfo,
@@ -20,7 +22,6 @@ import {
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import bbox from '@turf/bbox'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -154,7 +155,7 @@ export const Map = () => {
           setDisplayOverlay={setDisplayOverlay}
         />
       )}
-      {/* <LayerPickerOverlay /> */}
+      <LayerPickerOverlay map={map} />
     </>
   )
 }

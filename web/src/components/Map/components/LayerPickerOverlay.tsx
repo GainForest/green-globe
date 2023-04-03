@@ -4,7 +4,13 @@ import mapboxgl from 'mapbox-gl'
 
 import { toggleTreesPlantedLayer } from '../maputils'
 
-export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
+export const LayerPickerOverlay = ({
+  map,
+  displayOverlay,
+}: {
+  map: mapboxgl.Map
+  displayOverlay: boolean
+}) => {
   return (
     <div
       style={{
@@ -13,7 +19,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         backgroundColor: '#ffffff',
         position: 'absolute',
         bottom: 40,
-        right: 40,
+        left: displayOverlay ? 380 : 40,
         borderRadius: '8px',
       }}
     >

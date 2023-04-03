@@ -158,7 +158,7 @@ export const Map = () => {
           setDisplayOverlay={setDisplayOverlay}
         />
       )}
-      <LayerPickerOverlay map={map} />
+      <LayerPickerOverlay map={map} displayOverlay={displayOverlay} />
     </>
   )
 }

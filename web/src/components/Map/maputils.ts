@@ -134,7 +134,13 @@ export const toggleTreesPlantedLayer = (
   map: mapboxgl.Map,
   visibility: 'visible' | 'none'
 ) => {
-  map.setLayoutProperty('clusteredTrees', 'visibility', visibility)
-  map.setLayoutProperty('clusteredTreesCountText', 'visibility', visibility)
-  map.setLayoutProperty('unclusteredTrees', 'visibility', visibility)
+  if (map.getLayer('clusteredTrees')) {
+    map.setLayoutProperty('clusteredTrees', 'visibility', visibility)
+  }
+  if (map.getLayer('clusteredTreesCountText')) {
+    map.setLayoutProperty('clusteredTreesCountText', 'visibility', visibility)
+  }
+  if (map.getLayer('unclusteredTrees')) {
+    map.setLayoutProperty('unclusteredTrees', 'visibility', visibility)
+  }
 }

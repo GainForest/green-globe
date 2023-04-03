@@ -16,6 +16,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
       }}
     >
       <LayersBox map={map} />
+      <SatelliteLayerBox map={map} />
     </div>
   )
 }
@@ -43,5 +44,19 @@ const LayersBox = ({ map }) => {
     >
       {baseLayer}
     </button>
+  )
+}
+
+const SatelliteLayerBox = ({ map }) => {
+  return (
+    <button
+      style={{
+        width: '40px',
+        height: '40px',
+      }}
+      onClick={() => {
+        map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
+      }}
+    ></button>
   )
 }

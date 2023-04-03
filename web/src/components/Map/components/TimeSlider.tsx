@@ -25,7 +25,7 @@ export const TimeSlider = ({ map }) => {
       }}
     >
       <input
-        style={{ width: '100%' }}
+        style={{ width: '100%', cursor: 'pointer' }}
         min={0}
         max={monthsBetween}
         step={1}
@@ -47,7 +47,7 @@ export const TimeSlider = ({ map }) => {
         }}
       ></input>
       Satellite imagery date (Tropical regions only):{' '}
-      {dayjs(currentDate, 'YYYY-MM').format('MMM YYYY')}
+      {dayjs(currentDate, 'YYYY-MM').format('MMMM YYYY')}
     </div>
   )
 }

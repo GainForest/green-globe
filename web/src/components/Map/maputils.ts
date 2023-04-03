@@ -98,9 +98,7 @@ export const addSourcesLayersAndMarkers = (
   setActiveProject,
   setDisplayOverlay
 ) => {
-  map.addSource('project', projectSource(geoJson))
-  map.addLayer(projectOutlineLayer('#00FF00'))
-  map.addLayer(projectFillLayer('#00FF00'))
+  addProjectPolygonsSourceAndLayers(map, geoJson)
   addMarkers(
     map,
     geoJson,
@@ -108,6 +106,21 @@ export const addSourcesLayersAndMarkers = (
     setActiveProject,
     setDisplayOverlay
   )
+}
+
+export const addProjectPolygonsSourceAndLayers = (
+  map: mapboxgl.Map,
+  geoJson
+) => {
+  if (!map.getSource('project')) {
+    map.addSource('project', projectSource(geoJson))
+  }
+  if (!map.getLayer('projectOutline')) {
+    map.addLayer(projectOutlineLayer('#00FF00'))
+  }
+  if (!map.getLayer('projectFill')) {
+    map.addLayer(projectFillLayer('#00FF00'))
+  }
 }
 
 export const addTreesPlantedSourceAndLayers = (

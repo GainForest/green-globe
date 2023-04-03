@@ -14,6 +14,7 @@ import {
   fetchTreeShapefile,
 } from './mapfetch'
 import {
+  addProjectPolygonsSourceAndLayers,
   addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
@@ -53,6 +54,18 @@ export const Map = () => {
     }
   }, [map, projectPolygons])
 
+  // Fetch project data to display on the overlay
+  useEffect(() => {
+    if (activeProjectPolygon) {
+      const projectId = activeProjectPolygon?.properties?.projectId
+
+      const fetchData = async () => {
+        await fetchProjectInfo(projectId, setActiveProjectData)
+      }
+      fetchData().catch(console.error)
+    }
+  }, [activeProjectPolygon])
+
   // If the active project changes, always display overlay and tree data again
   useEffect(() => {
     // TODO: a lot of error checking
@@ -71,19 +84,7 @@ export const Map = () => {
     }
   }, [map, activeProject, projectPolygons])
 
-  // Fetch project data to display on the overlay
-  useEffect(() => {
-    if (activeProjectPolygon) {
-      const projectId = activeProjectPolygon?.properties?.projectId
-
-      const fetchData = async () => {
-        await fetchProjectInfo(projectId, setActiveProjectData)
-      }
-      fetchData().catch(console.error)
-    }
-  }, [activeProjectPolygon])
-
-  // Fetch and display tree data
+  // Fetch tree data
   useEffect(() => {
     if (activeProjectData) {
       const treesEndpoint = activeProjectData?.project?.assets?.filter((d) =>
@@ -96,15 +97,19 @@ export const Map = () => {
     }
   }, [activeProjectData])
 
-  // Add trees planted source and layers on every stsyle change
+  // Display tree data
+  // Add trees planted source and layers on every style change
   useEffect(() => {
-    if (map && activeProjectTreesPlanted) {
+    if (map && projectPolygons && activeProjectTreesPlanted) {
+      // Needed on initial fetch
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
+      // For every upcoming style change
       map.on('styledata', () => {
+        addProjectPolygonsSourceAndLayers(map, projectPolygons)
         addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
       })
     }
-  }, [map, activeProjectTreesPlanted])
+  }, [map, projectPolygons, activeProjectTreesPlanted])
 
   // Remove layers when you exit the display overlay
   useEffect(() => {

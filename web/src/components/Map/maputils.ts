@@ -119,9 +119,15 @@ export const addTreesPlantedSourceAndLayers = (
   } else {
     map.getSource('trees').setData(treesGeoJson)
   }
-  map.addLayer(clusteredTreesLayer)
-  map.addLayer(clusteredTreesCountTextLayer)
-  map.addLayer(unclusteredTreesLayer)
+  if (!map.getLayer('clusteredTrees')) {
+    map.addLayer(clusteredTreesLayer)
+  }
+  if (!map.getLayer('clusteredTreesCountText')) {
+    map.addLayer(clusteredTreesCountTextLayer)
+  }
+  if (!map.getLayer('unclusteredTrees')) {
+    map.addLayer(unclusteredTreesLayer)
+  }
 }
 
 export const toggleTreesPlantedLayer = (

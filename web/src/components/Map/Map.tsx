@@ -16,6 +16,7 @@ import {
 } from './mapfetch'
 import {
   addProjectPolygonsSourceAndLayers,
+  addSatelliteSourceAndLayers,
   addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
@@ -51,6 +52,7 @@ export const Map = () => {
           setActiveProject,
           setDisplayOverlay
         )
+        addSatelliteSourceAndLayers(map)
       })
     }
   }, [map, projectPolygons])
@@ -165,7 +167,7 @@ export const Map = () => {
         />
       )}
       <LayerPickerOverlay map={map} displayOverlay={displayOverlay} />
-      <TimeSlider />
+      <TimeSlider map={map} />
     </>
   )
 }

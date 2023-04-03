@@ -2,13 +2,13 @@ import { useState } from 'react'
 
 import dayjs from 'dayjs'
 
-export const TimeSlider = () => {
+export const TimeSlider = ({ map }) => {
   const minDate = dayjs('2020-09-01')
   const maxDate = dayjs().subtract(6, 'week').set('date', 1)
   const monthsBetween = maxDate.diff(minDate, 'month')
 
   const [currentDate, setCurrentDate] = useState<string>(
-    maxDate.format('YYYY-MM')
+    maxDate.format('MMM YYYY')
   )
 
   return (
@@ -36,6 +36,16 @@ export const TimeSlider = () => {
             .add(monthsSinceMin, 'month')
             .format('MMM YYYY')
           setCurrentDate(newDate)
+          map.setLayoutProperty(
+            `planetLayer${newDate}`,
+            'visibility',
+            'visible'
+          )
+          map.setLayoutProperty(
+            `planetLayer${currentDate}`,
+            'visibility',
+            'none'
+          )
         }}
       ></input>
       Satellite imagery date (Tropical regions only): {currentDate}

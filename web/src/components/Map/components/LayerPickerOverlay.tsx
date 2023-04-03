@@ -15,17 +15,19 @@ export const LayerPickerOverlay = ({
     <div
       style={{
         display: 'flex',
-        width: '240px',
+        width: '172px',
         height: '80px',
         backgroundColor: '#ffffff',
         position: 'absolute',
         bottom: 40,
         left: displayOverlay ? 380 : 40,
         borderRadius: '8px',
+        padding: '8px',
       }}
     >
       <LayersBox map={map} />
       <SatelliteLayerBox map={map} />
+      <DroneLayerBox map={map} />
     </div>
   )
 }
@@ -35,7 +37,14 @@ const LayersBox = ({ map }) => {
 
   const backgroundColor = baseLayer == 'light' ? '#282C34' : '#CAD2D3'
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0px 8px',
+        textAlign: 'center',
+      }}
+    >
       <button
         style={{
           width: '40px',
@@ -54,14 +63,23 @@ const LayersBox = ({ map }) => {
           }
         }}
       />
-      {baseLayer == 'light' ? 'dark' : 'light'}
+      <p style={{ fontSize: '12px' }}>
+        {baseLayer == 'light' ? 'dark' : 'light'}
+      </p>
     </div>
   )
 }
 
 const SatelliteLayerBox = ({ map }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0px 8px',
+        textAlign: 'center',
+      }}
+    >
       <button
         style={{
           width: '40px',
@@ -72,7 +90,32 @@ const SatelliteLayerBox = ({ map }) => {
           toggleTreesPlantedLayer(map, 'visible')
         }}
       />
-      satellite
+      <p style={{ fontSize: '12px' }}>satellite</p>
+    </div>
+  )
+}
+
+const DroneLayerBox = ({ map }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0px 8px',
+        textAlign: 'center',
+      }}
+    >
+      <button
+        style={{
+          width: '40px',
+          height: '40px',
+        }}
+        onClick={() => {
+          map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
+          toggleTreesPlantedLayer(map, 'visible')
+        }}
+      />
+      <p style={{ fontSize: '12px' }}>drone</p>
     </div>
   )
 }

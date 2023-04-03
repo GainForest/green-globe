@@ -32,9 +32,7 @@ export const TimeSlider = ({ map }) => {
         type="range"
         onChange={(e) => {
           const monthsSinceMin = parseInt(e.target.value)
-          const newDate = minDate
-            .add(monthsSinceMin, 'month')
-            .format('MMM YYYY')
+          const newDate = minDate.add(monthsSinceMin, 'month').format('YYYY-MM')
           setCurrentDate(newDate)
           map.setLayoutProperty(
             `planetLayer${newDate}`,
@@ -48,7 +46,8 @@ export const TimeSlider = ({ map }) => {
           )
         }}
       ></input>
-      Satellite imagery date (Tropical regions only): {currentDate}
+      Satellite imagery date (Tropical regions only):{' '}
+      {dayjs(currentDate, 'YYYY-MM').format('MMM YYYY')}
     </div>
   )
 }

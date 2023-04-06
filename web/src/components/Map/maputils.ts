@@ -73,11 +73,9 @@ export const getPopupTreeInformation = (e, activeProject) => {
   const treeName = tree?.Plant_Name
     ? upperCaseEveryWord(tree?.Plant_Name)
     : 'unknown'
-  const treeHeight = tree?.Height
-    ? `${(Math.round(tree?.Height) * 100) / 100}cm`
-    : 'unknown'
-  // const treeID = tree?.ID || 'unknown'
-  const treeDBH = tree?.DBH || 'unknown'
+  const treeHeight = tree?.Height ? `${tree?.Height}m` : 'unknown'
+
+  const treeDBH = tree?.DBH ? `${tree?.DBH}cm` : 'unknown'
   const treeID =
     tree?.['FCD-tree_records-tree_photo']?.split('?id=')?.[1] ||
     tree?.ID ||

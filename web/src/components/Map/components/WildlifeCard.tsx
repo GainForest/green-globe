@@ -7,7 +7,7 @@ import { ToggleButton } from './ToggleButton'
 export const WildlifeCard = ({ activeProjectData }) => {
   const [toggle, setToggle] = useState<'photo' | 'video'>('photo')
 
-  const projectId = activeProjectData?.id
+  const projectId = activeProjectData?.project?.id
   const photoEndpoint =
     activeProjectData?.project?.assets?.filter(
       (d) =>
@@ -50,7 +50,11 @@ const PhotoCard = ({ projectId, photoEndpoint }) => {
       />
       <p>
         For more, visit the{' '}
-        <a href={`https://gainforest.app/data/${projectId}`}>
+        <a
+          href={`https://gainforest.app/data/${projectId}`}
+          target="_blank"
+          rel="noreferrer"
+        >
           transparency dashboard
         </a>
         .
@@ -76,7 +80,11 @@ const VideoCard = ({ projectId, videoEndpoint }) => {
       />
       <p>
         For more, visit the{' '}
-        <a href={`https://gainforest.app/data/${projectId}`}>
+        <a
+          href={`https://gainforest.app/data/${projectId}`}
+          target="_blank"
+          rel="noreferrer"
+        >
           transparency dashboard
         </a>
         .

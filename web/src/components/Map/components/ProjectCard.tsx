@@ -23,6 +23,7 @@ export const ProjectCard = ({ activeProjectData }) => {
     )
   }
 
+  const projectId = activeProjectData?.project?.id
   const splash = activeProjectData?.project?.assets?.filter((d) =>
     d.classification?.includes('Splash')
   )[0]?.awsCID
@@ -47,6 +48,26 @@ export const ProjectCard = ({ activeProjectData }) => {
       ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
         </p>
         <p>{activeProjectData?.project?.description}</p>
+        <a
+          href={`https://gainforest.app/data/${projectId}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <button
+            style={{
+              border: 'none',
+              borderRadius: '0.5em',
+              backgroundColor: '#67962A',
+              cursor: 'pointer',
+              textAlign: 'center',
+              color: '#ffffff',
+              height: '40px',
+              width: '150px',
+            }}
+          >
+            Learn more
+          </button>
+        </a>
       </div>
     </InfoBox>
   )

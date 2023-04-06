@@ -56,11 +56,11 @@ const LayersBox = ({ map }) => {
         }}
         onClick={() => {
           if (baseLayer == 'dark') {
-            map.setStyle(`mapbox://styles/mapbox/light-v10`)
+            map.setStyle(`mapbox://styles/mapbox/light-v11`)
             setBaseLayer('light')
             toggleTreesPlantedLayer(map, 'visible')
           } else {
-            map.setStyle(`mapbox://styles/mapbox/dark-v10`)
+            map.setStyle(`mapbox://styles/mapbox/dark-v11`)
             setBaseLayer('dark')
             toggleTreesPlantedLayer(map, 'visible')
           }

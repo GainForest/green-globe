@@ -49,7 +49,7 @@ export const ProjectCard = ({ activeProjectData }) => {
         </p>
         <p>{activeProjectData?.project?.description}</p>
         <a
-          href={`https://gainforest.app/data/${projectId}`}
+          href={`https://gainforest.app/overview/${projectId}`}
           target="_blank"
           rel="noreferrer"
         >

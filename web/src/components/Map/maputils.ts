@@ -98,7 +98,7 @@ export const addSourcesLayersAndMarkers = (
   setDisplayOverlay
 ) => {
   addProjectPolygonsSourceAndLayers(map, geoJson)
-  addSatelliteSourceAndLayers(map)
+  addPlanetLabsSourceAndLayers(map)
   addMarkers(
     map,
     geoJson,
@@ -131,7 +131,7 @@ export const generatePlanetLayer = (
   },
 })
 
-export const addSatelliteSourceAndLayers = (map: mapboxgl) => {
+export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
   const minDate = dayjs('2020-09-01')
   const maxDate = dayjs().subtract(6, 'week').set('date', 1)
 

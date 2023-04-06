@@ -16,7 +16,7 @@ import {
 } from './mapfetch'
 import {
   addProjectPolygonsSourceAndLayers,
-  addSatelliteSourceAndLayers,
+  addPlanetLabsSourceAndLayers,
   addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
@@ -52,7 +52,6 @@ export const Map = () => {
           setActiveProject,
           setDisplayOverlay
         )
-        addSatelliteSourceAndLayers(map)
       })
     }
   }, [map, projectPolygons])

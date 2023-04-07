@@ -9,6 +9,7 @@ export const InfoBox = ({ children }) => {
         left: 8,
         backgroundColor: '#ffffff',
         borderRadius: '0.5em',
+        overflowY: 'scroll',
       }}
     >
       {children}

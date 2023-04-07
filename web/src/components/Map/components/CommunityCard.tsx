@@ -29,42 +29,64 @@ export const CommunityCard = ({ activeProjectData }) => {
     ? totalFundsReceived.toFixed(2)
     : 0
 
+  const topFiveCommunityMembers = project.CommunityMember.sort(
+    (a, b) => b.priority - a.priority
+  ).splice(0, 5)
+
   return (
     <InfoBox>
       <div style={{ margin: '8px 24px' }}>
-        <h2>Funding Received</h2>${formatedTotalFundsReceived}
+        <h1>Community</h1>
+        <h2>Total Funds Received</h2>${formatedTotalFundsReceived}
       </div>
       <div style={{ margin: '8px 24px' }}>
-        <h2>Community Members</h2>
+        <h2>People</h2>
         <p>
-          Members of local communities who receive financial benefits from this
-          project.
+          Members of local communities who have received financial benefits from
+          this project.
         </p>
-        {project.CommunityMember.sort((a, b) => b.priority - a.priority).map(
-          (d) => (
-            <div key={`community-member-${d.id}`}>
-              <div style={{ display: 'flex' }}>
-                <div>
-                  <img
-                    alt={`${d.name}-profile`}
-                    src={d.profileUrl}
-                    width={100}
-                    height={100}
-                    style={{ borderRadius: 50 }}
-                  />
-                </div>
-                <div>
-                  <h3>
-                    {d.firstName} {d.lastName}
-                  </h3>
-                  <p>{d.role}</p>
-                </div>
+        {topFiveCommunityMembers.map((d) => (
+          <div key={`community-member-${d.id}`}>
+            <div style={{ display: 'flex' }}>
+              <div>
+                <img
+                  alt={`${d.name}-profile`}
+                  src={d.profileUrl}
+                  width={100}
+                  height={100}
+                  style={{ borderRadius: 50 }}
+                />
               </div>
-              {d.bio}
-              {d.fundsReceived == 0 ? 'No funds received.' : d.fundsReceived}
+              <div>
+                <h3>
+                  {d.firstName} {d.lastName}
+                </h3>
+                <p>{d.role}</p>
+                <p>
+                  {' '}
+                  {d.fundsReceived == 0
+                    ? 'No funds received.'
+                    : '$' + d.fundsReceived}
+                </p>
+              </div>
             </div>
-          )
-        )}
+            {d.bio}
+          </div>
+        ))}
+        <button
+          style={{
+            border: 'none',
+            borderRadius: '0.5em',
+            backgroundColor: '#67962A',
+            cursor: 'pointer',
+            textAlign: 'center',
+            color: '#ffffff',
+            height: '40px',
+            width: '150px',
+          }}
+        >
+          More community members
+        </button>
       </div>
     </InfoBox>
   )

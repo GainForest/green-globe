@@ -41,8 +41,8 @@ export const ProjectCard = ({ activeProjectData }) => {
         src={`${process.env.AWS_STORAGE}/${splash}`}
         alt="Project Splash"
       />
-      <div style={{ margin: '8px 24px' }}>
-        <h1>{activeProjectData?.project?.name || ''}</h1>
+      <div style={{ margin: '0 24px' }}>
+        <h2>{activeProjectData?.project?.name || ''}</h2>
         <p>
           {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
       ${countryToEmoji[activeProjectData?.project?.country]?.name}`}

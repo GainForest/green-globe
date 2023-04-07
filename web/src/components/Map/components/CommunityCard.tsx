@@ -29,9 +29,9 @@ export const CommunityCard = ({ activeProjectData }) => {
     ? totalFundsReceived.toFixed(2)
     : 0
 
-  const topFiveCommunityMembers = project.CommunityMember.sort(
-    (a, b) => b.priority - a.priority
-  ).splice(0, 5)
+  const topFiveCommunityMembers = [...project.CommunityMember]
+    .sort((a, b) => b.priority - a.priority)
+    .splice(0, 5)
 
   return (
     <InfoBox>
@@ -46,7 +46,7 @@ export const CommunityCard = ({ activeProjectData }) => {
           this project.
         </p>
         {topFiveCommunityMembers.map((d) => (
-          <div key={`community-member-${d.id}`}>
+          <div style={{ marginTop: '32px' }} key={`community-member-${d.id}`}>
             <div style={{ display: 'flex' }}>
               <div>
                 <img
@@ -57,20 +57,19 @@ export const CommunityCard = ({ activeProjectData }) => {
                   style={{ borderRadius: 50 }}
                 />
               </div>
-              <div>
+              <div style={{ marginLeft: '16px' }}>
                 <h3>
                   {d.firstName} {d.lastName}
                 </h3>
-                <p>{d.role}</p>
-                <p>
-                  {' '}
+                <p style={{ margin: 0, color: '#808080' }}>{d.role}</p>
+                <p style={{ color: '#67962A' }}>
                   {d.fundsReceived == 0
                     ? 'No funds received.'
                     : '$' + d.fundsReceived}
                 </p>
               </div>
             </div>
-            {d.bio}
+            <div style={{ marginTop: '12px' }}>{d.bio}</div>
           </div>
         ))}
         <button

@@ -26,6 +26,20 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
               classification
               awsCID
             }
+            CommunityMember {
+              id
+              firstName
+              lastName
+              priority
+              role
+              bio
+              admin
+              Wallet {
+                CeloAccount
+              }
+              fundsReceived
+              profileUrl
+            }
           }
         }
       `,

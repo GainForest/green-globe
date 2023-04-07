@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { Button } from './Button'
+import { CommunityCard } from './CommunityCard'
 import { ExitProjectView } from './ExitProjectView'
 import { ProjectCard } from './ProjectCard'
 import { WildlifeCard } from './WildlifeCard'
@@ -25,8 +26,15 @@ export const InfoOverlay = ({ activeProjectData, setDisplayOverlay }) => {
         active={active == 2}
         onClick={() => setActive(2)}
       />
+      <Button
+        buttonIcon={'emoji_people'}
+        position={3}
+        active={active == 3}
+        onClick={() => setActive(3)}
+      />
       {active == 1 && <ProjectCard activeProjectData={activeProjectData} />}
       {active == 2 && <WildlifeCard activeProjectData={activeProjectData} />}
+      {active == 3 && <CommunityCard activeProjectData={activeProjectData} />}
     </>
   )
 }

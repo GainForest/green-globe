@@ -16,7 +16,6 @@ import {
 } from './mapfetch'
 import {
   addProjectPolygonsSourceAndLayers,
-  addPlanetLabsSourceAndLayers,
   addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,

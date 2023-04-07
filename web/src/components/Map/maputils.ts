@@ -149,7 +149,7 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
   planetDates.map((planetDate, i) => {
     const visibility = i == planetDates.length - 1 ? 'visible' : 'none'
     const newPlanetLayer = generatePlanetLayer(planetDate, visibility)
-    map.addLayer(newPlanetLayer, 'projectFill')
+    map.addLayer(newPlanetLayer)
   })
 }
 

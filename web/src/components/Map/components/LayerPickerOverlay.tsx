@@ -3,7 +3,10 @@ import { useState } from 'react'
 
 import mapboxgl from 'mapbox-gl'
 
-import { toggleTreesPlantedLayer } from '../maputils'
+import {
+  addPlanetLabsSourceAndLayers,
+  toggleTreesPlantedLayer,
+} from '../maputils'
 
 export const LayerPickerOverlay = ({
   map,
@@ -90,7 +93,7 @@ const SatelliteLayerBox = ({ map }) => {
           height: '40px',
         }}
         onClick={() => {
-          map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
+          map.setStyle(`mapbox://styles/mapbox/satellite-streets-v12`)
           toggleTreesPlantedLayer(map, 'visible')
         }}
       />
@@ -119,11 +122,11 @@ const DroneLayerBox = ({ map }) => {
           borderRadius: '4px',
         }}
         onClick={() => {
-          map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
+          addPlanetLabsSourceAndLayers(map)
           toggleTreesPlantedLayer(map, 'visible')
         }}
       />
-      <p style={{ fontSize: '12px' }}>drone</p>
+      <p style={{ fontSize: '12px' }}>history</p>
     </div>
   )
 }

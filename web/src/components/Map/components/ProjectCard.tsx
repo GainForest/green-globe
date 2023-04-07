@@ -55,6 +55,7 @@ export const ProjectCard = ({ activeProjectData }) => {
         >
           <button
             style={{
+              marginTop: '12px',
               border: 'none',
               borderRadius: '0.5em',
               backgroundColor: '#67962A',

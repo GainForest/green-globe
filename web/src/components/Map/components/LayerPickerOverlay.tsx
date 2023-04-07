@@ -18,6 +18,7 @@ export const LayerPickerOverlay = ({
   return (
     <div
       style={{
+        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
         width: '172px',

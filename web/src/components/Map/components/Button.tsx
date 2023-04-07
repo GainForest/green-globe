@@ -31,6 +31,7 @@ const StyledButton = styled.button<{
   position: number
   active: boolean
 }>`
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: absolute;
   border-radius: 0.5em;
   cursor: pointer;

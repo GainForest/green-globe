@@ -33,7 +33,6 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
               priority
               role
               bio
-              admin
               Wallet {
                 CeloAccount
               }

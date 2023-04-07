@@ -40,6 +40,31 @@ export const CommunityCard = ({ activeProjectData }) => {
           Members of local communities who receive financial benefits from this
           project.
         </p>
+        {project.CommunityMember.sort((a, b) => b.priority - a.priority).map(
+          (d) => (
+            <div key={`community-member-${d.id}`}>
+              <div style={{ display: 'flex' }}>
+                <div>
+                  <img
+                    alt={`${d.name}-profile`}
+                    src={d.profileUrl}
+                    width={100}
+                    height={100}
+                    style={{ borderRadius: 50 }}
+                  />
+                </div>
+                <div>
+                  <h3>
+                    {d.firstName} {d.lastName}
+                  </h3>
+                  <p>{d.role}</p>
+                </div>
+              </div>
+              {d.bio}
+              {d.fundsReceived == 0 ? 'No funds received.' : d.fundsReceived}
+            </div>
+          )
+        )}
       </div>
     </InfoBox>
   )

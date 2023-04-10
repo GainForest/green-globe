@@ -46,7 +46,7 @@ export const SearchOverlay = ({ setActiveProject }) => {
           left: 8,
           backgroundColor: '#ffffff',
           borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
-          fontSize: '14px',
+          fontSize: '0.875rem',
           fontFamily: 'Karla',
           boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         }}
@@ -89,7 +89,7 @@ export const SearchOverlay = ({ setActiveProject }) => {
                 {d}{' '}
                 <p
                   style={{
-                    fontSize: '12px',
+                    fontSize: '0.75rem',
                     color: '#808080',
                     display: 'inline-block',
                     marginLeft: '4px',

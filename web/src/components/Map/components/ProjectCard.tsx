@@ -43,7 +43,7 @@ export const ProjectCard = ({ activeProjectData }) => {
       />
       <div style={{ margin: '0 24px' }}>
         <h2>{activeProjectData?.project?.name || ''}</h2>
-        <p>
+        <p style={{ fontSize: '0.875rem' }}>
           {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
       ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
         </p>

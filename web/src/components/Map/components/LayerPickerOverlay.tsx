@@ -131,4 +131,7 @@ const LayerPickerButton = styled.input`
   height: 40px;
   background-size: cover;
   border-radius: 4px;
+  :hover {
+    border: 2px solid #67962a;
+  }
 `

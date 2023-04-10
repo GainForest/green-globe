@@ -26,8 +26,8 @@ export const LayerPickerOverlay = ({
         height: '72px',
         backgroundColor: '#ffffff',
         position: 'absolute',
-        bottom: 36,
-        left: displayOverlay ? 380 : 8,
+        bottom: 108,
+        right: displayOverlay ? 380 : 8,
         borderRadius: '8px',
         padding: '16px 8px 8px 8px',
       }}

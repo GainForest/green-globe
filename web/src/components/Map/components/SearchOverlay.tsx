@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import styled from 'styled-components'
 
@@ -10,7 +10,27 @@ const allProjects = [
 ]
 
 export const SearchOverlay = ({ setActiveProject }) => {
+  const [filteredProjects, setFilteredProjects] =
+    useState<Array<string>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
+  const [searchInput, setSearchInput] = useState<string>()
+
+  useEffect(() => {
+    if (allProjects.find((d) => d == searchInput)) {
+      setActiveProject(searchInput)
+    }
+  }, [searchInput, setActiveProject])
+
+  useEffect(() => {
+    if (searchInput && searchInput.length > 0) {
+      const filteredProjects = allProjects.filter((d) =>
+        d.includes(searchInput)
+      )
+      setFilteredProjects(filteredProjects)
+    } else {
+      setFilteredProjects(allProjects)
+    }
+  }, [searchInput, setFilteredProjects])
 
   return (
     <>
@@ -35,10 +55,9 @@ export const SearchOverlay = ({ setActiveProject }) => {
           setShowListOfProjects(!showListOfProjects)
         }}
         onChange={(e) => {
-          if (allProjects.find((d) => d == e.target.value)) {
-            setActiveProject(e.target.value)
-          }
+          setSearchInput(e.target.value)
         }}
+        value={searchInput}
       />
       <span
         className="material-icons-round"
@@ -57,8 +76,16 @@ export const SearchOverlay = ({ setActiveProject }) => {
       {showListOfProjects && (
         <>
           <OptionsContainer>
-            {allProjects.map((d, i) => (
-              <Option key={i} position={i} onClick={() => console.log('hello')}>
+            {filteredProjects.map((d, i) => (
+              <Option
+                key={i}
+                position={i}
+                onClick={() => {
+                  setActiveProject(d)
+                  setSearchInput(d)
+                  setShowListOfProjects(false)
+                }}
+              >
                 {d}
               </Option>
             ))}
@@ -71,20 +98,20 @@ export const SearchOverlay = ({ setActiveProject }) => {
 
 const OptionsContainer = styled.div<{ numOptions: number }>`
   position: absolute;
-  height: ${(props) => `${(props.numOptions + 1) * 44}px`};
+  height: ${(props) => `${(props.numOptions + 1) * 40}px`};
   width: 324px;
   top: 44px;
   border: none;
   left: 8px;
   background-color: #ffffff;
-  padding: 12px 0;
+  padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;
   t
 `
 
 const Option = styled.button<{ position: number }>`
   cursor: pointer;
-  height: 44px;
+  height: 40px;
   width: 324px;
   border: none;
   text-align: left;

@@ -2,29 +2,43 @@ import { useEffect, useState } from 'react'
 
 import styled from 'styled-components'
 
-const allProjects = [
-  'Defensores del Chaco',
-  'Kayapo Project',
-  'Million Trees Project',
-  'Oceanus Conservation',
+const allProjects: Array<{ name: string; country: string }> = [
+  {
+    name: 'Defensores del Chaco',
+    country: 'Paraguay',
+  },
+  {
+    name: 'Kayapo Project',
+    country: 'Brazil',
+  },
+  {
+    name: 'Million Trees Project',
+    country: 'Bhutan',
+  },
+  {
+    name: 'Oceanus Conservation',
+    country: 'Philippines',
+  },
 ]
 
 export const SearchOverlay = ({ setActiveProject }) => {
   const [filteredProjects, setFilteredProjects] =
-    useState<Array<string>>(allProjects)
+    useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
   const [searchInput, setSearchInput] = useState<string>()
 
   useEffect(() => {
-    if (allProjects.find((d) => d == searchInput)) {
+    if (allProjects.find((d) => d.name == searchInput)) {
       setActiveProject(searchInput)
     }
   }, [searchInput, setActiveProject])
 
   useEffect(() => {
     if (searchInput && searchInput.length > 0) {
-      const filteredProjects = allProjects.filter((d) =>
-        d.toLowerCase().includes(searchInput?.toLowerCase())
+      const filteredProjects = allProjects.filter(
+        (d) =>
+          d.name.toLowerCase().includes(searchInput?.toLowerCase()) ||
+          d.country.toLowerCase().includes(searchInput?.toLowerCase())
       )
       setFilteredProjects(filteredProjects)
     } else {
@@ -58,11 +72,11 @@ export const SearchOverlay = ({ setActiveProject }) => {
                 position={i}
                 onClick={() => {
                   setActiveProject(d)
-                  setSearchInput(d)
+                  setSearchInput(d.name)
                   setShowListOfProjects(false)
                 }}
               >
-                {d} <CountrySubtitle>Philippines</CountrySubtitle>
+                {d.name} <CountrySubtitle>{d.country}</CountrySubtitle>
               </Option>
             ))}
           </OptionsContainer>

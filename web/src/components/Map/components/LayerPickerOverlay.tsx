@@ -22,23 +22,23 @@ export const LayerPickerOverlay = ({
         cursor: 'pointer',
         display: 'flex',
         width: '172px',
-        height: '80px',
+        height: '72px',
         backgroundColor: '#ffffff',
         position: 'absolute',
-        bottom: 40,
-        left: displayOverlay ? 380 : 40,
+        bottom: 36,
+        left: displayOverlay ? 380 : 8,
         borderRadius: '8px',
-        padding: '8px',
+        padding: '16px 8px 8px 8px',
       }}
     >
-      <LayersBox map={map} />
+      <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
       <DroneLayerBox map={map} />
     </div>
   )
 }
 
-const LayersBox = ({ map }) => {
+const LightDarkModeBox = ({ map }) => {
   const [baseLayer, setBaseLayer] = useState<'light' | 'dark'>('dark')
 
   const backgroundColor = baseLayer == 'light' ? '#282C34' : '#CAD2D3'
@@ -53,9 +53,12 @@ const LayersBox = ({ map }) => {
     >
       <button
         style={{
+          display: 'block',
+          margin: '0 auto',
           cursor: 'pointer',
           width: '40px',
           height: '40px',
+          borderRadius: '4px',
           backgroundColor,
         }}
         onClick={() => {
@@ -89,9 +92,12 @@ const SatelliteLayerBox = ({ map }) => {
     >
       <button
         style={{
+          display: 'block',
+          margin: '0 auto',
           cursor: 'pointer',
           width: '40px',
           height: '40px',
+          borderRadius: '4px',
         }}
         onClick={() => {
           map.setStyle(`mapbox://styles/mapbox/satellite-streets-v12`)
@@ -115,6 +121,8 @@ const DroneLayerBox = ({ map }) => {
     >
       <button
         style={{
+          display: 'block',
+          margin: '0 auto',
           cursor: 'pointer',
           width: '40px',
           height: '40px',

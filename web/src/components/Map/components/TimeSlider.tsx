@@ -21,8 +21,8 @@ export const TimeSlider = ({ map }) => {
         width: '500px',
         height: '48px',
         padding: '8px',
-        bottom: 40,
-        right: 40,
+        bottom: 36,
+        right: 8,
       }}
     >
       <input

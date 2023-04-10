@@ -161,7 +161,7 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <SearchOverlay setActiveProject={setActiveProject} />
+      <SearchOverlay map={map} setActiveProject={setActiveProject} />
       {displayOverlay && (
         <InfoOverlay
           activeProjectData={activeProjectData}

@@ -21,7 +21,7 @@ const allProjects: Array<{ name: string; country: string }> = [
   },
 ]
 
-export const SearchOverlay = ({ setActiveProject }) => {
+export const SearchOverlay = ({ map, setActiveProject }) => {
   const [filteredProjects, setFilteredProjects] =
     useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
@@ -32,6 +32,14 @@ export const SearchOverlay = ({ setActiveProject }) => {
       setActiveProject(searchInput)
     }
   }, [searchInput, setActiveProject])
+
+  useEffect(() => {
+    if (map) {
+      map.on('click', () => {
+        setShowListOfProjects(false)
+      })
+    }
+  }, [map])
 
   useEffect(() => {
     if (searchInput && searchInput.length > 0) {

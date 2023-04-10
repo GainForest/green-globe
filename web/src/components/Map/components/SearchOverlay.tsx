@@ -24,7 +24,7 @@ export const SearchOverlay = ({ setActiveProject }) => {
   useEffect(() => {
     if (searchInput && searchInput.length > 0) {
       const filteredProjects = allProjects.filter((d) =>
-        d.includes(searchInput)
+        d.toLowerCase().includes(searchInput?.toLowerCase())
       )
       setFilteredProjects(filteredProjects)
     } else {
@@ -86,7 +86,17 @@ export const SearchOverlay = ({ setActiveProject }) => {
                   setShowListOfProjects(false)
                 }}
               >
-                {d}
+                {d}{' '}
+                <p
+                  style={{
+                    fontSize: '12px',
+                    color: '#808080',
+                    display: 'inline-block',
+                    marginLeft: '4px',
+                  }}
+                >
+                  Philippines
+                </p>
               </Option>
             ))}
           </OptionsContainer>

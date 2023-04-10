@@ -27,6 +27,7 @@ export const TimeSlider = ({ map }) => {
     >
       <input
         style={{ width: '100%', cursor: 'pointer' }}
+        className="slider"
         min={0}
         max={monthsBetween}
         step={1}

@@ -52,6 +52,10 @@ export const Map = () => {
           setDisplayOverlay
         )
       })
+      map.on('styledata', () => {
+        addProjectPolygonsSourceAndLayers(map, projectPolygons)
+        addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
+      })
     }
   }, [map, projectPolygons])
 

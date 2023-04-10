@@ -34,20 +34,9 @@ export const SearchOverlay = ({ setActiveProject }) => {
 
   return (
     <>
-      <input
+      <SearchInputBox
         style={{
-          zIndex: 2,
-          border: 'none',
-          height: '24px',
-          width: '300px',
-          position: 'absolute',
-          padding: '8px 12px',
-          top: 8,
-          left: 8,
-          backgroundColor: '#ffffff',
           borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
-          fontSize: '0.875rem',
-          fontFamily: 'Karla',
           boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         }}
         placeholder={'Search for projects'}
@@ -106,6 +95,20 @@ export const SearchOverlay = ({ setActiveProject }) => {
   )
 }
 
+const SearchInputBox = styled.input`
+  z-index: 2;
+  border: none;
+  height: 24px;
+  width: 300px;
+  position: absolute;
+  padding: 8px 12px;
+  top: 8px;
+  left: 8px;
+  background-color: #ffffff;
+  font-size: 0.875rem;
+  font-family: Karla;
+`
+
 const OptionsContainer = styled.div<{ numOptions: number }>`
   position: absolute;
   height: ${(props) => `${(props.numOptions + 1) * 40}px`};
@@ -116,7 +119,6 @@ const OptionsContainer = styled.div<{ numOptions: number }>`
   background-color: #ffffff;
   padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;
-  t
 `
 
 const Option = styled.button<{ position: number }>`

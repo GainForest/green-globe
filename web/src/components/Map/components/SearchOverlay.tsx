@@ -25,7 +25,7 @@ export const SearchOverlay = ({ setActiveProject }) => {
           top: 8,
           left: 8,
           backgroundColor: '#ffffff',
-          borderRadius: '8px',
+          borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
           fontSize: '14px',
           fontFamily: 'Karla',
           boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
@@ -56,35 +56,40 @@ export const SearchOverlay = ({ setActiveProject }) => {
       </span>
       {showListOfProjects && (
         <>
-          <OptionPadding>
+          <OptionsContainer>
             {allProjects.map((d, i) => (
               <Option key={i} position={i} onClick={() => console.log('hello')}>
                 {d}
               </Option>
             ))}
-          </OptionPadding>
+          </OptionsContainer>
         </>
       )}
     </>
   )
 }
 
-const OptionPadding = styled.div`
+const OptionsContainer = styled.div<{ numOptions: number }>`
   position: absolute;
-  height: 100px;
+  height: ${(props) => `${(props.numOptions + 1) * 44}px`};
   width: 324px;
   top: 44px;
   border: none;
   left: 8px;
   background-color: #ffffff;
-  padding: 16px 0;
+  padding: 12px 0;
+  border-radius: 0 0 0.5em 0.5em;
+  t
 `
 
-const Option = styled.button<{ position: number; padding: boolean }>`
+const Option = styled.button<{ position: number }>`
   cursor: pointer;
-  height: ${(props) => (props.padding ? '20px' : '44px')};
+  height: 44px;
   width: 324px;
   border: none;
+  text-align: left;
+  font-size: 12px;
+  padding-left: 16px;
   background-color: #ffffff;
   :hover {
     background-color: #f5f5f5;

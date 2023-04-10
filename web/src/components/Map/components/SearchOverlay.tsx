@@ -105,7 +105,7 @@ const SearchInputBox = styled.input`
   z-index: 2;
   border: none;
   height: 24px;
-  width: 300px;
+  width: 336px;
   position: absolute;
   padding: 8px 12px;
   top: 8px;
@@ -116,19 +116,19 @@ const SearchInputBox = styled.input`
 `
 
 const SearchIcon = styled.span`
-  z-index: 3;
+  z-index: 5;
   font-size: 1.125rem;
   line-height: 1.125rem;
   position: absolute;
   top: 20px;
-  left: 304px;
+  left: 330px;
   color: #5f6369;
 `
 
 const OptionsContainer = styled.div<{ numOptions: number }>`
   position: absolute;
   height: ${(props) => `${(props.numOptions + 1) * 40}px`};
-  width: 324px;
+  width: 360px;
   top: 44px;
   border: none;
   left: 8px;
@@ -140,7 +140,7 @@ const OptionsContainer = styled.div<{ numOptions: number }>`
 const Option = styled.button<{ position: number }>`
   cursor: pointer;
   height: 40px;
-  width: 324px;
+  width: 360px;
   border: none;
   text-align: left;
   font-size: 12px;

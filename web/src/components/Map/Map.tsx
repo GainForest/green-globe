@@ -54,10 +54,19 @@ export const Map = () => {
       })
       map.on('styledata', () => {
         addProjectPolygonsSourceAndLayers(map, projectPolygons)
-        addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
       })
+      map.on('click', 'projectFill', () => {
+        setDisplayOverlay(!displayOverlay)
+      })
+      // chat discord
+      // transacations tab
+      // map.on('click', (e) => {
+      //   const features = map.queryRenderedFeatures(e.point)
+      //   console.log('features', features)
+      //   setDisplayOverlay(false)
+      // })
     }
-  }, [map, projectPolygons])
+  }, [displayOverlay, map, projectPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {

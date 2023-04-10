@@ -48,20 +48,7 @@ export const SearchOverlay = ({ setActiveProject }) => {
         }}
         value={searchInput}
       />
-      <span
-        className="material-icons-round"
-        style={{
-          zIndex: 3,
-          fontSize: '18px',
-          lineHeight: '18px',
-          position: 'absolute',
-          top: 20,
-          left: 304,
-          color: '#5F6369',
-        }}
-      >
-        search
-      </span>
+      <SearchIcon className="material-icons-round">search</SearchIcon>
       {showListOfProjects && (
         <>
           <OptionsContainer>
@@ -75,17 +62,7 @@ export const SearchOverlay = ({ setActiveProject }) => {
                   setShowListOfProjects(false)
                 }}
               >
-                {d}{' '}
-                <p
-                  style={{
-                    fontSize: '0.75rem',
-                    color: '#808080',
-                    display: 'inline-block',
-                    marginLeft: '4px',
-                  }}
-                >
-                  Philippines
-                </p>
+                {d} <CountrySubtitle>Philippines</CountrySubtitle>
               </Option>
             ))}
           </OptionsContainer>
@@ -94,6 +71,13 @@ export const SearchOverlay = ({ setActiveProject }) => {
     </>
   )
 }
+
+const CountrySubtitle = styled.p`
+  font-size: 0.75rem;
+  color: #808080;
+  display: inline-block;
+  margin-left: 4px;
+`
 
 const SearchInputBox = styled.input`
   z-index: 2;
@@ -107,6 +91,16 @@ const SearchInputBox = styled.input`
   background-color: #ffffff;
   font-size: 0.875rem;
   font-family: Karla;
+`
+
+const SearchIcon = styled.span`
+  z-index: 3;
+  font-size: 1.125rem;
+  line-height: 1.125rem;
+  position: absolute;
+  top: 20px;
+  left: 304px;
+  color: #5f6369;
 `
 
 const OptionsContainer = styled.div<{ numOptions: number }>`

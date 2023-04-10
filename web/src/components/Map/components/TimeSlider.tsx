@@ -8,7 +8,7 @@ export const TimeSlider = ({ map }) => {
   const monthsBetween = maxDate.diff(minDate, 'month')
 
   const [currentDate, setCurrentDate] = useState<string>(
-    maxDate.format('MMM YYYY')
+    maxDate.format('YYYY-MM')
   )
 
   return (
@@ -30,6 +30,7 @@ export const TimeSlider = ({ map }) => {
         className="slider"
         min={0}
         max={monthsBetween}
+        defaultValue={monthsBetween}
         step={1}
         type="range"
         onChange={(e) => {

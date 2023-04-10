@@ -49,8 +49,10 @@ export const TimeSlider = ({ map }) => {
           )
         }}
       ></input>
-      Satellite imagery date (Tropical regions only):{' '}
-      {dayjs(currentDate, 'YYYY-MM').format('MMMM YYYY')}
+      <p style={{ fontSize: '0.875em' }}>
+        Satellite imagery date (Tropical regions only):{' '}
+        <b>{dayjs(currentDate, 'YYYY-MM').format('MMMM YYYY')}</b>
+      </p>
     </div>
   )
 }

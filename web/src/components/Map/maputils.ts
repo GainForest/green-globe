@@ -98,7 +98,6 @@ export const addSourcesLayersAndMarkers = (
   setDisplayOverlay
 ) => {
   addProjectPolygonsSourceAndLayers(map, geoJson)
-  addPlanetLabsSourceAndLayers(map)
   addMarkers(
     map,
     geoJson,
@@ -106,6 +105,7 @@ export const addSourcesLayersAndMarkers = (
     setActiveProject,
     setDisplayOverlay
   )
+  addPlanetLabsSourceAndLayers(map)
 }
 
 const getPlanetDates = (minDate: dayjs.Dayjs, maxDate: dayjs.Dayjs) => {
@@ -149,7 +149,7 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
   planetDates.map((planetDate, i) => {
     const visibility = i == planetDates.length - 1 ? 'visible' : 'none'
     const newPlanetLayer = generatePlanetLayer(planetDate, visibility)
-    map.addLayer(newPlanetLayer)
+    map.addLayer(newPlanetLayer, 'projectOutline')
   })
 }
 

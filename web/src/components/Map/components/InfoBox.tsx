@@ -1,4 +1,10 @@
-export const InfoBox = ({ children, style }) => {
+export const InfoBox = ({
+  children,
+  style,
+}: {
+  children: React.ReactChild
+  style?: React.CSSProperties
+}) => {
   return (
     <div
       style={{

@@ -121,12 +121,13 @@ export const Map = () => {
         toggleTreesPlantedLayer(map, 'none')
       }
     }
-    map.on('click', 'projectFill', () => {
-      setDisplayOverlay(!displayOverlay)
-      toggleTreesPlantedLayer(map, 'visible')
-    })
 
     if (map) {
+      map.on('click', 'projectFill', () => {
+        setDisplayOverlay(!displayOverlay)
+        toggleTreesPlantedLayer(map, 'visible')
+      })
+
       // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
         popup.remove()

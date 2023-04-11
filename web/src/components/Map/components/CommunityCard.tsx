@@ -56,8 +56,8 @@ export const CommunityCard = ({ activeProjectData }) => {
           <h2>People</h2>
           <p>
             <b style={{ color: '#67962A' }}>{communityMembersCount}</b>{' '}
-            {memberOrMembers} from the local communities registered to receive
-            financial benefits from this project.
+            {memberOrMembers} from the local communities are registered to
+            receive financial benefits from this project.
           </p>
           {topFiveCommunityMembers.map((d) => {
             let fullName

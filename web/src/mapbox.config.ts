@@ -11,8 +11,8 @@ export const initializeMapbox = (
       container: containerId,
       style: 'mapbox://styles/mapbox/dark-v11',
       fitBoundsOptions: { padding: 24 },
-      zoom: 1,
-      center: [0, 20],
+      zoom: 2,
+      center: [102, 9],
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

@@ -52,9 +52,6 @@ export const Map = () => {
           setDisplayOverlay
         )
       })
-      map.on('styledata', () => {
-        addProjectPolygonsSourceAndLayers(map, projectPolygons)
-      })
       map.on('click', 'projectFill', () => {
         setDisplayOverlay(!displayOverlay)
       })
@@ -119,7 +116,6 @@ export const Map = () => {
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
       // For every upcoming style change
       map.on('styledata', () => {
-        addProjectPolygonsSourceAndLayers(map, projectPolygons)
         addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
       })
     }

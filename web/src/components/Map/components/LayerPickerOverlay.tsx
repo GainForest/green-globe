@@ -19,7 +19,7 @@ export const LayerPickerOverlay = ({
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '172px',
+        width: '116px',
         height: '72px',
         backgroundColor: '#ffffff',
         position: 'absolute',
@@ -31,7 +31,6 @@ export const LayerPickerOverlay = ({
     >
       <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
-      <HistoryLayerBox map={map} />
     </div>
   )
 }
@@ -92,29 +91,6 @@ const SatelliteLayerBox = ({ map }) => {
         }}
       />
       <p style={{ fontSize: '12px' }}>satellite</p>
-    </div>
-  )
-}
-
-const HistoryLayerBox = ({ map }) => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0px 8px',
-        textAlign: 'center',
-      }}
-    >
-      <LayerPickerButton
-        type="image"
-        src="/satellite.png"
-        alt="toggle satellite layer"
-        onClick={() => {
-          toggleTreesPlantedLayer(map, 'visible')
-        }}
-      />
-      <p style={{ fontSize: '12px' }}>history</p>
     </div>
   )
 }

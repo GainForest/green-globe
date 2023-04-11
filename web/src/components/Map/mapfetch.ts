@@ -20,6 +20,7 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
             name
             country
             description
+            discordId
             assets {
               id
               name

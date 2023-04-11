@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { Button } from './Button'
 import { CommunityCard } from './CommunityCard'
+import { DiscordCard } from './DiscordCard'
 import { ExitProjectView } from './ExitProjectView'
 import { ProjectCard } from './ProjectCard'
 import { WildlifeCard } from './WildlifeCard'
@@ -32,9 +33,16 @@ export const InfoOverlay = ({ activeProjectData, setDisplayOverlay }) => {
         active={active == 3}
         onClick={() => setActive(3)}
       />
+      <Button
+        buttonIcon={'chat'}
+        position={4}
+        active={active == 4}
+        onClick={() => setActive(4)}
+      />
       {active == 1 && <ProjectCard activeProjectData={activeProjectData} />}
       {active == 2 && <WildlifeCard activeProjectData={activeProjectData} />}
       {active == 3 && <CommunityCard activeProjectData={activeProjectData} />}
+      {active == 4 && <DiscordCard activeProjectData={activeProjectData} />}
     </>
   )
 }

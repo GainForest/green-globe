@@ -1,4 +1,4 @@
-export const InfoBox = ({ children }) => {
+export const InfoBox = ({ children, style }) => {
   return (
     <div
       style={{
@@ -11,6 +11,7 @@ export const InfoBox = ({ children }) => {
         backgroundColor: '#ffffff',
         borderRadius: '0.5em',
         overflowY: 'scroll',
+        ...style,
       }}
     >
       {children}

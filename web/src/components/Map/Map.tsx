@@ -52,21 +52,11 @@ export const Map = () => {
           setDisplayOverlay
         )
       })
-      map.on('click', 'projectFill', () => {
-        setDisplayOverlay(!displayOverlay)
-      })
       map.on('styledata', () => {
         addProjectPolygonsSourceAndLayers(map, projectPolygons)
       })
-      // chat discord
-      // transacations tab
-      // map.on('click', (e) => {
-      //   const features = map.queryRenderedFeatures(e.point)
-      //   console.log('features', features)
-      //   setDisplayOverlay(false)
-      // })
     }
-  }, [displayOverlay, map, projectPolygons])
+  }, [map, projectPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {
@@ -126,20 +116,15 @@ export const Map = () => {
 
   // Remove layers when you exit the display overlay
   useEffect(() => {
-    if (map) {
-      // map.on('click', (e) => {
-      //   console.log(map.getCanvas().style)
-      //   if (displayOverlay) {
-      //     setDisplayOverlay(false)
-      //     map.setLayoutProperty('unclusteredTrees', 'visibility', 'none')
-      //   }
-      // })
-    }
     if (map && map.getLayer('unclusteredTrees')) {
       if (!displayOverlay) {
         toggleTreesPlantedLayer(map, 'none')
       }
     }
+    map.on('click', 'projectFill', () => {
+      setDisplayOverlay(!displayOverlay)
+      toggleTreesPlantedLayer(map, 'visible')
+    })
 
     if (map) {
       // Remove the on mouse move once you get out of the unclustered trees
@@ -166,6 +151,7 @@ export const Map = () => {
       })
     }
   }, [map, activeProject, displayOverlay])
+
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />

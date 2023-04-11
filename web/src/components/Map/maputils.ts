@@ -155,10 +155,10 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
 
 export const addProjectPolygonsSourceAndLayers = (
   map: mapboxgl.Map,
-  geoJson
+  projectPolygons
 ) => {
   if (!map.getSource('project')) {
-    map.addSource('project', projectSource(geoJson))
+    map.addSource('project', projectSource(projectPolygons))
   }
   if (!map.getLayer('projectOutline')) {
     map.addLayer(projectOutlineLayer('#00FF00'))

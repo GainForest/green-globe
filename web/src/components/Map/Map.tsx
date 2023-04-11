@@ -55,6 +55,9 @@ export const Map = () => {
       map.on('click', 'projectFill', () => {
         setDisplayOverlay(!displayOverlay)
       })
+      map.on('styledata', () => {
+        addProjectPolygonsSourceAndLayers(map, projectPolygons)
+      })
       // chat discord
       // transacations tab
       // map.on('click', (e) => {

@@ -22,6 +22,14 @@ export const BiodiversityCard = ({ activeProjectData }) => {
   return (
     <InfoBox>
       <div style={{ margin: '16px 24px' }}>
+        <h2>Biodiversity prediction</h2>
+        <p>
+          Predicted distribution of species habitats within 150km of the project
+          area.
+        </p>
+      </div>
+      <div style={{ margin: '16px 24px' }}>
+        <h2>Observed Wildlife</h2>
         <ToggleButton active={toggle} setToggle={setToggle} />
         <div style={{ height: '24px', width: '100%' }} />
         {toggle == 'photo' && (

@@ -138,19 +138,23 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
 
   const planetDates = getPlanetDates(minDate, maxDate)
   planetDates.map((planetDate) => {
-    map.addSource(`planetTile${planetDate}`, {
-      type: 'raster',
-      tiles: [
-        `https://tiles3.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_${planetDate}_mosaic/gmap/{z}/{x}/{y}.png?api_key=${process.env.NICFI_API_KEY}`,
-      ],
-      tileSize: 256,
-      attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2022 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
-    })
+    if (!map.getSource(`planetTile${planetDate}`)) {
+      map.addSource(`planetTile${planetDate}`, {
+        type: 'raster',
+        tiles: [
+          `https://tiles3.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_${planetDate}_mosaic/gmap/{z}/{x}/{y}.png?api_key=${process.env.NICFI_API_KEY}`,
+        ],
+        tileSize: 256,
+        attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2022 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
+      })
+    }
   })
   planetDates.map((planetDate, i) => {
     const visibility = i == planetDates.length - 1 ? 'visible' : 'none'
     const newPlanetLayer = generatePlanetLayer(planetDate, visibility)
-    map.addLayer(newPlanetLayer, 'projectOutline')
+    if (!map.getLayer(`planetLayer${planetDate}`)) {
+      map.addLayer(newPlanetLayer, 'projectOutline')
+    }
   })
 }
 

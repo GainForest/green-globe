@@ -14,24 +14,33 @@ export const TimeSlider = ({ map }) => {
   )
 
   // if the style has changed, set the current date as visible
-  useEffect(() => {
-    if (map) {
-      map.on('styledata', () => {
-        const layerVisibility = map.getLayer(
-          `planetLayer${currentDate}`
-        )?.visibility
-        if (layerVisibility == 'none')
-          if (!map.getSource(`planetTile${currentDate}`)) {
-            map.addSource(
-              `planetTile${currentDate}`,
-              generatePlanetSource(currentDate)
-            )
-          }
-        const newPlanetLayer = generatePlanetLayer(currentDate, 'visible')
-        map.addLayer(newPlanetLayer, 'projectOutline')
-      })
-    }
-  }, [map, currentDate])
+  // useEffect(() => {
+  //   if (map) {
+  //     map.on('styledata', () => {
+  //       const layerVisibility = map.getLayer(
+  //         `planetLayer${currentDate}`
+  //       )?.visibility
+  //       if (layerVisibility == 'none') {
+  //         if (!map.getSource(`planetTile${currentDate}`)) {
+  //           map.addSource(
+  //             `planetTile${currentDate}`,
+  //             generatePlanetSource(currentDate)
+  //           )
+  //         }
+  //         if (!map.getLayer(`planetLayer${currentDate}`)) {
+  //           const newPlanetLayer = generatePlanetLayer(currentDate, 'visible')
+  //           map.addLayer(newPlanetLayer, 'projectOutline')
+  //         } else {
+  //           map.setLayoutProperty(
+  //             `planetLayer${currentDate}`,
+  //             'visibility',
+  //             'visible'
+  //           )
+  //         }
+  //       }
+  //     })
+  //   }
+  // }, [map, currentDate])
   return (
     <div
       style={{

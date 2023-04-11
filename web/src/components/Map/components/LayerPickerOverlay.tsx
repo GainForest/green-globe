@@ -31,7 +31,7 @@ export const LayerPickerOverlay = ({
     >
       <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
-      <DroneLayerBox map={map} />
+      <HistoryLayerBox map={map} />
     </div>
   )
 }
@@ -96,7 +96,7 @@ const SatelliteLayerBox = ({ map }) => {
   )
 }
 
-const DroneLayerBox = ({ map }) => {
+const HistoryLayerBox = ({ map }) => {
   return (
     <div
       style={{

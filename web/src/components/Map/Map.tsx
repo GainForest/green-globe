@@ -22,6 +22,7 @@ import {
   getPopupTreeInformation,
   popup,
   toggleTreesPlantedLayer,
+  treePopupHtml,
 } from './maputils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -134,18 +135,13 @@ export const Map = () => {
       map.on('mousemove', 'unclusteredTrees', (e) => {
         popup.remove()
 
-        const { treePhoto, treeID, treeName, treeHeight, treeDBH } =
-          getPopupTreeInformation(e, activeProject)
+        const treeInformation = getPopupTreeInformation(e, activeProject)
         const lngLat = [e.lngLat.lng, e.lngLat.lat]
-
+        const { treeID } = treeInformation
         if (treeID != 'unknown') {
           popup
             .setLngLat(lngLat)
-            .setHTML(
-              `<object width="200" height="200" data="${treePhoto}">
-            <img width="200" height="200" src="${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png" />
-            </object> <br /><b>ID:</b> <div overflowWrap="break-word"> ${treeID} </div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}`
-            )
+            .setHTML(treePopupHtml(treeInformation))
             .addTo(map)
         }
       })

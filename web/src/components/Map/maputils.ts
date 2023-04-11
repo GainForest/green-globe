@@ -64,6 +64,18 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
+export const treePopupHtml = ({
+  treeName,
+  treeHeight,
+  treeDBH,
+  treeID,
+  treePhoto,
+}) => {
+  return `<object width="200" height="200" data="${treePhoto}">
+  <img width="200" height="200" src="${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png" />
+  </object> <br /><b>ID:</b> <div overflowWrap="break-word"> ${treeID} </div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}`
+}
+
 export const getPopupTreeInformation = (e, activeProject) => {
   const upperCaseEveryWord = (name: string) =>
     name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())

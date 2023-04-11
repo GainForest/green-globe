@@ -119,6 +119,15 @@ const getPlanetDates = (minDate: dayjs.Dayjs, maxDate: dayjs.Dayjs) => {
   return res
 }
 
+export const generatePlanetSource = (planetDate: string) => ({
+  type: 'raster',
+  tiles: [
+    `https://tiles3.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_${planetDate}_mosaic/gmap/{z}/{x}/{y}.png?api_key=${process.env.NICFI_API_KEY}`,
+  ],
+  tileSize: 256,
+  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2022 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
+})
+
 export const generatePlanetLayer = (
   planetDate: string,
   visibility: string
@@ -139,18 +148,11 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
   const planetDates = getPlanetDates(minDate, maxDate)
   planetDates.map((planetDate) => {
     if (!map.getSource(`planetTile${planetDate}`)) {
-      map.addSource(`planetTile${planetDate}`, {
-        type: 'raster',
-        tiles: [
-          `https://tiles3.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_${planetDate}_mosaic/gmap/{z}/{x}/{y}.png?api_key=${process.env.NICFI_API_KEY}`,
-        ],
-        tileSize: 256,
-        attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2022 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
-      })
+      map.addSource(`planetTile${planetDate}`, generatePlanetSource(planetDate))
     }
   })
-  planetDates.map((planetDate, i) => {
-    const visibility = i == planetDates.length - 1 ? 'visible' : 'none'
+  planetDates.map((planetDate) => {
+    const visibility = 'none'
     const newPlanetLayer = generatePlanetLayer(planetDate, visibility)
     if (!map.getLayer(`planetLayer${planetDate}`)) {
       map.addLayer(newPlanetLayer, 'projectOutline')

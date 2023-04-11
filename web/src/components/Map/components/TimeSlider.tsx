@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import dayjs from 'dayjs'
+
+import { generatePlanetLayer, generatePlanetSource } from '../maputils'
 
 export const TimeSlider = ({ map }) => {
   const minDate = dayjs('2020-09-01')
@@ -11,6 +13,25 @@ export const TimeSlider = ({ map }) => {
     maxDate.format('YYYY-MM')
   )
 
+  // if the style has changed, set the current date as visible
+  useEffect(() => {
+    if (map) {
+      map.on('styledata', () => {
+        const layerVisibility = map.getLayer(
+          `planetLayer${currentDate}`
+        )?.visibility
+        if (layerVisibility == 'none')
+          if (!map.getSource(`planetTile${currentDate}`)) {
+            map.addSource(
+              `planetTile${currentDate}`,
+              generatePlanetSource(currentDate)
+            )
+          }
+        const newPlanetLayer = generatePlanetLayer(currentDate, 'visible')
+        map.addLayer(newPlanetLayer, 'projectOutline')
+      })
+    }
+  }, [map, currentDate])
   return (
     <div
       style={{
@@ -34,6 +55,11 @@ export const TimeSlider = ({ map }) => {
         step={1}
         type="range"
         onChange={(e) => {
+          map.setLayoutProperty(
+            `planetLayer${currentDate}`,
+            'visibility',
+            'none'
+          )
           const monthsSinceMin = parseInt(e.target.value)
           const newDate = minDate.add(monthsSinceMin, 'month').format('YYYY-MM')
           setCurrentDate(newDate)
@@ -41,11 +67,6 @@ export const TimeSlider = ({ map }) => {
             `planetLayer${newDate}`,
             'visibility',
             'visible'
-          )
-          map.setLayoutProperty(
-            `planetLayer${currentDate}`,
-            'visibility',
-            'none'
           )
         }}
       ></input>

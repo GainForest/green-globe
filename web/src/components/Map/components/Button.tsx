@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Button = ({
+export const InfoOverlayButton = ({
   buttonIcon,
   position,
   active,

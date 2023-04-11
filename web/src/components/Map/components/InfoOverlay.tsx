@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { Button } from './Button'
+import { BiodiversityCard } from './BiodiversityCard'
+import { InfoOverlayButton } from './Button'
 import { CommunityCard } from './CommunityCard'
 import { DiscordCard } from './DiscordCard'
 import { ExitProjectView } from './ExitProjectView'
@@ -13,36 +14,43 @@ export const InfoOverlay = ({ activeProjectData, setDisplayOverlay }) => {
   return (
     <>
       <ExitProjectView setDisplayBox={setDisplayOverlay} />
-      <Button
+      <InfoOverlayButton
         buttonIcon={'forest'}
         position={1}
         active={active == 1}
-        onClick={() => {
-          setActive(1)
-        }}
+        onClick={() => setActive(1)}
       />
-      <Button
-        buttonIcon={'photo'}
+      <InfoOverlayButton
+        buttonIcon={'pets'}
         position={2}
         active={active == 2}
         onClick={() => setActive(2)}
       />
-      <Button
-        buttonIcon={'emoji_people'}
+      <InfoOverlayButton
+        buttonIcon={'photo'}
         position={3}
         active={active == 3}
         onClick={() => setActive(3)}
       />
-      <Button
-        buttonIcon={'chat'}
+      <InfoOverlayButton
+        buttonIcon={'emoji_people'}
         position={4}
         active={active == 4}
         onClick={() => setActive(4)}
       />
+      <InfoOverlayButton
+        buttonIcon={'chat'}
+        position={5}
+        active={active == 5}
+        onClick={() => setActive(5)}
+      />
       {active == 1 && <ProjectCard activeProjectData={activeProjectData} />}
-      {active == 2 && <WildlifeCard activeProjectData={activeProjectData} />}
-      {active == 3 && <CommunityCard activeProjectData={activeProjectData} />}
-      {active == 4 && <DiscordCard activeProjectData={activeProjectData} />}
+      {active == 2 && (
+        <BiodiversityCard activeProjectData={activeProjectData} />
+      )}
+      {active == 3 && <WildlifeCard activeProjectData={activeProjectData} />}
+      {active == 4 && <CommunityCard activeProjectData={activeProjectData} />}
+      {active == 5 && <DiscordCard activeProjectData={activeProjectData} />}
     </>
   )
 }

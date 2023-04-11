@@ -131,6 +131,7 @@ export const generatePlanetLayer = (
   },
 })
 
+// TODO needs to have a current planet labs layer
 export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
   const minDate = dayjs('2020-09-01')
   const maxDate = dayjs().subtract(6, 'week').set('date', 1)

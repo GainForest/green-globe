@@ -15,6 +15,7 @@ import {
   fetchTreeShapefile,
 } from './mapfetch'
 import {
+  addPlanetLabsSourceAndLayers,
   addProjectPolygonsSourceAndLayers,
   addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
@@ -54,6 +55,7 @@ export const Map = () => {
       })
       map.on('styledata', () => {
         addProjectPolygonsSourceAndLayers(map, projectPolygons)
+        addPlanetLabsSourceAndLayers(map)
       })
     }
   }, [map, projectPolygons])

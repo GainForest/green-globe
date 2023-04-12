@@ -2,7 +2,7 @@ export const InfoBox = ({
   children,
   style,
 }: {
-  children: React.ReactChild
+  children
   style?: React.CSSProperties
 }) => {
   return (

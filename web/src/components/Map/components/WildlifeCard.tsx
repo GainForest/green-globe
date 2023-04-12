@@ -22,6 +22,8 @@ export const WildlifeCard = ({ activeProjectData }) => {
   return (
     <InfoBox>
       <div style={{ margin: '16px 24px' }}>
+        <h2>Observed Wildlife</h2>
+        <div style={{ width: '100%', height: '12px' }} />
         <ToggleButton active={toggle} setToggle={setToggle} />
         <div style={{ height: '24px', width: '100%' }} />
         {toggle == 'photo' && (
@@ -61,7 +63,7 @@ const PhotoCard = ({ projectId, photoEndpoint }) => {
       </p>
     </>
   ) : (
-    <>This project has not uploaded a wildlife photo.</>
+    <>This project has not uploaded any wildlife photos.</>
   )
 }
 
@@ -91,6 +93,6 @@ const VideoCard = ({ projectId, videoEndpoint }) => {
       </p>
     </>
   ) : (
-    <>This project has not uploaded a wildlife video.</>
+    <>This project has not uploaded any wildlife videos.</>
   )
 }

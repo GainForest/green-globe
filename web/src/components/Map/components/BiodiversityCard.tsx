@@ -93,7 +93,7 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
             </h3>
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.name}>
-                <AnimalPhoto species={species} />
+                <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
                 {/* <Heading as="h2">{s.scientificname + ' '}</Heading> */}
                 {/* <RedlistStatus redlist={s.redlist} /> */}
               </div>
@@ -122,17 +122,34 @@ interface Species {
   redlist: string
 }
 
-const AnimalPhoto = ({ species }: { species: Species }) => {
+const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
+  const src = species.image_url
+    ? species.image_url
+    : `https://mol.org/static/img/groups/taxa_${
+        !taxa.includes('(')
+          ? taxa.toLowerCase()
+          : taxa.split(' ')[0].toLowerCase()
+      }.png`
+
   return (
-    <img
-      alt={species.common}
-      src={species.image_url}
-      style={{
-        objectFit: 'cover',
-        clipPath: 'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
-        height: '120px',
-        width: '120px',
-      }}
-    />
+    <div style={{ display: 'flex' }}>
+      <img
+        alt={species.common}
+        src={src}
+        style={{
+          objectFit: 'cover',
+          clipPath:
+            'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
+          height: '120px',
+          width: '120px',
+        }}
+      />
+      <div style={{ margin: '24px 0 0 24px' }}>
+        <p style={{ fontSize: '1rem', marginBottom: '0px' }}>
+          {species.common}
+        </p>
+        <i style={{ fontSize: '0.75rem' }}>{species.scientificname}</i>
+      </div>
+    </div>
   )
 }

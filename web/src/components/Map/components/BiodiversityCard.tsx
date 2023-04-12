@@ -4,10 +4,8 @@ import { useEffect, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 
 import { InfoBox } from './InfoBox'
-import { ToggleButton } from './ToggleButton'
 
 export const BiodiversityCard = ({ activeProjectData }) => {
-  const [toggle, setToggle] = useState<'photo' | 'video'>('photo')
   const [biodiversity, setBiodiversity] = useState([])
 
   useEffect(() => {
@@ -89,7 +87,6 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.name}>
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
-                {/* <Heading as="h2">{s.scientificname + ' '}</Heading> */}
                 {/* <RedlistStatus redlist={s.redlist} /> */}
               </div>
             ))}
@@ -139,12 +136,77 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
           width: '120px',
         }}
       />
-      <div style={{ margin: '24px 0 0 24px' }}>
+      <div style={{ margin: '12px 0 0 24px' }}>
         <p style={{ fontSize: '1rem', marginBottom: '0px' }}>
           {species.common}
         </p>
         <i style={{ fontSize: '0.75rem' }}>{species.scientificname}</i>
+        <RedlistStatus redlist={species.redlist} />
       </div>
     </div>
   )
+}
+
+const RedlistStatus = ({ redlist }) => {
+  const colors = {
+    EX: 'black',
+    EW: 'black',
+    RE: '#bc85d9', // purple
+    CR: '#f07071', // red
+    EN: '#ea9755', // orange
+    VU: '#d4c05e', // yellow
+    LR: '#d4c05e', // yellow
+    NT: '#67962A', // green
+    LC: '#67962A', // green
+    DD: '#a9b4c4', // grey
+  }
+  const color = colors[redlist]
+  const redlistStatus = redlist ? redlist : 'Not Evaluated'
+  return (
+    <InfoTag key="redlist-status" style={{ color, marginTop: '8px' }}>
+      {translations[redlistStatus]}
+    </InfoTag>
+  )
+}
+
+export const InfoTag = ({ style, children, ...props }) => {
+  return (
+    <div
+      style={{
+        width: 'fit-content',
+        borderRadius: '5px',
+        textAlign: 'center',
+        userSelect: 'none',
+        border: `1px solid`,
+        borderColor: style.color,
+        padding: '4px 8px',
+        ...style,
+      }}
+      {...props}
+    >
+      <div
+        style={{
+          letterSpacing: '0.02em',
+          fontSize: '0.75rem',
+          color: style.color,
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+
+const translations = {
+  ['EX']: 'Extinct',
+  ['EW']: 'Extinct in The Wild',
+  ['RE']: 'Regionally Extinct',
+  ['CR']: 'Critically Endangered',
+  ['EN']: 'Endangered',
+  ['VU']: 'Vulnerable',
+  ['LR']: 'Lower Risk',
+  ['NT']: 'Near Threatened',
+  ['LC']: 'Least Concern',
+  ['DD']: 'Data Deficient',
+  ['Not Evaluated']: 'Not Evaluated',
 }

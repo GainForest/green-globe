@@ -17,10 +17,17 @@ import {
   treeCoverSource,
   treesSource,
   unclusteredTreesLayer,
+  verraOutlineLayer,
+  verraSource,
 } from 'src/mapbox.config'
 
-export const addAllSourcesAndLayers = (map: mapboxgl.Map, projectPolygons) => {
+export const addAllSourcesAndLayers = (
+  map: mapboxgl.Map,
+  projectPolygons,
+  verraPolygons
+) => {
   addProjectPolygonsSourceAndLayers(map, projectPolygons)
+  addVerraPolygonsSourceAndLayers(map, verraPolygons)
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
@@ -184,6 +191,18 @@ export const addProjectPolygonsSourceAndLayers = (
   }
   if (!map.getLayer('projectFill')) {
     map.addLayer(projectFillLayer('#00FF00'))
+  }
+}
+
+export const addVerraPolygonsSourceAndLayers = (
+  map: mapboxgl.Map,
+  verraPolygons
+) => {
+  if (!map.getSource('verraSource')) {
+    map.addSource('verraSource', verraSource(verraPolygons))
+  }
+  if (!map.getLayer('verraOutlineLayer')) {
+    map.addLayer(verraOutlineLayer('#00FF00'))
   }
 }
 

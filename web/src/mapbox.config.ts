@@ -49,6 +49,16 @@ export const projectFillLayer = (lineColor: string) => ({
   },
 })
 
+export const verraOutlineLayer = (lineColor: string) => ({
+  id: 'verraOutlineLayer',
+  type: 'line',
+  source: 'verraSource',
+  paint: {
+    'line-color': lineColor,
+    'line-width': 3,
+  },
+})
+
 export const clusteredTreesLayer = {
   id: 'clusteredTrees',
   type: 'circle',
@@ -88,6 +98,11 @@ export const unclusteredTreesLayer = {
 }
 
 export const projectSource = (geoJson) => ({
+  type: 'geojson',
+  data: geoJson,
+})
+
+export const verraSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,
 })

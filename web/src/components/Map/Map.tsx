@@ -11,8 +11,9 @@ import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import {
   fetchProjectInfo,
-  fetchShapefiles,
+  fetchVerraShapefiles,
   fetchTreeShapefile,
+  fetchGainForestShapefiles,
 } from './mapfetch'
 import {
   addAllSourcesAndLayers,
@@ -29,6 +30,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
+  // TODO: Combine these two following useStates into one
   const [projectPolygons, setAllProjectPolygons] = useState()
   const [verraPolygons, setVerraPolygons] = useState()
   const [activeProject, setActiveProject] = useState()
@@ -39,14 +41,15 @@ export const Map = () => {
   // Initialize Map
   useEffect(() => {
     initializeMapbox('map-container', setMap)
-    fetchShapefiles(setAllProjectPolygons, setVerraPolygons)
+    fetchGainForestShapefiles(setAllProjectPolygons)
+    fetchVerraShapefiles(setVerraPolygons)
   }, [])
 
   // Set initial layers on load
   useEffect(() => {
     if (map && projectPolygons) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map, projectPolygons)
+        addAllSourcesAndLayers(map, projectPolygons, verraPolygons)
         addMarkers(
           map,
           projectPolygons,
@@ -56,10 +59,10 @@ export const Map = () => {
         )
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, projectPolygons)
+        addAllSourcesAndLayers(map, projectPolygons, verraPolygons)
       })
     }
-  }, [map, projectPolygons])
+  }, [map, projectPolygons, verraPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {

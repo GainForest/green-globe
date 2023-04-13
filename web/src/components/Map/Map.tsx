@@ -30,6 +30,7 @@ export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   const [projectPolygons, setAllProjectPolygons] = useState()
+  const [verraPolygons, setVerraPolygons] = useState()
   const [activeProject, setActiveProject] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -38,7 +39,7 @@ export const Map = () => {
   // Initialize Map
   useEffect(() => {
     initializeMapbox('map-container', setMap)
-    fetchShapefiles(setAllProjectPolygons)
+    fetchShapefiles(setAllProjectPolygons, setVerraPolygons)
   }, [])
 
   // Set initial layers on load

@@ -1,9 +1,15 @@
-export const fetchShapefiles = (setGeoJson) => {
+export const fetchGainForestShapefiles = (setGeoJson) => {
   fetch(
     `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
   )
     .then((response) => response.json())
     .then((newGeojson) => setGeoJson(newGeojson))
+}
+
+export const fetchVerraShapefiles = (setVerraPolygons) => {
+  fetch(`${process.env.AWS_STORAGE}/shapefiles/verra-all-shapefiles.geojson`)
+    .then((response) => response.json())
+    .then((newGeojson) => setVerraPolygons(newGeojson))
 }
 
 export const fetchProjectInfo = async (projectId: number, setResult) => {

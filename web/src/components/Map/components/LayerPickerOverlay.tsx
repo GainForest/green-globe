@@ -31,15 +31,15 @@ export const LayerPickerOverlay = ({
     >
       <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
-      <PixelLayerBox map={map} />
+      <LandCoverBox map={map} />
     </div>
   )
 }
 
-const PixelLayerBox = ({ map }) => {
-  const [baseLayer, setBaseLayer] = useState<'light' | 'dark'>('dark')
+const LandCoverBox = ({ map }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false)
 
-  const imageSrc = baseLayer == 'light' ? 'darkMode.png' : 'lightMode.png'
+  const imageSrc = 'darkMode.png'
   return (
     <div
       style={{
@@ -54,18 +54,18 @@ const PixelLayerBox = ({ map }) => {
         src={imageSrc}
         alt="toggle light/dark layer"
         onClick={() => {
-          if (baseLayer == 'dark') {
+          if (!isVisible) {
             toggleLandCoverLayer(map, 'visible')
             toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(true)
           } else {
             toggleLandCoverLayer(map, 'none')
             toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(false)
           }
         }}
       />
-      <p style={{ fontSize: '12px' }}>
-        {baseLayer == 'light' ? 'dark' : 'light'}
-      </p>
+      <p style={{ fontSize: '10px' }}>land cover {isVisible ? 'on' : 'off'}</p>
     </div>
   )
 }
@@ -125,7 +125,7 @@ const SatelliteLayerBox = ({ map }) => {
           toggleTreesPlantedLayer(map, 'visible')
         }}
       />
-      <p style={{ fontSize: '12px' }}>satellite</p>
+      <p style={{ fontSize: '10px' }}>satellite base</p>
     </div>
   )
 }

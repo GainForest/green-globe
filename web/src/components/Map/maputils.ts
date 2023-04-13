@@ -36,6 +36,7 @@ export const addAllSourcesAndLayers = (
 export const addMarkers = (
   map: mapboxgl.Map,
   geoJson: mapboxgl.geoJson,
+  markerType: string,
   setActiveFeature,
   setActiveProject,
   setDisplayOverlay
@@ -43,7 +44,7 @@ export const addMarkers = (
   for (const feature of geoJson.features) {
     // create the marker HTML element
     const el = document.createElement('div')
-    el.className = 'map-marker'
+    el.className = `${markerType}-map-marker`
 
     const centerpoint = center(feature)
     const boundingBox = bbox(feature)

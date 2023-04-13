@@ -47,12 +47,21 @@ export const Map = () => {
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && projectPolygons) {
+    if (map && projectPolygons && verraPolygons) {
       map.on('load', () => {
         addAllSourcesAndLayers(map, projectPolygons, verraPolygons)
         addMarkers(
           map,
           projectPolygons,
+          'gainforest',
+          setActiveProjectPolygon,
+          setActiveProject,
+          setDisplayOverlay
+        )
+        addMarkers(
+          map,
+          verraPolygons,
+          'verra',
           setActiveProjectPolygon,
           setActiveProject,
           setDisplayOverlay

@@ -44,7 +44,7 @@ export const LayerPickerOverlay = ({
 const TreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
-  const imageSrc = 'darkMode.png'
+  const imageSrc = 'treeCoverDark.png'
   return (
     <div
       style={{
@@ -78,7 +78,7 @@ const TreeCoverBox = ({ map }) => {
 const LandCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
-  const imageSrc = 'darkMode.png'
+  const imageSrc = 'landCover.png'
   return (
     <div
       style={{

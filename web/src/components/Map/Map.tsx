@@ -15,10 +15,8 @@ import {
   fetchTreeShapefile,
 } from './mapfetch'
 import {
+  addAllSourcesAndLayers,
   addMarkers,
-  addPlanetLabsSourceAndLayers,
-  addProjectPolygonsSourceAndLayers,
-  addSourcesLayersAndMarkers,
   addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
   popup,
@@ -47,7 +45,8 @@ export const Map = () => {
   useEffect(() => {
     if (map && projectPolygons) {
       map.on('load', () => {
-        addSourcesLayersAndMarkers(
+        addAllSourcesAndLayers(map, projectPolygons)
+        addMarkers(
           map,
           projectPolygons,
           setActiveProjectPolygon,
@@ -56,8 +55,7 @@ export const Map = () => {
         )
       })
       map.on('styledata', () => {
-        addProjectPolygonsSourceAndLayers(map, projectPolygons)
-        addPlanetLabsSourceAndLayers(map)
+        addAllSourcesAndLayers(map, projectPolygons)
       })
     }
   }, [map, projectPolygons])

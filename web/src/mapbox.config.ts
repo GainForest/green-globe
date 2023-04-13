@@ -109,10 +109,25 @@ export const generatePlanetSource = (planetDate: string) => ({
   attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2022 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
 })
 
+export const treeCoverLayer = {
+  id: 'treeCoverLayer',
+  type: 'raster',
+  source: `treeCoverSource`,
+}
+
+export const treeCoverSource = {
+  type: 'raster',
+  tiles: [
+    `https://storage.googleapis.com/earthenginepartners-hansen/tiles/gfc_v1.4/tree_alpha/{z}/{x}/{y}.png`,
+  ],
+  tileSize: 256,
+  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
+}
+
 export const landCoverSource = {
   type: 'raster',
   tiles: [
-    `https://services.terrascope.be/wmts/v2?layer=WORLDCOVER_2020_MAP&style=&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:3857:{z}&TileCol={x}&TileRow={y}&TIME=2023-04-12`,
+    `https://services.terrascope.be/wmts/v2?layer=WORLDCOVER_2021_MAP&style=&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:3857:{z}&TileCol={x}&TileRow={y}&TIME=2023-04-12`,
   ],
   tileSize: 256,
   attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
@@ -122,6 +137,9 @@ export const landCoverLayer = {
   id: 'landCoverLayer',
   type: 'raster',
   source: `landCoverSource`,
+  layout: {
+    visibility: 'none',
+  },
 }
 
 export const generatePlanetLayer = (

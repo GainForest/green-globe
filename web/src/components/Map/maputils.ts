@@ -13,9 +13,18 @@ import {
   projectFillLayer,
   projectOutlineLayer,
   projectSource,
+  treeCoverLayer,
+  treeCoverSource,
   treesSource,
   unclusteredTreesLayer,
 } from 'src/mapbox.config'
+
+export const addAllSourcesAndLayers = (map: mapboxgl.Map, projectPolygons) => {
+  addProjectPolygonsSourceAndLayers(map, projectPolygons)
+  addPlanetLabsSourceAndLayers(map)
+  addLandCoverSourceAndLayer(map)
+  addTreeCoverSourceAndLayer(map)
+}
 
 export const addMarkers = (
   map: mapboxgl.Map,
@@ -106,23 +115,13 @@ export const getPopupTreeInformation = (e, activeProject) => {
   return { treeName, treeHeight, treeDBH, treeID, treePhoto }
 }
 
-export const addSourcesLayersAndMarkers = (
-  map: mapboxgl.Map,
-  geoJson,
-  setActiveFeature,
-  setActiveProject,
-  setDisplayOverlay
-) => {
-  addProjectPolygonsSourceAndLayers(map, geoJson)
-  addPlanetLabsSourceAndLayers(map)
-  addLandCoverSourceAndLayer(map)
-  addMarkers(
-    map,
-    geoJson,
-    setActiveFeature,
-    setActiveProject,
-    setDisplayOverlay
-  )
+const addTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('treeCoverSource')) {
+    map.addSource('treeCoverSource', treeCoverSource)
+  }
+  if (!map.getLayer('treeCoverLayer')) {
+    map.addLayer(treeCoverLayer)
+  }
 }
 
 const addLandCoverSourceAndLayer = (map: mapboxgl.Map) => {

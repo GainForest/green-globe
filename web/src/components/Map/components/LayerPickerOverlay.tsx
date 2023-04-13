@@ -4,7 +4,7 @@ import { useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import styled from 'styled-components'
 
-import { toggleTreesPlantedLayer } from '../maputils'
+import { toggleLandCoverLayer, toggleTreesPlantedLayer } from '../maputils'
 
 export const LayerPickerOverlay = ({
   map,
@@ -19,7 +19,7 @@ export const LayerPickerOverlay = ({
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '116px',
+        width: '172px',
         height: '72px',
         backgroundColor: '#ffffff',
         position: 'absolute',
@@ -31,6 +31,41 @@ export const LayerPickerOverlay = ({
     >
       <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
+      <PixelLayerBox map={map} />
+    </div>
+  )
+}
+
+const PixelLayerBox = ({ map }) => {
+  const [baseLayer, setBaseLayer] = useState<'light' | 'dark'>('dark')
+
+  const imageSrc = baseLayer == 'light' ? 'darkMode.png' : 'lightMode.png'
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0px 8px',
+        textAlign: 'center',
+      }}
+    >
+      <LayerPickerButton
+        type="image"
+        src={imageSrc}
+        alt="toggle light/dark layer"
+        onClick={() => {
+          if (baseLayer == 'dark') {
+            toggleLandCoverLayer(map, 'visible')
+            toggleTreesPlantedLayer(map, 'visible')
+          } else {
+            toggleLandCoverLayer(map, 'none')
+            toggleTreesPlantedLayer(map, 'visible')
+          }
+        }}
+      />
+      <p style={{ fontSize: '12px' }}>
+        {baseLayer == 'light' ? 'dark' : 'light'}
+      </p>
     </div>
   )
 }

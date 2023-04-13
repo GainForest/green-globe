@@ -6,6 +6,10 @@ import mapboxgl from 'mapbox-gl'
 import {
   clusteredTreesCountTextLayer,
   clusteredTreesLayer,
+  generatePlanetLayer,
+  generatePlanetSource,
+  landCoverLayer,
+  landCoverSource,
   projectFillLayer,
   projectOutlineLayer,
   projectSource,
@@ -110,6 +114,8 @@ export const addSourcesLayersAndMarkers = (
   setDisplayOverlay
 ) => {
   addProjectPolygonsSourceAndLayers(map, geoJson)
+  addPlanetLabsSourceAndLayers(map)
+  addLandCoverSourceAndLayer(map)
   addMarkers(
     map,
     geoJson,
@@ -117,7 +123,15 @@ export const addSourcesLayersAndMarkers = (
     setActiveProject,
     setDisplayOverlay
   )
-  addPlanetLabsSourceAndLayers(map)
+}
+
+const addLandCoverSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('landCoverSource')) {
+    map.addSource('landCoverSource', landCoverSource)
+  }
+  if (!map.getLayer('landCoverLayer')) {
+    map.addLayer(landCoverLayer)
+  }
 }
 
 const getPlanetDates = (minDate: dayjs.Dayjs, maxDate: dayjs.Dayjs) => {
@@ -131,25 +145,12 @@ const getPlanetDates = (minDate: dayjs.Dayjs, maxDate: dayjs.Dayjs) => {
   return res
 }
 
-export const generatePlanetSource = (planetDate: string) => ({
+export const generateTerraSource = () => ({
   type: 'raster',
   tiles: [
-    `https://tiles3.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_${planetDate}_mosaic/gmap/{z}/{x}/{y}.png?api_key=${process.env.NICFI_API_KEY}`,
+    `services.terrascope.be/wmts/v2?layer=WORLDCOVER_2021_MAP&style=&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:3857:{z}&TileCol={x}&TileRow={y}&TIME=2023-04-12`,
   ],
   tileSize: 256,
-  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2022 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
-})
-
-export const generatePlanetLayer = (
-  planetDate: string,
-  visibility: string
-) => ({
-  id: `planetLayer${planetDate}`,
-  type: 'raster',
-  source: `planetTile${planetDate}`,
-  layout: {
-    visibility: visibility,
-  },
 })
 
 // TODO needs to have a current planet labs layer
@@ -219,5 +220,11 @@ export const toggleTreesPlantedLayer = (
   }
   if (map.getLayer('unclusteredTrees')) {
     map.setLayoutProperty('unclusteredTrees', 'visibility', visibility)
+  }
+}
+
+export const toggleLandCoverLayer = (map: mapboxgl.Map, visibility) => {
+  if (map.getLayer('landCoverLayer')) {
+    map.setLayoutProperty('landCoverLayer', 'visibility', visibility)
   }
 }

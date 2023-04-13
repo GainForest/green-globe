@@ -15,6 +15,7 @@ import {
   fetchTreeShapefile,
 } from './mapfetch'
 import {
+  addMarkers,
   addPlanetLabsSourceAndLayers,
   addProjectPolygonsSourceAndLayers,
   addSourcesLayersAndMarkers,

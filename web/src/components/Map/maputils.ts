@@ -41,6 +41,7 @@ export const addMarkers = (
   setActiveProject,
   setDisplayOverlay
 ) => {
+  const markers = []
   for (const feature of geoJson.features) {
     // create the marker HTML element
     const el = document.createElement('div')
@@ -74,10 +75,14 @@ export const addMarkers = (
     })
 
     // finally, add the marker to the map
-    new mapboxgl.Marker(el)
+    const marker = new mapboxgl.Marker(el)
       .setLngLat(centerpoint.geometry.coordinates)
       .addTo(map)
+
+    markers.push(marker)
   }
+
+  return markers
 }
 
 export const popup = new mapboxgl.Popup({

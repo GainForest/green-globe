@@ -7,6 +7,7 @@ import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
+import { ProjectSeriesPickerOverlay } from './components/ProjectSeriesPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import {
@@ -29,6 +30,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
+  const [markers, setMarkers] = useState([])
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   // TODO: Combine these two following useStates into one
   const [projectPolygons, setAllProjectPolygons] = useState()
@@ -50,7 +52,7 @@ export const Map = () => {
     if (map && projectPolygons && verraPolygons) {
       map.on('load', () => {
         addAllSourcesAndLayers(map, projectPolygons, verraPolygons)
-        addMarkers(
+        const gainForestMarkers = addMarkers(
           map,
           projectPolygons,
           'gainforest',
@@ -58,14 +60,8 @@ export const Map = () => {
           setActiveProject,
           setDisplayOverlay
         )
-        addMarkers(
-          map,
-          verraPolygons,
-          'verra',
-          setActiveProjectPolygon,
-          setActiveProject,
-          setDisplayOverlay
-        )
+
+        setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
         addAllSourcesAndLayers(map, projectPolygons, verraPolygons)
@@ -173,6 +169,16 @@ export const Map = () => {
           setDisplayOverlay={setDisplayOverlay}
         />
       )}
+      <ProjectSeriesPickerOverlay
+        map={map}
+        markers={markers}
+        setDisplayOverlay={setDisplayOverlay}
+        setActiveProject={setActiveProject}
+        verraPolygons={verraPolygons}
+        projectPolygons={projectPolygons}
+        setMarkers={setMarkers}
+        setActiveProjectPolygon={setActiveProjectPolygon}
+      />
       <LayerPickerOverlay map={map} displayOverlay={displayOverlay} />
       <TimeSlider map={map} />
     </>

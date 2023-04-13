@@ -113,6 +113,9 @@ export const treeCoverLayer = {
   id: 'treeCoverLayer',
   type: 'raster',
   source: `treeCoverSource`,
+  layout: {
+    visibility: 'visible',
+  },
 }
 
 export const treeCoverSource = {

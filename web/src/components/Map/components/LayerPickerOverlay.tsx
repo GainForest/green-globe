@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import mapboxgl from 'mapbox-gl'
 import styled from 'styled-components'
@@ -45,6 +45,19 @@ const TreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
   const imageSrc = 'treeCoverDark.png'
+
+  // Retain tree cover layer state when the map changes
+  useEffect(() => {
+    if (map) {
+      map.on('styledata', () => {
+        if (!isVisible) {
+          toggleTreeCoverLayer(map, 'none')
+        } else {
+          toggleTreeCoverLayer(map, 'visible')
+        }
+      })
+    }
+  }, [map, isVisible])
   return (
     <div
       style={{
@@ -77,8 +90,21 @@ const TreeCoverBox = ({ map }) => {
 
 const LandCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
-
   const imageSrc = 'landCover.png'
+
+  // Retain land cover layer state when the map changes
+  useEffect(() => {
+    if (map) {
+      map.on('styledata', () => {
+        if (!isVisible) {
+          toggleLandCoverLayer(map, 'none')
+        } else {
+          toggleLandCoverLayer(map, 'visible')
+        }
+      })
+    }
+  }, [map, isVisible])
+
   return (
     <div
       style={{

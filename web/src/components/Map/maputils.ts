@@ -227,3 +227,9 @@ export const toggleLandCoverLayer = (map: mapboxgl.Map, visibility) => {
     map.setLayoutProperty('landCoverLayer', 'visibility', visibility)
   }
 }
+
+export const toggleTreeCoverLayer = (map: mapboxgl.Map, visibility) => {
+  if (map.getLayer('treeCoverLayer')) {
+    map.setLayoutProperty('treeCoverLayer', 'visibility', visibility)
+  }
+}

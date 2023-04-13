@@ -4,7 +4,11 @@ import { useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import styled from 'styled-components'
 
-import { toggleLandCoverLayer, toggleTreesPlantedLayer } from '../maputils'
+import {
+  toggleLandCoverLayer,
+  toggleTreeCoverLayer,
+  toggleTreesPlantedLayer,
+} from '../maputils'
 
 export const LayerPickerOverlay = ({
   map,
@@ -19,7 +23,7 @@ export const LayerPickerOverlay = ({
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '172px',
+        width: '220px',
         height: '72px',
         backgroundColor: '#ffffff',
         position: 'absolute',
@@ -32,6 +36,41 @@ export const LayerPickerOverlay = ({
       <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
       <LandCoverBox map={map} />
+      <TreeCoverBox map={map} />
+    </div>
+  )
+}
+
+const TreeCoverBox = ({ map }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(true)
+
+  const imageSrc = 'darkMode.png'
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0px 8px',
+        textAlign: 'center',
+      }}
+    >
+      <LayerPickerButton
+        type="image"
+        src={imageSrc}
+        alt="toggle light/dark layer"
+        onClick={() => {
+          if (!isVisible) {
+            toggleTreeCoverLayer(map, 'visible')
+            toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(true)
+          } else {
+            toggleTreeCoverLayer(map, 'none')
+            toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(false)
+          }
+        }}
+      />
+      <p style={{ fontSize: '10px' }}>tree cover {isVisible ? 'on' : 'off'}</p>
     </div>
   )
 }
@@ -99,8 +138,8 @@ const LightDarkModeBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '12px' }}>
-        {baseLayer == 'light' ? 'dark' : 'light'}
+      <p style={{ fontSize: '10px' }}>
+        {baseLayer == 'light' ? 'dark' : 'light'} mode
       </p>
     </div>
   )
@@ -125,7 +164,7 @@ const SatelliteLayerBox = ({ map }) => {
           toggleTreesPlantedLayer(map, 'visible')
         }}
       />
-      <p style={{ fontSize: '10px' }}>satellite base</p>
+      <p style={{ fontSize: '10px' }}>satellite mode</p>
     </div>
   )
 }

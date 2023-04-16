@@ -179,7 +179,7 @@ export const Map = () => {
         setMarkers={setMarkers}
         setActiveProjectPolygon={setActiveProjectPolygon}
       />
-      <LayerPickerOverlay map={map} displayOverlay={displayOverlay} />
+      <LayerPickerOverlay map={map} />
       <TimeSlider map={map} />
     </>
   )

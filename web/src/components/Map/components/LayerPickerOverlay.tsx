@@ -10,13 +10,7 @@ import {
   toggleTreesPlantedLayer,
 } from '../maputils'
 
-export const LayerPickerOverlay = ({
-  map,
-  displayOverlay,
-}: {
-  map: mapboxgl.Map
-  displayOverlay: boolean
-}) => {
+export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
   return (
     <div
       style={{

@@ -121,7 +121,7 @@ export const generatePlanetSource = (planetDate: string) => ({
     `https://tiles3.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_${planetDate}_mosaic/gmap/{z}/{x}/{y}.png?api_key=${process.env.NICFI_API_KEY}`,
   ],
   tileSize: 256,
-  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2022 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
+  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">Mosaic Date: ${planetDate}</a> | <a target="_top" rel="noopener" href="https://www.planet.com/nicfi/">Imagery ©2023 Planet Labs Inc</a> | <a target="_top" rel="noopener" href="https://gainforest.earth">©2023 GainForest</a>`,
 })
 
 export const treeCoverLayer = {
@@ -139,7 +139,7 @@ export const treeCoverSource = {
     `https://storage.googleapis.com/earthenginepartners-hansen/tiles/gfc_v1.4/tree_alpha/{z}/{x}/{y}.png`,
   ],
   tileSize: 256,
-  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
+  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">©2023 GainForest</a>`,
 }
 
 export const landCoverSource = {
@@ -148,7 +148,7 @@ export const landCoverSource = {
     `https://services.terrascope.be/wmts/v2?layer=WORLDCOVER_2021_MAP&style=&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:3857:{z}&TileCol={x}&TileRow={y}&TIME=2023-04-12`,
   ],
   tileSize: 256,
-  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">©2022 GainForest</a>`,
+  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">©2023 GainForest</a>`,
 }
 
 export const landCoverLayer = {

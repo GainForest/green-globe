@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react'
+import 'mapbox-gl/dist/mapbox-gl.css'
+
+import { useEffect, useReducer, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
 
 import { initializeMapbox } from 'src/mapbox.config'
 
+import { BackToGlobe } from './components/BackToGlobe'
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { ProjectSeriesPickerOverlay } from './components/ProjectSeriesPickerOverlay'
@@ -25,8 +28,6 @@ import {
   toggleTreesPlantedLayer,
   treePopupHtml,
 } from './maputils'
-
-import 'mapbox-gl/dist/mapbox-gl.css'
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -163,6 +164,7 @@ export const Map = () => {
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <SearchOverlay map={map} setActiveProject={setActiveProject} />
+      <BackToGlobe map={map} />
       {displayOverlay && (
         <InfoOverlay
           activeProjectData={activeProjectData}

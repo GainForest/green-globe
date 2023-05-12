@@ -43,11 +43,13 @@ export const ProjectCard = ({ activeProjectData }) => {
       />
       <div style={{ margin: '0 24px' }}>
         <h2>{activeProjectData?.project?.name || ''}</h2>
-        <p style={{ fontSize: '0.875rem' }}>
+        <p style={{ fontSize: '0.75rem' }}>
           {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
       ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
         </p>
-        <p>{activeProjectData?.project?.description}</p>
+        <p style={{ fontSize: '0.875rem' }}>
+          {activeProjectData?.project?.description}
+        </p>
         <a
           href={`https://gainforest.app/overview/${projectId}`}
           target="_blank"
@@ -62,8 +64,8 @@ export const ProjectCard = ({ activeProjectData }) => {
               cursor: 'pointer',
               textAlign: 'center',
               color: '#ffffff',
-              height: '40px',
-              width: '150px',
+              height: '36px',
+              width: '120px',
             }}
           >
             Learn more

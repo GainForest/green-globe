@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { useThemeUI } from 'theme-ui'
+
 import { addMarkers } from '../maputils'
 
 export const ProjectSeriesPickerOverlay = ({
@@ -12,6 +14,7 @@ export const ProjectSeriesPickerOverlay = ({
   setDisplayOverlay,
   setMarkers,
 }) => {
+  const { theme } = useThemeUI()
   const [gainForestDisplayed, setGainForestDisplayed] = useState<boolean>(true)
   const [verraDisplayed, setVerraDisplayed] = useState<boolean>(false)
 
@@ -20,9 +23,9 @@ export const ProjectSeriesPickerOverlay = ({
       style={{
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
-        width: '220px',
-        height: '60px',
-        backgroundColor: '#ffffff',
+        width: '240px',
+        height: '68px',
+        backgroundColor: theme.colors.background as string,
         position: 'absolute',
         bottom: 210,
         right: 8,

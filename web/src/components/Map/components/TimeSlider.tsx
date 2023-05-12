@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import dayjs from 'dayjs'
-
-import { generatePlanetLayer, generatePlanetSource } from '../maputils'
+import { useThemeUI } from 'theme-ui'
 
 export const TimeSlider = ({ map }) => {
   const minDate = dayjs('2020-09-01')
   const maxDate = dayjs().subtract(6, 'week').set('date', 1)
   const monthsBetween = maxDate.diff(minDate, 'month')
+  const { theme } = useThemeUI()
 
   const [currentDate, setCurrentDate] = useState<string>(
     maxDate.format('YYYY-MM')
@@ -45,11 +45,11 @@ export const TimeSlider = ({ map }) => {
     <div
       style={{
         position: 'absolute',
-        backgroundColor: '#ffffff',
+        backgroundColor: theme.colors.background as string,
         borderRadius: '8px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         width: '500px',
-        height: '48px',
+        height: '68px',
         padding: '8px',
         bottom: 36,
         right: 8,

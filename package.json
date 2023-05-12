@@ -23,12 +23,14 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
+    "@emotion/react": "^11.11.0",
     "@turf/bbox": "^6.5.0",
     "@turf/center": "^6.5.0",
     "dayjs": "^1.11.7",
     "mapbox-gl": "^2.13.0",
     "react-loading-skeleton": "^3.2.0",
     "styled-components": "^5.3.9",
+    "theme-ui": "^0.15.7",
     "web": "workspace:^",
     "workspace": "^0.0.1-preview.1"
   },

@@ -3,6 +3,7 @@ import { useEffect, useReducer, useState } from 'react'
 
 import mapboxgl from 'mapbox-gl'
 import styled from 'styled-components'
+import { useColorMode, useThemeUI } from 'theme-ui'
 
 import { initialState, reducer } from '../mapreducer'
 import {
@@ -12,15 +13,17 @@ import {
 } from '../maputils'
 
 export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
+  const { theme } = useThemeUI()
+
   return (
     <div
       style={{
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '220px',
-        height: '72px',
-        backgroundColor: '#ffffff',
+        width: '240px',
+        height: '96px',
+        backgroundColor: theme.colors.background as string,
         position: 'absolute',
         bottom: 108,
         right: 8,
@@ -131,11 +134,12 @@ const LandCoverBox = ({ map }) => {
 }
 
 const LightDarkModeBox = ({ map }) => {
-  const [{ theme }, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const [_, setColorMode] = useColorMode()
 
-  const oppositeTheme = theme == 'light' ? 'dark' : 'light'
+  const oppositeTheme = state.theme == 'light' ? 'dark' : 'light'
 
-  const imageSrc = theme == 'light' ? 'darkMode.png' : 'lightMode.png'
+  const imageSrc = state.theme == 'light' ? 'darkMode.png' : 'lightMode.png'
   return (
     <div
       style={{
@@ -152,6 +156,7 @@ const LightDarkModeBox = ({ map }) => {
         onClick={() => {
           map.setStyle(`mapbox://styles/mapbox/${oppositeTheme}-v11`)
           dispatch({ type: 'TOGGLE_THEME' })
+          setColorMode(oppositeTheme)
           toggleTreesPlantedLayer(map, 'visible')
         }}
       />

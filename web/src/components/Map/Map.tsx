@@ -1,9 +1,10 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
+import { useThemeUI } from 'theme-ui'
 
 import { initializeMapbox } from 'src/mapbox.config'
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import styled from 'styled-components'
+import { useThemeUI } from 'theme-ui'
 
 const allProjects: Array<{ name: string; country: string }> = [
   {
@@ -22,6 +23,7 @@ const allProjects: Array<{ name: string; country: string }> = [
 ]
 
 export const SearchOverlay = ({ map, setActiveProject }) => {
+  const { theme } = useThemeUI()
   const [filteredProjects, setFilteredProjects] =
     useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
@@ -69,11 +71,12 @@ export const SearchOverlay = ({ map, setActiveProject }) => {
           setSearchInput(e.target.value)
         }}
         value={searchInput}
+        theme={theme}
       />
       <SearchIcon className="material-icons-round">search</SearchIcon>
       {showListOfProjects && (
         <>
-          <OptionsContainer>
+          <OptionsContainer theme={theme}>
             {filteredProjects.map((d, i) => (
               <Option
                 key={i}
@@ -101,16 +104,16 @@ const CountrySubtitle = styled.p`
   margin-left: 4px;
 `
 
-const SearchInputBox = styled.input`
+const SearchInputBox = styled.input<{ theme }>`
   z-index: 2;
   border: none;
-  height: 24px;
-  width: 336px;
+  height: 40px;
+  width: 360px;
   position: absolute;
   padding: 8px 12px;
   top: 8px;
   left: 8px;
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.colors.background};
   font-size: 0.875rem;
   font-family: Karla;
 `
@@ -125,14 +128,14 @@ const SearchIcon = styled.span`
   color: #5f6369;
 `
 
-const OptionsContainer = styled.div<{ numOptions: number }>`
+const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   position: absolute;
   height: ${(props) => `${(props.numOptions + 1) * 40}px`};
   width: 360px;
   top: 44px;
   border: none;
   left: 8px;
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.colors.background};
   padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;
 `

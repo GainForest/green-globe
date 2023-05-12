@@ -1,3 +1,5 @@
+import { useThemeUI } from 'theme-ui'
+
 export const InfoBox = ({
   children,
   style,
@@ -5,6 +7,8 @@ export const InfoBox = ({
   children
   style?: React.CSSProperties
 }) => {
+  const { theme } = useThemeUI()
+
   return (
     <div
       style={{
@@ -14,7 +18,8 @@ export const InfoBox = ({
         position: 'absolute',
         bottom: 40,
         left: 8,
-        backgroundColor: '#ffffff',
+        backgroundColor: theme.colors.background as string,
+        color: theme.colors.text as string,
         borderRadius: '0.5em',
         overflowY: 'scroll',
         ...style,

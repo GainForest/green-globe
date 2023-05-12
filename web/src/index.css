@@ -41,6 +41,18 @@ input[type=checkbox] {
   cursor: pointer;
 }
 
+.default {
+  color: #000000;
+}
+
+.darkMode {
+  color: #d3d3d3
+}
+
+.lightMode {
+  color: #000000;
+}
+
 .verra-map-marker {
   background-image: url('../public/v.png');
   background-size: cover;

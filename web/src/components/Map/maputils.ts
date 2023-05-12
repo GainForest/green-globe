@@ -56,6 +56,7 @@ export const addMarkers = (
       closeOnClick: false,
       offset: 20,
       anchor: 'left',
+      className: 'default',
     })
       .setLngLat(centerpoint.geometry.coordinates)
       .setText(feature.properties.name)
@@ -97,9 +98,9 @@ export const treePopupHtml = ({
   treeID,
   treePhoto,
 }) => {
-  return `<object width="200" height="200" data="${treePhoto}">
+  return `<div class="default"><object width="200" height="200" data="${treePhoto}">
   <img width="200" height="200" src="${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png" />
-  </object> <br /><b>ID:</b> <div overflowWrap="break-word"> ${treeID} </div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}`
+  </object> <br /><b>ID:</b> <div overflowWrap="break-word"> ${treeID} </div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
 }
 
 export const getPopupTreeInformation = (e, activeProject) => {

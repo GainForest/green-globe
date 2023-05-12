@@ -1,4 +1,5 @@
 import Skeleton, { SkeletonStyleProps } from 'react-loading-skeleton'
+import { useThemeUI } from 'theme-ui'
 
 const ThemedSkeleton = ({
   width,
@@ -9,11 +10,12 @@ const ThemedSkeleton = ({
   enableAnimation,
   count,
 }: SkeletonStyleProps & { count?: number }) => {
+  const { theme } = useThemeUI()
   return (
     <>
       <Skeleton
-        baseColor={'#f2f2f1'}
-        highlightColor={'#f5f5f5'}
+        baseColor={theme.colors.hinted as string}
+        highlightColor={theme.colors.skeletonHighlight as string}
         width={width}
         height={height}
         borderRadius={'8px'}

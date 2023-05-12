@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import Skeleton from 'react-loading-skeleton'
-
 import { InfoBox } from './InfoBox'
+import ThemedSkeleton from './Skeleton'
 
 export const BiodiversityCard = ({ activeProjectData }) => {
   const [biodiversity, setBiodiversity] = useState([])
@@ -98,7 +97,7 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
     return (
       <>
         <h3>
-          <Skeleton width={'120px'} />
+          <ThemedSkeleton width={'120px'} />
         </h3>
         <div></div>
       </>

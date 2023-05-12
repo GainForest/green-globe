@@ -98,8 +98,9 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
     return (
       <>
         <h3>
-          <Skeleton />
+          <Skeleton width={'120px'} />
         </h3>
+        <div></div>
       </>
     )
   }

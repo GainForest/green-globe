@@ -24,7 +24,7 @@ export const theme: Theme = {
       light: {
         text: '#1b1e23',
         background: '#FFFFFF',
-        secondaryBackground: '#ffffff', // for dropdowns, modals
+        secondaryBackground: '#f5f5f5', // for dropdowns, modals
         primary: '#1b1e23',
         secondary: '#808080',
         muted: '#b9b9bb',

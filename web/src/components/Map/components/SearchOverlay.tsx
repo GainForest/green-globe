@@ -86,6 +86,7 @@ export const SearchOverlay = ({ map, setActiveProject }) => {
                   setSearchInput(d.name)
                   setShowListOfProjects(false)
                 }}
+                theme={theme}
               >
                 {d.name} <CountrySubtitle>{d.country}</CountrySubtitle>
               </Option>
@@ -113,6 +114,7 @@ const SearchInputBox = styled.input<{ theme }>`
   padding: 8px 12px;
   top: 8px;
   left: 8px;
+  color: ${(props) => props.theme.colors.text};
   background-color: ${(props) => props.theme.colors.background};
   font-size: 0.875rem;
   font-family: Karla;
@@ -140,7 +142,7 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   border-radius: 0 0 0.5em 0.5em;
 `
 
-const Option = styled.button<{ position: number }>`
+const Option = styled.button<{ theme; position: number }>`
   cursor: pointer;
   height: 40px;
   width: 360px;
@@ -148,8 +150,10 @@ const Option = styled.button<{ position: number }>`
   text-align: left;
   font-size: 12px;
   padding-left: 16px;
-  background-color: #ffffff;
+  color: ${(props) => props.theme.colors.text};
+  background-color: ${(props) => props.theme.colors.background};
   :hover {
-    background-color: #f5f5f5;
+    color: ${(props) => props.theme.colors.text};
+    background-color: ${(props) => props.theme.colors.secondaryBackground};
   }
 `

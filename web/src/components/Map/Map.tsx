@@ -165,7 +165,7 @@ export const Map = () => {
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <SearchOverlay map={map} setActiveProject={setActiveProject} />
-      <BackToGlobe map={map} />
+      {/* <BackToGlobe map={map} /> */}
       {displayOverlay && (
         <InfoOverlay
           activeProjectData={activeProjectData}

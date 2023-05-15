@@ -8,6 +8,8 @@ import {
   clusteredTreesLayer,
   generatePlanetLayer,
   generatePlanetSource,
+  hexagonOutlineLayer,
+  hexagonsSource,
   landCoverLayer,
   landCoverSource,
   projectFillLayer,
@@ -24,13 +26,15 @@ import {
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
   projectPolygons,
-  verraPolygons
+  verraPolygons,
+  hexagonsGeoJson
 ) => {
   addProjectPolygonsSourceAndLayers(map, projectPolygons)
   addVerraPolygonsSourceAndLayers(map, verraPolygons)
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
+  addHexagonsSourceAndLayer(map, hexagonsGeoJson)
 }
 
 export const addMarkers = (
@@ -207,9 +211,23 @@ export const addVerraPolygonsSourceAndLayers = (
 ) => {
   if (!map.getSource('verraSource')) {
     map.addSource('verraSource', verraSource(verraPolygons))
+    console.log('verraPolygons', verraPolygons)
   }
   if (!map.getLayer('verraOutlineLayer')) {
     map.addLayer(verraOutlineLayer('#00FF00'))
+  }
+}
+
+export const addHexagonsSourceAndLayer = (
+  map: mapboxgl.Map,
+  hexagonGeoJsons
+) => {
+  if (!map.getSource('hexagons')) {
+    map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
+    console.log('hexagonGeoJsons', hexagonGeoJsons)
+  }
+  if (!map.getLayer('hexagonOutline')) {
+    map.addLayer(hexagonOutlineLayer('#00FF00'))
   }
 }
 

@@ -3,9 +3,11 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
+import geojson2h3 from 'geojson2h3'
+import { cellToBoundary } from 'h3-js'
 import mapboxgl from 'mapbox-gl'
 
-import { initializeMapbox } from 'src/mapbox.config'
+import { hexagonsSource, initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
@@ -37,6 +39,7 @@ export const Map = () => {
   // TODO: Combine these two following useStates into one
   const [allCenterpoints, setAllCenterpoints] = useState()
   const [projectPolygons, setAllProjectPolygons] = useState()
+  const [hexagons, setHexagons] = useState()
   const [verraPolygons, setVerraPolygons] = useState()
   const [activeProject, setActiveProject] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
@@ -50,13 +53,14 @@ export const Map = () => {
     fetchAllCenterpoints(setAllCenterpoints)
     fetchVerraShapefiles(setVerraPolygons)
     setLoaded(true)
+    setHexagons(geojson2h3.h3SetToFeatureCollection(['8aa86c2add9ffff']))
   }, [])
 
   // Set initial layers on load
   useEffect(() => {
     if (map && projectPolygons && verraPolygons) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map, projectPolygons, verraPolygons)
+        addAllSourcesAndLayers(map, projectPolygons, verraPolygons, hexagons)
         const gainForestMarkers = addMarkers(
           map,
           projectPolygons,
@@ -69,7 +73,7 @@ export const Map = () => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, projectPolygons, verraPolygons)
+        addAllSourcesAndLayers(map, projectPolygons, verraPolygons, hexagons)
       })
     }
   }, [map, projectPolygons, verraPolygons])

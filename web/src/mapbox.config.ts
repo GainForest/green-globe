@@ -59,6 +59,16 @@ export const verraOutlineLayer = (lineColor: string) => ({
   },
 })
 
+export const hexagonOutlineLayer = (lineColor: string) => ({
+  id: 'hexagonOutline',
+  type: 'line',
+  source: 'hexagons',
+  paint: {
+    'line-color': lineColor,
+    'line-width': 3,
+  },
+})
+
 export const clusteredTreesLayer = {
   id: 'clusteredTrees',
   type: 'circle',
@@ -105,6 +115,11 @@ export const projectSource = (geoJson) => ({
 export const verraSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,
+})
+
+export const hexagonsSource = (hexagonsGeoJson) => ({
+  type: 'geojson',
+  data: hexagonsGeoJson,
 })
 
 export const treesSource = (treesGeoJson) => ({

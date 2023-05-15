@@ -27,6 +27,8 @@
     "@turf/bbox": "^6.5.0",
     "@turf/center": "^6.5.0",
     "dayjs": "^1.11.7",
+    "geojson2h3": "^1.2.0",
+    "h3-js": "^4.1.0",
     "mapbox-gl": "^2.13.0",
     "react-loading-skeleton": "^3.2.0",
     "styled-components": "^5.3.9",

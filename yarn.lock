@@ -14411,6 +14411,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"geojson2h3@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "geojson2h3@npm:1.2.0"
+  dependencies:
+    h3-js: ^3.6.1
+  checksum: e1beb252f90eeb27a1b4d4aa6853d8178bf7b72148743b78b64b19c4e39eec496c002cc73cb9c16da4e2554f965cf7212b95116e201c90961be161d724ba4d6a
+  languageName: node
+  linkType: hard
+
 "get-caller-file@npm:^2.0.1, get-caller-file@npm:^2.0.5":
   version: 2.0.5
   resolution: "get-caller-file@npm:2.0.5"
@@ -14900,6 +14909,20 @@ __metadata:
   dependencies:
     duplexer: ^0.1.2
   checksum: 4ccb924626c82125897a997d1c84f2377846a6ef57fbee38f7c0e6b41387fba4d00422274440747b58008b5d60114bac2349c2908e9aba55188345281af40a3f
+  languageName: node
+  linkType: hard
+
+"h3-js@npm:^3.6.1":
+  version: 3.7.2
+  resolution: "h3-js@npm:3.7.2"
+  checksum: c5a85743619809b81874630d6583fa6153ffa12e8f0aa4edb44bc9f78b2581a3aa84da47a5b1d0a69a20f127f8d943bf0a9c30c8344f1c7de41025486c0177ae
+  languageName: node
+  linkType: hard
+
+"h3-js@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "h3-js@npm:4.1.0"
+  checksum: 58adb7c7a19ff6e6959ef97a60b383bb06c560ffd12826ce603470b25bb34bb26b9bedee6e406591b97017fb888a6194b4043d16abd0d100e6cb51d449e9c3d1
   languageName: node
   linkType: hard
 
@@ -22274,6 +22297,8 @@ __metadata:
     "@turf/center": ^6.5.0
     chromatic: ^6.17.2
     dayjs: ^1.11.7
+    geojson2h3: ^1.2.0
+    h3-js: ^4.1.0
     mapbox-gl: ^2.13.0
     react-loading-skeleton: ^3.2.0
     styled-components: ^5.3.9

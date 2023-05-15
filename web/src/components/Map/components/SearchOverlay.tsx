@@ -3,37 +3,25 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
-const allProjects: Array<{ name: string; country: string }> = [
-  {
-    name: 'Defensores del Chaco',
-    country: 'Paraguay',
-  },
-  {
-    name: 'Kayapo Project',
-    country: 'Brazil',
-  },
-  {
-    name: 'Million Trees Project',
-    country: 'Bhutan',
-  },
-  {
-    name: 'Oceanus Conservation',
-    country: 'Philippines',
-  },
-]
-
-export const SearchOverlay = ({ map, setActiveProject }) => {
+export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
   const { theme } = useThemeUI()
+  const allProjects = allCenterpoints?.features?.map((d) => d.properties)
+
   const [filteredProjects, setFilteredProjects] =
-    useState<Array<{ name: string; country: string }>>(allProjects)
+    useState<Array<{ properties: { name: string; country: string } }>>(
+      allProjects
+    )
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
   const [searchInput, setSearchInput] = useState<string>()
 
   useEffect(() => {
+    if (!allProjects || !allProjects.length) {
+      return
+    }
     if (allProjects.find((d) => d.name == searchInput)) {
       setActiveProject(searchInput)
     }
-  }, [searchInput, setActiveProject])
+  }, [allProjects, searchInput, setActiveProject])
 
   useEffect(() => {
     if (map) {
@@ -88,7 +76,7 @@ export const SearchOverlay = ({ map, setActiveProject }) => {
                 }}
                 theme={theme}
               >
-                {d.name} <CountrySubtitle>{d.country}</CountrySubtitle>
+                {d?.name} <CountrySubtitle>{d?.country}</CountrySubtitle>
               </Option>
             ))}
           </OptionsContainer>

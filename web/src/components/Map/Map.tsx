@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
-import { useThemeUI } from 'theme-ui'
 
 import { initializeMapbox } from 'src/mapbox.config'
 
-import { BackToGlobe } from './components/BackToGlobe'
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { ProjectSeriesPickerOverlay } from './components/ProjectSeriesPickerOverlay'
@@ -19,6 +17,7 @@ import {
   fetchVerraShapefiles,
   fetchTreeShapefile,
   fetchGainForestShapefiles,
+  fetchAllCenterpoints,
 } from './mapfetch'
 import {
   addAllSourcesAndLayers,
@@ -35,6 +34,7 @@ export const Map = () => {
   const [markers, setMarkers] = useState([])
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   // TODO: Combine these two following useStates into one
+  const [allCenterpoints, setAllCenterpoints] = useState()
   const [projectPolygons, setAllProjectPolygons] = useState()
   const [verraPolygons, setVerraPolygons] = useState()
   const [activeProject, setActiveProject] = useState()
@@ -46,6 +46,7 @@ export const Map = () => {
   useEffect(() => {
     initializeMapbox('map-container', setMap)
     fetchGainForestShapefiles(setAllProjectPolygons)
+    fetchAllCenterpoints(setAllCenterpoints)
     fetchVerraShapefiles(setVerraPolygons)
   }, [])
 
@@ -164,7 +165,13 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <SearchOverlay map={map} setActiveProject={setActiveProject} />
+      {allCenterpoints && (
+        <SearchOverlay
+          map={map}
+          setActiveProject={setActiveProject}
+          allCenterpoints={allCenterpoints}
+        />
+      )}
       {/* <BackToGlobe map={map} /> */}
       {displayOverlay && (
         <InfoOverlay

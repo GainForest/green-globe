@@ -65,7 +65,7 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
       {showListOfProjects && (
         <>
           <OptionsContainer theme={theme}>
-            {filteredProjects.map((d, i) => (
+            {filteredProjects?.map((d, i) => (
               <Option
                 key={i}
                 position={i}

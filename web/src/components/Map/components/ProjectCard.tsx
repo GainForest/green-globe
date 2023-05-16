@@ -27,6 +27,7 @@ export const ProjectCard = ({ activeProjectData }) => {
   const splash = activeProjectData?.project?.assets?.filter((d) =>
     d.classification?.includes('Splash')
   )[0]?.awsCID
+  const area = Math.round(activeProjectData?.project?.area / 10000)
 
   return (
     <InfoBox>
@@ -47,6 +48,18 @@ export const ProjectCard = ({ activeProjectData }) => {
           {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
       ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
         </p>
+        {area > 0 && (
+          <p style={{ fontSize: '0.75rem' }}>
+            <span
+              className="material-icons-round"
+              style={{ fontSize: '0.75rem', marginRight: '2px' }}
+            >
+              screen_rotation_alt
+            </span>
+            {area} {area == 1 ? 'hectare' : 'hectares'}
+          </p>
+        )}
+
         <p style={{ fontSize: '0.875rem' }}>
           {activeProjectData?.project?.description}
         </p>

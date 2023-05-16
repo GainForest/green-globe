@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import geojson2h3 from 'geojson2h3'
-import { cellToBoundary } from 'h3-js'
 import mapboxgl from 'mapbox-gl'
 
-import { hexagonsSource, initializeMapbox } from 'src/mapbox.config'
+import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
@@ -20,6 +19,7 @@ import {
   fetchTreeShapefile,
   fetchGainForestShapefiles,
   fetchAllCenterpoints,
+  fetchHexagons,
 } from './mapfetch'
 import {
   addAllSourcesAndLayers,
@@ -52,8 +52,8 @@ export const Map = () => {
     fetchGainForestShapefiles(setAllProjectPolygons)
     fetchAllCenterpoints(setAllCenterpoints)
     fetchVerraShapefiles(setVerraPolygons)
+    fetchHexagons(setHexagons)
     setLoaded(true)
-    setHexagons(geojson2h3.h3SetToFeatureCollection(['8aa86c2add9ffff']))
   }, [])
 
   // Set initial layers on load
@@ -76,7 +76,7 @@ export const Map = () => {
         addAllSourcesAndLayers(map, projectPolygons, verraPolygons, hexagons)
       })
     }
-  }, [map, projectPolygons, verraPolygons])
+  }, [hexagons, map, projectPolygons, verraPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {

@@ -1,3 +1,13 @@
+import geojson2h3 from 'geojson2h3'
+
+export const fetchHexagons = (setHexagons) => {
+  fetch(`${process.env.AWS_STORAGE}/h3/defensores-del-chaco-h3.json`)
+    .then((response) => response.json())
+    .then((hexagonIds) => {
+      setHexagons(geojson2h3.h3SetToFeatureCollection(hexagonIds))
+    })
+}
+
 export const fetchAllCenterpoints = (setGeoJson) => {
   fetch(
     `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`

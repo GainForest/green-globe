@@ -3,7 +3,6 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
-import geojson2h3 from 'geojson2h3'
 import mapboxgl from 'mapbox-gl'
 
 import { initializeMapbox } from 'src/mapbox.config'

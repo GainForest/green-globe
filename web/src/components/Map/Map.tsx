@@ -32,7 +32,6 @@ import {
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [loaded, setLoaded] = useState<boolean>(false)
   const [markers, setMarkers] = useState([])
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   // TODO: Combine these two following useStates into one
@@ -52,12 +51,11 @@ export const Map = () => {
     fetchAllCenterpoints(setAllCenterpoints)
     fetchVerraShapefiles(setVerraPolygons)
     fetchHexagons(setHexagons)
-    setLoaded(true)
   }, [])
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && projectPolygons && verraPolygons) {
+    if (map && projectPolygons && verraPolygons && hexagons) {
       map.on('load', () => {
         addAllSourcesAndLayers(map, projectPolygons, verraPolygons, hexagons)
         const gainForestMarkers = addMarkers(
@@ -170,7 +168,7 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      {loaded && allCenterpoints && (
+      {hexagons && allCenterpoints && (
         <SearchOverlay
           map={map}
           setActiveProject={setActiveProject}

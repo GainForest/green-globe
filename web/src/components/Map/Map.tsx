@@ -163,7 +163,39 @@ export const Map = () => {
         popup.remove()
       })
     }
+    // TODO: separate these out
   }, [map, activeProject, displayOverlay])
+
+  useEffect(() => {
+    if (map) {
+      let hoveredHexagonId = null
+      map.on('mousemove', 'hexagonHoverFill', (e) => {
+        if (e.features.length > 0) {
+          if (hoveredHexagonId !== null) {
+            map.setFeatureState(
+              { source: 'hexagons', id: hoveredHexagonId },
+              { hover: false }
+            )
+          }
+          hoveredHexagonId = e.features[0]?.id
+          map.setFeatureState(
+            { source: 'hexagons', id: hoveredHexagonId },
+            { hover: true }
+          )
+        }
+      })
+
+      map.on('mouseleave', 'hexagonHoverFill', () => {
+        if (hoveredHexagonId !== null) {
+          map.setFeatureState(
+            { source: 'hexagons', id: hoveredHexagonId },
+            { hover: false }
+          )
+          hoveredHexagonId = null
+        }
+      })
+    }
+  }, [map])
 
   return (
     <>

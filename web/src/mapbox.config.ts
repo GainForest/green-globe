@@ -69,6 +69,21 @@ export const hexagonOutlineLayer = (lineColor: string) => ({
   },
 })
 
+export const hexagonHoverFillLayer = () => ({
+  id: 'hexagonHoverFill',
+  type: 'fill',
+  source: 'hexagons',
+  paint: {
+    'fill-color': '#627BC1',
+    'fill-opacity': [
+      'case',
+      ['boolean', ['feature-state', 'hover'], false],
+      1,
+      0.5,
+    ],
+  },
+})
+
 export const clusteredTreesLayer = {
   id: 'clusteredTrees',
   type: 'circle',
@@ -120,6 +135,7 @@ export const verraSource = (geoJson) => ({
 export const hexagonsSource = (hexagonsGeoJson) => ({
   type: 'geojson',
   data: hexagonsGeoJson,
+  generateId: true,
 })
 
 export const treesSource = (treesGeoJson) => ({

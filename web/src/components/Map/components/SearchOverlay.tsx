@@ -18,7 +18,7 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
     if (!allProjects || !allProjects.length) {
       return
     }
-    if (allProjects.find((d) => d.name == searchInput)) {
+    if (allProjects.find((d) => d?.name == searchInput)) {
       setActiveProject(searchInput)
     }
   }, [allProjects, searchInput, setActiveProject])
@@ -33,10 +33,10 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
 
   useEffect(() => {
     if (searchInput && searchInput.length > 0) {
-      const filteredProjects = allProjects.filter(
+      const filteredProjects = allProjects?.filter(
         (d) =>
-          d.name.toLowerCase().includes(searchInput?.toLowerCase()) ||
-          d.country.toLowerCase().includes(searchInput?.toLowerCase())
+          d?.name.toLowerCase().includes(searchInput?.toLowerCase()) ||
+          d?.country.toLowerCase().includes(searchInput?.toLowerCase())
       )
       setFilteredProjects(filteredProjects)
     } else {

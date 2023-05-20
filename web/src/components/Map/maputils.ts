@@ -52,9 +52,6 @@ export const addMarkers = (
     const el = document.createElement('div')
     el.className = `${markerType}-map-marker`
 
-    const centerpoint = center(feature)
-    const boundingBox = bbox(feature)
-
     // display a popup with the project name on hover
     const popup = new mapboxgl.Popup({
       closeButton: false,
@@ -63,17 +60,13 @@ export const addMarkers = (
       anchor: 'left',
       className: 'default',
     })
-      .setLngLat(centerpoint.geometry.coordinates)
+      .setLngLat(feature.geometry.coordinates)
       .setText(feature.properties.name)
 
     el.addEventListener('mouseenter', () => popup.addTo(map))
     el.addEventListener('mouseleave', () => popup.remove())
 
     el.addEventListener('click', () => {
-      map.fitBounds(boundingBox, {
-        duration: 2500,
-        padding: { top: 40, bottom: 40, left: 420, right: 40 },
-      })
       setActiveProject(feature?.properties?.name)
       setActiveFeature(feature)
       setDisplayOverlay(true)
@@ -82,7 +75,7 @@ export const addMarkers = (
 
     // finally, add the marker to the map
     const marker = new mapboxgl.Marker(el)
-      .setLngLat(centerpoint.geometry.coordinates)
+      .setLngLat(feature.geometry.coordinates)
       .addTo(map)
 
     markers.push(marker)

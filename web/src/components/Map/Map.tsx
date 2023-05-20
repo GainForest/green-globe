@@ -16,9 +16,8 @@ import {
   fetchProjectInfo,
   fetchVerraShapefiles,
   fetchTreeShapefile,
-  fetchGainForestShapefiles,
-  fetchAllCenterpoints,
   fetchHexagons,
+  fetchGainForestCenterpoints,
 } from './mapfetch'
 import {
   addAllSourcesAndLayers,
@@ -35,8 +34,7 @@ export const Map = () => {
   const [markers, setMarkers] = useState([])
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   // TODO: Combine these two following useStates into one
-  const [allCenterpoints, setAllCenterpoints] = useState()
-  const [projectPolygons, setAllProjectPolygons] = useState()
+  const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [verraPolygons, setVerraPolygons] = useState()
   const [activeProject, setActiveProject] = useState()
@@ -47,20 +45,24 @@ export const Map = () => {
   // Initialize Map
   useEffect(() => {
     initializeMapbox('map-container', setMap)
-    fetchGainForestShapefiles(setAllProjectPolygons)
-    fetchAllCenterpoints(setAllCenterpoints)
+    fetchGainForestCenterpoints(setGainForestCenterpoints)
     fetchVerraShapefiles(setVerraPolygons)
     fetchHexagons(setHexagons)
   }, [])
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && projectPolygons && verraPolygons && hexagons) {
+    if (map && verraPolygons && hexagons) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map, projectPolygons, verraPolygons, hexagons)
+        addAllSourcesAndLayers(
+          map,
+          gainforestCenterpoints,
+          verraPolygons,
+          hexagons
+        )
         const gainForestMarkers = addMarkers(
           map,
-          projectPolygons,
+          gainforestCenterpoints,
           'gainforest',
           setActiveProjectPolygon,
           setActiveProject,
@@ -70,10 +72,15 @@ export const Map = () => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, projectPolygons, verraPolygons, hexagons)
+        addAllSourcesAndLayers(
+          map,
+          gainforestCenterpoints,
+          verraPolygons,
+          hexagons
+        )
       })
     }
-  }, [hexagons, map, projectPolygons, verraPolygons])
+  }, [hexagons, map, gainforestCenterpoints, verraPolygons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {
@@ -121,7 +128,7 @@ export const Map = () => {
   // Display tree data
   // Add trees planted source and layers on every style change
   useEffect(() => {
-    if (map && projectPolygons && activeProjectTreesPlanted) {
+    if (map && activeProjectTreesPlanted) {
       // Needed on initial fetch
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
       // For every upcoming style change
@@ -129,7 +136,7 @@ export const Map = () => {
         addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
       })
     }
-  }, [map, projectPolygons, activeProjectTreesPlanted])
+  }, [map, activeProjectTreesPlanted])
 
   // Remove layers when you exit the display overlay
   useEffect(() => {

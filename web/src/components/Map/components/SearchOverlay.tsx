@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
+import { countryToEmoji } from 'src/utils/countryToEmoji'
+
 export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
   const { theme } = useThemeUI()
   const allProjects = allCenterpoints?.features?.map((d) => d.properties)
 
   const [filteredProjects, setFilteredProjects] =
-    useState<Array<{ properties: { name: string; country: string } }>>(
-      allProjects
-    )
+    useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
   const [searchInput, setSearchInput] = useState<string>()
 
@@ -76,7 +76,8 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
                 }}
                 theme={theme}
               >
-                {d?.name} <CountrySubtitle>{d?.country}</CountrySubtitle>
+                {d?.name}{' '}
+                <CountrySubtitle>{countryToEmoji[d?.country]}</CountrySubtitle>
               </Option>
             ))}
           </OptionsContainer>

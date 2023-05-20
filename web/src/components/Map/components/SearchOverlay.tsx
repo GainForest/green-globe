@@ -8,7 +8,6 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
   const { theme } = useThemeUI()
   const allProjects = allCenterpoints?.features?.map((d) => d.properties)
-
   const [filteredProjects, setFilteredProjects] =
     useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
@@ -33,11 +32,13 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
 
   useEffect(() => {
     if (searchInput && searchInput.length > 0) {
-      const filteredProjects = allProjects?.filter(
-        (d) =>
+      const filteredProjects = allProjects?.filter((d) => {
+        const country = countryToEmoji[d?.country]?.name?.toLowerCase()
+        return (
           d?.name.toLowerCase().includes(searchInput?.toLowerCase()) ||
-          d?.country.toLowerCase().includes(searchInput?.toLowerCase())
-      )
+          country.includes(searchInput?.toLowerCase())
+        )
+      })
       setFilteredProjects(filteredProjects)
     } else {
       setFilteredProjects(allProjects)
@@ -77,7 +78,9 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
                 theme={theme}
               >
                 {d?.name}{' '}
-                <CountrySubtitle>{countryToEmoji[d?.country]}</CountrySubtitle>
+                <CountrySubtitle>
+                  {countryToEmoji[d?.country].name}
+                </CountrySubtitle>
               </Option>
             ))}
           </OptionsContainer>

@@ -97,7 +97,7 @@ export const Map = () => {
   // If the active project changes, always display overlay and tree data again
   useEffect(() => {
     // TODO: a lot of error checking
-    const projectPolygon = projectPolygons?.features.find((d) =>
+    const projectPolygon = gainforestCenterpoints?.features.find((d) =>
       d.properties.name.includes(activeProject)
     )
     setActiveProjectPolygon(projectPolygon)
@@ -110,7 +110,7 @@ export const Map = () => {
         padding: { top: 40, bottom: 40, left: 420, right: 40 },
       })
     }
-  }, [map, activeProject, projectPolygons])
+  }, [map, activeProject, gainforestCenterpoints])
 
   // Fetch tree data
   useEffect(() => {
@@ -207,11 +207,11 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      {hexagons && allCenterpoints && (
+      {hexagons && gainforestCenterpoints && (
         <SearchOverlay
           map={map}
           setActiveProject={setActiveProject}
-          allCenterpoints={allCenterpoints}
+          allCenterpoints={gainforestCenterpoints}
         />
       )}
       {/* <BackToGlobe map={map} /> */}
@@ -227,7 +227,7 @@ export const Map = () => {
         setDisplayOverlay={setDisplayOverlay}
         setActiveProject={setActiveProject}
         verraPolygons={verraPolygons}
-        projectPolygons={projectPolygons}
+        projectPolygons={gainforestCenterpoints}
         setMarkers={setMarkers}
         setActiveProjectPolygon={setActiveProjectPolygon}
       />

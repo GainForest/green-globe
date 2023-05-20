@@ -18,6 +18,7 @@ import {
   fetchTreeShapefile,
   fetchHexagons,
   fetchGainForestCenterpoints,
+  fetchProjectPolygon,
 } from './mapfetch'
 import {
   addAllSourcesAndLayers,
@@ -37,7 +38,7 @@ export const Map = () => {
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [verraPolygons, setVerraPolygons] = useState()
-  const [activeProject, setActiveProject] = useState()
+  const [activeProjectId, setActiveProjectId] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
@@ -64,8 +65,7 @@ export const Map = () => {
           map,
           gainforestCenterpoints,
           'gainforest',
-          setActiveProjectPolygon,
-          setActiveProject,
+          setActiveProjectId,
           setDisplayOverlay
         )
 
@@ -84,33 +84,30 @@ export const Map = () => {
 
   // Fetch project data to display on the overlay
   useEffect(() => {
-    if (activeProjectPolygon) {
-      const projectId = activeProjectPolygon?.properties?.projectId
-
+    if (activeProjectId) {
       const fetchData = async () => {
-        await fetchProjectInfo(projectId, setActiveProjectData)
+        const projectPolygonCID = await fetchProjectInfo(
+          activeProjectId,
+          setActiveProjectData
+        )
+        await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
       }
       fetchData().catch(console.error)
     }
-  }, [activeProjectPolygon])
+  }, [activeProjectId])
 
   // If the active project changes, always display overlay and tree data again
   useEffect(() => {
-    // TODO: a lot of error checking
-    const projectPolygon = gainforestCenterpoints?.features.find((d) =>
-      d.properties.name.includes(activeProject)
-    )
-    setActiveProjectPolygon(projectPolygon)
-
-    if (map && projectPolygon) {
+    if (map && activeProjectPolygon) {
+      // TODO: Take into account all of the shapefiles the project has
       setDisplayOverlay(true)
       toggleTreesPlantedLayer(map, 'visible')
-      const boundingBox = bbox(projectPolygon)
+      const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
         padding: { top: 40, bottom: 40, left: 420, right: 40 },
       })
     }
-  }, [map, activeProject, gainforestCenterpoints])
+  }, [map, activeProjectPolygon])
 
   // Fetch tree data
   useEffect(() => {
@@ -156,7 +153,7 @@ export const Map = () => {
       map.on('mousemove', 'unclusteredTrees', (e) => {
         popup.remove()
 
-        const treeInformation = getPopupTreeInformation(e, activeProject)
+        const treeInformation = getPopupTreeInformation(e, activeProjectId)
         const lngLat = [e.lngLat.lng, e.lngLat.lat]
         const { treeID } = treeInformation
         if (treeID != 'unknown') {
@@ -171,7 +168,7 @@ export const Map = () => {
       })
     }
     // TODO: separate these out
-  }, [map, activeProject, displayOverlay])
+  }, [map, setActiveProjectId, displayOverlay])
 
   useEffect(() => {
     if (map) {
@@ -210,7 +207,7 @@ export const Map = () => {
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay
           map={map}
-          setActiveProject={setActiveProject}
+          setActiveProject={setActiveProjectId}
           allCenterpoints={gainforestCenterpoints}
         />
       )}
@@ -225,7 +222,7 @@ export const Map = () => {
         map={map}
         markers={markers}
         setDisplayOverlay={setDisplayOverlay}
-        setActiveProject={setActiveProject}
+        setActiveProject={setActiveProjectId}
         verraPolygons={verraPolygons}
         projectPolygons={gainforestCenterpoints}
         setMarkers={setMarkers}

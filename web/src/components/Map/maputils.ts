@@ -42,7 +42,6 @@ export const addMarkers = (
   map: mapboxgl.Map,
   geoJson: mapboxgl.geoJson,
   markerType: string,
-  setActiveFeature,
   setActiveProject,
   setDisplayOverlay
 ) => {
@@ -67,8 +66,7 @@ export const addMarkers = (
     el.addEventListener('mouseleave', () => popup.remove())
 
     el.addEventListener('click', () => {
-      setActiveProject(feature?.properties?.name)
-      setActiveFeature(feature)
+      setActiveProject(feature?.properties?.projectId)
       setDisplayOverlay(true)
       toggleTreesPlantedLayer(map, 'visible')
     })

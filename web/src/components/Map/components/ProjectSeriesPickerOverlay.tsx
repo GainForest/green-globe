@@ -9,7 +9,6 @@ export const ProjectSeriesPickerOverlay = ({
   markers,
   projectPolygons,
   verraPolygons,
-  setActiveProjectPolygon,
   setActiveProject,
   setDisplayOverlay,
   setMarkers,
@@ -49,7 +48,6 @@ export const ProjectSeriesPickerOverlay = ({
                 map,
                 projectPolygons,
                 'gainforest',
-                setActiveProjectPolygon,
                 setActiveProject,
                 setDisplayOverlay
               )
@@ -75,7 +73,6 @@ export const ProjectSeriesPickerOverlay = ({
                 map,
                 verraPolygons,
                 'verra',
-                setActiveProjectPolygon,
                 setActiveProject,
                 setDisplayOverlay
               )

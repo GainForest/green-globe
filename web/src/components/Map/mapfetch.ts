@@ -51,6 +51,9 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
               name
               classification
               awsCID
+              shapefile {
+                default
+              }
             }
             CommunityMember {
               id
@@ -71,7 +74,25 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
     }),
   })
     .then((res) => res.json())
-    .then((result) => setResult(result.data))
+    .then((result) => {
+      setResult(result.data)
+      const projectPolygonCID = result?.data?.project?.assets
+        ?.filter((d) => d?.classification == 'Shapefiles')
+        .filter((d) => d?.shapefile?.default == true)?.[0]?.awsCID
+      return projectPolygonCID
+    })
+
+  return response
+}
+export const fetchProjectPolygon = async (
+  endpoint: string,
+  setActiveProjectPolygon
+) => {
+  const response = fetch(`${process.env.AWS_STORAGE}/${endpoint}`)
+    .then((res) => res.json())
+    .then((result) => {
+      setActiveProjectPolygon(result)
+    })
   return response
 }
 

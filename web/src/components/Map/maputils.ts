@@ -1,5 +1,3 @@
-import bbox from '@turf/bbox'
-import center from '@turf/center'
 import dayjs from 'dayjs'
 import mapboxgl from 'mapbox-gl'
 
@@ -26,11 +24,9 @@ import {
 
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
-  projectPolygons,
   verraPolygons,
   hexagonsGeoJson
 ) => {
-  addProjectPolygonsSourceAndLayers(map, projectPolygons)
   addVerraPolygonsSourceAndLayers(map, verraPolygons)
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -182,13 +178,16 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
   })
 }
 
-export const addProjectPolygonsSourceAndLayers = (
+export const addGainForestCenterpointsSource = (
   map: mapboxgl.Map,
-  projectPolygons
+  projectCenterpoints
 ) => {
   if (!map.getSource('project')) {
-    map.addSource('project', projectSource(projectPolygons))
+    map.addSource('project', projectSource(projectCenterpoints))
   }
+}
+
+export const addProjectPolygonsSourceAndLayers = (map: mapboxgl.Map) => {
   if (!map.getLayer('projectOutline')) {
     map.addLayer(projectOutlineLayer('#00FF00'))
   }

@@ -55,12 +55,7 @@ export const Map = () => {
   useEffect(() => {
     if (map && verraPolygons && hexagons) {
       map.on('load', () => {
-        addAllSourcesAndLayers(
-          map,
-          gainforestCenterpoints,
-          verraPolygons,
-          hexagons
-        )
+        addAllSourcesAndLayers(map, verraPolygons, hexagons)
         const gainForestMarkers = addMarkers(
           map,
           gainforestCenterpoints,
@@ -72,12 +67,7 @@ export const Map = () => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(
-          map,
-          gainforestCenterpoints,
-          verraPolygons,
-          hexagons
-        )
+        addAllSourcesAndLayers(map, verraPolygons, hexagons)
       })
     }
   }, [hexagons, map, gainforestCenterpoints, verraPolygons])

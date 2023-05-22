@@ -86,6 +86,12 @@ export const Map = () => {
     }
   }, [activeProjectId])
 
+  useEffect(() => {
+    if (map && map.getSource('project') && activeProjectPolygon) {
+      map.getSource('project').setData(activeProjectPolygon)
+    }
+  }, [map, activeProjectPolygon])
+
   // If the active project changes, always display overlay and tree data again
   useEffect(() => {
     if (map && activeProjectPolygon) {

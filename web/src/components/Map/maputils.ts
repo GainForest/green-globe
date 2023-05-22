@@ -13,7 +13,6 @@ import {
   landCoverSource,
   projectFillLayer,
   projectOutlineLayer,
-  projectSource,
   treeCoverLayer,
   treeCoverSource,
   treesSource,
@@ -27,6 +26,7 @@ export const addAllSourcesAndLayers = (
   verraPolygons,
   hexagonsGeoJson
 ) => {
+  addProjectPolygonsSourceAndLayer(map)
   addVerraPolygonsSourceAndLayers(map, verraPolygons)
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -178,16 +178,19 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
   })
 }
 
-export const addGainForestCenterpointsSource = (
-  map: mapboxgl.Map,
-  projectCenterpoints
-) => {
-  if (!map.getSource('project')) {
-    map.addSource('project', projectSource(projectCenterpoints))
-  }
-}
+// export const addGainForestCenterpointsSource = (
+//   map: mapboxgl.Map,
+//   projectCenterpoints
+// ) => {
+//   if (!map.getSource('gainforestCenterpoints')) {
+//     map.addSource('gainforestCenterpoints', projectSource(projectCenterpoints))
+//   }
+// }
 
-export const addProjectPolygonsSourceAndLayers = (map: mapboxgl.Map) => {
+export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('project')) {
+    map.addSource('project', { type: 'geojson', data: undefined })
+  }
   if (!map.getLayer('projectOutline')) {
     map.addLayer(projectOutlineLayer('#00FF00'))
   }

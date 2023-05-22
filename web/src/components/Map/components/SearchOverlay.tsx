@@ -67,7 +67,7 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
       {showListOfProjects && (
         <>
           <OptionsContainer theme={theme}>
-            {filteredProjects?.map((d, i) => (
+            {filteredProjects?.splice(0, 4).map((d, i) => (
               <Option
                 key={i}
                 position={i}
@@ -133,6 +133,7 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   background-color: ${(props) => props.theme.colors.background};
   padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;
+  z-index: 3;
 `
 
 const Option = styled.button<{ theme; position: number }>`

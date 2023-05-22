@@ -217,7 +217,6 @@ export const Map = () => {
         verraPolygons={verraPolygons}
         projectPolygons={gainforestCenterpoints}
         setMarkers={setMarkers}
-        setActiveProjectPolygon={setActiveProjectPolygon}
       />
       <LayerPickerOverlay map={map} />
       <TimeSlider map={map} />

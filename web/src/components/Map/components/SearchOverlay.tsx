@@ -17,8 +17,9 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
     if (!allProjects || !allProjects.length) {
       return
     }
-    if (allProjects.find((d) => d?.name == searchInput)) {
-      setActiveProject(searchInput)
+    const found = allProjects.find((d) => d?.name == searchInput)
+    if (found) {
+      setActiveProject(found?.projectId)
     }
   }, [allProjects, searchInput, setActiveProject])
 

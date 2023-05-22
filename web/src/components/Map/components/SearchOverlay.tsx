@@ -53,7 +53,7 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
           borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
           boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         }}
-        placeholder={'Search for projects'}
+        placeholder={'Search for projects or country'}
         onClick={() => {
           setShowListOfProjects(!showListOfProjects)
         }}

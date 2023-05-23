@@ -40,16 +40,22 @@ export const Map = () => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
 
-  // Initialize Map
+  // Fetch all prerequisite data for map initialization
   useEffect(() => {
-    initializeMapbox('map-container', setMap)
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     fetchHexagons(setHexagons)
   }, [])
 
+  // Initialize Map
+  useEffect(() => {
+    if (gainforestCenterpoints) {
+      initializeMapbox('map-container', setMap)
+    }
+  }, [gainforestCenterpoints])
+
   // Set initial layers on load
   useEffect(() => {
-    if (map && hexagons) {
+    if (map && hexagons && gainforestCenterpoints) {
       map.on('load', () => {
         addAllSourcesAndLayers(map, hexagons)
         const gainForestMarkers = addMarkers(

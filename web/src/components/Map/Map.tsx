@@ -9,12 +9,10 @@ import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
-import { ProjectSeriesPickerOverlay } from './components/ProjectSeriesPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import {
   fetchProjectInfo,
-  fetchVerraShapefiles,
   fetchTreeShapefile,
   fetchHexagons,
   fetchGainForestCenterpoints,
@@ -37,7 +35,6 @@ export const Map = () => {
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
-  const [verraPolygons, setVerraPolygons] = useState()
   const [activeProjectId, setActiveProjectId] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -47,15 +44,14 @@ export const Map = () => {
   useEffect(() => {
     initializeMapbox('map-container', setMap)
     fetchGainForestCenterpoints(setGainForestCenterpoints)
-    fetchVerraShapefiles(setVerraPolygons)
     fetchHexagons(setHexagons)
   }, [])
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && verraPolygons && hexagons) {
+    if (map && hexagons) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map, verraPolygons, hexagons)
+        addAllSourcesAndLayers(map, hexagons)
         const gainForestMarkers = addMarkers(
           map,
           gainforestCenterpoints,
@@ -67,10 +63,10 @@ export const Map = () => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, verraPolygons, hexagons)
+        addAllSourcesAndLayers(map, hexagons)
       })
     }
-  }, [hexagons, map, gainforestCenterpoints, verraPolygons])
+  }, [map, gainforestCenterpoints, hexagons])
 
   // Fetch project data to display on the overlay
   useEffect(() => {
@@ -209,15 +205,14 @@ export const Map = () => {
           setDisplayOverlay={setDisplayOverlay}
         />
       )}
-      <ProjectSeriesPickerOverlay
+      {/* <ProjectSeriesPickerOverlay
         map={map}
         markers={markers}
         setDisplayOverlay={setDisplayOverlay}
         setActiveProject={setActiveProjectId}
-        verraPolygons={verraPolygons}
         projectPolygons={gainforestCenterpoints}
         setMarkers={setMarkers}
-      />
+      /> */}
       <LayerPickerOverlay map={map} />
       <TimeSlider map={map} />
     </>

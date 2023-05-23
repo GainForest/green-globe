@@ -20,14 +20,6 @@ export const fetchGainForestCenterpoints = (setGeoJson) => {
     .then((newGeojson) => setGeoJson(newGeojson))
 }
 
-export const fetchVerraShapefiles = (setVerraPolygons) => {
-  fetch(
-    `${process.env.AWS_STORAGE}/shapefiles/verra-all-shapefiles-original.geojson`
-  )
-    .then((response) => response.json())
-    .then((newGeojson) => setVerraPolygons(newGeojson))
-}
-
 export const fetchProjectInfo = async (projectId: number, setResult) => {
   const response = fetch('https://gainforest.app/api/graphql', {
     method: 'POST',

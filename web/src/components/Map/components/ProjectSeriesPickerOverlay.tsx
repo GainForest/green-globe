@@ -8,14 +8,12 @@ export const ProjectSeriesPickerOverlay = ({
   map,
   markers,
   projectPolygons,
-  verraPolygons,
   setActiveProject,
   setDisplayOverlay,
   setMarkers,
 }) => {
   const { theme } = useThemeUI()
   const [gainForestDisplayed, setGainForestDisplayed] = useState<boolean>(true)
-  const [verraDisplayed, setVerraDisplayed] = useState<boolean>(false)
 
   return (
     <div
@@ -57,31 +55,6 @@ export const ProjectSeriesPickerOverlay = ({
           }}
         />
         Display GainForest Projects
-      </p>
-      <p style={{ fontSize: '0.75rem' }}>
-        <input
-          type="checkbox"
-          onClick={() => {
-            if (verraDisplayed) {
-              markers.forEach((marker) => {
-                if (marker._element.className.includes('verra')) {
-                  marker.remove()
-                }
-              })
-            } else {
-              const newMarkers = addMarkers(
-                map,
-                verraPolygons,
-                'verra',
-                setActiveProject,
-                setDisplayOverlay
-              )
-              setMarkers([...markers, ...newMarkers])
-            }
-            setVerraDisplayed(!verraDisplayed)
-          }}
-        />
-        Display Verra Projects
       </p>
     </div>
   )

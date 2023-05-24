@@ -88,11 +88,16 @@ export const Map = () => {
     }
   }, [activeProjectId])
 
-  // If the active project changes, always display overlay and tree data again
+  // If the active project changes
+  // Display project boundaries, the overlay, and the trees planted
+  // Re-draw on style change.
   useEffect(() => {
     if (map && activeProjectPolygon) {
       // TODO: Take into account all of the shapefiles the project has
       map.getSource('project').setData(activeProjectPolygon)
+      map.on('styledata', () => {
+        map.getSource('project').setData(activeProjectPolygon)
+      })
       setDisplayOverlay(true)
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)

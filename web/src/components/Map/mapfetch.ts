@@ -34,6 +34,7 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
             name
             country
             description
+            longDescription
             discordId
             lat
             lon

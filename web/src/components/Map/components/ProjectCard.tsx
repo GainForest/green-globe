@@ -1,9 +1,12 @@
+import { useThemeUI } from 'theme-ui'
+
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import { InfoBox } from './InfoBox'
 import ThemedSkeleton from './Skeleton'
 
 export const ProjectCard = ({ activeProjectData }) => {
+  const { theme } = useThemeUI()
   if (!activeProjectData) {
     return (
       <InfoBox>
@@ -47,21 +50,23 @@ export const ProjectCard = ({ activeProjectData }) => {
         <p style={{ fontSize: '0.75rem' }}>
           {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
       ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
+          {area > 0 && (
+            <>
+              <span
+                style={{
+                  margin: '0 8px',
+                  color: theme.colors.secondary as string,
+                }}
+              >
+                {'|'}
+              </span>
+              {area} {area == 1 ? 'hectare' : 'hectares'}
+            </>
+          )}
         </p>
-        {area > 0 && (
-          <p style={{ fontSize: '0.75rem' }}>
-            <span
-              className="material-icons-round"
-              style={{ fontSize: '0.75rem', marginRight: '2px' }}
-            >
-              screen_rotation_alt
-            </span>
-            {area} {area == 1 ? 'hectare' : 'hectares'}
-          </p>
-        )}
 
-        <p style={{ fontSize: '0.875rem' }}>
-          {activeProjectData?.project?.description}
+        <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>
+          {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
         </p>
         <a
           href={`https://gainforest.app/overview/${projectId}`}
@@ -70,7 +75,7 @@ export const ProjectCard = ({ activeProjectData }) => {
         >
           <button
             style={{
-              marginTop: '12px',
+              margin: '12px 0 24px',
               border: 'none',
               borderRadius: '0.5em',
               backgroundColor: '#67962A',

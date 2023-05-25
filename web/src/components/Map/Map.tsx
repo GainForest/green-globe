@@ -166,7 +166,7 @@ export const Map = () => {
       })
     }
     // TODO: separate these out
-  }, [map, setActiveProjectId, displayOverlay])
+  }, [map, activeProjectId, displayOverlay])
 
   useEffect(() => {
     if (map) {

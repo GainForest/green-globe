@@ -108,7 +108,7 @@ export const getPopupTreeInformation = (e, activeProject) => {
   // TODO: process in the backend
   const treePhoto = tree?.tree_photo
     ? tree?.tree_photo
-    : activeProject == 'Oceanus Conservation'
+    : activeProject == 24
     ? `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
     : `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
   return { treeName, treeHeight, treeDBH, treeID, treePhoto }

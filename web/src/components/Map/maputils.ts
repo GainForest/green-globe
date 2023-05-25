@@ -20,11 +20,11 @@ import {
 } from 'src/mapbox.config'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagonsGeoJson) => {
-  addProjectPolygonsSourceAndLayer(map)
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagonsGeoJson)
+  addProjectPolygonsSourceAndLayer(map)
 }
 
 export const addMarkers = (

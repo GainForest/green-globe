@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
+import { useColorMode } from 'theme-ui'
 
 import { initializeMapbox } from 'src/mapbox.config'
 
@@ -30,7 +31,8 @@ import {
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [markers, setMarkers] = useState([])
+  const [_, setColorMode] = useColorMode()
+  const [__, setMarkers] = useState([])
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
@@ -44,6 +46,7 @@ export const Map = () => {
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     fetchHexagons(setHexagons)
+    setColorMode('dark')
   }, [])
 
   // Initialize Map

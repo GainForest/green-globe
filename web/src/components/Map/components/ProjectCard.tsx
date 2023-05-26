@@ -28,47 +28,14 @@ export const ProjectCard = ({ activeProjectData }) => {
   }
 
   const projectId = activeProjectData?.project?.id
-  const splash = activeProjectData?.project?.assets?.filter((d) =>
-    d.classification?.includes('Splash')
-  )[0]?.awsCID
-  const area = Math.round(activeProjectData?.project?.area / 10000)
 
   return (
     <InfoBox>
-      <img
-        style={{
-          width: '100%',
-          height: '250px',
-          objectFit: 'cover',
-          borderTopLeftRadius: '8px',
-          borderTopRightRadius: '8px',
-        }}
-        src={`${process.env.AWS_STORAGE}/${splash}`}
-        alt="Project Splash"
-      />
-      <div style={{ margin: '0 24px' }}>
+      <ProjectSplash activeProjectData={activeProjectData} />
+      <TextContainer>
         <h2>{activeProjectData?.project?.name || ''}</h2>
-        <p style={{ fontSize: '0.75rem' }}>
-          {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
-      ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
-          {area > 0 && (
-            <>
-              <span
-                style={{
-                  margin: '0 8px',
-                  color: theme.colors.secondary as string,
-                }}
-              >
-                {'|'}
-              </span>
-              {area} {area == 1 ? 'hectare' : 'hectares'}
-            </>
-          )}
-        </p>
-
-        <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>
-          {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
-        </p>
+        <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
+        <Description activeProjectData={activeProjectData} />
         <a
           href={`https://gainforest.app/overview/${projectId}`}
           target="_blank"
@@ -76,7 +43,60 @@ export const ProjectCard = ({ activeProjectData }) => {
         >
           <Button>Learn more</Button>
         </a>
-      </div>
+      </TextContainer>
     </InfoBox>
   )
 }
+
+const ProjectSplash = ({ activeProjectData }) => {
+  const splash = activeProjectData?.project?.assets?.filter((d) =>
+    d.classification?.includes('Splash')
+  )[0]?.awsCID
+
+  return (
+    <img
+      style={{
+        width: '100%',
+        height: '250px',
+        objectFit: 'cover',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+      }}
+      src={`${process.env.AWS_STORAGE}/${splash}`}
+      alt="Project Splash"
+    />
+  )
+}
+
+const TextContainer = ({ children }) => (
+  <div style={{ margin: '0 24px' }}>{children}</div>
+)
+
+const CountryAndArea = ({ activeProjectData, theme }) => {
+  const area = Math.round(activeProjectData?.project?.area / 10000)
+  return (
+    <p style={{ fontSize: '0.75rem' }}>
+      {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
+${countryToEmoji[activeProjectData?.project?.country]?.name}`}
+      {area > 0 && (
+        <>
+          <span
+            style={{
+              margin: '0 8px',
+              color: theme.colors.secondary as string,
+            }}
+          >
+            {'|'}
+          </span>
+          {area} {area == 1 ? 'hectare' : 'hectares'}
+        </>
+      )}
+    </p>
+  )
+}
+
+const Description = ({ activeProjectData }) => (
+  <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>
+    {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
+  </p>
+)

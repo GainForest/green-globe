@@ -6,9 +6,6 @@ export const theme: Theme = {
     heading: '"Avenir Next", sans-serif',
     monospace: 'Menlo, monospace',
   },
-  config: {
-    initialColorModeName: 'dark',
-  },
   colors: {
     text: '#ebebec',
     background: '#1b1e23',

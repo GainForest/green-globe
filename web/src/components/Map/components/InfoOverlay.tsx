@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
 import { BiodiversityCard } from './BiodiversityCard'
-import { InfoOverlayButton } from './Button'
 import { CommunityCard } from './CommunityCard'
 import { DiscordCard } from './DiscordCard'
 import { ExitProjectView } from './ExitProjectView'
+import { InfoOverlayButton } from './InfoOverlayButton'
 import { ProjectCard } from './ProjectCard'
 import { WildlifeCard } from './WildlifeCard'
 

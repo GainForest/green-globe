@@ -2,6 +2,7 @@ import { useThemeUI } from 'theme-ui'
 
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
+import { Button } from './Button'
 import { InfoBox } from './InfoBox'
 import ThemedSkeleton from './Skeleton'
 
@@ -73,21 +74,7 @@ export const ProjectCard = ({ activeProjectData }) => {
           target="_blank"
           rel="noreferrer"
         >
-          <button
-            style={{
-              margin: '12px 0 24px',
-              border: 'none',
-              borderRadius: '0.5em',
-              backgroundColor: '#67962A',
-              cursor: 'pointer',
-              textAlign: 'center',
-              color: '#ffffff',
-              height: '36px',
-              width: '120px',
-            }}
-          >
-            Learn more
-          </button>
+          <Button>Learn more</Button>
         </a>
       </div>
     </InfoBox>

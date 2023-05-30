@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import mapboxgl from 'mapbox-gl'
 import styled from 'styled-components'
 import { useColorMode, useThemeUI } from 'theme-ui'
 
-import { initialState, reducer } from '../mapreducer'
 import {
   toggleLandCoverLayer,
   toggleTreeCoverLayer,
@@ -134,12 +133,11 @@ const LandCoverBox = ({ map }) => {
 }
 
 const LightDarkModeBox = ({ map }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const [_, setColorMode] = useColorMode()
+  const [theme, setTheme] = useColorMode()
 
-  const oppositeTheme = state.theme == 'light' ? 'dark' : 'light'
+  const oppositeTheme = theme == 'light' ? 'dark' : 'light'
 
-  const imageSrc = state.theme == 'light' ? 'darkMode.png' : 'lightMode.png'
+  const imageSrc = theme == 'light' ? 'darkMode.png' : 'lightMode.png'
   return (
     <div
       style={{
@@ -155,8 +153,7 @@ const LightDarkModeBox = ({ map }) => {
         alt="toggle light/dark layer"
         onClick={() => {
           map.setStyle(`mapbox://styles/mapbox/${oppositeTheme}-v11`)
-          dispatch({ type: 'TOGGLE_THEME' })
-          setColorMode(oppositeTheme)
+          setTheme(oppositeTheme)
           toggleTreesPlantedLayer(map, 'visible')
         }}
       />

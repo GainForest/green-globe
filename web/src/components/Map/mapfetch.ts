@@ -14,7 +14,7 @@ export const fetchHexagons = (setHexagons) => {
 
 export const fetchGainForestCenterpoints = (setGeoJson) => {
   fetch(
-    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles-original.geojson`
+    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
   )
     .then((response) => response.json())
     .then((newGeojson) => setGeoJson(newGeojson))

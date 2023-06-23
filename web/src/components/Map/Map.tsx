@@ -80,12 +80,14 @@ export const Map = () => {
 
   // Rotate the globe
   useEffect(() => {
-    // Start the spin
-    spinGlobe(map)
-    // Spin again once the animation is complete
-    map.on('moveend', () => {
+    if (map) {
+      // Start the spin
       spinGlobe(map)
-    })
+      // Spin again once the animation is complete
+      map.on('moveend', () => {
+        spinGlobe(map)
+      })
+    }
   }, [map])
 
   // Fetch project data to display on the overlay

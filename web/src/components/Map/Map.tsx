@@ -82,10 +82,14 @@ export const Map = () => {
   useEffect(() => {
     if (map) {
       // Start the spin
-      spinGlobe(map)
+      let isGlobeSpinning = true
+      spinGlobe(map, isGlobeSpinning)
       // Spin again once the animation is complete
       map.on('moveend', () => {
-        spinGlobe(map)
+        spinGlobe(map, isGlobeSpinning)
+      })
+      map.on('mousedown', () => {
+        isGlobeSpinning = false
       })
     }
   }, [map])

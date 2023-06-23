@@ -8,9 +8,8 @@ const maxSpinZoom = 5
 const slowSpinZoom = 3
 
 const userInteracting = false
-const spinEnabled = true
 
-export const spinGlobe = (map) => {
+export const spinGlobe = (map, spinEnabled) => {
   if (map) {
     const zoom = map.getZoom()
     if (spinEnabled && !userInteracting && zoom < maxSpinZoom) {

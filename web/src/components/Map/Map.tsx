@@ -19,6 +19,7 @@ import {
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
 } from './mapfetch'
+import { spinGlobe } from './maprotate'
 import {
   addAllSourcesAndLayers,
   addMarkers,
@@ -76,6 +77,16 @@ export const Map = () => {
       })
     }
   }, [map, gainforestCenterpoints, hexagons])
+
+  // Rotate the globe
+  useEffect(() => {
+    // Start the spin
+    spinGlobe(map)
+    // Spin again once the animation is complete
+    map.on('moveend', () => {
+      spinGlobe(map)
+    })
+  }, [map])
 
   // Fetch project data to display on the overlay
   useEffect(() => {

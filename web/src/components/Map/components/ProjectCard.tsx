@@ -53,19 +53,23 @@ const ProjectSplash = ({ activeProjectData }) => {
     d.classification?.includes('Splash')
   )[0]?.awsCID
 
-  return (
-    <img
-      style={{
-        width: '100%',
-        height: '250px',
-        objectFit: 'cover',
-        borderTopLeftRadius: '8px',
-        borderTopRightRadius: '8px',
-      }}
-      src={`${process.env.AWS_STORAGE}/${splash}`}
-      alt="Project Splash"
-    />
-  )
+  if (splash) {
+    return (
+      <img
+        style={{
+          width: '100%',
+          height: '250px',
+          objectFit: 'cover',
+          borderTopLeftRadius: '8px',
+          borderTopRightRadius: '8px',
+        }}
+        src={`${process.env.AWS_STORAGE}/${splash}`}
+        alt="Project Splash"
+      />
+    )
+  } else {
+    return <ThemedSkeleton height={250} />
+  }
 }
 
 const TextContainer = ({ children }) => (

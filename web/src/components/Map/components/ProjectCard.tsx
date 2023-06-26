@@ -34,18 +34,17 @@ export const ProjectCard = ({
 
   const projectId = activeProjectData?.project?.id
 
-  console.log(activeProjectData)
   return (
     <InfoBox>
       <ProjectSplash activeProjectData={activeProjectData} />
-      <ProjectSiteButtons
-        assets={activeProjectData?.project?.assets}
-        activeShapefile={activeProjectPolygon}
-        setActiveShapefile={setActiveProjectPolygon}
-      />
       <TextContainer>
-        <h2>{activeProjectData?.project?.name || ''}</h2>
+        <h1>{activeProjectData?.project?.name || ''}</h1>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
+        <ProjectSiteButtons
+          assets={activeProjectData?.project?.assets}
+          activeShapefile={activeProjectPolygon}
+          setActiveShapefile={setActiveProjectPolygon}
+        />
         <Description activeProjectData={activeProjectData} />
         <a
           href={`https://gainforest.app/overview/${projectId}`}
@@ -111,7 +110,10 @@ ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
 }
 
 const Description = ({ activeProjectData }) => (
-  <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>
-    {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
-  </p>
+  <>
+    <h3>Description</h3>
+    <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>
+      {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
+    </p>
+  </>
 )

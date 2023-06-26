@@ -39,12 +39,21 @@ export const ProjectSiteButtons = ({
 
   return (
     <>
-      {sites.length > 0 && <h3>Sites</h3>}
-      <div style={{ display: 'flex', gap: '10px' }}>
+      {sites.length > 0 && <h2>Sites</h2>}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '10px',
+          maxWidth: '360px',
+          marginBottom: '24px',
+        }}
+      >
         {sites.map((site) => {
           const shortName = site.shapefile?.shortName || ''
           return (
             <Button
+              style={{ margin: '0px' }}
               key={`${shortName}-shapefile-button`}
               active={activeShortname == shortName}
               onClick={() => {
@@ -52,7 +61,11 @@ export const ProjectSiteButtons = ({
                 setActiveShortname(shortName)
               }}
             >
-              {shortName}
+              <span
+                style={{ fontSize: '0.75rem', textTransform: 'capitalize' }}
+              >
+                {shortName}
+              </span>
             </Button>
           )
         })}

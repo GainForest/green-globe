@@ -1,6 +1,6 @@
 import { useThemeUI } from 'theme-ui'
 
-export const Button = ({ active = true, children, onClick }) => {
+export const Button = ({ active = true, children, onClick, style }) => {
   const { theme } = useThemeUI()
 
   const backgroundColor = (
@@ -19,6 +19,7 @@ export const Button = ({ active = true, children, onClick }) => {
         color: '#ffffff',
         height: '36px',
         width: '120px',
+        ...style,
       }}
       onClick={onClick}
     >

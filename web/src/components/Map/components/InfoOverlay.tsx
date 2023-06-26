@@ -8,7 +8,12 @@ import { InfoOverlayButton } from './InfoOverlayButton'
 import { ProjectCard } from './ProjectCard'
 import { WildlifeCard } from './WildlifeCard'
 
-export const InfoOverlay = ({ activeProjectData, setDisplayOverlay }) => {
+export const InfoOverlay = ({
+  activeProjectData,
+  activeProjectPolygon,
+  setDisplayOverlay,
+  setActiveProjectPolygon,
+}) => {
   const [active, setActive] = useState<number>(1) // The currently active button
   // Position of the buttons go from left to right
   return (
@@ -44,7 +49,13 @@ export const InfoOverlay = ({ activeProjectData, setDisplayOverlay }) => {
         active={active == 5}
         onClick={() => setActive(5)}
       />
-      {active == 1 && <ProjectCard activeProjectData={activeProjectData} />}
+      {active == 1 && (
+        <ProjectCard
+          activeProjectData={activeProjectData}
+          activeProjectPolygon={activeProjectPolygon}
+          setActiveProjectPolygon={setActiveProjectPolygon}
+        />
+      )}
       {active == 2 && (
         <BiodiversityCard activeProjectData={activeProjectData} />
       )}

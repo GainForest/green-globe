@@ -4,9 +4,14 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import { Button } from './Button'
 import { InfoBox } from './InfoBox'
+import { ProjectSiteButtons } from './ProjectSiteButtons'
 import ThemedSkeleton from './Skeleton'
 
-export const ProjectCard = ({ activeProjectData }) => {
+export const ProjectCard = ({
+  activeProjectData,
+  activeProjectPolygon,
+  setActiveProjectPolygon,
+}) => {
   const { theme } = useThemeUI()
   if (!activeProjectData) {
     return (
@@ -29,9 +34,15 @@ export const ProjectCard = ({ activeProjectData }) => {
 
   const projectId = activeProjectData?.project?.id
 
+  console.log(activeProjectData)
   return (
     <InfoBox>
       <ProjectSplash activeProjectData={activeProjectData} />
+      <ProjectSiteButtons
+        assets={activeProjectData?.project?.assets}
+        activeShapefile={activeProjectPolygon}
+        setActiveShapefile={setActiveProjectPolygon}
+      />
       <TextContainer>
         <h2>{activeProjectData?.project?.name || ''}</h2>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />

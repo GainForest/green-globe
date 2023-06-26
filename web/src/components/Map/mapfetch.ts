@@ -46,6 +46,7 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
               awsCID
               shapefile {
                 default
+                shortName
               }
             }
             CommunityMember {

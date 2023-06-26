@@ -1,3 +1,5 @@
+import { fetchProjectPolygon } from '../mapfetch'
+
 import { Button } from './Button'
 
 export const ProjectSiteButtons = ({
@@ -15,6 +17,13 @@ export const ProjectSiteButtons = ({
 
   const sites = assets.filter((d) => d.classification == 'Shapefiles')
 
+  const fetchAndSetSite = async (endpoint) => {
+    if (!endpoint) {
+      return
+    }
+    await fetchProjectPolygon(endpoint, setActiveShapefile)
+  }
+
   return (
     <div>
       {sites.map((site) => {
@@ -25,7 +34,7 @@ export const ProjectSiteButtons = ({
             key={`${shortName}-shapefile-button`}
             active={activeShapefile.id == site.id}
             onClick={() => {
-              console.log(site)
+              fetchAndSetSite(site?.awsCID)
             }}
           >
             {shortName}

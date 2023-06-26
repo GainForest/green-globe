@@ -95,6 +95,7 @@ export const Map = () => {
   }, [map])
 
   // Fetch project data to display on the overlay
+  // Fetch default project site
   useEffect(() => {
     if (activeProjectId) {
       const fetchData = async () => {

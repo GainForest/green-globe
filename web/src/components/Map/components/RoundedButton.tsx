@@ -17,7 +17,7 @@ const Button = ({ active = true, children, onClick, style }) => {
         cursor: 'pointer',
         textAlign: 'center',
         color: '#ffffff',
-        padding: '8px 16px',
+        padding: '16px 24px',
         ...style,
       }}
       onClick={onClick}

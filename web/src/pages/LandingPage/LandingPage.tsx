@@ -18,7 +18,7 @@ const LandingPage = () => {
           <p style={{ fontSize: '1.5em', margin: '48px 0px' }}>
             This is the challenge in front of us.
           </p>
-          <RoundedButton active={true} style={{ fontSize: '1.5em' }}>
+          <RoundedButton active={true} style={{ fontSize: '1.25em' }}>
             Become a steward
           </RoundedButton>
         </div>

@@ -12,13 +12,12 @@ const Button = ({ active = true, children, onClick, style }) => {
       style={{
         margin: '12px 0 24px',
         border: 'none',
-        borderRadius: '0.5em',
+        borderRadius: '960px',
         backgroundColor,
         cursor: 'pointer',
         textAlign: 'center',
         color: '#ffffff',
-        height: '36px',
-        width: '120px',
+        padding: '8px 16px',
         ...style,
       }}
       onClick={onClick}

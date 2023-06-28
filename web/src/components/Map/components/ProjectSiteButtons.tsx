@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { fetchProjectPolygon } from '../mapfetch'
 
-import { Button } from './Button'
+import Button from './Button'
 
 export const ProjectSiteButtons = ({
   assets,

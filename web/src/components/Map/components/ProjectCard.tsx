@@ -2,7 +2,7 @@ import { useThemeUI } from 'theme-ui'
 
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-import { Button } from './Button'
+import Button from './Button'
 import { InfoBox } from './InfoBox'
 import { ProjectSiteButtons } from './ProjectSiteButtons'
 import ThemedSkeleton from './Skeleton'

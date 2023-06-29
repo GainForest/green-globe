@@ -72,7 +72,6 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
                 key={i}
                 position={i}
                 onClick={() => {
-                  setActiveProject(d)
                   setSearchInput(d.name)
                   setShowListOfProjects(false)
                 }}

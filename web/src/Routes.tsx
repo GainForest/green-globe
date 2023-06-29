@@ -13,6 +13,7 @@ const Routes = () => {
   return (
     <Router>
       <Route path="/" page={LandingPage} name="landing" />
+      <Route path="/app/{urlProjectId:Int}" page={MapPage} name="map" />
       <Route path="/app" page={MapPage} name="map" />
       <Route notfound page={NotFoundPage} />
     </Router>

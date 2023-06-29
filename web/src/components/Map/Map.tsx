@@ -6,6 +6,8 @@ import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
 import { useColorMode } from 'theme-ui'
 
+import { navigate } from '@redwoodjs/router'
+
 import { initializeMapbox } from 'src/mapbox.config'
 
 import { InfoOverlay } from './components/InfoOverlay'
@@ -30,7 +32,7 @@ import {
   treePopupHtml,
 } from './maputils'
 
-export const Map = () => {
+export const Map = ({ urlProjectId }) => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [_, setColorMode] = useColorMode()
   const [__, setMarkers] = useState([])
@@ -38,7 +40,7 @@ export const Map = () => {
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
-  const [activeProjectId, setActiveProjectId] = useState()
+  const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
@@ -98,6 +100,7 @@ export const Map = () => {
   // Fetch default project site
   useEffect(() => {
     if (activeProjectId) {
+      navigate(`/app/${activeProjectId}`)
       const fetchData = async () => {
         const projectPolygonCID = await fetchProjectInfo(
           activeProjectId,

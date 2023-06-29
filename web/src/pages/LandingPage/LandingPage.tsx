@@ -26,7 +26,13 @@ const LandingPage = () => {
         </div>
 
         <img
-          style={{ width: '50%' }}
+          alt={'Earth'}
+          style={{
+            width: '50%',
+            height: '50%',
+            marginTop: '24px',
+            marginRight: '24px',
+          }}
           src="https://gainforest-images.s3.eu-west-2.amazonaws.com/vidi/landing-earth.png"
         ></img>
       </div>

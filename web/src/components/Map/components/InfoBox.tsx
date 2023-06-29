@@ -21,7 +21,7 @@ export const InfoBox = ({
         backgroundColor: theme.colors.background as string,
         color: theme.colors.text as string,
         borderRadius: '0.5em',
-        overflowY: 'scroll',
+        overflowY: 'auto',
         ...style,
       }}
     >

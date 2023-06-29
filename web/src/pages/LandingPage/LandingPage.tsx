@@ -1,9 +1,15 @@
+import { useEffect } from 'react'
+
+import { navigate } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import RoundedButton from 'src/components/Map/components/RoundedButton'
 import Navbar from 'src/components/Navbar/Navbar'
 
 const LandingPage = () => {
+  useEffect(() => {
+    setTimeout(() => navigate('/app'), 2000)
+  }, [])
+
   return (
     <>
       <MetaTags title="Landing" description="Landing page" />
@@ -18,11 +24,6 @@ const LandingPage = () => {
           <p style={{ fontSize: '1.5em', margin: '48px 0px' }}>
             This is the challenge in front of us.
           </p>
-          <a href="/app">
-            <RoundedButton active={true} style={{ fontSize: '1.25em' }}>
-              Become a steward
-            </RoundedButton>
-          </a>
         </div>
 
         <img

@@ -201,7 +201,7 @@ export const addHexagonsSourceAndLayers = (
     console.log('hexagonGeoJsons', hexagonGeoJsons)
   }
   if (!map.getLayer('hexagonOutline')) {
-    map.addLayer(hexagonOutlineLayer('#00FF00'))
+    map.addLayer(hexagonOutlineLayer('#FFFFFF'))
   }
   if (!map.getLayer('hexagonHoverFill')) {
     map.addLayer(hexagonHoverFillLayer())

@@ -26,6 +26,7 @@
     "@emotion/react": "^11.11.0",
     "@turf/bbox": "^6.5.0",
     "@turf/center": "^6.5.0",
+    "@what3words/react-components": "^4.1.2",
     "dayjs": "^1.11.7",
     "geojson2h3": "^1.2.0",
     "h3-js": "^4.1.0",

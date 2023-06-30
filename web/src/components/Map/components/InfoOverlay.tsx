@@ -4,6 +4,7 @@ import { BiodiversityCard } from './BiodiversityCard'
 import { CommunityCard } from './CommunityCard'
 import { DiscordCard } from './DiscordCard'
 import { ExitProjectView } from './ExitProjectView'
+import { HexagonCard } from './HexagonCard'
 import { InfoOverlayButton } from './InfoOverlayButton'
 import { ProjectCard } from './ProjectCard'
 import { WildlifeCard } from './WildlifeCard'
@@ -19,6 +20,12 @@ export const InfoOverlay = ({
   return (
     <>
       <ExitProjectView setDisplayBox={setDisplayOverlay} />
+      <InfoOverlayButton
+        buttonIcon="hexagon"
+        position={6}
+        active={active == 6}
+        onClick={() => setActive(6)}
+      />
       <InfoOverlayButton
         buttonIcon={'forest'}
         position={1}
@@ -62,6 +69,7 @@ export const InfoOverlay = ({
       {active == 3 && <WildlifeCard activeProjectData={activeProjectData} />}
       {active == 4 && <CommunityCard activeProjectData={activeProjectData} />}
       {active == 5 && <DiscordCard activeProjectData={activeProjectData} />}
+      {active == 6 && <HexagonCard />}
     </>
   )
 }

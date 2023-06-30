@@ -12,6 +12,7 @@ import { WildlifeCard } from './WildlifeCard'
 export const InfoOverlay = ({
   activeProjectData,
   activeProjectPolygon,
+  clickedCoords,
   setDisplayOverlay,
   setActiveProjectPolygon,
 }) => {
@@ -69,7 +70,7 @@ export const InfoOverlay = ({
       {active == 3 && <WildlifeCard activeProjectData={activeProjectData} />}
       {active == 4 && <CommunityCard activeProjectData={activeProjectData} />}
       {active == 5 && <DiscordCard activeProjectData={activeProjectData} />}
-      {active == 6 && <HexagonCard />}
+      {active == 6 && <HexagonCard clickedCoords={clickedCoords} />}
     </>
   )
 }

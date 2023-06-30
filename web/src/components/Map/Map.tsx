@@ -40,11 +40,16 @@ export const Map = ({ urlProjectId }) => {
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
+  const [clickedCoords, setClickedCoords] = useState({
+    lat: undefined,
+    lon: undefined,
+  })
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
 
+  console.log(clickedCoords)
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
@@ -157,6 +162,16 @@ export const Map = ({ urlProjectId }) => {
     }
   }, [map, activeProjectTreesPlanted])
 
+  // Hexagon onclick
+  useEffect(() => {
+    if (map) {
+      map.on('click', 'hexagonHoverFill', (e) => {
+        const { lat, lng } = e.lngLat
+        setClickedCoords({ lat: lat, lon: lng })
+      })
+    }
+  }, [map, hexagons])
+
   // Remove layers when you exit the display overlay
   useEffect(() => {
     if (map && map.getLayer('unclusteredTrees')) {
@@ -236,6 +251,7 @@ export const Map = ({ urlProjectId }) => {
       {/* <BackToGlobe map={map} /> */}
       {displayOverlay && (
         <InfoOverlay
+          clickedCoords={clickedCoords}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}

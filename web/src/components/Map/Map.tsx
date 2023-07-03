@@ -36,7 +36,8 @@ export const Map = ({ urlProjectId }) => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [_, setColorMode] = useColorMode()
   const [__, setMarkers] = useState([])
-  const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
+  // The number of the overlay you want to display
+  const [displayOverlay, setDisplayOverlay] = useState<number | null>(null)
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
@@ -127,7 +128,7 @@ export const Map = ({ urlProjectId }) => {
       map.on('styledata', () => {
         map.getSource('project').setData(activeProjectPolygon)
       })
-      setDisplayOverlay(true)
+      setDisplayOverlay(1)
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
@@ -168,6 +169,7 @@ export const Map = ({ urlProjectId }) => {
       map.on('click', 'hexagonHoverFill', (e) => {
         const { lat, lng } = e.lngLat
         setClickedCoords({ lat: lat, lon: lng })
+        setDisplayOverlay(6)
       })
     }
   }, [map, hexagons])
@@ -182,7 +184,6 @@ export const Map = ({ urlProjectId }) => {
 
     if (map) {
       map.on('click', 'projectFill', () => {
-        setDisplayOverlay(!displayOverlay)
         toggleTreesPlantedLayer(map, 'visible')
       })
 
@@ -255,6 +256,7 @@ export const Map = ({ urlProjectId }) => {
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
+          displayOverlay={displayOverlay}
           setDisplayOverlay={setDisplayOverlay}
         />
       )}

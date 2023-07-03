@@ -56,7 +56,7 @@ export const addMarkers = (
 
     el.addEventListener('click', () => {
       setActiveProject(feature?.properties?.projectId)
-      setDisplayOverlay(true)
+      setDisplayOverlay(1)
       toggleTreesPlantedLayer(map, 'visible')
     })
 

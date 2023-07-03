@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { BiodiversityCard } from './BiodiversityCard'
 import { CommunityCard } from './CommunityCard'
 import { DiscordCard } from './DiscordCard'
@@ -13,10 +11,10 @@ export const InfoOverlay = ({
   activeProjectData,
   activeProjectPolygon,
   clickedCoords,
+  displayOverlay,
   setDisplayOverlay,
   setActiveProjectPolygon,
 }) => {
-  const [active, setActive] = useState<number>(1) // The currently active button
   // Position of the buttons go from left to right
   return (
     <>
@@ -24,53 +22,59 @@ export const InfoOverlay = ({
       <InfoOverlayButton
         buttonIcon="hexagon"
         position={6}
-        active={active == 6}
-        onClick={() => setActive(6)}
+        active={displayOverlay == 6}
+        onClick={() => setDisplayOverlay(6)}
       />
       <InfoOverlayButton
         buttonIcon={'forest'}
         position={1}
-        active={active == 1}
-        onClick={() => setActive(1)}
+        active={displayOverlay == 1}
+        onClick={() => setDisplayOverlay(1)}
       />
       <InfoOverlayButton
         buttonIcon={'pets'}
         position={2}
-        active={active == 2}
-        onClick={() => setActive(2)}
+        active={displayOverlay == 2}
+        onClick={() => setDisplayOverlay(2)}
       />
       <InfoOverlayButton
         buttonIcon={'photo'}
         position={3}
-        active={active == 3}
-        onClick={() => setActive(3)}
+        active={displayOverlay == 3}
+        onClick={() => setDisplayOverlay(3)}
       />
       <InfoOverlayButton
         buttonIcon={'emoji_people'}
         position={4}
-        active={active == 4}
-        onClick={() => setActive(4)}
+        active={displayOverlay == 4}
+        onClick={() => setDisplayOverlay(4)}
       />
       <InfoOverlayButton
         buttonIcon={'chat'}
         position={5}
-        active={active == 5}
-        onClick={() => setActive(5)}
+        active={displayOverlay == 5}
+        onClick={() => setDisplayOverlay(5)}
       />
-      {active == 1 && (
+      {displayOverlay == 1 && (
         <ProjectCard
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
         />
       )}
-      {active == 2 && (
+      {displayOverlay == 2 && (
         <BiodiversityCard activeProjectData={activeProjectData} />
       )}
-      {active == 3 && <WildlifeCard activeProjectData={activeProjectData} />}
-      {active == 4 && <CommunityCard activeProjectData={activeProjectData} />}
-      {active == 5 && <DiscordCard activeProjectData={activeProjectData} />}
-      {active == 6 && <HexagonCard clickedCoords={clickedCoords} />}
+      {displayOverlay == 3 && (
+        <WildlifeCard activeProjectData={activeProjectData} />
+      )}
+      {displayOverlay == 4 && (
+        <CommunityCard activeProjectData={activeProjectData} />
+      )}
+      {displayOverlay == 5 && (
+        <DiscordCard activeProjectData={activeProjectData} />
+      )}
+      {displayOverlay == 6 && <HexagonCard clickedCoords={clickedCoords} />}
     </>
   )
 }

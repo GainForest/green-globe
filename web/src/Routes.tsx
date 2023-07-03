@@ -14,6 +14,7 @@ import { useAuth } from './auth'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
+      <Route path="/auth" page={AuthPage} name="auth" />
       <Route path="/" page={LandingPage} name="landing" />
       <Route path="/app/{urlProjectId:Int}" page={MapPage} name="map" />
       <Route path="/app" page={MapPage} name="map" />

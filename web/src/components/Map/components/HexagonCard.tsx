@@ -5,7 +5,7 @@ import { InfoBox } from './InfoBox'
 
 export const fetchWhatThreeWords = async (clickedCoords, setWhatThreeWords) => {
   fetch(
-    `https://api.what3words.com/v3/convert-to-3wa?coordinates=${clickedCoords.lat}%2C-${clickedCoords.lon}&key=${process.env.WHAT3WORDS}`
+    `https://api.what3words.com/v3/convert-to-3wa?coordinates=${clickedCoords.lat}%2C${clickedCoords.lon}&key=${process.env.WHAT3WORDS}`
   )
     .then((res) => res.json())
     .then((response) => setWhatThreeWords(response.words))
@@ -21,7 +21,7 @@ export const HexagonCard = ({ clickedCoords }) => {
   return (
     <InfoBox>
       <br />
-      <p>{whatThreeWords}</p>
+      <p style={{ color: '#FFFFFF' }}>{whatThreeWords}</p>
 
       <video
         width="200"

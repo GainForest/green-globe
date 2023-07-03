@@ -8,16 +8,20 @@ import Routes from 'src/Routes'
 
 import { theme } from './theme'
 
+import { AuthProvider, useAuth } from './auth'
+
 import './index.css'
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%AppTitle">
-      <RedwoodApolloProvider>
-        <ThemeProvider theme={theme}>
-          <Routes />
-        </ThemeProvider>
-      </RedwoodApolloProvider>
+      <AuthProvider>
+        <RedwoodApolloProvider useAuth={useAuth}>
+          <ThemeProvider theme={theme}>
+            <Routes />
+          </ThemeProvider>
+        </RedwoodApolloProvider>
+      </AuthProvider>
     </RedwoodProvider>
   </FatalErrorBoundary>
 )

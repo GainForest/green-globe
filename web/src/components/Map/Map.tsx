@@ -170,6 +170,11 @@ export const Map = ({ urlProjectId }) => {
         const { lat, lng } = e.lngLat
         setClickedCoords({ lat: lat, lon: lng })
         setDisplayOverlay(6)
+        const hoveredHexagonId = e.features[0]?.id
+        map.setFeatureState(
+          { source: 'hexagons', id: hoveredHexagonId },
+          { clicked: true }
+        )
       })
     }
   }, [map, hexagons])
@@ -214,10 +219,15 @@ export const Map = ({ urlProjectId }) => {
       map.on('mousemove', 'hexagonHoverFill', (e) => {
         if (e.features.length > 0) {
           if (hoveredHexagonId !== null) {
-            map.setFeatureState(
-              { source: 'hexagons', id: hoveredHexagonId },
-              { hover: false }
-            )
+            if (
+              map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
+                ?.clicked !== true
+            ) {
+              map.setFeatureState(
+                { source: 'hexagons', id: hoveredHexagonId },
+                { hover: false }
+              )
+            }
           }
           hoveredHexagonId = e.features[0]?.id
           map.setFeatureState(

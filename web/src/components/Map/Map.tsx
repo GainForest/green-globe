@@ -166,15 +166,29 @@ export const Map = ({ urlProjectId }) => {
   // Hexagon onclick
   useEffect(() => {
     if (map) {
+      const clickedHexagonIds = []
       map.on('click', 'hexagonHoverFill', (e) => {
         const { lat, lng } = e.lngLat
         setClickedCoords({ lat: lat, lon: lng })
+        console.log('bruh')
         setDisplayOverlay(6)
         const hoveredHexagonId = e.features[0]?.id
+        clickedHexagonIds.push(hoveredHexagonId)
+
         map.setFeatureState(
           { source: 'hexagons', id: hoveredHexagonId },
           { clicked: true }
         )
+
+        if (
+          clickedHexagonIds.length &&
+          clickedHexagonIds.find(hoveredHexagonId)
+        ) {
+          map.setFeatureState(
+            { source: 'hexagons', id: hoveredHexagonId },
+            { clicked: false, hovered: false }
+          )
+        }
       })
     }
   }, [map, hexagons])

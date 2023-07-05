@@ -12,9 +12,9 @@ export const fetchWhatThreeWords = async (clickedCoords, setWhatThreeWords) => {
     .then((response) => setWhatThreeWords(response.words))
 }
 
-export const HexagonCard = ({ clickedCoords, clickedHexagonIds }) => {
+export const HexagonCard = ({ clickedCoords, numHexagons }) => {
   const [whatThreeWords, setWhatThreeWords] = useState(undefined)
-  const numPlots = clickedHexagonIds?.length || 0
+  const numPlots = numHexagons.current
 
   useEffect(() => {
     fetchWhatThreeWords(clickedCoords, setWhatThreeWords)
@@ -71,7 +71,8 @@ export const HexagonCard = ({ clickedCoords, clickedHexagonIds }) => {
           {whatThreeWords}
         </p>
         <RoundedButton>
-          Add {numPlots} plot{numPlots > 1 ? 's' : ''} to my ecosytems
+          Add {numPlots > 1 ? numPlots : ''} plot{numPlots > 1 ? 's' : ''} to my
+          ecosytems
         </RoundedButton>
       </div>
     </InfoBox>

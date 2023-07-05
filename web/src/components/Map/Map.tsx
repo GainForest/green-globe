@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -50,6 +50,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
+  const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
@@ -179,11 +180,13 @@ export const Map = ({ urlProjectId }) => {
             { source: 'hexagons', id: hoveredHexagonId },
             { clicked: false }
           )
+          numHexagons.current = numHexagons.current - 1
         } else {
           map.setFeatureState(
             { source: 'hexagons', id: hoveredHexagonId },
             { clicked: true }
           )
+          numHexagons.current = numHexagons.current + 1
         }
       })
     }
@@ -269,7 +272,7 @@ export const Map = ({ urlProjectId }) => {
       {displayOverlay && (
         <InfoOverlay
           clickedCoords={clickedCoords}
-          clickedHexagonIds={[]}
+          numHexagons={numHexagons}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}

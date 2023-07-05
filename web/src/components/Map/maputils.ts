@@ -6,6 +6,7 @@ import {
   clusteredTreesLayer,
   generatePlanetLayer,
   generatePlanetSource,
+  hexagonClickFillLayer,
   hexagonHoverFillLayer,
   hexagonOutlineLayer,
   hexagonsSource,
@@ -199,11 +200,14 @@ export const addHexagonsSourceAndLayers = (
   if (!map.getSource('hexagons')) {
     map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
   }
-  if (!map.getLayer('hexagonOutline')) {
-    map.addLayer(hexagonOutlineLayer('#FFFFFF'))
+  if (!map.getLayer('hexagonClickFill')) {
+    map.addLayer(hexagonClickFillLayer())
   }
   if (!map.getLayer('hexagonHoverFill')) {
     map.addLayer(hexagonHoverFillLayer())
+  }
+  if (!map.getLayer('hexagonOutline')) {
+    map.addLayer(hexagonOutlineLayer('#FFFFFF'))
   }
 }
 

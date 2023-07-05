@@ -11,6 +11,7 @@ export const InfoOverlay = ({
   activeProjectData,
   activeProjectPolygon,
   clickedCoords,
+  clickedHexagonIds,
   displayOverlay,
   setDisplayOverlay,
   setActiveProjectPolygon,
@@ -74,7 +75,12 @@ export const InfoOverlay = ({
       {displayOverlay == 5 && (
         <DiscordCard activeProjectData={activeProjectData} />
       )}
-      {displayOverlay == 6 && <HexagonCard clickedCoords={clickedCoords} />}
+      {displayOverlay == 6 && (
+        <HexagonCard
+          clickedCoords={clickedCoords}
+          clickedHexagonIds={clickedHexagonIds}
+        />
+      )}
     </>
   )
 }

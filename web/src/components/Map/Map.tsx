@@ -10,6 +10,7 @@ import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
 
+import CheckoutButton from './components/CheckoutButton'
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
@@ -169,24 +170,27 @@ export const Map = ({ urlProjectId }) => {
       const clickedHexagonIds = []
       map.on('click', 'hexagonHoverFill', (e) => {
         const { lat, lng } = e.lngLat
-        setClickedCoords({ lat: lat, lon: lng })
-        console.log('bruh')
+        setClickedCoords({ lat, lon: lng })
         setDisplayOverlay(6)
         const hoveredHexagonId = e.features[0]?.id
-        clickedHexagonIds.push(hoveredHexagonId)
-
-        map.setFeatureState(
-          { source: 'hexagons', id: hoveredHexagonId },
-          { clicked: true }
-        )
-
         if (
           clickedHexagonIds.length &&
-          clickedHexagonIds.find(hoveredHexagonId)
+          clickedHexagonIds.findIndex((id) => id == hoveredHexagonId) >= 0
         ) {
           map.setFeatureState(
             { source: 'hexagons', id: hoveredHexagonId },
             { clicked: false, hovered: false }
+          )
+          // clickedHexagonIds = clickedHexagonIds.filter(
+          //   (d) => d !== hoveredHexagonId
+          // )
+        } else {
+          clickedHexagonIds.push(hoveredHexagonId)
+          console.log('clicked hexagon ids', clickedHexagonIds)
+
+          map.setFeatureState(
+            { source: 'hexagons', id: hoveredHexagonId },
+            { clicked: true, hovered: true }
           )
         }
       })
@@ -266,6 +270,7 @@ export const Map = ({ urlProjectId }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
+      <CheckoutButton></CheckoutButton>
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay
           map={map}

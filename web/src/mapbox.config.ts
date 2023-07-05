@@ -77,9 +77,9 @@ export const hexagonHoverFillLayer = () => ({
     'fill-color': '#627BC1',
     'fill-opacity': [
       'case',
-      ['boolean', ['feature-state', 'hover'], false],
+      ['boolean', ['feature-state', 'clicked'], false],
       1,
-      0.5,
+      0.2,
     ],
   },
 })

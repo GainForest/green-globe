@@ -46,13 +46,12 @@ export const Map = ({ urlProjectId }) => {
     lat: undefined,
     lon: undefined,
   })
-  const [clickedHexagonIds, setClickedHexagonIds] = useState([])
+  const [numClickedHexagons, setNumClickedHexagons] = useState([])
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
 
-  console.log(clickedCoords)
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
@@ -174,27 +173,22 @@ export const Map = ({ urlProjectId }) => {
         setDisplayOverlay(6)
         const hoveredHexagonId = e.features[0]?.id
         if (
-          clickedHexagonIds.length &&
-          clickedHexagonIds.findIndex((id) => id == hoveredHexagonId) >= 0
+          map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
+            ?.clicked
         ) {
           map.setFeatureState(
             { source: 'hexagons', id: hoveredHexagonId },
-            { clicked: false, hovered: false }
+            { clicked: false }
           )
-          // clickedHexagonIds = clickedHexagonIds.filter(
-          //   (d) => d !== hoveredHexagonId
-          // )
         } else {
-          setClickedHexagonIds([...clickedHexagonIds, hoveredHexagonId])
-
           map.setFeatureState(
             { source: 'hexagons', id: hoveredHexagonId },
-            { clicked: true, hovered: true }
+            { clicked: true }
           )
         }
       })
     }
-  }, [map, hexagons, clickedHexagonIds])
+  }, [map, hexagons])
 
   // Remove layers when you exit the display overlay
   useEffect(() => {
@@ -281,7 +275,7 @@ export const Map = ({ urlProjectId }) => {
       {displayOverlay && (
         <InfoOverlay
           clickedCoords={clickedCoords}
-          clickedHexagonIds={clickedHexagonIds}
+          clickedHexagonIds={[]}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}

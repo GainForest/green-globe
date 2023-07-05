@@ -72,7 +72,7 @@ export const HexagonCard = ({ clickedCoords, numHexagons }) => {
         </p>
         <RoundedButton>
           Add {numPlots > 1 ? numPlots : ''} plot{numPlots > 1 ? 's' : ''} to my
-          ecosytems
+          ecosytem
         </RoundedButton>
       </div>
     </InfoBox>

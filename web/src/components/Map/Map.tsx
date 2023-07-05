@@ -10,6 +10,7 @@ import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
 
+import { BasketDetails } from './components/BasketDetails'
 import CheckoutButton from './components/CheckoutButton'
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
@@ -50,6 +51,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
+  const [showBasket, setShowBasket] = useState(false)
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -260,7 +262,8 @@ export const Map = ({ urlProjectId }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <CheckoutButton></CheckoutButton>
+      <CheckoutButton onClick={() => setShowBasket(true)}></CheckoutButton>
+      <BasketDetails showBasket={showBasket} setShowBasket={setShowBasket} />
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay
           map={map}
@@ -273,6 +276,7 @@ export const Map = ({ urlProjectId }) => {
         <InfoOverlay
           clickedCoords={clickedCoords}
           numHexagons={numHexagons}
+          setShowBasket={setShowBasket}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}

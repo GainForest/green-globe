@@ -12,7 +12,7 @@ export const fetchWhatThreeWords = async (clickedCoords, setWhatThreeWords) => {
     .then((response) => setWhatThreeWords(response.words))
 }
 
-export const HexagonCard = ({ clickedCoords, numHexagons }) => {
+export const HexagonCard = ({ clickedCoords, numHexagons, setShowBasket }) => {
   const [whatThreeWords, setWhatThreeWords] = useState(undefined)
   const numPlots = numHexagons.current
 
@@ -70,7 +70,7 @@ export const HexagonCard = ({ clickedCoords, numHexagons }) => {
           <span style={{ color: '#E11F26' }}>{'/// '}</span>
           {whatThreeWords}
         </p>
-        <RoundedButton>
+        <RoundedButton onClick={() => setShowBasket(true)}>
           Add {numPlots > 1 ? numPlots : ''} plot{numPlots > 1 ? 's' : ''} to my
           ecosytem
         </RoundedButton>

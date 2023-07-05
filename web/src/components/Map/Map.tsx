@@ -46,7 +46,6 @@ export const Map = ({ urlProjectId }) => {
     lat: undefined,
     lon: undefined,
   })
-  const [numClickedHexagons, setNumClickedHexagons] = useState([])
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -188,7 +187,7 @@ export const Map = ({ urlProjectId }) => {
         }
       })
     }
-  }, [map, hexagons])
+  }, [map])
 
   // Remove layers when you exit the display overlay
   useEffect(() => {
@@ -230,15 +229,10 @@ export const Map = ({ urlProjectId }) => {
       map.on('mousemove', 'hexagonHoverFill', (e) => {
         if (e.features.length > 0) {
           if (hoveredHexagonId !== null) {
-            if (
-              map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
-                ?.clicked !== true
-            ) {
-              map.setFeatureState(
-                { source: 'hexagons', id: hoveredHexagonId },
-                { hover: false }
-              )
-            }
+            map.setFeatureState(
+              { source: 'hexagons', id: hoveredHexagonId },
+              { hover: false }
+            )
           }
           hoveredHexagonId = e.features[0]?.id
           map.setFeatureState(

@@ -74,6 +74,7 @@ const HexagonEcosystem = () => {
 }
 
 const EcosystemInfo = () => {
+  const numHexagons = useSelector((state: State) => state.shop.basket)
   return (
     <div style={{ width: '180px', padding: '8px 16px' }}>
       <h3
@@ -106,7 +107,7 @@ const EcosystemInfo = () => {
           justifyContent: 'space-around',
         }}
       >
-        <span style={{ margin: '0px 12px' }}>14</span>
+        <span style={{ margin: '0px 12px' }}>{numHexagons}</span>
         <span style={{ cursor: 'pointer' }}>
           <TrashCanSvg />
         </span>
@@ -116,12 +117,14 @@ const EcosystemInfo = () => {
 }
 
 const Overview = () => {
+  const numHexagons = useSelector((state: State) => state.shop.basket) * 10
+
   return (
     <div>
       <h2>Overview</h2>
       <p style={{ display: 'flex', justifyContent: 'space-between' }}>
         Total
-        <span style={{ right: '4px' }}>$70,00</span>
+        <span style={{ right: '4px' }}>${numHexagons},00 </span>
       </p>
     </div>
   )

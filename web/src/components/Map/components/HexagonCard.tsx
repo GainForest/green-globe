@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { useDispatch } from 'react-redux'
 
+import { showBasket } from 'src/reducers/overlaysReducer'
 import { incrementBasketByAmount } from 'src/reducers/shopReducer'
 
 import { InfoBox } from './InfoBox'
@@ -16,7 +17,7 @@ export const fetchWhatThreeWords = async (clickedCoords, setWhatThreeWords) => {
     .then((response) => setWhatThreeWords(response.words))
 }
 
-export const HexagonCard = ({ clickedCoords, numHexagons, setShowBasket }) => {
+export const HexagonCard = ({ clickedCoords, numHexagons }) => {
   const [whatThreeWords, setWhatThreeWords] = useState(undefined)
   const numPlots = numHexagons.current
   const dispatch = useDispatch()
@@ -77,7 +78,7 @@ export const HexagonCard = ({ clickedCoords, numHexagons, setShowBasket }) => {
         </p>
         <RoundedButton
           onClick={() => {
-            setShowBasket(true)
+            dispatch(showBasket())
             dispatch(incrementBasketByAmount(numPlots))
           }}
         >

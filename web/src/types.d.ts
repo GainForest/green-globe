@@ -2,6 +2,9 @@ interface State {
   shop: {
     basket: number
   }
+  overlays: {
+    basket: boolean
+  }
 }
 
 // Not the complete interface

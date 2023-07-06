@@ -4,11 +4,13 @@ import { useEffect, useState, useRef } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
+import { useDispatch } from 'react-redux'
 import { useColorMode } from 'theme-ui'
 
 import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
+import { showBasket } from 'src/reducers/overlaysReducer'
 
 import { BasketDetails } from './components/BasketDetails'
 import CheckoutButton from './components/CheckoutButton'
@@ -35,6 +37,8 @@ import {
 } from './maputils'
 
 export const Map = ({ urlProjectId }) => {
+  const dispatch = useDispatch()
+
   const [map, setMap] = useState<mapboxgl.Map>()
   const [_, setColorMode] = useColorMode()
   const [__, setMarkers] = useState([])
@@ -51,7 +55,6 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
-  const [showBasket, setShowBasket] = useState(false)
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -262,8 +265,8 @@ export const Map = ({ urlProjectId }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <CheckoutButton onClick={() => setShowBasket(true)}></CheckoutButton>
-      <BasketDetails showBasket={showBasket} setShowBasket={setShowBasket} />
+      <CheckoutButton onClick={() => dispatch(showBasket())}></CheckoutButton>
+      <BasketDetails />
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay
           map={map}
@@ -276,7 +279,6 @@ export const Map = ({ urlProjectId }) => {
         <InfoOverlay
           clickedCoords={clickedCoords}
           numHexagons={numHexagons}
-          setShowBasket={setShowBasket}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}

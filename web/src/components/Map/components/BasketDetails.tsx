@@ -1,6 +1,13 @@
+import { useDispatch, useSelector } from 'react-redux'
+
+import { hideBasket } from 'src/reducers/overlaysReducer'
+
 import RoundedButton from './RoundedButton'
 
-export const BasketDetails = ({ showBasket, setShowBasket }) => {
+export const BasketDetails = () => {
+  const dispatch = useDispatch()
+  const showBasket = useSelector((state: State) => state.overlays.basket)
+
   return (
     <div
       style={{
@@ -30,7 +37,7 @@ export const BasketDetails = ({ showBasket, setShowBasket }) => {
             cursor: 'pointer',
           }}
           className="material-icons-round"
-          onClick={() => setShowBasket(false)}
+          onClick={() => dispatch(hideBasket())}
         >
           close
         </div>

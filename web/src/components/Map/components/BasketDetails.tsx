@@ -7,30 +7,31 @@ export const BasketDetails = ({ showBasket, setShowBasket }) => {
         position: 'absolute',
         height: '100vh',
         width: showBasket ? '400px' : '0px',
-        right: '2px',
-        top: '2px',
+        right: '0px',
+        top: '0px',
         backgroundColor: '#ffffff',
         zIndex: 2,
         padding: showBasket ? '24px 32px' : '0px',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h2 style={{ margin: '0' }}>Your ecosystem cart</h2>
-        <button
-          style={{ cursor: 'pointer' }}
+      <div style={{ display: 'flex', alignContent: 'center' }}>
+        <h1 style={{ margin: '0' }}>Your ecosystem cart</h1>
+        <div
+          style={{
+            fontSize: '24px',
+            lineHeight: '36px',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+          }}
+          className="material-icons-round"
           onClick={() => setShowBasket(false)}
         >
-          {' '}
-          X{' '}
-        </button>
+          close
+        </div>
       </div>
       <HexagonInBasket />
-      <stripe-pricing-table
-        pricing-table-id="prctbl_1NQoWrBafHP3GmlVakwHeln3"
-        publishable-key="pk_live_JY35Ae8oRnMR2C31UeAblzQS003GG5l6tq"
-      ></stripe-pricing-table>
-      <RoundedButton style={{ width: '100%' }}> Purchase plots </RoundedButton>
       <Overview></Overview>
+      <RoundedButton style={{ width: '100%' }}> Purchase plots </RoundedButton>
     </div>
   )
 }
@@ -80,7 +81,7 @@ const EcosystemInfo = () => {
 const Overview = () => {
   return (
     <div>
-      <h1>Overview</h1>
+      <h2>Overview</h2>
       <p>Total</p>
     </div>
   )

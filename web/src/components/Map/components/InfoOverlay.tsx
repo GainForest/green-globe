@@ -1,7 +1,7 @@
 import { BiodiversityCard } from './BiodiversityCard'
 import { CommunityCard } from './CommunityCard'
 import { DiscordCard } from './DiscordCard'
-import { ExitProjectView } from './ExitProjectView'
+import { ExitButton } from './ExitButton'
 import { HexagonCard } from './HexagonCard'
 import { InfoOverlayButton } from './InfoOverlayButton'
 import { ProjectCard } from './ProjectCard'
@@ -20,7 +20,10 @@ export const InfoOverlay = ({
   // Position of the buttons go from left to right
   return (
     <>
-      <ExitProjectView setDisplayBox={setDisplayOverlay} />
+      <ExitButton
+        style={{ left: 320, bottom: 486 }}
+        onClick={() => setDisplayOverlay(false)}
+      />
       <InfoOverlayButton
         buttonIcon="hexagon"
         position={6}

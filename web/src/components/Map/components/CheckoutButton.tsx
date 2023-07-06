@@ -1,4 +1,7 @@
-const CheckoutButton = ({ onClick, numBasket }) => {
+import { useSelector } from 'react-redux'
+
+const CheckoutButton = ({ onClick }) => {
+  const count = useSelector((state: State) => state.shop.basket)
   return (
     <>
       <div
@@ -34,7 +37,7 @@ const CheckoutButton = ({ onClick, numBasket }) => {
           textAlign: 'center',
         }}
       >
-        2
+        {count}
       </div>
     </>
   )

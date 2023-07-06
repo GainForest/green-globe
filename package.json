@@ -25,6 +25,7 @@
   "packageManager": "yarn@3.4.1",
   "dependencies": {
     "@emotion/react": "^11.11.0",
+    "@reduxjs/toolkit": "^1.9.5",
     "@turf/bbox": "^6.5.0",
     "@turf/center": "^6.5.0",
     "@what3words/react-components": "^4.1.2",
@@ -33,6 +34,7 @@
     "h3-js": "^4.1.0",
     "mapbox-gl": "^2.13.0",
     "react-loading-skeleton": "^3.2.0",
+    "react-redux": "^8.1.1",
     "styled-components": "^5.3.9",
     "theme-ui": "^0.15.7",
     "web": "workspace:^",

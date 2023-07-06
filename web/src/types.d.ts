@@ -1,3 +1,9 @@
+interface State {
+  shop: {
+    basket: number
+  }
+}
+
 // Not the complete interface
 
 interface Asset {

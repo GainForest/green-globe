@@ -1,6 +1,10 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
+import { useDispatch } from 'react-redux'
+
+import { incrementBasketByAmount } from 'src/reducers/shopReducer'
+
 import { InfoBox } from './InfoBox'
 import RoundedButton from './RoundedButton'
 
@@ -15,6 +19,7 @@ export const fetchWhatThreeWords = async (clickedCoords, setWhatThreeWords) => {
 export const HexagonCard = ({ clickedCoords, numHexagons, setShowBasket }) => {
   const [whatThreeWords, setWhatThreeWords] = useState(undefined)
   const numPlots = numHexagons.current
+  const dispatch = useDispatch()
 
   useEffect(() => {
     fetchWhatThreeWords(clickedCoords, setWhatThreeWords)
@@ -70,7 +75,12 @@ export const HexagonCard = ({ clickedCoords, numHexagons, setShowBasket }) => {
           <span style={{ color: '#E11F26' }}>{'/// '}</span>
           {whatThreeWords}
         </p>
-        <RoundedButton onClick={() => setShowBasket(true)}>
+        <RoundedButton
+          onClick={() => {
+            setShowBasket(true)
+            dispatch(incrementBasketByAmount(numPlots))
+          }}
+        >
           Add {numPlots > 1 ? numPlots : ''} plot{numPlots > 1 ? 's' : ''} to my
           ecosytem
         </RoundedButton>

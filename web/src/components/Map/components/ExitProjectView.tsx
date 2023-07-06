@@ -9,17 +9,15 @@ export const ExitProjectView = ({
     <UnstyledButton
       style={{
         zIndex: 2,
-        height: '32px',
-        width: '32px',
-        left: 324,
-        bottom: 492,
-        boxShadow:
-          '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)',
+        height: '36px',
+        width: '36px',
+        left: 320,
+        bottom: 486,
       }}
       onClick={() => setDisplayBox(false)}
     >
       <span
-        style={{ fontSize: '20px', lineHeight: '32px' }}
+        style={{ fontSize: '24px', lineHeight: '36px' }}
         className="material-icons-round"
       >
         close

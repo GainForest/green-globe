@@ -25,12 +25,12 @@ export const BasketDetails = ({ showBasket, setShowBasket }) => {
         </button>
       </div>
       <HexagonInBasket />
-
       <stripe-pricing-table
         pricing-table-id="prctbl_1NQoWrBafHP3GmlVakwHeln3"
         publishable-key="pk_live_JY35Ae8oRnMR2C31UeAblzQS003GG5l6tq"
       ></stripe-pricing-table>
       <RoundedButton style={{ width: '100%' }}> Purchase plots </RoundedButton>
+      <Overview></Overview>
     </div>
   )
 }
@@ -73,6 +73,15 @@ const EcosystemInfo = () => {
       <h1 style={{ fontSize: '14px', margin: '0' }}>
         Defensores del Chaco, Paraguay
       </h1>
+    </div>
+  )
+}
+
+const Overview = () => {
+  return (
+    <div>
+      <h1>Overview</h1>
+      <p>Total</p>
     </div>
   )
 }

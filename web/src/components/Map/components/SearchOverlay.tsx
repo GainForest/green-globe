@@ -104,8 +104,8 @@ const SearchInputBox = styled.input<{ theme }>`
   width: 360px;
   position: absolute;
   padding: 8px 12px;
-  top: 8px;
-  left: 8px;
+  top: 0px;
+  left: 100px;
   color: ${(props) => props.theme.colors.text};
   background-color: ${(props) => props.theme.colors.background};
   font-size: 0.875rem;
@@ -117,7 +117,7 @@ const SearchIcon = styled.span`
   font-size: 1.125rem;
   line-height: 1.125rem;
   position: absolute;
-  top: 20px;
+  top: 48x;
   left: 330px;
   color: #5f6369;
 `

@@ -41,7 +41,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
 const TreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
-  const imageSrc = 'treeCoverDark.png'
+  const imageSrc = '/treeCoverDark.png'
 
   // Retain tree cover layer state when the map changes
   useEffect(() => {
@@ -87,7 +87,7 @@ const TreeCoverBox = ({ map }) => {
 
 const LandCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const imageSrc = 'landCover.png'
+  const imageSrc = '/landCover.png'
 
   // Retain land cover layer state when the map changes
   useEffect(() => {
@@ -137,7 +137,7 @@ const LightDarkModeBox = ({ map }) => {
 
   const oppositeTheme = theme == 'light' ? 'dark' : 'light'
 
-  const imageSrc = theme == 'light' ? 'darkMode.png' : 'lightMode.png'
+  const imageSrc = theme == 'light' ? '/darkMode.png' : '/lightMode.png'
   return (
     <div
       style={{

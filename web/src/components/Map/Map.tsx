@@ -262,7 +262,10 @@ export const Map = ({ urlProjectId }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <CheckoutButton onClick={() => setShowBasket(true)}></CheckoutButton>
+      <CheckoutButton
+        onClick={() => setShowBasket(true)}
+        numHexagons={numHexagons}
+      ></CheckoutButton>
       <BasketDetails showBasket={showBasket} setShowBasket={setShowBasket} />
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay

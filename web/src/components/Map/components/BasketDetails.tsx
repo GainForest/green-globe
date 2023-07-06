@@ -14,7 +14,13 @@ export const BasketDetails = ({ showBasket, setShowBasket }) => {
         padding: showBasket ? '24px 32px' : '0px',
       }}
     >
-      <div style={{ display: 'flex', alignContent: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignContent: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <h1 style={{ margin: '0' }}>Your ecosystem cart</h1>
         <div
           style={{

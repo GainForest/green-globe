@@ -1,6 +1,6 @@
 import { useThemeUI } from 'theme-ui'
 
-const CheckoutButton = ({ active = true, children, onClick, style }) => {
+const CheckoutButton = ({ active = true, onClick, numHexagons }) => {
   const { theme } = useThemeUI()
 
   const backgroundColor = (
@@ -19,7 +19,7 @@ const CheckoutButton = ({ active = true, children, onClick, style }) => {
       }}
       onClick={onClick}
     >
-      {children}
+      {numHexagons.current}
     </button>
   )
 }

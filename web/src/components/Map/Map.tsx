@@ -53,7 +53,6 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [showBasket, setShowBasket] = useState(false)
   const numHexagons = useRef(0)
-  const numBasket = useRef(0)
 
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
@@ -263,10 +262,7 @@ export const Map = ({ urlProjectId }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <CheckoutButton
-        onClick={() => setShowBasket(true)}
-        numHexagons={numHexagons}
-      ></CheckoutButton>
+      <CheckoutButton onClick={() => setShowBasket(true)}></CheckoutButton>
       <BasketDetails showBasket={showBasket} setShowBasket={setShowBasket} />
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay

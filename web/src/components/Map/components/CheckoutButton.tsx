@@ -9,7 +9,7 @@ const CheckoutButton = ({ onClick }) => {
           position: 'absolute',
           right: '48px',
           top: '12px',
-          height: '20px',
+          height: '25px',
           width: '20px',
           borderRadius: '4px',
           cursor: 'pointer',
@@ -26,15 +26,16 @@ const CheckoutButton = ({ onClick }) => {
       <div
         style={{
           borderRadius: '50%',
-          height: '14px',
-          width: '14px',
+          height: '16px',
+          width: '16px',
           position: 'absolute',
-          right: '36px',
+          right: '34px',
           top: '8px',
           backgroundColor: '#F6A000',
           color: '#ffffff',
-          fontSize: '12px',
+          fontSize: '10px',
           textAlign: 'center',
+          paddingTop: '2px',
         }}
       >
         {count}

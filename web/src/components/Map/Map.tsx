@@ -53,6 +53,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [showBasket, setShowBasket] = useState(false)
   const numHexagons = useRef(0)
+  const numBasket = useRef(0)
 
   // Fetch all prerequisite data for map initialization
   useEffect(() => {

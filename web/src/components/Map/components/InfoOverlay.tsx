@@ -1,3 +1,7 @@
+import { useDispatch, useSelector } from 'react-redux'
+
+import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
+
 import { BiodiversityCard } from './BiodiversityCard'
 import { CommunityCard } from './CommunityCard'
 import { DiscordCard } from './DiscordCard'
@@ -12,73 +16,73 @@ export const InfoOverlay = ({
   activeProjectPolygon,
   clickedCoords,
   numHexagons,
-  displayOverlay,
-  setDisplayOverlay,
   setActiveProjectPolygon,
 }) => {
+  const dispatch = useDispatch()
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
   return (
     <>
       <ExitButton
         style={{ left: 320, bottom: 486 }}
-        onClick={() => setDisplayOverlay(false)}
+        onClick={() => dispatch(hideInfoOverlay())}
       />
       <InfoOverlayButton
         buttonIcon="hexagon"
         position={6}
-        active={displayOverlay == 6}
-        onClick={() => setDisplayOverlay(6)}
+        active={infoOverlay == 6}
+        onClick={() => dispatch(setInfoOverlay(6))}
       />
       <InfoOverlayButton
         buttonIcon={'forest'}
         position={1}
-        active={displayOverlay == 1}
-        onClick={() => setDisplayOverlay(1)}
+        active={infoOverlay == 1}
+        onClick={() => dispatch(setInfoOverlay(1))}
       />
       <InfoOverlayButton
         buttonIcon={'pets'}
         position={2}
-        active={displayOverlay == 2}
-        onClick={() => setDisplayOverlay(2)}
+        active={infoOverlay == 2}
+        onClick={() => dispatch(setInfoOverlay(2))}
       />
       <InfoOverlayButton
         buttonIcon={'photo'}
         position={3}
-        active={displayOverlay == 3}
-        onClick={() => setDisplayOverlay(3)}
+        active={infoOverlay == 3}
+        onClick={() => dispatch(setInfoOverlay(3))}
       />
       <InfoOverlayButton
         buttonIcon={'emoji_people'}
         position={4}
-        active={displayOverlay == 4}
-        onClick={() => setDisplayOverlay(4)}
+        active={infoOverlay == 4}
+        onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
         buttonIcon={'chat'}
         position={5}
-        active={displayOverlay == 5}
-        onClick={() => setDisplayOverlay(5)}
+        active={infoOverlay == 5}
+        onClick={() => dispatch(setInfoOverlay(5))}
       />
-      {displayOverlay == 1 && (
+      {infoOverlay == 1 && (
         <ProjectCard
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
         />
       )}
-      {displayOverlay == 2 && (
+      {infoOverlay == 2 && (
         <BiodiversityCard activeProjectData={activeProjectData} />
       )}
-      {displayOverlay == 3 && (
+      {infoOverlay == 3 && (
         <WildlifeCard activeProjectData={activeProjectData} />
       )}
-      {displayOverlay == 4 && (
+      {infoOverlay == 4 && (
         <CommunityCard activeProjectData={activeProjectData} />
       )}
-      {displayOverlay == 5 && (
+      {infoOverlay == 5 && (
         <DiscordCard activeProjectData={activeProjectData} />
       )}
-      {displayOverlay == 6 && (
+      {infoOverlay == 6 && (
         <HexagonCard clickedCoords={clickedCoords} numHexagons={numHexagons} />
       )}
     </>

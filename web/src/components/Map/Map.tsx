@@ -4,13 +4,13 @@ import { useEffect, useState, useRef } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useColorMode } from 'theme-ui'
 
 import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
-import { showBasket } from 'src/reducers/overlaysReducer'
+import { setInfoOverlay, showBasket } from 'src/reducers/overlaysReducer'
 
 import { BasketDetails } from './components/BasketDetails'
 import CheckoutButton from './components/CheckoutButton'
@@ -38,12 +38,11 @@ import {
 
 export const Map = ({ urlProjectId }) => {
   const dispatch = useDispatch()
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
 
   const [map, setMap] = useState<mapboxgl.Map>()
   const [_, setColorMode] = useColorMode()
   const [__, setMarkers] = useState([])
-  // The number of the overlay you want to display
-  const [displayOverlay, setDisplayOverlay] = useState<number | null>(null)
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
@@ -78,10 +77,10 @@ export const Map = ({ urlProjectId }) => {
         addAllSourcesAndLayers(map, hexagons)
         const gainForestMarkers = addMarkers(
           map,
+          dispatch,
           gainforestCenterpoints,
           'gainforest',
-          setActiveProjectId,
-          setDisplayOverlay
+          setActiveProjectId
         )
 
         setMarkers([...gainForestMarkers])
@@ -134,7 +133,7 @@ export const Map = ({ urlProjectId }) => {
       map.on('styledata', () => {
         map.getSource('project').setData(activeProjectPolygon)
       })
-      setDisplayOverlay(1)
+      dispatch(setInfoOverlay(1))
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
@@ -175,7 +174,7 @@ export const Map = ({ urlProjectId }) => {
       map.on('click', 'hexagonHoverFill', (e) => {
         const { lat, lng } = e.lngLat
         setClickedCoords({ lat, lon: lng })
-        setDisplayOverlay(6)
+        dispatch(setInfoOverlay(6))
         const hoveredHexagonId = e.features[0]?.id
         if (
           map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
@@ -200,7 +199,7 @@ export const Map = ({ urlProjectId }) => {
   // Remove layers when you exit the display overlay
   useEffect(() => {
     if (map && map.getLayer('unclusteredTrees')) {
-      if (!displayOverlay) {
+      if (!infoOverlay) {
         toggleTreesPlantedLayer(map, 'none')
       }
     }
@@ -229,7 +228,7 @@ export const Map = ({ urlProjectId }) => {
       })
     }
     // TODO: separate these out
-  }, [map, activeProjectId, displayOverlay])
+  }, [map, activeProjectId, infoOverlay])
 
   useEffect(() => {
     if (map) {
@@ -275,15 +274,13 @@ export const Map = ({ urlProjectId }) => {
         />
       )}
       {/* <BackToGlobe map={map} /> */}
-      {displayOverlay && (
+      {infoOverlay && (
         <InfoOverlay
           clickedCoords={clickedCoords}
           numHexagons={numHexagons}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
-          displayOverlay={displayOverlay}
-          setDisplayOverlay={setDisplayOverlay}
         />
       )}
       {/* <ProjectSeriesPickerOverlay

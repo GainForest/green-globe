@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import mapboxgl from 'mapbox-gl'
+import { useDispatch } from 'react-redux'
 
 import {
   clusteredTreesCountTextLayer,
@@ -19,6 +20,7 @@ import {
   treesSource,
   unclusteredTreesLayer,
 } from 'src/mapbox.config'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagonsGeoJson) => {
   addPlanetLabsSourceAndLayers(map)
@@ -30,10 +32,10 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagonsGeoJson) => {
 
 export const addMarkers = (
   map: mapboxgl.Map,
+  dispatch,
   geoJson: mapboxgl.geoJson,
   markerType: string,
-  setActiveProject,
-  setDisplayOverlay
+  setActiveProject
 ) => {
   const markers = []
   for (const feature of geoJson.features) {
@@ -57,7 +59,7 @@ export const addMarkers = (
 
     el.addEventListener('click', () => {
       setActiveProject(feature?.properties?.projectId)
-      setDisplayOverlay(1)
+      dispatch(setInfoOverlay(1))
       toggleTreesPlantedLayer(map, 'visible')
     })
 

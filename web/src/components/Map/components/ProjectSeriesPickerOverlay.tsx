@@ -6,10 +6,10 @@ import { addMarkers } from '../maputils'
 
 export const ProjectSeriesPickerOverlay = ({
   map,
+  dispatch,
   markers,
   projectPolygons,
   setActiveProject,
-  setDisplayOverlay,
   setMarkers,
 }) => {
   const { theme } = useThemeUI()
@@ -44,10 +44,10 @@ export const ProjectSeriesPickerOverlay = ({
             } else {
               const newMarkers = addMarkers(
                 map,
+                dispatch,
                 projectPolygons,
                 'gainforest',
-                setActiveProject,
-                setDisplayOverlay
+                setActiveProject
               )
               setMarkers([...markers, ...newMarkers])
             }

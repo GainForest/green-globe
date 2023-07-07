@@ -8,6 +8,18 @@ interface State {
   }
 }
 
+interface Cart {
+  ecosystem: Ecosystem[]
+}
+
+interface Ecosystem {
+  projectId: number
+  name: string
+  type: string // conservation, restoration, etc
+  price: number
+  selectedh3: string[]
+}
+
 // Not the complete interface
 
 interface Asset {

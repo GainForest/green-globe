@@ -10,6 +10,14 @@ export const BasketDetails = () => {
   const { theme } = useThemeUI()
   const showBasket = useSelector((state: State) => state.overlays.basket)
 
+  const ecosystem = {
+    type: 'Forest Protection',
+    name: 'Defensores del Chaco, Paraguay',
+    projectId: 1,
+    price: 10,
+    selectedh3: ['1', '2', '3'],
+  }
+
   return (
     <div
       style={{
@@ -33,7 +41,7 @@ export const BasketDetails = () => {
         <h1 style={{ margin: '0' }}>Your ecosystem cart</h1>
         <CloseButton onClick={() => dispatch(hideBasket())} />
       </div>
-      <HexagonInBasket />
+      <EcosystemInBasket ecosystem={ecosystem} />
       <Overview></Overview>
       <a href="https://buy.stripe.com/eVa7tz8Xi44b4es5km">
         <RoundedButton style={{ width: '100%' }}>Purchase plots </RoundedButton>
@@ -42,16 +50,16 @@ export const BasketDetails = () => {
   )
 }
 
-const HexagonInBasket = () => {
+const EcosystemInBasket = ({ ecosystem }: { ecosystem: Ecosystem }) => {
   return (
     <div style={{ display: 'flex', margin: '24px 8px' }}>
-      <HexagonEcosystem />
-      <EcosystemInfo />
+      <EcosystemPicture />
+      <EcosystemInfo ecosystem={ecosystem} />
     </div>
   )
 }
 
-const HexagonEcosystem = () => {
+const EcosystemPicture = () => {
   return (
     <div
       style={{
@@ -64,7 +72,7 @@ const HexagonEcosystem = () => {
   )
 }
 
-const EcosystemInfo = () => {
+const EcosystemInfo = ({ ecosystem }: { ecosystem: Ecosystem }) => {
   const dispatch = useDispatch()
   const numHexagons = useSelector((state: State) => state.shop.basket)
 
@@ -78,11 +86,9 @@ const EcosystemInfo = () => {
           fontWeight: 300,
         }}
       >
-        Forest Protection
+        {ecosystem.type}
       </h3>
-      <h1 style={{ fontSize: '14px', margin: '0' }}>
-        Defensores del Chaco, Paraguay
-      </h1>
+      <h1 style={{ fontSize: '14px', margin: '0' }}>{ecosystem.name}</h1>
       <h3
         style={{
           fontSize: '12px',
@@ -91,7 +97,7 @@ const EcosystemInfo = () => {
           fontWeight: 300,
         }}
       >
-        $10,00 / month
+        {ecosystem.price} / month
       </h3>
       <div
         style={{
@@ -100,9 +106,11 @@ const EcosystemInfo = () => {
           justifyContent: 'space-around',
         }}
       >
-        <span style={{ margin: '0px 12px' }}>{numHexagons}</span>
+        <span style={{ margin: '0px 12px' }}>
+          {ecosystem.selectedh3.length}
+        </span>
         <span style={{ cursor: 'pointer' }}>
-          <TrashCanSvg onClick={() => dispatch(setBasket(0))} />
+          <TrashCanSvg />
         </span>
       </div>
     </div>

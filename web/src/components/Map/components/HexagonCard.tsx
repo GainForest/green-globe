@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { showBasket } from 'src/reducers/overlaysReducer'
 import { incrementBasketByAmount } from 'src/reducers/shopReducer'
@@ -17,14 +17,17 @@ export const fetchWhatThreeWords = async (clickedCoords, setWhatThreeWords) => {
     .then((response) => setWhatThreeWords(response.words))
 }
 
-export const HexagonCard = ({ clickedCoords, numHexagons }) => {
+export const HexagonCard = ({ numHexagons }) => {
   const [whatThreeWords, setWhatThreeWords] = useState(undefined)
+  const clickedCoordinates = useSelector(
+    (state: State) => state.display.clickedCoordinates
+  )
   const numPlots = numHexagons.current
   const dispatch = useDispatch()
 
   useEffect(() => {
-    fetchWhatThreeWords(clickedCoords, setWhatThreeWords)
-  }, [clickedCoords])
+    fetchWhatThreeWords(clickedCoordinates, setWhatThreeWords)
+  }, [clickedCoordinates])
 
   return (
     <InfoBox>

@@ -40,9 +40,6 @@ import {
 export const Map = ({ urlProjectId }) => {
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-  const clickedCoordinates = useSelector(
-    (state: State) => state.display.clickedCoordinates
-  )
 
   const [map, setMap] = useState<mapboxgl.Map>()
   const [_, setColorMode] = useColorMode()
@@ -276,7 +273,6 @@ export const Map = ({ urlProjectId }) => {
       {/* <BackToGlobe map={map} /> */}
       {infoOverlay && (
         <InfoOverlay
-          clickedCoords={clickedCoordinates}
           numHexagons={numHexagons}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}

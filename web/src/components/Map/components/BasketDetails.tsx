@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { useThemeUI } from 'theme-ui'
 
 import { hideBasket } from 'src/reducers/overlaysReducer'
 
@@ -6,6 +7,7 @@ import RoundedButton from './RoundedButton'
 
 export const BasketDetails = () => {
   const dispatch = useDispatch()
+  const { theme } = useThemeUI()
   const showBasket = useSelector((state: State) => state.overlays.basket)
 
   return (
@@ -16,7 +18,7 @@ export const BasketDetails = () => {
         width: showBasket ? '400px' : '0px',
         right: '0px',
         top: '0px',
-        backgroundColor: '#ffffff',
+        backgroundColor: theme.colors.background as string,
         zIndex: 2,
         padding: showBasket ? '24px 32px' : '0px',
       }}

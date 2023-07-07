@@ -18,6 +18,7 @@ interface Ecosystem {
   type: string // conservation, restoration, etc
   price: number
   selectedh3: string[]
+  image: string
 }
 
 // Not the complete interface

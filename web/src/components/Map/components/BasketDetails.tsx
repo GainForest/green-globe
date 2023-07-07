@@ -17,6 +17,7 @@ export const BasketDetails = () => {
       projectId: 1,
       price: 10,
       selectedh3: ['1', '2', '3'],
+      image: '/defensoresHexagon.png',
     },
     {
       type: 'Mangrove Restoration',
@@ -24,6 +25,7 @@ export const BasketDetails = () => {
       projectId: 24,
       price: 10,
       selectedh3: ['5', '7'],
+      image: '/oceanusHexagon.png',
     },
   ]
 
@@ -67,13 +69,13 @@ export const BasketDetails = () => {
 const EcosystemInBasket = ({ ecosystem }: { ecosystem: Ecosystem }) => {
   return (
     <div style={{ display: 'flex', margin: '24px 8px' }}>
-      <EcosystemPicture />
+      <EcosystemPicture ecosystem={ecosystem} />
       <EcosystemInfo ecosystem={ecosystem} />
     </div>
   )
 }
 
-const EcosystemPicture = () => {
+const EcosystemPicture = ({ ecosystem }) => {
   return (
     <div
       style={{
@@ -82,7 +84,9 @@ const EcosystemPicture = () => {
         backgroundColor: '#F5F7F9',
         clipPath: 'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
       }}
-    ></div>
+    >
+      <img src={ecosystem.image}></img>
+    </div>
   )
 }
 

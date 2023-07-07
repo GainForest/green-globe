@@ -15,11 +15,21 @@ export const shopSlice = createSlice({
     incrementBasketByAmount: (state, action) => {
       state.basket += action.payload
     },
+    decrementBasketByAmount: (state, action) => {
+      state.basket -= action.payload
+    },
+    setBasket: (state) => {
+      state.basket = 0
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { incrementBasket, decrementBasket, incrementBasketByAmount } =
-  shopSlice.actions
+export const {
+  incrementBasket,
+  decrementBasket,
+  incrementBasketByAmount,
+  decrementBasketByAmount,
+} = shopSlice.actions
 
 export default shopSlice.reducer

@@ -10,13 +10,22 @@ export const BasketDetails = () => {
   const { theme } = useThemeUI()
   const showBasket = useSelector((state: State) => state.overlays.basket)
 
-  const ecosystem = {
-    type: 'Forest Protection',
-    name: 'Defensores del Chaco, Paraguay',
-    projectId: 1,
-    price: 10,
-    selectedh3: ['1', '2', '3'],
-  }
+  const ecosystems = [
+    {
+      type: 'Forest Protection',
+      name: 'Defensores del Chaco, Paraguay',
+      projectId: 1,
+      price: 10,
+      selectedh3: ['1', '2', '3'],
+    },
+    {
+      type: 'Mangrove Restoration',
+      name: 'Oceanus Conservation, Philippines',
+      projectId: 24,
+      price: 10,
+      selectedh3: ['5', '7'],
+    },
+  ]
 
   return (
     <div
@@ -41,8 +50,13 @@ export const BasketDetails = () => {
         <h1 style={{ margin: '0' }}>Your ecosystem cart</h1>
         <CloseButton onClick={() => dispatch(hideBasket())} />
       </div>
-      <EcosystemInBasket ecosystem={ecosystem} />
-      <Overview></Overview>
+      <div>
+        {ecosystems.map((ecosystem) => (
+          <EcosystemInBasket key={ecosystem.projectId} ecosystem={ecosystem} />
+        ))}
+      </div>
+
+      <Overview ecosystems={ecosystems}></Overview>
       <a href="https://buy.stripe.com/eVa7tz8Xi44b4es5km">
         <RoundedButton style={{ width: '100%' }}>Purchase plots </RoundedButton>
       </a>
@@ -97,7 +111,7 @@ const EcosystemInfo = ({ ecosystem }: { ecosystem: Ecosystem }) => {
           fontWeight: 300,
         }}
       >
-        {ecosystem.price} / month
+        ${ecosystem.price},00 / month
       </h3>
       <div
         style={{
@@ -117,8 +131,13 @@ const EcosystemInfo = ({ ecosystem }: { ecosystem: Ecosystem }) => {
   )
 }
 
-const Overview = () => {
-  const numHexagons = useSelector((state: State) => state.shop.basket) * 10
+const Overview = ({ ecosystems }) => {
+  const PRICE = 10
+
+  const numHexagons =
+    ecosystems
+      .map((ecosystem) => ecosystem.selectedh3.length)
+      .reduce((acc, curr) => acc + curr, 0) * PRICE
 
   return (
     <div>

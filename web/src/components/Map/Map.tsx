@@ -10,6 +10,7 @@ import { useColorMode } from 'theme-ui'
 import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
+import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay, showBasket } from 'src/reducers/overlaysReducer'
 
 import { BasketDetails } from './components/BasketDetails'
@@ -39,6 +40,9 @@ import {
 export const Map = ({ urlProjectId }) => {
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
+  const clickedCoordinates = useSelector(
+    (state: State) => state.display.clickedCoordinates
+  )
 
   const [map, setMap] = useState<mapboxgl.Map>()
   const [_, setColorMode] = useColorMode()
@@ -46,10 +50,6 @@ export const Map = ({ urlProjectId }) => {
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
-  const [clickedCoords, setClickedCoords] = useState({
-    lat: undefined,
-    lon: undefined,
-  })
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -173,7 +173,7 @@ export const Map = ({ urlProjectId }) => {
     if (map) {
       map.on('click', 'hexagonHoverFill', (e) => {
         const { lat, lng } = e.lngLat
-        setClickedCoords({ lat, lon: lng })
+        dispatch(setClickedCoordinates({ lat, lon: lng }))
         dispatch(setInfoOverlay(6))
         const hoveredHexagonId = e.features[0]?.id
         if (
@@ -276,7 +276,7 @@ export const Map = ({ urlProjectId }) => {
       {/* <BackToGlobe map={map} /> */}
       {infoOverlay && (
         <InfoOverlay
-          clickedCoords={clickedCoords}
+          clickedCoords={clickedCoordinates}
           numHexagons={numHexagons}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}

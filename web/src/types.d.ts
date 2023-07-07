@@ -6,6 +6,12 @@ interface State {
     info: number | undefined // The tab number displayed
     basket: boolean
   }
+  display: {
+    clickedCoordinates: {
+      lat: number
+      lon: number
+    }
+  }
 }
 
 interface Cart {

@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
-import { InfoOverlayButton } from '../Map/components/InfoOverlayButton'
 
 import { BiodiversityCard } from './Info/BiodiversityCard'
 import { CommunityCard } from './Info/CommunityCard'
 import { DiscordCard } from './Info/DiscordCard'
 import { HexagonCard } from './Info/HexagonCard'
-import { ProjectCard } from './Info/ProjectCard'
+import { InfoOverlayButton } from './Info/InfoOverlayButton'
+import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
 
 export const InfoOverlay = ({

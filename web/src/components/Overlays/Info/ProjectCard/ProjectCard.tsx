@@ -2,11 +2,11 @@ import { useThemeUI } from 'theme-ui'
 
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-import Button from '../../Map/components/Button'
-import { ProjectSiteButtons } from '../../Map/components/ProjectSiteButtons'
-import ThemedSkeleton from '../../Map/components/Skeleton'
+import Button from '../../../Map/components/Button'
+import ThemedSkeleton from '../../../Map/components/Skeleton'
+import { InfoBox } from '../InfoBox'
 
-import { InfoBox } from './InfoBox'
+import { ProjectSiteButtons } from './ProjectSiteButtons'
 
 export const ProjectCard = ({
   activeProjectData,

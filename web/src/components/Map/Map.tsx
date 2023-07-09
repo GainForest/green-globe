@@ -16,6 +16,7 @@ import { setInfoOverlay, showBasket } from 'src/reducers/overlaysReducer'
 import { BasketDetails } from './components/BasketDetails'
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
+import ProfileButton from './components/ProfileButton'
 import { SearchOverlay } from './components/SearchOverlay'
 import ShoppingCartButton from './components/ShoppingCartButton'
 import { TimeSlider } from './components/TimeSlider'
@@ -261,10 +262,6 @@ export const Map = ({ urlProjectId }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      {/* Move this to the navbar */}
-      <ShoppingCartButton
-        onClick={() => dispatch(showBasket())}
-      ></ShoppingCartButton>
 
       <BasketDetails />
       {hexagons && gainforestCenterpoints && (

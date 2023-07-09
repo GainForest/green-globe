@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 
 const ProfileButton = ({ onClick }) => {
-  const count = useSelector((state: State) => state.shop.basket)
+  const count = useSelector((state: State) => state.shop.profile)
 
   return (
     <>

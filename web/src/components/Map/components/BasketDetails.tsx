@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
+import { CloseButton } from 'src/components/Buttons/Close'
 import { hideBasket } from 'src/reducers/overlaysReducer'
 
 import RoundedButton from './RoundedButton'
@@ -158,20 +159,3 @@ const TrashCanSvg = ({ onClick }) => (
     </svg>
   </div>
 )
-
-const CloseButton = ({ onClick }) => {
-  return (
-    <div
-      style={{
-        fontSize: '24px',
-        lineHeight: '36px',
-        justifyContent: 'space-between',
-        cursor: 'pointer',
-      }}
-      className="material-icons-round"
-      onClick={onClick}
-    >
-      close
-    </div>
-  )
-}

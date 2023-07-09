@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
+import { CloseButton } from 'src/components/Buttons/Close'
 import { hideBasket } from 'src/reducers/overlaysReducer'
 
 export const ProfileOverlay = () => {
@@ -31,23 +32,6 @@ export const ProfileOverlay = () => {
         <h1 style={{ margin: '0' }}>My ecosystems</h1>
         <CloseButton onClick={() => dispatch(hideBasket())} />
       </div>
-    </div>
-  )
-}
-
-const CloseButton = ({ onClick }) => {
-  return (
-    <div
-      style={{
-        fontSize: '24px',
-        lineHeight: '36px',
-        justifyContent: 'space-between',
-        cursor: 'pointer',
-      }}
-      className="material-icons-round"
-      onClick={onClick}
-    >
-      close
     </div>
   )
 }

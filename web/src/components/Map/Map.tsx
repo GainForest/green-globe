@@ -11,14 +11,13 @@ import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
 import { setClickedCoordinates } from 'src/reducers/displayReducer'
-import { setInfoOverlay, showBasket } from 'src/reducers/overlaysReducer'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
+
+import { InfoOverlay } from '../Overlays/InfoOverlay'
 
 import { BasketDetails } from './components/BasketDetails'
-import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
-import ProfileButton from './components/ProfileButton'
 import { SearchOverlay } from './components/SearchOverlay'
-import ShoppingCartButton from './components/ShoppingCartButton'
 import { TimeSlider } from './components/TimeSlider'
 import {
   fetchProjectInfo,

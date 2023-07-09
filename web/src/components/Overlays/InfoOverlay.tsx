@@ -2,14 +2,14 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
 
-import { BiodiversityCard } from './BiodiversityCard'
-import { CommunityCard } from './CommunityCard'
-import { DiscordCard } from './DiscordCard'
-import { ExitButton } from './ExitButton'
-import { HexagonCard } from './HexagonCard'
-import { InfoOverlayButton } from './InfoOverlayButton'
-import { ProjectCard } from './ProjectCard'
-import { WildlifeCard } from './WildlifeCard'
+import { BiodiversityCard } from '../Map/components/BiodiversityCard'
+import { CommunityCard } from '../Map/components/CommunityCard'
+import { DiscordCard } from '../Map/components/DiscordCard'
+import { ExitButton } from '../Map/components/ExitButton'
+import { HexagonCard } from '../Map/components/HexagonCard'
+import { InfoOverlayButton } from '../Map/components/InfoOverlayButton'
+import { ProjectCard } from '../Map/components/ProjectCard'
+import { WildlifeCard } from '../Map/components/WildlifeCard'
 
 export const InfoOverlay = ({
   activeProjectData,

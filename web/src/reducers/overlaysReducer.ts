@@ -3,8 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 export const overlaysSlice = createSlice({
   name: 'counter',
   initialState: {
-    info: null,
+    info: null, // either 1-6, or null
     basket: false,
+    profile: true,
   },
   reducers: {
     showBasket: (state) => {
@@ -22,6 +23,12 @@ export const overlaysSlice = createSlice({
     hideInfoOverlay: (state) => {
       state.info = null
     },
+    showProfile: (state) => {
+      state.basket = true
+    },
+    hideProfile: (state) => {
+      state.basket = false
+    },
   },
 })
 
@@ -32,6 +39,8 @@ export const {
   toggleBasket,
   setInfoOverlay,
   hideInfoOverlay,
+  showProfile,
+  hideProfile,
 } = overlaysSlice.actions
 
 export default overlaysSlice.reducer

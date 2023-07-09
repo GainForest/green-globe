@@ -13,9 +13,10 @@ import { initializeMapbox } from 'src/mapbox.config'
 import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
-import { InfoOverlay } from '../Overlays/InfoOverlay'
-
 import { BasketDetails } from '../Overlays/BasketDetails'
+import { InfoOverlay } from '../Overlays/InfoOverlay'
+import { ProfileOverlay } from '../Overlays/ProfileOverlay'
+
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
@@ -262,6 +263,7 @@ export const Map = ({ urlProjectId }) => {
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
 
+      <ProfileOverlay />
       <BasketDetails />
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay

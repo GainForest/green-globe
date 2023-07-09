@@ -3,8 +3,9 @@ interface State {
     basket: number
   }
   overlays: {
-    info: number | undefined // The tab number displayed
+    info: number | null // The tab number displayed
     basket: boolean
+    profile: boolean
   }
   display: {
     clickedCoordinates: {

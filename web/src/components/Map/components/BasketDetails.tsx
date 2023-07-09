@@ -91,9 +91,6 @@ const EcosystemPicture = ({ ecosystem }) => {
 }
 
 const EcosystemInfo = ({ ecosystem }: { ecosystem: Ecosystem }) => {
-  const dispatch = useDispatch()
-  const numHexagons = useSelector((state: State) => state.shop.basket)
-
   return (
     <div style={{ width: '180px', padding: '8px 16px' }}>
       <h3

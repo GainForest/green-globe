@@ -22,6 +22,7 @@ export const theme: Theme = {
         text: '#1b1e23',
         background: '#FFFFFF',
         secondaryBackground: '#f5f5f5', // for dropdowns, modals
+        tertiaryBackground: '#E8EAED',
         primary: '#000000',
         secondary: '#808080',
         muted: '#b9b9bb',
@@ -32,8 +33,9 @@ export const theme: Theme = {
       },
       dark: {
         text: '#ebebec',
-        background: '#000000',
-        secondaryBackground: '#393a3d', // for dropdowns, modals
+        background: '#22252A',
+        secondaryBackground: '#1E2024', // for dropdowns, modals
+        tertiaryBackground: '#272A2F',
         primary: '#ebebec',
         secondary: '#808080',
         muted: '#393a3d',

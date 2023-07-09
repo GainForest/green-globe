@@ -51,7 +51,7 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
       <SearchInputBox
         style={{
           borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+          backgroundColor: '#E8EAED',
         }}
         placeholder={'Search for projects or country'}
         onClick={() => {
@@ -104,7 +104,7 @@ const SearchInputBox = styled.input<{ theme }>`
   width: 360px;
   position: absolute;
   padding: 8px 12px;
-  top: 0px;
+  top: 4px;
   left: 100px;
   color: ${(props) => props.theme.colors.text};
   background-color: ${(props) => props.theme.colors.background};

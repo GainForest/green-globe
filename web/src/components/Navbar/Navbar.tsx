@@ -5,10 +5,10 @@ const Navbar = () => {
   return (
     <div
       style={{
-        height: '40px',
+        height: '48px',
         width: '100%',
-        padding: '8px 12px',
-        backgroundColor: theme.colors.background as string,
+        padding: '12px',
+        backgroundColor: theme.colors.secondaryBackground as string,
       }}
     >
       <h3>vidi.eco</h3>

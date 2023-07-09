@@ -2,13 +2,14 @@ import { useSelector } from 'react-redux'
 
 const CheckoutButton = ({ onClick }) => {
   const count = useSelector((state: State) => state.shop.basket)
+
   return (
     <>
       <div
         style={{
           position: 'absolute',
           right: '48px',
-          top: '12px',
+          top: '14px',
           height: '25px',
           width: '20px',
           borderRadius: '4px',

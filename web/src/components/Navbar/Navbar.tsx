@@ -3,8 +3,8 @@ import { useThemeUI } from 'theme-ui'
 
 import { showBasket } from 'src/reducers/overlaysReducer'
 
-import ProfileButton from '../Map/components/ProfileButton'
-import ShoppingCartButton from '../Map/components/ShoppingCartButton'
+import ProfileButton from './ProfileButton'
+import ShoppingCartButton from './ShoppingCartButton'
 
 const Navbar = () => {
   const { theme } = useThemeUI()

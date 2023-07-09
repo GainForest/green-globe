@@ -1,5 +1,6 @@
+import ThemedSkeleton from '../../Map/components/Skeleton'
+
 import { InfoBox } from './InfoBox'
-import ThemedSkeleton from './Skeleton'
 
 export const CommunityCard = ({ activeProjectData }) => {
   if (

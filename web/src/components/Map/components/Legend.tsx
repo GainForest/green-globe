@@ -1,4 +1,5 @@
-import { InfoBox } from './InfoBox'
+import { InfoBox } from '../../Overlays/Info/InfoBox'
+
 import ThemedSkeleton from './Skeleton'
 
 export const DiscordCard = ({ activeProjectData }) => {

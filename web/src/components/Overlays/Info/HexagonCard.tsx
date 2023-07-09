@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { showBasket } from 'src/reducers/overlaysReducer'
 import { incrementBasketByAmount } from 'src/reducers/shopReducer'
 
+import RoundedButton from '../../Map/components/RoundedButton'
+
 import { InfoBox } from './InfoBox'
-import RoundedButton from './RoundedButton'
 
 export const fetchWhatThreeWords = async (clickedCoords, setWhatThreeWords) => {
   fetch(

@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
+import ThemedSkeleton from '../../Map/components/Skeleton'
+
 import { InfoBox } from './InfoBox'
-import ThemedSkeleton from './Skeleton'
 
 export const BiodiversityCard = ({ activeProjectData }) => {
   const [biodiversity, setBiodiversity] = useState([])

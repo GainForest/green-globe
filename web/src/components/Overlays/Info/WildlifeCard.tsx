@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useState } from 'react'
 
+import { ToggleButton } from '../../Map/components/ToggleButton'
+
 import { InfoBox } from './InfoBox'
-import { ToggleButton } from './ToggleButton'
 
 export const WildlifeCard = ({ activeProjectData }) => {
   const [toggle, setToggle] = useState<'photo' | 'video'>('photo')

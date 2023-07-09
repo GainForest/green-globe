@@ -66,6 +66,12 @@ export const hexagonOutlineLayer = (lineColor: string) => ({
   paint: {
     'line-color': lineColor,
     'line-width': 3,
+    'line-opacity': [
+      'case',
+      ['boolean', ['feature-state', 'hover'], false],
+      1,
+      0.2,
+    ],
   },
 })
 

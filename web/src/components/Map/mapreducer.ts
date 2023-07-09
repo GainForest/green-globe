@@ -1,5 +1,3 @@
-type ActionTypes = 'TOGGLE_THEME'
-
 type Theme = 'light' | 'dark'
 
 interface State {

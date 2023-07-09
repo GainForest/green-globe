@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 
-const CheckoutButton = ({ onClick }) => {
+const ShoppingCartButton = ({ onClick }) => {
   const count = useSelector((state: State) => state.shop.basket)
 
   return (
@@ -45,4 +45,4 @@ const CheckoutButton = ({ onClick }) => {
   )
 }
 
-export default CheckoutButton
+export default ShoppingCartButton

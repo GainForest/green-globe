@@ -14,10 +14,10 @@ import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay, showBasket } from 'src/reducers/overlaysReducer'
 
 import { BasketDetails } from './components/BasketDetails'
-import CheckoutButton from './components/CheckoutButton'
 import { InfoOverlay } from './components/InfoOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
+import ShoppingCartButton from './components/ShoppingCartButton'
 import { TimeSlider } from './components/TimeSlider'
 import {
   fetchProjectInfo,
@@ -261,7 +261,11 @@ export const Map = ({ urlProjectId }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <CheckoutButton onClick={() => dispatch(showBasket())}></CheckoutButton>
+      {/* Move this to the navbar */}
+      <ShoppingCartButton
+        onClick={() => dispatch(showBasket())}
+      ></ShoppingCartButton>
+
       <BasketDetails />
       {hexagons && gainforestCenterpoints && (
         <SearchOverlay

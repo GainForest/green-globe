@@ -4,7 +4,7 @@ import { useThemeUI } from 'theme-ui'
 import { CloseButton } from 'src/components/Buttons/Close'
 import { hideBasket } from 'src/reducers/overlaysReducer'
 
-import RoundedButton from './RoundedButton'
+import RoundedButton from '../Map/components/RoundedButton'
 
 export const BasketDetails = () => {
   const dispatch = useDispatch()

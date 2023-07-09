@@ -15,7 +15,7 @@ import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { InfoOverlay } from '../Overlays/InfoOverlay'
 
-import { BasketDetails } from './components/BasketDetails'
+import { BasketDetails } from '../Overlays/BasketDetails'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'

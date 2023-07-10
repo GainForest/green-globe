@@ -5,6 +5,7 @@ const ProfileButton = ({ onClick }) => {
 
   return (
     <>
+      <p style={{ fontSize: '14px' }}>Log in</p>
       <div
         style={{
           height: '25px',

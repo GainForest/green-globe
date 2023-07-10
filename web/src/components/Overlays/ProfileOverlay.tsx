@@ -2,12 +2,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
 import { CloseButton } from 'src/components/Buttons/Close'
-import { hideProfile, showProfile } from 'src/reducers/overlaysReducer'
+import { hideProfile } from 'src/reducers/overlaysReducer'
 
 export const ProfileOverlay = () => {
   const dispatch = useDispatch()
   const { theme } = useThemeUI()
-  const showBasket = useSelector((state: State) => state.overlays.profile)
+  const showProfile = useSelector((state: State) => state.overlays.profile)
 
   if (!showProfile) {
     return <></>
@@ -22,7 +22,7 @@ export const ProfileOverlay = () => {
           top: '0px',
           backgroundColor: theme.colors.background as string,
           zIndex: 2,
-          padding: showBasket ? '24px 32px' : '0px',
+          padding: showProfile ? '24px 32px' : '0px',
         }}
       >
         <div

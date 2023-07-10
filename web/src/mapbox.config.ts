@@ -70,7 +70,7 @@ export const hexagonOutlineLayer = (lineColor: string) => ({
       'case',
       ['boolean', ['feature-state', 'hover'], false],
       1,
-      0,
+      0.2,
     ],
   },
 })
@@ -85,7 +85,7 @@ export const hexagonHoverFillLayer = () => ({
       'case',
       ['boolean', ['feature-state', 'hover'], false],
       1,
-      0,
+      0.2,
     ],
   },
 })
@@ -100,7 +100,7 @@ export const hexagonClickFillLayer = () => ({
       'case',
       ['boolean', ['feature-state', 'clicked'], false],
       1,
-      0,
+      0.2,
     ],
   },
 })

@@ -30,41 +30,50 @@ export const BasketDetails = () => {
     },
   ]
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        height: '100vh',
-        width: showBasket ? '400px' : '0px',
-        right: '0px',
-        top: '0px',
-        backgroundColor: theme.colors.background as string,
-        zIndex: 2,
-        padding: showBasket ? '24px 32px' : '0px',
-      }}
-    >
+  if (!showBasket) {
+    return <></>
+  } else {
+    return (
       <div
         style={{
-          display: 'flex',
-          alignContent: 'center',
-          justifyContent: 'space-between',
+          position: 'absolute',
+          height: '100vh',
+          width: '400px',
+          right: '0px',
+          top: '0px',
+          backgroundColor: theme.colors.background as string,
+          zIndex: 2,
+          padding: '24px 32px',
         }}
       >
-        <h1 style={{ margin: '0' }}>Your ecosystem cart</h1>
-        <CloseButton onClick={() => dispatch(hideBasket())} />
-      </div>
-      <div>
-        {ecosystems.map((ecosystem) => (
-          <EcosystemInBasket key={ecosystem.projectId} ecosystem={ecosystem} />
-        ))}
-      </div>
+        <div
+          style={{
+            display: 'flex',
+            alignContent: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <h1 style={{ margin: '0' }}>Your ecosystem cart</h1>
+          <CloseButton onClick={() => dispatch(hideBasket())} />
+        </div>
+        <div>
+          {ecosystems.map((ecosystem) => (
+            <EcosystemInBasket
+              key={ecosystem.projectId}
+              ecosystem={ecosystem}
+            />
+          ))}
+        </div>
 
-      <Overview ecosystems={ecosystems}></Overview>
-      <a href="https://buy.stripe.com/eVa7tz8Xi44b4es5km">
-        <RoundedButton style={{ width: '100%' }}>Purchase plots </RoundedButton>
-      </a>
-    </div>
-  )
+        <Overview ecosystems={ecosystems}></Overview>
+        <a href="https://buy.stripe.com/eVa7tz8Xi44b4es5km">
+          <RoundedButton style={{ width: '100%' }}>
+            Purchase plots{' '}
+          </RoundedButton>
+        </a>
+      </div>
+    )
+  }
 }
 
 const EcosystemInBasket = ({ ecosystem }: { ecosystem: Ecosystem }) => {

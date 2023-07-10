@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
-import { showBasket } from 'src/reducers/overlaysReducer'
+import { showBasket, showProfile } from 'src/reducers/overlaysReducer'
 
 import ProfileButton from './ProfileButton'
 import ShoppingCartButton from './ShoppingCartButton'
@@ -21,10 +21,15 @@ const Navbar = () => {
       }}
     >
       <h3>vidi.eco</h3>
-      <div style={{ width: '50px', display: 'flex', gap: '12px' }}>
-        <ProfileButton
-          onClick={() => console.log('it b clicked')}
-        ></ProfileButton>
+      <div
+        style={{
+          width: '124px',
+          display: 'flex',
+          gap: '12px',
+          alignItems: 'flex-end',
+        }}
+      >
+        <ProfileButton onClick={() => dispatch(showProfile())}></ProfileButton>
         <ShoppingCartButton
           onClick={() => dispatch(showBasket())}
         ></ShoppingCartButton>

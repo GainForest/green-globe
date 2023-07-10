@@ -24,10 +24,10 @@ export const overlaysSlice = createSlice({
       state.info = null
     },
     showProfile: (state) => {
-      state.basket = true
+      state.profile = true
     },
     hideProfile: (state) => {
-      state.basket = false
+      state.profile = false
     },
   },
 })

@@ -13,7 +13,7 @@ const Navbar = ({ isAuthenticated, style }) => {
     <div
       style={{
         display: 'flex',
-        height: '48px',
+        height: '52px',
         width: '100vw',
         padding: '12px 24px',
         justifyContent: 'space-between',

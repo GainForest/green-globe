@@ -1,11 +1,8 @@
-import { useSelector } from 'react-redux'
-
 import { useAuth } from 'src/auth'
 
 const ProfileButton = ({ onClick }) => {
   const { userMetadata } = useAuth()
   const { given_name, family_name } = userMetadata
-  const count = useSelector((state: State) => state.shop.profile)
 
   return (
     <>

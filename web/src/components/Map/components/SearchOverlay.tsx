@@ -63,7 +63,6 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
         value={searchInput}
         theme={theme}
       />
-      <SearchIcon className="material-icons-round">search</SearchIcon>
       {showListOfProjects && (
         <>
           <OptionsContainer theme={theme}>
@@ -110,16 +109,6 @@ const SearchInputBox = styled.input<{ theme }>`
   background-color: ${(props) => props.theme.colors.background};
   font-size: 0.875rem;
   font-family: Karla;
-`
-
-const SearchIcon = styled.span`
-  z-index: 5;
-  font-size: 1.125rem;
-  line-height: 1.125rem;
-  position: absolute;
-  top: 48x;
-  left: 330px;
-  color: #5f6369;
 `
 
 const OptionsContainer = styled.div<{ theme; numOptions: number }>`

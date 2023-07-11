@@ -5,7 +5,7 @@ export const overlaysSlice = createSlice({
   initialState: {
     info: null, // either 1-6, or null
     basket: false,
-    profile: true,
+    profile: false,
   },
   reducers: {
     showBasket: (state) => {

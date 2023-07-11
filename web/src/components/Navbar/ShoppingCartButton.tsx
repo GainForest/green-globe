@@ -27,7 +27,7 @@ const ShoppingCartButton = ({ onClick }) => {
           height: '16px',
           width: '16px',
           position: 'absolute',
-          right: '34px',
+          right: '12px',
           top: '8px',
           backgroundColor: '#F6A000',
           color: '#ffffff',

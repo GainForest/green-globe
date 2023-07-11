@@ -25,9 +25,10 @@ const Navbar = ({ isAuthenticated, style }) => {
       {isAuthenticated && (
         <div
           style={{
-            width: '108px',
+            width: '50%',
             display: 'flex',
             gap: '12px',
+            justifyContent: 'flex-end',
             alignItems: 'flex-end',
           }}
         >

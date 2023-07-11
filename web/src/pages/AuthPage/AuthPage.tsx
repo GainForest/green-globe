@@ -1,14 +1,21 @@
 import { useAuth } from 'src/auth'
+import Button from 'src/components/Map/components/Button'
+import Navbar from 'src/components/Navbar/Navbar'
 
 const AuthPage = () => {
-  const { isAuthenticated, signUp } = useAuth()
+  const { signUp } = useAuth()
 
   return (
     <>
-      {/* MetaTags, h1, paragraphs, etc. */}
-
-      <p>{JSON.stringify({ isAuthenticated })}</p>
-      <button onClick={signUp}>sign up</button>
+      <Navbar isAuthenticated={false}></Navbar>
+      <div style={{ width: '100vw', textAlign: 'center', marginTop: '25vh' }}>
+        <p style={{ color: '#000000', padding: '24px' }}>
+          Vidi.eco is currently in development.
+        </p>
+        <Button onClick={signUp} style={{ margin: '0 auto' }}>
+          Log in
+        </Button>
+      </div>
     </>
   )
 }

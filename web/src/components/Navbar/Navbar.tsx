@@ -6,7 +6,7 @@ import { showBasket, showProfile } from 'src/reducers/overlaysReducer'
 import ProfileButton from './ProfileButton'
 import ShoppingCartButton from './ShoppingCartButton'
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated, style }) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
   return (
@@ -18,22 +18,27 @@ const Navbar = () => {
         padding: '12px 24px',
         justifyContent: 'space-between',
         backgroundColor: theme.colors.secondaryBackground as string,
+        ...style,
       }}
     >
       <h3>vidi.eco</h3>
-      <div
-        style={{
-          width: '108px',
-          display: 'flex',
-          gap: '12px',
-          alignItems: 'flex-end',
-        }}
-      >
-        <ProfileButton onClick={() => dispatch(showProfile())}></ProfileButton>
-        <ShoppingCartButton
-          onClick={() => dispatch(showBasket())}
-        ></ShoppingCartButton>
-      </div>
+      {isAuthenticated && (
+        <div
+          style={{
+            width: '108px',
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'flex-end',
+          }}
+        >
+          <ProfileButton
+            onClick={() => dispatch(showProfile())}
+          ></ProfileButton>
+          <ShoppingCartButton
+            onClick={() => dispatch(showBasket())}
+          ></ShoppingCartButton>
+        </div>
+      )}
     </div>
   )
 }

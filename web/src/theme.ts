@@ -8,8 +8,8 @@ export const theme: Theme = {
   },
   colors: {
     text: '#ebebec',
-    background: '#000000',
-    secondaryBackground: '#393a3d', // for dropdowns, modals
+    background: '#F9EFE4',
+    secondaryBackground: '#F9EFE4', // for dropdowns, modals
     primary: '#ebebec',
     secondary: '#808080',
     muted: '#393a3d',
@@ -33,7 +33,7 @@ export const theme: Theme = {
       },
       dark: {
         text: '#ebebec',
-        background: '#22252A',
+        background: '#F9EFE4',
         secondaryBackground: '#1E2024', // for dropdowns, modals
         tertiaryBackground: '#272A2F',
         primary: '#ebebec',

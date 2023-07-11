@@ -23,7 +23,7 @@ const Navbar = () => {
       <h3>vidi.eco</h3>
       <div
         style={{
-          width: '124px',
+          width: '108px',
           display: 'flex',
           gap: '12px',
           alignItems: 'flex-end',

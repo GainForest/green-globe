@@ -8,7 +8,15 @@ const AuthPage = () => {
   return (
     <>
       <Navbar isAuthenticated={false}></Navbar>
-      <div style={{ width: '100vw', textAlign: 'center', marginTop: '25vh' }}>
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#F9EFE4',
+          textAlign: 'center',
+          paddingTop: '25vh',
+        }}
+      >
         <p style={{ color: '#000000', padding: '24px' }}>
           Vidi.eco is currently in development.
         </p>

@@ -33,7 +33,7 @@ export const theme: Theme = {
       },
       dark: {
         text: '#ebebec',
-        background: '#F9EFE4',
+        background: '#22252A',
         secondaryBackground: '#1E2024', // for dropdowns, modals
         tertiaryBackground: '#272A2F',
         primary: '#ebebec',

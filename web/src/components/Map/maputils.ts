@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import mapboxgl from 'mapbox-gl'
-import { useDispatch } from 'react-redux'
 
 import {
   clusteredTreesCountTextLayer,
@@ -13,6 +12,8 @@ import {
   hexagonsSource,
   landCoverLayer,
   landCoverSource,
+  potentialTreeCoverLayer,
+  potentialTreeCoverSource,
   projectFillLayer,
   projectOutlineLayer,
   treeCoverLayer,
@@ -26,6 +27,7 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagonsGeoJson) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
+  addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagonsGeoJson)
 }
@@ -117,6 +119,15 @@ export const getPopupTreeInformation = (e, activeProject) => {
   return { treeName, treeHeight, treeDBH, treeID, treePhoto }
 }
 
+const addPotentialTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('potentialTreeCoverSource')) {
+    map.addSource('potentialTreeCoverSource', potentialTreeCoverSource)
+  }
+  if (!map.getLayer('potentialTreeCoverLayer')) {
+    map.addLayer(potentialTreeCoverLayer)
+  }
+}
+
 const addTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('treeCoverSource')) {
     map.addSource('treeCoverSource', treeCoverSource)
@@ -202,7 +213,7 @@ export const addHexagonsSourceAndLayers = (
   if (!map.getSource('hexagons')) {
     map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
   }
-  if (!map.getLayer('hexagonClickFill')) {
+  if (!map.getLayer('hexagonClickFillLayer')) {
     map.addLayer(hexagonClickFillLayer())
   }
   if (!map.getLayer('hexagonHoverFill')) {
@@ -257,5 +268,14 @@ export const toggleLandCoverLayer = (map: mapboxgl.Map, visibility) => {
 export const toggleTreeCoverLayer = (map: mapboxgl.Map, visibility) => {
   if (map.getLayer('treeCoverLayer')) {
     map.setLayoutProperty('treeCoverLayer', 'visibility', visibility)
+  }
+}
+
+export const togglePotentialTreeCoverLayer = (
+  map: mapboxgl.Map,
+  visibility
+) => {
+  if (map.getLayer('potentialTreeCoverLayer')) {
+    map.setLayoutProperty('potentialTreeCoverLayer', 'visibility', visibility)
   }
 }

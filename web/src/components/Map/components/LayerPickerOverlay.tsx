@@ -7,6 +7,7 @@ import { useColorMode, useThemeUI } from 'theme-ui'
 
 import {
   toggleLandCoverLayer,
+  togglePotentialTreeCoverLayer,
   toggleTreeCoverLayer,
   toggleTreesPlantedLayer,
 } from '../maputils'
@@ -20,7 +21,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '240px',
+        width: '296px',
         height: '96px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
@@ -34,6 +35,56 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
       <SatelliteLayerBox map={map} />
       <LandCoverBox map={map} />
       <TreeCoverBox map={map} />
+      <PotentialTreeCoverBox map={map} />
+    </div>
+  )
+}
+
+const PotentialTreeCoverBox = ({ map }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false)
+
+  const imageSrc = '/treeCoverDark.png'
+
+  // Retain tree cover layer state when the map changes
+  useEffect(() => {
+    if (map) {
+      map.on('styledata', () => {
+        if (!isVisible) {
+          togglePotentialTreeCoverLayer(map, 'none')
+        } else {
+          togglePotentialTreeCoverLayer(map, 'visible')
+        }
+      })
+    }
+  }, [map, isVisible])
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0px 8px',
+        textAlign: 'center',
+      }}
+    >
+      <LayerPickerButton
+        type="image"
+        src={imageSrc}
+        alt="toggle potential tree cover"
+        onClick={() => {
+          if (!isVisible) {
+            togglePotentialTreeCoverLayer(map, 'visible')
+            toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(true)
+          } else {
+            togglePotentialTreeCoverLayer(map, 'none')
+            toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(false)
+          }
+        }}
+      />
+      <p style={{ fontSize: '10px' }}>
+        potential tree cover {isVisible ? 'on' : 'off'}
+      </p>
     </div>
   )
 }
@@ -80,7 +131,9 @@ const TreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>tree cover {isVisible ? 'on' : 'off'}</p>
+      <p style={{ fontSize: '10px' }}>
+        current tree cover {isVisible ? 'on' : 'off'}
+      </p>
     </div>
   )
 }

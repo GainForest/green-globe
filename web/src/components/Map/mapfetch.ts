@@ -1,13 +1,5 @@
 import geojson2h3 from 'geojson2h3'
 
-export const fetchDataLayers = (setDataLayers) => {
-  fetch(`https://restor2-prod-1-api.restor.eco/gee/2/data-layers`)
-    .then((response) => response.json())
-    .then((res) => {
-      setDataLayers(res)
-    })
-}
-
 export const fetchHexagons = (setHexagons) => {
   fetch(`${process.env.AWS_STORAGE}/h3/defensores-del-chaco-h3.json`)
     .then((response) => response.json())

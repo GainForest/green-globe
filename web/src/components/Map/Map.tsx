@@ -18,14 +18,15 @@ import {
   fetchHexagons,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
-  fetchDataLayers,
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
 import {
   addAllSourcesAndLayers,
   addMarkers,
+  addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
   popup,
+  toggleTreesPlantedLayer,
   treePopupHtml,
 } from './maputils'
 
@@ -33,7 +34,6 @@ export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
   const [_, setColorMode] = useColorMode()
   const [__, setMarkers] = useState([])
-  const [dataLayers, setDataLayers] = useState()
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
@@ -47,7 +47,6 @@ export const Map = () => {
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     fetchHexagons(setHexagons)
-    fetchDataLayers(setDataLayers)
     setColorMode('dark')
   }, [])
 
@@ -60,9 +59,9 @@ export const Map = () => {
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && hexagons && gainforestCenterpoints && dataLayers) {
+    if (map && hexagons && gainforestCenterpoints) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map, hexagons, dataLayers)
+        addAllSourcesAndLayers(map, hexagons)
         const gainForestMarkers = addMarkers(
           map,
           gainforestCenterpoints,
@@ -74,10 +73,10 @@ export const Map = () => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, hexagons, dataLayers)
+        addAllSourcesAndLayers(map, hexagons)
       })
     }
-  }, [map, gainforestCenterpoints, hexagons, dataLayers])
+  }, [map, gainforestCenterpoints, hexagons])
 
   // Rotate the globe
   useEffect(() => {

@@ -7,6 +7,7 @@ import {
   generatePlanetLayer,
   generatePlanetSource,
   hexagonHoverFillLayer,
+  hexagonOutlineLayer,
   hexagonsSource,
   landCoverLayer,
   landCoverSource,
@@ -20,15 +21,12 @@ import {
   unclusteredTreesLayer,
 } from 'src/mapbox.config'
 
-export const addAllSourcesAndLayers = (
-  map: mapboxgl.Map,
-  hexagonsGeoJson,
-  dataLayers
-) => {
+export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagonsGeoJson) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
-  addPotentialTreeCoverSourceAndLayer(map, dataLayers)
+  addPotentialTreeCoverSourceAndLayer(map)
+  addProjectPolygonsSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagonsGeoJson)
   addProjectPolygonsSourceAndLayer(map)
 }
@@ -120,12 +118,9 @@ export const getPopupTreeInformation = (e, activeProject) => {
   return { treeName, treeHeight, treeDBH, treeID, treePhoto }
 }
 
-const addPotentialTreeCoverSourceAndLayer = (map: mapboxgl.Map, dataLayers) => {
+const addPotentialTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('potentialTreeCoverSource')) {
-    map.addSource(
-      'potentialTreeCoverSource',
-      potentialTreeCoverSource(dataLayers)
-    )
+    map.addSource('potentialTreeCoverSource', potentialTreeCoverSource)
   }
   if (!map.getLayer('potentialTreeCoverLayer')) {
     map.addLayer(potentialTreeCoverLayer)
@@ -216,6 +211,7 @@ export const addHexagonsSourceAndLayers = (
 ) => {
   if (!map.getSource('hexagons')) {
     map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
+    console.log('hexagonGeoJsons', hexagonGeoJsons)
   }
   if (!map.getLayer('hexagonHoverFill')) {
     map.addLayer(hexagonHoverFillLayer())

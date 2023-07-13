@@ -21,7 +21,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '296px',
+        width: '304px',
         height: '96px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
@@ -43,7 +43,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
 const PotentialTreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
-  const imageSrc = '/treeCoverDark.png'
+  const imageSrc = '/potentialTreeCoverDark.png'
 
   // Retain tree cover layer state when the map changes
   useEffect(() => {
@@ -82,7 +82,7 @@ const PotentialTreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>
+      <p style={{ fontSize: '10px', margin: '3px' }}>
         potential tree cover {isVisible ? 'on' : 'off'}
       </p>
     </div>
@@ -131,7 +131,7 @@ const TreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>
+      <p style={{ fontSize: '10px', margin: '2px' }}>
         current tree cover {isVisible ? 'on' : 'off'}
       </p>
     </div>

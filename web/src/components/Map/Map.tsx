@@ -26,6 +26,7 @@ import {
   addMarkers,
   getPopupTreeInformation,
   popup,
+  toggleTreesPlantedLayer,
   treePopupHtml,
 } from './maputils'
 

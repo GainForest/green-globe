@@ -25,11 +25,8 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagonsGeoJson) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
-<<<<<<< HEAD
-=======
   addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
->>>>>>> c98e9c8 (Add potential tree cover source and layer)
   addHexagonsSourceAndLayers(map, hexagonsGeoJson)
   addProjectPolygonsSourceAndLayer(map)
 }
@@ -215,14 +212,6 @@ export const addHexagonsSourceAndLayers = (
   if (!map.getSource('hexagons')) {
     map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
     console.log('hexagonGeoJsons', hexagonGeoJsons)
-  }
-<<<<<<< HEAD
-  if (!map.getLayer('hexagonOutline')) {
-    map.addLayer(hexagonOutlineLayer('#00FF00'))
-=======
-  if (!map.getLayer('hexagonClickFillLayer')) {
-    map.addLayer(hexagonClickFillLayer())
->>>>>>> c98e9c8 (Add potential tree cover source and layer)
   }
   if (!map.getLayer('hexagonHoverFill')) {
     map.addLayer(hexagonHoverFillLayer())

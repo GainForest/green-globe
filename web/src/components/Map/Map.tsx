@@ -24,6 +24,7 @@ import { spinGlobe } from './maprotate'
 import {
   addAllSourcesAndLayers,
   addMarkers,
+  addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
   popup,
   toggleTreesPlantedLayer,

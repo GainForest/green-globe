@@ -15,7 +15,6 @@ import { TimeSlider } from './components/TimeSlider'
 import {
   fetchProjectInfo,
   fetchTreeShapefile,
-  fetchHexagons,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
 } from './mapfetch'
@@ -37,7 +36,6 @@ export const Map = () => {
   const [displayOverlay, setDisplayOverlay] = useState<boolean>(false)
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
-  const [hexagons, setHexagons] = useState()
   const [activeProjectId, setActiveProjectId] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -46,7 +44,6 @@ export const Map = () => {
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
-    fetchHexagons(setHexagons)
     setColorMode('dark')
   }, [])
 
@@ -59,9 +56,9 @@ export const Map = () => {
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && hexagons && gainforestCenterpoints) {
+    if (map && gainforestCenterpoints) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map, hexagons)
+        addAllSourcesAndLayers(map)
         const gainForestMarkers = addMarkers(
           map,
           gainforestCenterpoints,
@@ -73,10 +70,10 @@ export const Map = () => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, hexagons)
+        addAllSourcesAndLayers(map)
       })
     }
-  }, [map, gainforestCenterpoints, hexagons])
+  }, [map, gainforestCenterpoints])
 
   // Rotate the globe
   useEffect(() => {
@@ -223,7 +220,7 @@ export const Map = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      {hexagons && gainforestCenterpoints && (
+      {gainforestCenterpoints && (
         <SearchOverlay
           map={map}
           setActiveProject={setActiveProjectId}

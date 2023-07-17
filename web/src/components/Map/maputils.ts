@@ -8,7 +8,7 @@ import {
   generatePlanetSource,
   hexagonHoverFillLayer,
   hexagonOutlineLayer,
-  hexagonsSource,
+  // hexagonsSource,
   landCoverLayer,
   landCoverSource,
   potentialTreeCoverLayer,
@@ -27,7 +27,7 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
-  addHexagonsSourceAndLayers(map)
+  // addHexagonsSourceAndLayers(map)
   addProjectPolygonsSourceAndLayer(map)
 }
 
@@ -195,12 +195,23 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
 
 export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('project')) {
-    map.addSource('project', { type: 'geojson', data: undefined })
+    map.addSource('project', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: null,
+          },
+        ],
+      },
+    })
   }
-  if (!map.getLayer('projectOutline')) {
+  if (map.getSource('project') && !map.getLayer('projectOutline')) {
     map.addLayer(projectOutlineLayer('#00FF00'))
   }
-  if (!map.getLayer('projectFill')) {
+  if (map.getSource('project') && !map.getLayer('projectFill')) {
     map.addLayer(projectFillLayer('#00FF00'))
   }
 }
@@ -209,10 +220,9 @@ export const addHexagonsSourceAndLayers = (
   map: mapboxgl.Map,
   hexagonGeoJsons
 ) => {
-  if (!map.getSource('hexagons')) {
-    map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
-    console.log('hexagonGeoJsons', hexagonGeoJsons)
-  }
+  // if (!map.getSource('hexagons')) {
+  //   map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
+  // }
   if (!map.getLayer('hexagonOutline')) {
     map.addLayer(hexagonOutlineLayer('#00FF00'))
   }

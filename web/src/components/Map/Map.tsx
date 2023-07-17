@@ -88,7 +88,7 @@ export const Map = () => {
       map.on('mousedown', () => {
         isGlobeSpinning = false
       })
-      map.on('touchdown', () => {
+      map.on('touchstart', () => {
         isGlobeSpinning = false
       })
     }

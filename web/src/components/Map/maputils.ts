@@ -6,10 +6,7 @@ import {
   clusteredTreesLayer,
   generatePlanetLayer,
   generatePlanetSource,
-  hexagonClickFillLayer,
-  hexagonHoverFillLayer,
-  hexagonOutlineLayer,
-  hexagonsSource,
+  // hexagonsSource,
   landCoverLayer,
   landCoverSource,
   potentialTreeCoverLayer,
@@ -23,13 +20,14 @@ import {
 } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
-export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagonsGeoJson) => {
+export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
-  addHexagonsSourceAndLayers(map, hexagonsGeoJson)
+  addProjectPolygonsSourceAndLayer(map)
+  // addHexagonsSourceAndLayers(map, hexagonsGeoJson)
 }
 
 export const addMarkers = (
@@ -180,7 +178,7 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
     const visibility = 'none'
     const newPlanetLayer = generatePlanetLayer(planetDate, visibility)
     if (!map.getLayer(`planetLayer${planetDate}`)) {
-      map.addLayer(newPlanetLayer, 'projectOutline')
+      map.addLayer(newPlanetLayer)
     }
   })
 }
@@ -196,33 +194,44 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
 
 export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('project')) {
-    map.addSource('project', { type: 'geojson', data: undefined })
+    map.addSource('project', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: null,
+          },
+        ],
+      },
+    })
   }
-  if (!map.getLayer('projectOutline')) {
+  if (map.getSource('project') && !map.getLayer('projectOutline')) {
     map.addLayer(projectOutlineLayer('#00FF00'))
   }
-  if (!map.getLayer('projectFill')) {
+  if (map.getSource('project') && !map.getLayer('projectFill')) {
     map.addLayer(projectFillLayer('#00FF00'))
   }
 }
 
-export const addHexagonsSourceAndLayers = (
-  map: mapboxgl.Map,
-  hexagonGeoJsons
-) => {
-  if (!map.getSource('hexagons')) {
-    map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
-  }
-  if (!map.getLayer('hexagonClickFillLayer')) {
-    map.addLayer(hexagonClickFillLayer())
-  }
-  if (!map.getLayer('hexagonHoverFill')) {
-    map.addLayer(hexagonHoverFillLayer())
-  }
-  if (!map.getLayer('hexagonOutline')) {
-    map.addLayer(hexagonOutlineLayer('#FFFFFF'))
-  }
-}
+// export const addHexagonsSourceAndLayers = (
+//   map: mapboxgl.Map,
+//   hexagonGeoJsons
+// ) => {
+//   if (!map.getSource('hexagons')) {
+//     map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
+//   }
+//   if (!map.getLayer('hexagonClickFillLayer')) {
+//     map.addLayer(hexagonClickFillLayer())
+//   }
+//   if (!map.getLayer('hexagonOutline')) {
+//     map.addLayer(hexagonOutlineLayer('#00FF00'))
+//   }
+//   if (!map.getLayer('hexagonHoverFill')) {
+//     map.addLayer(hexagonHoverFillLayer())
+//   }
+// }
 
 export const addTreesPlantedSourceAndLayers = (
   map: mapboxgl.Map,

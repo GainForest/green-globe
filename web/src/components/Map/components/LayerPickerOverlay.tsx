@@ -21,7 +21,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '304px',
+        width: '200px',
         height: '96px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
@@ -31,7 +31,6 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         padding: '16px 8px 8px 8px',
       }}
     >
-      <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
       <LandCoverBox map={map} />
       <TreeCoverBox map={map} />
@@ -45,18 +44,6 @@ const PotentialTreeCoverBox = ({ map }) => {
 
   const imageSrc = '/potentialTreeCoverDark.png'
 
-  // Retain tree cover layer state when the map changes
-  useEffect(() => {
-    if (map) {
-      map.on('styledata', () => {
-        if (!isVisible) {
-          togglePotentialTreeCoverLayer(map, 'none')
-        } else {
-          togglePotentialTreeCoverLayer(map, 'visible')
-        }
-      })
-    }
-  }, [map, isVisible])
   return (
     <div
       style={{
@@ -94,18 +81,6 @@ const TreeCoverBox = ({ map }) => {
 
   const imageSrc = '/treeCoverDark.png'
 
-  // Retain tree cover layer state when the map changes
-  useEffect(() => {
-    if (map) {
-      map.on('styledata', () => {
-        if (!isVisible) {
-          toggleTreeCoverLayer(map, 'none')
-        } else {
-          toggleTreeCoverLayer(map, 'visible')
-        }
-      })
-    }
-  }, [map, isVisible])
   return (
     <div
       style={{
@@ -132,7 +107,7 @@ const TreeCoverBox = ({ map }) => {
         }}
       />
       <p style={{ fontSize: '10px', margin: '2px' }}>
-        current tree cover {isVisible ? 'on' : 'off'}
+        tree cover {isVisible ? 'on' : 'off'}
       </p>
     </div>
   )
@@ -216,6 +191,8 @@ const LightDarkModeBox = ({ map }) => {
 }
 
 const SatelliteLayerBox = ({ map }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false)
+
   return (
     <div
       style={{
@@ -230,11 +207,18 @@ const SatelliteLayerBox = ({ map }) => {
         src="/satellite.png"
         alt="toggle satellite layer"
         onClick={() => {
-          map.setStyle(`mapbox://styles/mapbox/satellite-streets-v12`)
-          toggleTreesPlantedLayer(map, 'visible')
+          if (!isVisible) {
+            map.setStyle(`mapbox://styles/mapbox/satellite-streets-v12`)
+            setIsVisible(true)
+          } else {
+            map.setStyle(`mapbox://styles/mapbox/dark-v11`)
+            setIsVisible(false)
+          }
         }}
       />
-      <p style={{ fontSize: '10px' }}>satellite mode</p>
+      <p style={{ fontSize: '10px' }}>
+        satellite mode {isVisible ? 'on' : 'off'}
+      </p>
     </div>
   )
 }

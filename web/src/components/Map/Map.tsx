@@ -23,7 +23,6 @@ import { TimeSlider } from './components/TimeSlider'
 import {
   fetchProjectInfo,
   fetchTreeShapefile,
-  fetchHexagons,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
 } from './mapfetch'
@@ -47,7 +46,7 @@ export const Map = ({ urlProjectId }) => {
   const [__, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
-  const [hexagons, setHexagons] = useState()
+  // const [hexagons, setHexagons] = useState()
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -57,7 +56,6 @@ export const Map = ({ urlProjectId }) => {
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
-    fetchHexagons(setHexagons)
     setColorMode('dark')
   }, [])
 
@@ -70,9 +68,9 @@ export const Map = ({ urlProjectId }) => {
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && hexagons && gainforestCenterpoints) {
+    if (map && gainforestCenterpoints) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map, hexagons)
+        addAllSourcesAndLayers(map)
         const gainForestMarkers = addMarkers(
           map,
           dispatch,
@@ -84,10 +82,10 @@ export const Map = ({ urlProjectId }) => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, hexagons)
+        addAllSourcesAndLayers(map)
       })
     }
-  }, [map, gainforestCenterpoints, hexagons])
+  }, [map, gainforestCenterpoints])
 
   // Rotate the globe
   useEffect(() => {
@@ -100,6 +98,9 @@ export const Map = ({ urlProjectId }) => {
         spinGlobe(map, isGlobeSpinning)
       })
       map.on('mousedown', () => {
+        isGlobeSpinning = false
+      })
+      map.on('touchstart', () => {
         isGlobeSpinning = false
       })
     }
@@ -128,9 +129,6 @@ export const Map = ({ urlProjectId }) => {
     if (map && activeProjectPolygon) {
       // TODO: Take into account all of the shapefiles the project has
       map.getSource('project').setData(activeProjectPolygon)
-      map.on('styledata', () => {
-        map.getSource('project').setData(activeProjectPolygon)
-      })
       dispatch(setInfoOverlay(1))
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
@@ -159,10 +157,6 @@ export const Map = ({ urlProjectId }) => {
     if (map && activeProjectTreesPlanted) {
       // Needed on initial fetch
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
-      // For every upcoming style change
-      map.on('styledata', () => {
-        addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
-      })
     }
   }, [map, activeProjectTreesPlanted])
 
@@ -268,7 +262,7 @@ export const Map = ({ urlProjectId }) => {
 
       <ProfileOverlay />
       <BasketDetails />
-      {hexagons && gainforestCenterpoints && (
+      {gainforestCenterpoints && (
         <SearchOverlay
           map={map}
           setActiveProject={setActiveProjectId}

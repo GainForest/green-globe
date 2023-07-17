@@ -21,7 +21,7 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '260px',
+        width: '200px',
         height: '96px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
@@ -31,7 +31,6 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         padding: '16px 8px 8px 8px',
       }}
     >
-      <LightDarkModeBox map={map} />
       <SatelliteLayerBox map={map} />
       <LandCoverBox map={map} />
       <TreeCoverBox map={map} />

@@ -113,9 +113,6 @@ export const Map = () => {
     if (map && activeProjectPolygon) {
       // TODO: Take into account all of the shapefiles the project has
       map.getSource('project').setData(activeProjectPolygon)
-      map.on('styledata', () => {
-        map.getSource('project').setData(activeProjectPolygon)
-      })
       setDisplayOverlay(true)
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
@@ -144,10 +141,6 @@ export const Map = () => {
     if (map && activeProjectTreesPlanted) {
       // Needed on initial fetch
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
-      // For every upcoming style change
-      map.on('styledata', () => {
-        addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
-      })
     }
   }, [map, activeProjectTreesPlanted])
 

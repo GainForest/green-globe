@@ -33,8 +33,9 @@ export const ProjectSiteButtons = ({
   const fetchAndSetSite = async (endpoint) => {
     if (!endpoint) {
       return
+    } else {
+      await fetchProjectPolygon(endpoint, setActiveShapefile)
     }
-    await fetchProjectPolygon(endpoint, setActiveShapefile)
   }
 
   return (

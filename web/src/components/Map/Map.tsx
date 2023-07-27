@@ -110,7 +110,7 @@ export const Map = ({ urlProjectId }) => {
   // Fetch default project site
   useEffect(() => {
     if (activeProjectId) {
-      navigate(`/app/${activeProjectId}`)
+      navigate(`/${activeProjectId}`)
       const fetchData = async () => {
         const projectPolygonCID = await fetchProjectInfo(
           activeProjectId,

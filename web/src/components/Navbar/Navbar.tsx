@@ -9,19 +9,25 @@ import ShoppingCartButton from './ShoppingCartButton'
 const Navbar = ({ isAuthenticated, style }) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
+  const location = window.location.origin
+  const logo = location.includes('vidi') ? 'vidi.eco' : 'gainforest'
+
   return (
     <div
       style={{
         display: 'flex',
         height: '52px',
         width: '100vw',
-        padding: '12px 24px',
+        padding: '14px 24px',
         justifyContent: 'space-between',
         backgroundColor: theme.colors.secondaryBackground as string,
         ...style,
       }}
     >
-      <h3>vidi.eco</h3>
+      <div style={{ width: '88px', textAlign: 'center' }}>
+        <h3>{logo}</h3>
+      </div>
+
       {isAuthenticated && (
         <div
           style={{

@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -286,7 +286,10 @@ export const Map = ({ urlProjectId }) => {
         projectPolygons={gainforestCenterpoints}
         setMarkers={setMarkers}
       /> */}
-      <LayerPickerOverlay map={map} />
+      <LayerPickerOverlay
+        map={map}
+        activeProjectPolygon={activeProjectPolygon}
+      />
       <TimeSlider map={map} />
     </>
   )

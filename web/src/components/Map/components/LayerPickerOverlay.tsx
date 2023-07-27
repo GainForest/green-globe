@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import mapboxgl from 'mapbox-gl'
 import styled from 'styled-components'
-import { useColorMode, useThemeUI } from 'theme-ui'
+import { useThemeUI } from 'theme-ui'
 
 import {
   toggleLandCoverLayer,
@@ -12,7 +11,7 @@ import {
   toggleTreesPlantedLayer,
 } from '../maputils'
 
-export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
+export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
   const { theme } = useThemeUI()
 
   return (
@@ -21,8 +20,8 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '200px',
-        height: '96px',
+        width: '148px',
+        height: '100px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
         bottom: 108,
@@ -31,10 +30,9 @@ export const LayerPickerOverlay = ({ map }: { map: mapboxgl.Map }) => {
         padding: '16px 8px 8px 8px',
       }}
     >
-      <SatelliteLayerBox map={map} />
-      <LandCoverBox map={map} />
+      <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
       <TreeCoverBox map={map} />
-      <PotentialTreeCoverBox map={map} />
+      {/* <PotentialTreeCoverBox map={map} /> */}
     </div>
   )
 }
@@ -69,7 +67,7 @@ const PotentialTreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px', margin: '3px' }}>
+      <p style={{ fontSize: '10px' }}>
         potential tree cover {isVisible ? 'on' : 'off'}
       </p>
     </div>
@@ -79,7 +77,7 @@ const PotentialTreeCoverBox = ({ map }) => {
 const TreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
-  const imageSrc = '/treeCoverDark.png'
+  const imageSrc = 'treeCoverDark.png'
 
   return (
     <div
@@ -106,29 +104,14 @@ const TreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px', margin: '2px' }}>
-        tree cover {isVisible ? 'on' : 'off'}
-      </p>
+      <p style={{ fontSize: '10px' }}>tree cover {isVisible ? 'on' : 'off'}</p>
     </div>
   )
 }
 
-const LandCoverBox = ({ map }) => {
+const LandCoverBox = ({ map, activeProjectPolygon }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const imageSrc = '/landCover.png'
-
-  // Retain land cover layer state when the map changes
-  useEffect(() => {
-    if (map) {
-      map.on('styledata', () => {
-        if (!isVisible) {
-          toggleLandCoverLayer(map, 'none')
-        } else {
-          toggleLandCoverLayer(map, 'visible')
-        }
-      })
-    }
-  }, [map, isVisible])
+  const imageSrc = 'landCover.png'
 
   return (
     <div
@@ -148,6 +131,7 @@ const LandCoverBox = ({ map }) => {
             toggleLandCoverLayer(map, 'visible')
             toggleTreesPlantedLayer(map, 'visible')
             setIsVisible(true)
+            map.getSource('project').setData(activeProjectPolygon)
           } else {
             toggleLandCoverLayer(map, 'none')
             toggleTreesPlantedLayer(map, 'visible')
@@ -156,36 +140,6 @@ const LandCoverBox = ({ map }) => {
         }}
       />
       <p style={{ fontSize: '10px' }}>land cover {isVisible ? 'on' : 'off'}</p>
-    </div>
-  )
-}
-
-const LightDarkModeBox = ({ map }) => {
-  const [theme, setTheme] = useColorMode()
-
-  const oppositeTheme = theme == 'light' ? 'dark' : 'light'
-
-  const imageSrc = theme == 'light' ? '/darkMode.png' : '/lightMode.png'
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0px 8px',
-        textAlign: 'center',
-      }}
-    >
-      <LayerPickerButton
-        type="image"
-        src={imageSrc}
-        alt="toggle light/dark layer"
-        onClick={() => {
-          map.setStyle(`mapbox://styles/mapbox/${oppositeTheme}-v11`)
-          setTheme(oppositeTheme)
-          toggleTreesPlantedLayer(map, 'visible')
-        }}
-      />
-      <p style={{ fontSize: '10px' }}>{oppositeTheme} mode</p>
     </div>
   )
 }
@@ -203,15 +157,17 @@ const SatelliteLayerBox = ({ map }) => {
       }}
     >
       <LayerPickerButton
-        type="image"
+        objectFit="fill"
         src="/satellite.png"
         alt="toggle satellite layer"
         onClick={() => {
           if (!isVisible) {
             map.setStyle(`mapbox://styles/mapbox/satellite-streets-v12`)
+            togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(true)
           } else {
             map.setStyle(`mapbox://styles/mapbox/dark-v11`)
+            togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(false)
           }
         }}
@@ -223,11 +179,12 @@ const SatelliteLayerBox = ({ map }) => {
   )
 }
 
-const LayerPickerButton = styled.input`
+const LayerPickerButton = styled.img`
   display: block;
   margin: 0 auto;
   cursor: pointer;
   width: 40px;
+  object-fit: cover;
   height: 40px;
   background-size: cover;
   border-radius: 4px;

@@ -26,8 +26,7 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
-  addProjectPolygonsSourceAndLayer(map)
-  addNasaSourceAndLayer(map)
+  // addNasaSourceAndLayer(map)
   // addHexagonsSourceAndLayers(map, hexagonsGeoJson)
 }
 

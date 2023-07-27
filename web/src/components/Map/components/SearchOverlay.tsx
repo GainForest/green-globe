@@ -116,7 +116,7 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   width: 360px;
   top: 44px;
   border: none;
-  left: 100px;
+  left: 140px;
   background-color: ${(props) => props.theme.colors.background};
   padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;

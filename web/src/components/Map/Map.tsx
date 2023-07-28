@@ -70,6 +70,13 @@ export const Map = ({ urlProjectId }) => {
   useEffect(() => {
     if (map && gainforestCenterpoints) {
       map.on('load', () => {
+        map.setFog({
+          color: '#000000', // Lower atmosphere
+          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
+          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
+          'space-color': 'rgb(11, 11, 25)', // Background color
+          'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
+        })
         addAllSourcesAndLayers(map)
         const gainForestMarkers = addMarkers(
           map,

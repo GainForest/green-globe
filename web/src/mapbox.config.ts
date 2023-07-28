@@ -8,8 +8,9 @@ export const initializeMapbox = (
   mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
   if (!bounds) {
     const map = new mapboxgl.Map({
+      projection: 'globe',
       container: containerId,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: 'mapbox://styles/mapbox/satellite-v9',
       fitBoundsOptions: { padding: 24 },
       zoom: 2,
       center: [102, 9],
@@ -181,7 +182,7 @@ export const treeCoverLayer = {
   type: 'raster',
   source: `treeCoverSource`,
   layout: {
-    visibility: 'visible',
+    visibility: 'none',
   },
 }
 

@@ -92,7 +92,7 @@ export const Map = ({ urlProjectId }) => {
         addAllSourcesAndLayers(map, hexagons)
       })
     }
-  }, [map, gainforestCenterpoints, hexagons])
+  }, [map, gainforestCenterpoints, hexagons, dispatch])
 
   // Rotate the globe
   useEffect(() => {

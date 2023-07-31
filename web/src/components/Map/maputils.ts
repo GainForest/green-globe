@@ -235,7 +235,9 @@ export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
 }
 
 export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
-  map.addSource('hexagons', hexagonsSource(hexagons))
+  if (!map.getSource('hexagons')) {
+    map.addSource('hexagons', hexagonsSource(hexagons))
+  }
   if (!map.getLayer('hexagonClickFillLayer')) {
     map.addLayer(hexagonClickFillLayer())
   }

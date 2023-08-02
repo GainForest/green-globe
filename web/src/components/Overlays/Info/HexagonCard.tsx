@@ -40,10 +40,6 @@ export const HexagonCard = ({ numHexagons }) => {
         }}
       >
         <h2>Defensores del Chaco</h2>
-        <p style={{ fontSize: '14px' }}>
-          <b>Current Steward: </b> <br />
-          @forestboy17 (May 2023 - October 2023)
-        </p>
         {/* <p style={{ fontSize: '14px' }}>Plot 4 / 200</p> */}
         <div style={{ position: 'relative', height: '250px' }}>
           <div
@@ -84,14 +80,9 @@ export const HexagonCard = ({ numHexagons }) => {
           <p style={{ fontSize: '14px' }}>Area: 0.25 hectares</p> */}
 
           <p style={{ fontSize: '14px' }}>
-            By funding this plot, you are contributing towards protecting 0.25
-            hectares of forest for one month.
+            By funding this plot, you are contributing towards protecting this
+            part of land for one month.
           </p>
-
-          <p>What do I get for my stewardship?</p>
-          <p style={{ fontSize: '14px' }}>- Benefit 1</p>
-          <p style={{ fontSize: '14px' }}>- Benefit 2</p>
-          <p style={{ fontSize: '14px' }}>- Benefit 3</p>
         </div>
 
         {/* <p style={{ color: '#000000', fontSize: '12px' }}>
@@ -99,7 +90,7 @@ export const HexagonCard = ({ numHexagons }) => {
           {whatThreeWords}
         </p> */}
 
-        <RoundedButton
+        {/* <RoundedButton
           onClick={() => {
             dispatch(showBasket())
             dispatch(incrementBasketByAmount(numPlots))
@@ -107,7 +98,7 @@ export const HexagonCard = ({ numHexagons }) => {
         >
           Add {numPlots > 1 ? numPlots : ''} plot{numPlots > 1 ? 's' : ''} to my
           ecosytem
-        </RoundedButton>
+        </RoundedButton> */}
       </div>
     </InfoBox>
   )

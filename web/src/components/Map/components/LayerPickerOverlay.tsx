@@ -75,7 +75,7 @@ const PotentialTreeCoverBox = ({ map }) => {
 }
 
 const TreeCoverBox = ({ map }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(true)
+  const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const imageSrc = 'treeCoverDark.png'
 

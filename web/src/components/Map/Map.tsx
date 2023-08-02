@@ -25,6 +25,7 @@ import {
   fetchTreeShapefile,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
+  fetchHexagons,
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
 import {
@@ -42,11 +43,10 @@ export const Map = ({ urlProjectId }) => {
   const infoOverlay = useSelector((state: State) => state.overlays.info)
 
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [_, setColorMode] = useColorMode()
   const [__, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
-  // const [hexagons, setHexagons] = useState()
+  const [hexagons, setHexagons] = useState()
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -56,7 +56,7 @@ export const Map = ({ urlProjectId }) => {
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
-    setColorMode('dark')
+    fetchHexagons(setHexagons)
   }, [])
 
   // Initialize Map
@@ -68,9 +68,16 @@ export const Map = ({ urlProjectId }) => {
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && gainforestCenterpoints) {
+    if (map && gainforestCenterpoints && hexagons) {
       map.on('load', () => {
-        addAllSourcesAndLayers(map)
+        map.setFog({
+          color: '#000000', // Lower atmosphere
+          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
+          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
+          'space-color': 'rgb(11, 11, 25)', // Background color
+          'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
+        })
+        addAllSourcesAndLayers(map, hexagons)
         const gainForestMarkers = addMarkers(
           map,
           dispatch,
@@ -82,10 +89,10 @@ export const Map = ({ urlProjectId }) => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map)
+        addAllSourcesAndLayers(map, hexagons)
       })
     }
-  }, [map, gainforestCenterpoints])
+  }, [map, gainforestCenterpoints, hexagons, dispatch])
 
   // Rotate the globe
   useEffect(() => {
@@ -128,7 +135,7 @@ export const Map = ({ urlProjectId }) => {
   useEffect(() => {
     if (map && activeProjectPolygon) {
       // TODO: Take into account all of the shapefiles the project has
-      map.getSource('project').setData(activeProjectPolygon)
+      map.getSource('project')?.setData(activeProjectPolygon)
       dispatch(setInfoOverlay(1))
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)

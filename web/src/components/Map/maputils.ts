@@ -6,7 +6,10 @@ import {
   clusteredTreesLayer,
   generatePlanetLayer,
   generatePlanetSource,
-  // hexagonsSource,
+  hexagonClickFillLayer,
+  hexagonHoverFillLayer,
+  hexagonOutlineLayer,
+  hexagonsSource,
   landCoverLayer,
   landCoverSource,
   potentialTreeCoverLayer,
@@ -20,14 +23,14 @@ import {
 } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
-export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
+export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
-  // addHexagonsSourceAndLayers(map, hexagonsGeoJson)
+  addHexagonsSourceAndLayers(map, hexagons)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
@@ -208,16 +211,6 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
     }
   })
 }
-
-// export const addGainForestCenterpointsSource = (
-//   map: mapboxgl.Map,
-//   projectCenterpoints
-// ) => {
-//   if (!map.getSource('gainforestCenterpoints')) {
-//     map.addSource('gainforestCenterpoints', projectSource(projectCenterpoints))
-//   }
-// }
-
 export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('project')) {
     map.addSource('project', {
@@ -241,23 +234,20 @@ export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
   }
 }
 
-// export const addHexagonsSourceAndLayers = (
-//   map: mapboxgl.Map,
-//   hexagonGeoJsons
-// ) => {
-//   if (!map.getSource('hexagons')) {
-//     map.addSource('hexagons', hexagonsSource(hexagonGeoJsons))
-//   }
-//   if (!map.getLayer('hexagonClickFillLayer')) {
-//     map.addLayer(hexagonClickFillLayer())
-//   }
-//   if (!map.getLayer('hexagonOutline')) {
-//     map.addLayer(hexagonOutlineLayer('#00FF00'))
-//   }
-//   if (!map.getLayer('hexagonHoverFill')) {
-//     map.addLayer(hexagonHoverFillLayer())
-//   }
-// }
+export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
+  if (!map.getSource('hexagons')) {
+    map.addSource('hexagons', hexagonsSource(hexagons))
+  }
+  if (!map.getLayer('hexagonClickFillLayer')) {
+    map.addLayer(hexagonClickFillLayer())
+  }
+  if (!map.getLayer('hexagonOutline')) {
+    map.addLayer(hexagonOutlineLayer('#00FF00'))
+  }
+  if (!map.getLayer('hexagonHoverFill')) {
+    map.addLayer(hexagonHoverFillLayer())
+  }
+}
 
 export const addTreesPlantedSourceAndLayers = (
   map: mapboxgl.Map,

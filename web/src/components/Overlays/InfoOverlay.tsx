@@ -7,7 +7,7 @@ import { ExitButton } from '../Map/components/ExitButton'
 import { BiodiversityCard } from './Info/BiodiversityCard'
 import { CommunityCard } from './Info/CommunityCard'
 import { DiscordCard } from './Info/DiscordCard'
-import { HexagonCard } from './Info/HexagonCard'
+// import { HexagonCard } from './Info/HexagonCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
@@ -26,12 +26,6 @@ export const InfoOverlay = ({
       <ExitButton
         style={{ left: 320, bottom: 486 }}
         onClick={() => dispatch(hideInfoOverlay())}
-      />
-      <InfoOverlayButton
-        buttonIcon="hexagon"
-        position={6}
-        active={infoOverlay == 6}
-        onClick={() => dispatch(setInfoOverlay(6))}
       />
       <InfoOverlayButton
         buttonIcon={'forest'}
@@ -82,7 +76,7 @@ export const InfoOverlay = ({
       {infoOverlay == 5 && (
         <DiscordCard activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 6 && <HexagonCard numHexagons={numHexagons} />}
+      {/* {infoOverlay == 6 && <HexagonCard numHexagons={numHexagons} />} */}
     </>
   )
 }

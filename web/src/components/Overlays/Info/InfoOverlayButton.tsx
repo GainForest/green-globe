@@ -37,7 +37,7 @@ const StyledButton = styled.button<{
   cursor: pointer;
   height: 44px;
   width: 44px;
-  bottom: 550px;
+  bottom: 610px;
   border: none;
   left: ${(props) => `${props.position * 54 - 48}px`};
   background-color: ${(props) => (props.active ? '#67962A' : '#ffffff')};

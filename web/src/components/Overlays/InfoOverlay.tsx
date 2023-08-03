@@ -24,7 +24,7 @@ export const InfoOverlay = ({
   return (
     <>
       <ExitButton
-        style={{ left: 320, bottom: 486 }}
+        style={{ left: 320, bottom: 546 }}
         onClick={() => dispatch(hideInfoOverlay())}
       />
       <InfoOverlayButton

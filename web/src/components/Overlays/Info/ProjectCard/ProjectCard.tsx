@@ -44,7 +44,7 @@ export const ProjectCard = ({
         {activeProjectData?.project?.stripeUrl && (
           <a href={activeProjectData?.project?.stripeUrl}>
             <Button style={{ backgroundColor: '#ffa400', width: '200px' }}>
-              Donate to this project
+              Boost this project
             </Button>
           </a>
         )}

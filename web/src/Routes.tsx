@@ -18,7 +18,7 @@ const Routes = () => {
       <Set>
         {/* <Set private unauthenticated="login"> */}
         {/* <Route path="/" page={LandingPage} name="landing" /> */}
-        <Route path="/{urlProjectId:Int}" page={MapPage} name="map" />
+        <Route path="/{urlProjectId:String}" page={MapPage} name="map" />
         <Route path="/" page={MapPage} name="map" />
         <Route notfound page={NotFoundPage} />
       </Set>

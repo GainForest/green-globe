@@ -5,7 +5,6 @@ import { useEffect, useState, useRef } from 'react'
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
 import { useDispatch, useSelector } from 'react-redux'
-import { useColorMode } from 'theme-ui'
 
 import { navigate } from '@redwoodjs/router'
 

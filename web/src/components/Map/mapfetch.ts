@@ -21,7 +21,7 @@ export const fetchGainForestCenterpoints = (setGeoJson) => {
 }
 
 export const fetchProjectInfo = async (projectId: string, setResult) => {
-  const response = fetch(`${process.env.GAINFOREST}/api/graphql`, {
+  const response = fetch(`${process.env.GAINFOREST_ENDPOINT}/api/graphql`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -35,7 +35,7 @@ export const DiscordCard = ({ activeProjectData }) => {
         }
         style={{ borderWidth: 0, borderRadius: '0.5em' }}
         width="100%"
-        height="500px"
+        height="560px"
       ></iframe>
     </InfoBox>
   )

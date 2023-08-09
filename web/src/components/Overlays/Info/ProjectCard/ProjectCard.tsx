@@ -55,7 +55,7 @@ export const ProjectCard = ({
         />
         <Description activeProjectData={activeProjectData} />
         <a
-          href={`https://gainforest.app/overview/${projectId}`}
+          href={`${process.env.GAINFOREST_ENDPOINT}/overview/${projectId}`}
           target="_blank"
           rel="noreferrer"
         >

@@ -54,7 +54,7 @@ const PhotoCard = ({ projectId, photoEndpoint }) => {
       <p>
         For more, visit the{' '}
         <a
-          href={`https://gainforest.app/data/${projectId}`}
+          href={`${process.env.GAINFOREST_ENDPOINT}/data/${projectId}`}
           target="_blank"
           rel="noreferrer"
         >
@@ -84,7 +84,7 @@ const VideoCard = ({ projectId, videoEndpoint }) => {
       <p>
         For more, visit the{' '}
         <a
-          href={`https://gainforest.app/data/${projectId}`}
+          href={`${process.env.GAINFOREST_ENDPOINT}/data/${projectId}`}
           target="_blank"
           rel="noreferrer"
         >

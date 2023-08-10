@@ -23,7 +23,7 @@ import {
 } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
-import { getDBH, getTreeDBH, getTreeHeight, getTreePhoto } from './maptreeutils'
+import { getTreeDBH, getTreeHeight, getTreePhoto } from './maptreeutils'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
   addPlanetLabsSourceAndLayers(map)

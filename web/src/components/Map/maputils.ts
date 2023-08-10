@@ -23,6 +23,8 @@ import {
 } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
+import { getDBH, getTreeDBH, getTreeHeight, getTreePhoto } from './maptreeutils'
+
 export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -129,21 +131,16 @@ export const getPopupTreeInformation = (e, activeProject) => {
   const treeName = tree?.Plant_Name
     ? upperCaseEveryWord(tree?.Plant_Name)
     : 'unknown'
-  const treeHeight = tree?.Height ? `${tree?.Height}m` : 'unknown'
 
-  const treeDBH = tree?.DBH ? `${tree?.DBH}cm` : 'unknown'
+  const treeHeight = getTreeHeight(tree)
+  const treeDBH = getTreeDBH(tree)
+
   const treeID =
     tree?.['FCD-tree_records-tree_photo']?.split('?id=')?.[1] ||
     tree?.ID ||
     'unknown'
 
-  // TODO: process in the backend
-  const treePhoto = tree?.tree_photo
-    ? tree?.tree_photo
-    : activeProject ==
-      '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a'
-    ? `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
-    : `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+  const treePhoto = getTreePhoto(tree, activeProject, treeID)
   return { treeName, treeHeight, treeDBH, treeID, treePhoto }
 }
 

@@ -147,7 +147,10 @@ export const Map = ({ urlProjectId }) => {
   // Fetch tree data
   useEffect(() => {
     if (activeProjectData) {
-      const treesEndpoint = `${process.env.AWS_STORAGE}/shapefiles/${activeProjectData?.project?.name}`
+      const projectName = activeProjectData?.project?.name
+        .toLowerCase()
+        .replace(' ', '-')
+      const treesEndpoint = `${process.env.AWS_STORAGE}/shapefiles/${projectName}-all-tree-plantings.geojson`
       const fetchData = async () => {
         await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
       }

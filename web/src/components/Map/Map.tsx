@@ -147,9 +147,7 @@ export const Map = ({ urlProjectId }) => {
   // Fetch tree data
   useEffect(() => {
     if (activeProjectData) {
-      const treesEndpoint = activeProjectData?.project?.assets?.filter((d) =>
-        d.classification.includes('Measured')
-      )?.[0]?.awsCID
+      const treesEndpoint = `${process.env.AWS_STORAGE}/shapefiles/${activeProjectData?.project?.name}`
       const fetchData = async () => {
         await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
       }

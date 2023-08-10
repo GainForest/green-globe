@@ -150,7 +150,7 @@ export const Map = ({ urlProjectId }) => {
       const projectName = activeProjectData?.project?.name
         .toLowerCase()
         .replace(' ', '-')
-      const treesEndpoint = `/shapefiles/${projectName}-all-tree-plantings.geojson`
+      const treesEndpoint = `shapefiles/${projectName}-all-tree-plantings.geojson`
       const fetchData = async () => {
         await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
       }

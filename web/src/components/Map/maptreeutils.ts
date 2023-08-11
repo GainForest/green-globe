@@ -36,3 +36,16 @@ export const getTreePhoto = (tree, activeProject: string, treeID: string) => {
     return `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
   }
 }
+
+export const getSpeciesName = (tree) => {
+  const upperCaseEveryWord = (name: string) =>
+    name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
+
+  if (tree?.Plant_Name) {
+    return upperCaseEveryWord(tree?.Plant_Name)
+  } else if (tree?.species) {
+    return tree?.species
+  } else {
+    return 'unknown'
+  }
+}

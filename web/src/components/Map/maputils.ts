@@ -23,7 +23,12 @@ import {
 } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
-import { getTreeDBH, getTreeHeight, getTreePhoto } from './maptreeutils'
+import {
+  getSpeciesName,
+  getTreeDBH,
+  getTreeHeight,
+  getTreePhoto,
+} from './maptreeutils'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
   addPlanetLabsSourceAndLayers(map)
@@ -113,18 +118,13 @@ export const popup = new mapboxgl.Popup({
 export const treePopupHtml = ({ treeName, treeHeight, treeDBH, treePhoto }) => {
   return `<div class="default"><object width="200" height="200" data="${treePhoto}">
   <img width="200" height="200" src="${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png" />
-  </object> <br /></div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
+  </object> <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
 }
 
 export const getPopupTreeInformation = (e, activeProject) => {
-  const upperCaseEveryWord = (name: string) =>
-    name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
-
   const tree = e?.features[0]?.properties
 
-  const treeName = tree?.Plant_Name
-    ? upperCaseEveryWord(tree?.Plant_Name)
-    : 'unknown'
+  const treeName = getSpeciesName(tree)
 
   const treeHeight = getTreeHeight(tree)
   const treeDBH = getTreeDBH(tree)

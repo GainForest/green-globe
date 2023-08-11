@@ -165,7 +165,6 @@ export const Map = ({ urlProjectId }) => {
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
       // Needed on initial fetch
-      console.log('active project trees planted', activeProjectTreesPlanted)
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
     }
   }, [map, activeProjectTreesPlanted])

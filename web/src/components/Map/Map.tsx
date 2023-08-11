@@ -218,12 +218,11 @@ export const Map = ({ urlProjectId }) => {
         const treeInformation = getPopupTreeInformation(e, activeProjectId)
         const lngLat = [e.lngLat.lng, e.lngLat.lat]
         const { treeID } = treeInformation
-        if (treeID != 'unknown') {
-          popup
-            .setLngLat(lngLat)
-            .setHTML(treePopupHtml(treeInformation))
-            .addTo(map)
-        }
+        console.log('lngLat', lngLat, treeInformation)
+        popup
+          .setLngLat(lngLat)
+          .setHTML(treePopupHtml(treeInformation))
+          .addTo(map)
       })
       map.on('mouseleave', 'unclusteredTrees', (e) => {
         popup.remove()

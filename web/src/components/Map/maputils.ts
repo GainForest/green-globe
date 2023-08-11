@@ -110,16 +110,10 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
-export const treePopupHtml = ({
-  treeName,
-  treeHeight,
-  treeDBH,
-  treeID,
-  treePhoto,
-}) => {
+export const treePopupHtml = ({ treeName, treeHeight, treeDBH, treePhoto }) => {
   return `<div class="default"><object width="200" height="200" data="${treePhoto}">
   <img width="200" height="200" src="${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png" />
-  </object> <br /><b>ID:</b> <div overflowWrap="break-word"> ${treeID} </div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
+  </object> <br /></div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
 }
 
 export const getPopupTreeInformation = (e, activeProject) => {

@@ -147,13 +147,16 @@ export const Map = ({ urlProjectId }) => {
   // Fetch tree data
   useEffect(() => {
     if (activeProjectData) {
-      const treesEndpoint = activeProjectData?.project?.assets?.filter((d) =>
-        d.classification.includes('Measured')
-      )?.[0]?.awsCID
-      const fetchData = async () => {
-        await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
+      const projectName = activeProjectData?.project?.name
+        .toLowerCase()
+        .replaceAll(' ', '_')
+      if (projectName) {
+        const treesEndpoint = `shapefiles/${projectName}-all-tree-plantings.geojson`
+        const fetchData = async () => {
+          await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
+        }
+        fetchData().catch(console.error)
       }
-      fetchData().catch(console.error)
     }
   }, [activeProjectData])
 
@@ -162,6 +165,7 @@ export const Map = ({ urlProjectId }) => {
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
       // Needed on initial fetch
+      console.log('active project trees planted', activeProjectTreesPlanted)
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
     }
   }, [map, activeProjectTreesPlanted])

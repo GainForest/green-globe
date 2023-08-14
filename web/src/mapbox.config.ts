@@ -114,8 +114,8 @@ export const clusteredTreesLayer = {
   paint: {
     'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
     'circle-opacity': 0.5,
-    'circle-color': '#F72688',
-    'circle-stroke-color': '#F72688',
+    'circle-color': '#ff77c1',
+    'circle-stroke-color': '#ff77c1',
     'circle-stroke-opacity': 1,
   },
 }
@@ -138,9 +138,9 @@ export const unclusteredTreesLayer = {
   source: 'trees',
   filter: ['!', ['has', 'point_count']],
   paint: {
-    'circle-color': '#F72688',
+    'circle-color': '#ff77c1',
     'circle-radius': 4,
-    'circle-stroke-color': '#F72688',
+    'circle-stroke-color': '#ff77c1',
   },
 }
 

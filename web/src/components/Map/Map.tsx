@@ -217,7 +217,6 @@ export const Map = ({ urlProjectId }) => {
         const treeInformation = getPopupTreeInformation(e, activeProjectId)
         const lngLat = [e.lngLat.lng, e.lngLat.lat]
         const { treeID } = treeInformation
-        console.log('lngLat', lngLat, treeInformation)
         popup
           .setLngLat(lngLat)
           .setHTML(treePopupHtml(treeInformation))

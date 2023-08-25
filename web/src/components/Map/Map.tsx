@@ -5,7 +5,6 @@ import { useEffect, useState, useRef } from 'react'
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
 import { useDispatch, useSelector } from 'react-redux'
-import { useColorMode } from 'theme-ui'
 
 import { navigate } from '@redwoodjs/router'
 
@@ -148,13 +147,16 @@ export const Map = ({ urlProjectId }) => {
   // Fetch tree data
   useEffect(() => {
     if (activeProjectData) {
-      const treesEndpoint = activeProjectData?.project?.assets?.filter((d) =>
-        d.classification.includes('Measured')
-      )?.[0]?.awsCID
-      const fetchData = async () => {
-        await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
+      const projectName = activeProjectData?.project?.name
+        .toLowerCase()
+        .replaceAll(' ', '-')
+      if (projectName) {
+        const treesEndpoint = `shapefiles/${projectName}-all-tree-plantings.geojson`
+        const fetchData = async () => {
+          await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
+        }
+        fetchData().catch(console.error)
       }
-      fetchData().catch(console.error)
     }
   }, [activeProjectData])
 
@@ -215,12 +217,10 @@ export const Map = ({ urlProjectId }) => {
         const treeInformation = getPopupTreeInformation(e, activeProjectId)
         const lngLat = [e.lngLat.lng, e.lngLat.lat]
         const { treeID } = treeInformation
-        if (treeID != 'unknown') {
-          popup
-            .setLngLat(lngLat)
-            .setHTML(treePopupHtml(treeInformation))
-            .addTo(map)
-        }
+        popup
+          .setLngLat(lngLat)
+          .setHTML(treePopupHtml(treeInformation))
+          .addTo(map)
       })
       map.on('mouseleave', 'unclusteredTrees', (e) => {
         popup.remove()

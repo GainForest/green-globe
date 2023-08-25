@@ -20,8 +20,8 @@ export const fetchGainForestCenterpoints = (setGeoJson) => {
     .then((newGeojson) => setGeoJson(newGeojson))
 }
 
-export const fetchProjectInfo = async (projectId: number, setResult) => {
-  const response = fetch('https://gainforest.app/api/graphql', {
+export const fetchProjectInfo = async (projectId: string, setResult) => {
+  const response = fetch(`${process.env.GAINFOREST_ENDPOINT}/api/graphql`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export const fetchProjectInfo = async (projectId: number, setResult) => {
     body: JSON.stringify({
       query: `
         query {
-          project(id:${projectId}) {
+          project(id:"${projectId}") {
             id
             name
             country

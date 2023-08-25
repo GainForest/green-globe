@@ -23,6 +23,13 @@ import {
 } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
+import {
+  getSpeciesName,
+  getTreeDBH,
+  getTreeHeight,
+  getTreePhoto,
+} from './maptreeutils'
+
 export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -108,41 +115,27 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
-export const treePopupHtml = ({
-  treeName,
-  treeHeight,
-  treeDBH,
-  treeID,
-  treePhoto,
-}) => {
-  return `<div class="default"><object width="200" height="200" data="${treePhoto}">
-  <img width="200" height="200" src="${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png" />
-  </object> <br /><b>ID:</b> <div overflowWrap="break-word"> ${treeID} </div> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
+export const treePopupHtml = ({ treeName, treeHeight, treeDBH, treePhoto }) => {
+  return `<div class="default">
+  <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
+<br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
 }
 
 export const getPopupTreeInformation = (e, activeProject) => {
-  const upperCaseEveryWord = (name: string) =>
-    name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
-
   const tree = e?.features[0]?.properties
 
-  const treeName = tree?.Plant_Name
-    ? upperCaseEveryWord(tree?.Plant_Name)
-    : 'unknown'
-  const treeHeight = tree?.Height ? `${tree?.Height}m` : 'unknown'
+  const treeName = getSpeciesName(tree)
 
-  const treeDBH = tree?.DBH ? `${tree?.DBH}cm` : 'unknown'
+  const treeHeight = getTreeHeight(tree)
+  const treeDBH = getTreeDBH(tree)
+
   const treeID =
     tree?.['FCD-tree_records-tree_photo']?.split('?id=')?.[1] ||
     tree?.ID ||
     'unknown'
 
-  // TODO: process in the backend
-  const treePhoto = tree?.tree_photo
-    ? tree?.tree_photo
-    : activeProject == 24
-    ? `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
-    : `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+  const treePhoto = getTreePhoto(tree, activeProject, treeID)
+
   return { treeName, treeHeight, treeDBH, treeID, treePhoto }
 }
 

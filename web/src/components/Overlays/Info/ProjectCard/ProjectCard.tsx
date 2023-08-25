@@ -41,13 +41,13 @@ export const ProjectCard = ({
       <TextContainer>
         <h1>{activeProjectData?.project?.name || ''}</h1>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
-        {activeProjectData?.project?.stripeUrl && (
+        {/* {activeProjectData?.project?.stripeUrl && (
           <a href={activeProjectData?.project?.stripeUrl}>
             <Button style={{ backgroundColor: '#ffa400', width: '200px' }}>
               Boost this project
             </Button>
           </a>
-        )}
+        )} */}
         <ProjectSiteButtons
           assets={activeProjectData?.project?.assets}
           activeShapefile={activeProjectPolygon}
@@ -55,7 +55,7 @@ export const ProjectCard = ({
         />
         <Description activeProjectData={activeProjectData} />
         <a
-          href={`https://gainforest.app/overview/${projectId}`}
+          href={`${process.env.GAINFOREST_ENDPOINT}/overview/${projectId}`}
           target="_blank"
           rel="noreferrer"
         >

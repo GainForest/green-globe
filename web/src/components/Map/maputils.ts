@@ -135,7 +135,6 @@ export const getPopupTreeInformation = (e, activeProject) => {
     'unknown'
 
   const treePhoto = getTreePhoto(tree, activeProject, treeID)
-
   return { treeName, treeHeight, treeDBH, treeID, treePhoto }
 }
 

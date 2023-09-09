@@ -10,7 +10,7 @@ import Navbar from 'src/components/Navbar/Navbar'
 const MapPage = ({ urlProjectId }) => {
   const { isAuthenticated } = useAuth()
 
-  // Check user-agent string if the user is on mobile or on ipad.
+  // Check user-agent string if the user is on mobile but not on ipad.
   useEffect(() => {
     const mobileRegex = /\b(Android|webOS|iPhone|BlackBerry|Windows Phone)\b/
     if (mobileRegex.test(navigator.userAgent)) {

@@ -116,7 +116,7 @@ export const popup = new mapboxgl.Popup({
 })
 
 export const treePopupHtml = ({ treeName, treeHeight, treeDBH, treePhoto }) => {
-  if (treePhoto.includes('.mov')) {
+  if (treePhoto.includes('.mp4')) {
     return `<div class="default">
     <video width="400" controls autoplay>
     <source src="${treePhoto} type="video/mp4">

@@ -38,9 +38,26 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
   addProjectPolygonsSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
+  addOrthomosaicSourceAndLayer(map)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
+
+export const addOrthomosaicSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('orthomosaic')) {
+    map.addSource('orthomosaic', {
+      type: 'raster',
+      url: 'mapbox://dwddao.0muxuhbk',
+    })
+  }
+  if (!map.getLayer('orthomosaic')) {
+    map.addLayer({
+      id: 'orthomosaic',
+      source: 'orthomosaic',
+      type: 'raster',
+    })
+  }
+}
 
 export const addNasaSourceAndLayer = (map: mapboxgl.Map) => {
   // const tilePath =
@@ -122,10 +139,11 @@ export const treePopupHtml = ({ treeName, treeHeight, treeDBH, treePhoto }) => {
     <source src="${treePhoto}" type="video/mp4">
     </video>
   <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-  }
-  return `<div class="default">
+  } else {
+    return `<div class="default">
   <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
 <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
+  }
 }
 
 export const getPopupTreeInformation = (e, activeProject) => {

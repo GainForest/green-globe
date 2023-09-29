@@ -6,6 +6,7 @@ import { useThemeUI } from 'theme-ui'
 
 import {
   toggleLandCoverLayer,
+  toggleOrthomosaic,
   togglePotentialTreeCoverLayer,
   toggleTreeCoverLayer,
   toggleTreesPlantedLayer,
@@ -20,7 +21,7 @@ export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '148px',
+        width: '208px',
         height: '100px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
@@ -32,7 +33,44 @@ export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
     >
       <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
       <TreeCoverBox map={map} />
+      <OrthomosaicToggle map={map} />
       {/* <PotentialTreeCoverBox map={map} /> */}
+    </div>
+  )
+}
+
+const OrthomosaicToggle = ({ map }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(true)
+
+  const imageSrc = 'orthomosaic.png'
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0px 8px',
+        textAlign: 'center',
+      }}
+    >
+      <LayerPickerButton
+        type="image"
+        src={imageSrc}
+        alt="toggle light/dark layer"
+        active={isVisible}
+        onClick={() => {
+          if (!isVisible) {
+            toggleOrthomosaic(map, 'visible')
+            toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(true)
+          } else {
+            toggleOrthomosaic(map, 'none')
+            toggleTreesPlantedLayer(map, 'visible')
+            setIsVisible(false)
+          }
+        }}
+      />
+      <p style={{ fontSize: '10px' }}>orthomosaic {isVisible ? 'on' : 'off'}</p>
     </div>
   )
 }

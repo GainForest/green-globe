@@ -59,6 +59,12 @@ export const addOrthomosaicSourceAndLayer = (map: mapboxgl.Map) => {
   }
 }
 
+export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {
+  if (map.getLayer('orthomosaic')) {
+    map.setLayoutProperty('orthomosaic', 'visibility', visibility)
+  }
+}
+
 export const addNasaSourceAndLayer = (map: mapboxgl.Map) => {
   // const tilePath =
   //   'wmts/epsg4326/best/' +

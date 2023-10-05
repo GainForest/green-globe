@@ -1,3 +1,16 @@
+export const getDateOfMeasurement = (tree) => {
+  if (tree?.dateOfMeasurement) {
+    return tree?.dateOfMeasurement
+  } else if (tree?.datePlanted) {
+    const date = new Date(tree?.datePlanted)
+    return `${date.getDate()} ${date.toLocaleString('default', {
+      month: 'short',
+    })} ${date.getFullYear()}`
+  } else {
+    return 'unknown'
+  }
+}
+
 export const getTreeDBH = (tree) => {
   if (tree?.DBH) {
     // iNaturalist API

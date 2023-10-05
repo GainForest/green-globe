@@ -24,6 +24,7 @@ import {
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import {
+  getDateOfMeasurement,
   getSpeciesName,
   getTreeDBH,
   getTreeHeight,
@@ -138,7 +139,13 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
-export const treePopupHtml = ({ treeName, treeHeight, treeDBH, treePhoto }) => {
+export const treePopupHtml = ({
+  treeName,
+  treeHeight,
+  treeDBH,
+  treePhoto,
+  dateOfMeasurement,
+}) => {
   if (
     treePhoto.includes('.mp4') ||
     treePhoto.includes('.mov') ||
@@ -152,7 +159,7 @@ export const treePopupHtml = ({ treeName, treeHeight, treeDBH, treePhoto }) => {
   } else {
     return `<div class="default">
   <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
-<br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
+<br /> <br /><b>Date of measurement:</b> ${dateOfMeasurement}<br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
   }
 }
 
@@ -163,6 +170,7 @@ export const getPopupTreeInformation = (e, activeProject) => {
 
   const treeHeight = getTreeHeight(tree)
   const treeDBH = getTreeDBH(tree)
+  const dateOfMeasurement = getDateOfMeasurement(tree)
 
   const treeID =
     tree?.['FCD-tree_records-tree_photo']?.split('?id=')?.[1] ||
@@ -170,7 +178,7 @@ export const getPopupTreeInformation = (e, activeProject) => {
     'unknown'
 
   const treePhoto = getTreePhoto(tree, activeProject, treeID)
-  return { treeName, treeHeight, treeDBH, treeID, treePhoto }
+  return { treeName, treeHeight, treeDBH, treeID, treePhoto, dateOfMeasurement }
 }
 
 const addPotentialTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {

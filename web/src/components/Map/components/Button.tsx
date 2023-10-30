@@ -10,7 +10,6 @@ const Button = ({ active = true, children, onClick, style }) => {
   return (
     <button
       style={{
-        margin: '12px 0 24px',
         border: 'none',
         borderRadius: '0.5em',
         backgroundColor,

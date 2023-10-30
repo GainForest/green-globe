@@ -3,6 +3,7 @@ import { useThemeUI } from 'theme-ui'
 
 import { showBasket, showProfile } from 'src/reducers/overlaysReducer'
 
+import DonateButton from './DonateButton'
 import ProfileButton from './ProfileButton'
 import ShoppingCartButton from './ShoppingCartButton'
 
@@ -28,6 +29,16 @@ const Navbar = ({ isAuthenticated, style }) => {
         <h3>{logo}</h3>
       </div>
 
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
+        <DonateButton />
+      </div>
       {isAuthenticated && (
         <div
           style={{

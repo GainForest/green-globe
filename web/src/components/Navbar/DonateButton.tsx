@@ -9,6 +9,7 @@ const DonateButton = () => {
           borderRadius: '4px',
           cursor: 'pointer',
           width: '80px',
+          backgroundColor: '#ea9755',
         }}
       >
         Donate

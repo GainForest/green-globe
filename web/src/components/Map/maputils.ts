@@ -31,7 +31,11 @@ import {
   getTreePhoto,
 } from './maptreeutils'
 
-export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
+export const addAllSourcesAndLayers = (
+  map: mapboxgl.Map,
+  hexagons,
+  hiveLocations
+) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
@@ -40,9 +44,32 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map, hexagons) => {
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
   addOrthomosaicSourceAndLayer(map)
+  addHiveSourceAndLayers(map, hiveLocations)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
+
+export const addHiveSourceAndLayers = (map: mapboxgl.Map, hiveLocations) => {
+  if (!map.getSource('hiveSource') && hiveLocations) {
+    map.addSource('hiveSource', {
+      type: 'geojson',
+      data: hiveLocations,
+    })
+  }
+  if (!map.getLayer('hiveLayer')) {
+    map.addLayer({
+      id: 'hiveLayer',
+      type: 'circle',
+      source: 'hiveSource',
+      paint: {
+        'circle-color': '#b284be',
+        'circle-radius': 20,
+        'circle-stroke-color': '#623c74',
+        'circle-stroke-width': 1,
+      },
+    })
+  }
+}
 
 export const addOrthomosaicSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('orthomosaic')) {

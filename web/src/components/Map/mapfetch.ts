@@ -1,5 +1,13 @@
 import geojson2h3 from 'geojson2h3'
 
+export const fetchHiveLocations = (setHiveLocations) => {
+  fetch(`${process.env.AWS_STORAGE}/points-of-interest/hive-locations.geojson`)
+    .then((response) => response.json())
+    .then((hiveLocations) => {
+      setHiveLocations(hiveLocations)
+    })
+}
+
 export const fetchHexagons = (setHexagons) => {
   fetch(`${process.env.AWS_STORAGE}/h3/defensores-del-chaco-h3.json`)
     .then((response) => response.json())

@@ -25,6 +25,7 @@ import {
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
   fetchHexagons,
+  fetchHiveLocations,
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
 import {
@@ -46,6 +47,7 @@ export const Map = ({ urlProjectId }) => {
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
+  const [hiveLocations, setHiveLocations] = useState()
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
@@ -76,7 +78,7 @@ export const Map = ({ urlProjectId }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
-        addAllSourcesAndLayers(map, hexagons)
+        addAllSourcesAndLayers(map, hexagons, hiveLocations)
         const gainForestMarkers = addMarkers(
           map,
           dispatch,
@@ -88,10 +90,10 @@ export const Map = ({ urlProjectId }) => {
         setMarkers([...gainForestMarkers])
       })
       map.on('styledata', () => {
-        addAllSourcesAndLayers(map, hexagons)
+        addAllSourcesAndLayers(map, hexagons, hiveLocations)
       })
     }
-  }, [map, gainforestCenterpoints, hexagons, dispatch])
+  }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
 
   // Rotate the globe
   useEffect(() => {
@@ -124,6 +126,7 @@ export const Map = ({ urlProjectId }) => {
         )
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
       }
+      fetchHiveLocations(setHiveLocations)
       fetchData().catch(console.error)
     }
   }, [activeProjectId])

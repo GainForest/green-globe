@@ -67,6 +67,14 @@ input[type=checkbox] {
   margin: 4px;
 }
 
+.hive-map-marker {
+  background-image: url('../public/hive.png');
+  background-size: cover;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
 
 /* Remove dropdown arrow in the search component */
 /* TODO: check in all browsers */

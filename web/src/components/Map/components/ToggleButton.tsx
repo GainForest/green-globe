@@ -1,29 +1,38 @@
 import styled from 'styled-components'
 
+// Creates a toggle where the options variable is the
+// first option on the left, and the right option on the right
+
+type L = string
+type R = string
+
 export const ToggleButton = ({
   active,
   setToggle,
+  options,
 }: {
-  active: 'photo' | 'video'
-  setToggle: (toggle: 'photo' | 'video') => void
+  active: L | R
+  setToggle: (toggle: L | R) => void
+  options: [L, R]
 }) => {
+  const [firstOption, secondOption] = options
   return (
     <>
       <HalfButton
-        active={active == 'photo'}
+        active={active == firstOption}
         style={{ borderRadius: '0.5em 0 0 0.5em' }}
-        onClick={() => setToggle('photo')}
+        onClick={() => setToggle(firstOption)}
       >
-        Photos
+        {firstOption}
       </HalfButton>
       <HalfButton
         style={{
           borderRadius: '0 0.5em 0.5em 0',
         }}
-        active={active == 'video'}
-        onClick={() => setToggle('video')}
+        active={active == secondOption}
+        onClick={() => setToggle(secondOption)}
       >
-        Videos
+        {secondOption}
       </HalfButton>
     </>
   )

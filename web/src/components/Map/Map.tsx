@@ -15,6 +15,7 @@ import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { BasketDetails } from '../Overlays/BasketDetails'
 import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
+import { SubscribeOverlay } from '../Overlays/SubscribeOverlay'
 
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
@@ -269,7 +270,7 @@ export const Map = ({ urlProjectId }) => {
         style={{ height: 'calc(100% - 52px)', width: '100%' }}
         id="map-container"
       />
-
+      <SubscribeOverlay />
       <ProfileOverlay />
       <BasketDetails />
       {gainforestCenterpoints && (

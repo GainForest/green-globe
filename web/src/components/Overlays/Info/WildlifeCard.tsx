@@ -6,7 +6,7 @@ import { ToggleButton } from '../../Map/components/ToggleButton'
 import { InfoBox } from './InfoBox'
 
 export const WildlifeCard = ({ activeProjectData }) => {
-  const [toggle, setToggle] = useState<'photo' | 'video'>('photo')
+  const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
 
   const projectId = activeProjectData?.project?.id
   const photoEndpoint =
@@ -25,12 +25,16 @@ export const WildlifeCard = ({ activeProjectData }) => {
       <div style={{ margin: '16px 24px' }}>
         <h2>Observed Wildlife</h2>
         <div style={{ width: '100%', height: '12px' }} />
-        <ToggleButton active={toggle} setToggle={setToggle} />
+        <ToggleButton
+          active={toggle}
+          setToggle={setToggle}
+          options={['Photos', 'Videos']}
+        />
         <div style={{ height: '24px', width: '100%' }} />
-        {toggle == 'photo' && (
+        {toggle == 'Photos' && (
           <PhotoCard projectId={projectId} photoEndpoint={photoEndpoint} />
         )}
-        {toggle == 'video' && (
+        {toggle == 'Videos' && (
           <VideoCard projectId={projectId} videoEndpoint={videoEndpoint} />
         )}
       </div>

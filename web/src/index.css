@@ -68,7 +68,7 @@ input[type=checkbox] {
 }
 
 .hive-map-marker {
-  background-image: url('hive.png');
+  background-image: url('../public/hive.png');
   background-size: cover;
   width: 32px;
   height: 32px;

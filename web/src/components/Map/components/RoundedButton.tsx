@@ -1,6 +1,14 @@
 import { useThemeUI } from 'theme-ui'
 
-const Button = ({ active = true, children, onClick, style }) => {
+const Button = ({
+  active = true,
+  children,
+  onClick,
+  style,
+}: {
+  active: boolean
+  children: React.ReactChild
+}) => {
   const { theme } = useThemeUI()
 
   const backgroundColor = (

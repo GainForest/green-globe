@@ -5,7 +5,7 @@ import { DonateOverlay } from '../Overlays/SubscribeOverlay'
 
 const DonateButton = () => {
   const [displayDonateOverlay, setDisplayDonateOverlay] =
-    useState<boolean>(true)
+    useState<boolean>(false)
 
   return (
     <>

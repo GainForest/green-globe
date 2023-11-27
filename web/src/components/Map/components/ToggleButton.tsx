@@ -23,7 +23,7 @@ export const ToggleButton = ({
         style={{ borderRadius: '0.5em 0 0 0.5em' }}
         onClick={() => setToggle(firstOption)}
       >
-        {firstOption}
+        {firstOption?.toUpperCase()}
       </HalfButton>
       <HalfButton
         style={{
@@ -32,7 +32,7 @@ export const ToggleButton = ({
         active={active == secondOption}
         onClick={() => setToggle(secondOption)}
       >
-        {secondOption}
+        {secondOption?.toUpperCase()}
       </HalfButton>
     </>
   )

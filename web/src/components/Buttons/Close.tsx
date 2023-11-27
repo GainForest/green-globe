@@ -1,11 +1,13 @@
-export const CloseButton = ({ onClick }) => {
+export const CloseButton = ({ onClick, fontSize, style }) => {
   return (
     <div
       style={{
-        fontSize: '24px',
+        fontSize: fontSize ? fontSize : '24px',
         lineHeight: '36px',
         justifyContent: 'space-between',
         cursor: 'pointer',
+        textAlign: 'right',
+        ...style,
       }}
       className="material-icons-round"
       onClick={onClick}

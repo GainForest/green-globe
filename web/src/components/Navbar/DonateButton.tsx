@@ -1,8 +1,14 @@
+import { useState } from 'react'
+
 import Button from '../Map/components/Button'
+import { DonateOverlay } from '../Overlays/SubscribeOverlay'
 
 const DonateButton = () => {
+  const [displayDonateOverlay, setDisplayDonateOverlay] =
+    useState<boolean>(true)
+
   return (
-    <a href={'https://donate.stripe.com/bIYdRX0qM8kr5iw9AR'}>
+    <>
       <Button
         style={{
           height: '32px',
@@ -11,10 +17,14 @@ const DonateButton = () => {
           width: '80px',
           backgroundColor: '#ea9755',
         }}
+        onClick={() => setDisplayDonateOverlay(true)}
       >
         Donate
       </Button>
-    </a>
+      {displayDonateOverlay && (
+        <DonateOverlay setDisplayDonateOverlay={setDisplayDonateOverlay} />
+      )}
+    </>
   )
 }
 

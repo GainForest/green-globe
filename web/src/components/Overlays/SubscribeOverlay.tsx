@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
+import { CloseButton } from '../Buttons/Close'
 import Button from '../Map/components/RoundedButton'
 import { ToggleButton } from '../Map/components/ToggleButton'
 
-export const SubscribeOverlay = () => {
+export const DonateOverlay = ({ setDisplayDonateOverlay }) => {
   const [toggle, setToggle] = useState<'One-time' | 'Monthly'>('Monthly')
   const [amountChosen, setAmountChosen] = useState<number>(10)
 
@@ -23,79 +24,93 @@ export const SubscribeOverlay = () => {
   return (
     <div
       style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        margin: 'auto',
+        zIndex: 4,
+        backgroundColor: '#F2EDE3',
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         height: '72%',
-        width: '100%',
-        padding: '50px',
-        maxWidth: '1014px',
-        backgroundColor: '#F2EDE3',
-        position: 'absolute',
-        bottom: '20%',
-        left: '10%',
+        width: '400px',
+        maxWidth: '100%',
         borderRadius: '0.5em',
-        overflowY: 'auto',
         color: 'black',
-        zIndex: '4',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        textAlign: 'right',
       }}
     >
-      Your Donation
-      <br />
-      <br />
-      <div>
-        <ToggleButton
-          active={toggle}
-          setToggle={setToggle}
-          options={['One-time', 'Monthly']}
-        ></ToggleButton>
-      </div>
-      <br />
-      Choose a {toggle.toLowerCase()} amount
-      <br />
-      <br />
+      <CloseButton
+        fontSize={'24px'}
+        style={{ marginRight: '16px', marginTop: '12px' }}
+        onClick={() => setDisplayDonateOverlay(false)}
+      />
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gridGap: '8px',
+          padding: '28px',
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Button
-          style={{ width: '120px', margin: 0 }}
-          active={amountChosen == 10}
-          onClick={() => setAmountChosen(10)}
+        <p style={{ fontSize: '20px' }}>Your Donation</p>
+        <br />
+        <div>
+          <ToggleButton
+            active={toggle}
+            setToggle={setToggle}
+            options={['One-time', 'Monthly']}
+          ></ToggleButton>
+        </div>
+        <br />
+        <p style={{ fontSize: '12px' }}>
+          Choose a {toggle.toLowerCase()} amount:
+        </p>
+        <br />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gridGap: '8px',
+          }}
         >
-          €10
-        </Button>
-        <Button
-          style={{ width: '120px', margin: 0 }}
-          active={amountChosen == 15}
-          onClick={() => setAmountChosen(15)}
-        >
-          €15
-        </Button>
-        <Button
-          style={{ width: '120px', margin: 0 }}
-          active={amountChosen == 25}
-          onClick={() => setAmountChosen(25)}
-        >
-          €25
-        </Button>
-        <Button
-          style={{ width: '120px', margin: 0 }}
-          active={amountChosen == 50}
-          onClick={() => setAmountChosen(50)}
-        >
-          €50
-        </Button>
+          <Button
+            style={{ width: '120px', margin: 0 }}
+            active={amountChosen == 10}
+            onClick={() => setAmountChosen(10)}
+          >
+            €10
+          </Button>
+          <Button
+            style={{ width: '120px', margin: 0 }}
+            active={amountChosen == 15}
+            onClick={() => setAmountChosen(15)}
+          >
+            €15
+          </Button>
+          <Button
+            style={{ width: '120px', margin: 0 }}
+            active={amountChosen == 25}
+            onClick={() => setAmountChosen(25)}
+          >
+            €25
+          </Button>
+          <Button
+            style={{ width: '120px', margin: 0 }}
+            active={amountChosen == 50}
+            onClick={() => setAmountChosen(50)}
+          >
+            €50
+          </Button>
+        </div>
+        <a href={links[link]}>
+          <Button style={{ width: '240px' }} active={true}>
+            Pay now
+          </Button>
+        </a>
       </div>
-      <a href={links[link]}>
-        <Button style={{ width: '240px' }} active={true}>
-          Pay now
-        </Button>
-      </a>
     </div>
   )
 }

@@ -270,7 +270,6 @@ export const Map = ({ urlProjectId }) => {
         style={{ height: 'calc(100% - 52px)', width: '100%' }}
         id="map-container"
       />
-      <SubscribeOverlay />
       <ProfileOverlay />
       <BasketDetails />
       {gainforestCenterpoints && (

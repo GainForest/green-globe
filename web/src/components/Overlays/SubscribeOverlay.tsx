@@ -14,6 +14,10 @@ export const SubscribeOverlay = () => {
     Monthly15: 'https://buy.stripe.com/8wM9BHddycAHcKY14o',
     Monthly25: 'https://buy.stripe.com/aEUg052yU44b7qE14n',
     Monthly50: 'https://buy.stripe.com/00gdRX6Pa58f4es28t',
+    'One-time10': 'https://buy.stripe.com/9AQ6pv1uQgQXh1e28u',
+    'One-time15': 'https://buy.stripe.com/5kA9BHflGgQX12g6oN',
+    'One-time25': 'https://buy.stripe.com/aEUcNT1uQ58fdP26oM',
+    'One-time50': 'https://buy.stripe.com/7sIaFL0qM44b12g3cC',
   }
 
   return (
@@ -63,31 +67,28 @@ export const SubscribeOverlay = () => {
           active={amountChosen == 10}
           onClick={() => setAmountChosen(10)}
         >
-          10
+          €10
         </Button>
         <Button
           style={{ width: '120px', margin: 0 }}
           active={amountChosen == 15}
           onClick={() => setAmountChosen(15)}
         >
-          15
+          €15
         </Button>
         <Button
           style={{ width: '120px', margin: 0 }}
           active={amountChosen == 25}
           onClick={() => setAmountChosen(25)}
         >
-          25
+          €25
         </Button>
         <Button
           style={{ width: '120px', margin: 0 }}
           active={amountChosen == 50}
           onClick={() => setAmountChosen(50)}
         >
-          50
-        </Button>
-        <Button style={{ width: '120px' }} active={false}>
-          Custom Amount
+          €50
         </Button>
       </div>
       <a href={links[link]}>

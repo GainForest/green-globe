@@ -55,7 +55,13 @@ export const DonateOverlay = ({ setDisplayDonateOverlay }) => {
           alignItems: 'center',
         }}
       >
-        <p style={{ fontSize: '20px' }}>Your Donation</p>
+        <p style={{ fontSize: '20px' }}>Fund Conservation Basic Income</p>
+        <p style={{ fontSize: '12px', textAlign: 'center' }}>
+          Help us make conservation and restoration an economically viable
+          option. Find out more in our{' '}
+          <a href="https://blog.gainforest.earth/what-is-m2e">blog post</a>.
+        </p>
+
         <br />
         <div>
           <ToggleButton
@@ -65,7 +71,7 @@ export const DonateOverlay = ({ setDisplayDonateOverlay }) => {
           ></ToggleButton>
         </div>
         <br />
-        <p style={{ fontSize: '12px' }}>
+        <p style={{ fontSize: '16px' }}>
           Choose a {toggle.toLowerCase()} amount:
         </p>
         <br />

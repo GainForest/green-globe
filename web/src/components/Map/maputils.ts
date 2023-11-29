@@ -43,7 +43,7 @@ export const addAllSourcesAndLayers = (
   addProjectPolygonsSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
-  addOrthomosaicSourceAndLayer(map)
+  // addOrthomosaicSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations)
 }
 
@@ -71,11 +71,11 @@ export const addHiveSourceAndLayers = (map: mapboxgl.Map, hiveLocations) => {
   }
 }
 
-export const addOrthomosaicSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('orthomosaic')) {
+export const addOrthomosaicSourceAndLayer = ({ map, endpoint }) => {
+  if (!map.getSource('orthomosaic') && endpoint) {
     map.addSource('orthomosaic', {
       type: 'raster',
-      url: 'mapbox://dwddao.0muxuhbk',
+      url: endpoint,
     })
   }
   if (!map.getLayer('orthomosaic')) {

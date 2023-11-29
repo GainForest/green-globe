@@ -37,6 +37,7 @@ import {
   popup,
   toggleTreesPlantedLayer,
   treePopupHtml,
+  addOrthomosaicSourceAndLayer,
 } from './maputils'
 
 export const Map = ({ urlProjectId }) => {
@@ -53,6 +54,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
+  const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -121,11 +123,15 @@ export const Map = ({ urlProjectId }) => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
       const fetchData = async () => {
-        const projectPolygonCID = await fetchProjectInfo(
+        const projectData = await fetchProjectInfo(
           activeProjectId,
           setActiveProjectData
         )
-        await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
+        await fetchProjectPolygon(
+          projectData.projectPolygonCID,
+          setActiveProjectPolygon
+        )
+        setActiveProjectMosaic(projectData.projectDroneEndpoint)
       }
       fetchHiveLocations(setHiveLocations)
       fetchData().catch(console.error)
@@ -172,6 +178,16 @@ export const Map = ({ urlProjectId }) => {
       addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
     }
   }, [map, activeProjectTreesPlanted])
+
+  // Display mosaic data
+  useEffect(() => {
+    if (map && activeProjectMosaic) {
+      addOrthomosaicSourceAndLayer({
+        map,
+        endpoint: activeProjectMosaic,
+      })
+    }
+  }, [map, activeProjectMosaic])
 
   // Hexagon onclick
   useEffect(() => {

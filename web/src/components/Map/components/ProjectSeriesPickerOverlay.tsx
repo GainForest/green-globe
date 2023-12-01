@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useThemeUI } from 'theme-ui'
 
-import { addMarkers } from '../maputils'
+import { addClickableMarkers } from '../maputils'
 
 export const ProjectSeriesPickerOverlay = ({
   map,
@@ -42,7 +42,7 @@ export const ProjectSeriesPickerOverlay = ({
                 }
               })
             } else {
-              const newMarkers = addMarkers(
+              const newMarkers = addClickableMarkers(
                 map,
                 dispatch,
                 projectPolygons,

@@ -31,7 +31,7 @@ import {
 import { spinGlobe } from './maprotate'
 import {
   addAllSourcesAndLayers,
-  addMarkers,
+  addClickableMarkers,
   addTreesPlantedSourceAndLayers,
   getPopupTreeInformation,
   popup,
@@ -80,7 +80,7 @@ export const Map = ({ urlProjectId }) => {
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
         addAllSourcesAndLayers(map, hexagons, hiveLocations)
-        const gainForestMarkers = addMarkers(
+        const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
           gainforestCenterpoints,

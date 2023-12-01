@@ -50,24 +50,8 @@ export const addAllSourcesAndLayers = (
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
 
 export const addHiveSourceAndLayers = (map: mapboxgl.Map, hiveLocations) => {
-  if (!map.getSource('hiveSource') && hiveLocations) {
-    map.addSource('hiveSource', {
-      type: 'geojson',
-      data: hiveLocations,
-    })
-  }
-  if (!map.getLayer('hiveLayer')) {
-    map.addLayer({
-      id: 'hiveLayer',
-      type: 'circle',
-      source: 'hiveSource',
-      paint: {
-        'circle-color': '#b284be',
-        'circle-radius': 20,
-        'circle-stroke-color': '#623c74',
-        'circle-stroke-width': 1,
-      },
-    })
+  if (hiveLocations) {
+    addMarkers(map, hiveLocations, 'hive')
   }
 }
 
@@ -117,7 +101,7 @@ export const addNasaSourceAndLayer = (map: mapboxgl.Map) => {
   })
 }
 
-export const addMarkers = (
+export const addClickableMarkers = (
   map: mapboxgl.Map,
   dispatch,
   geoJson: mapboxgl.geoJson,
@@ -151,6 +135,41 @@ export const addMarkers = (
     })
 
     // finally, add the marker to the map
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat(feature.geometry.coordinates)
+      .addTo(map)
+
+    markers.push(marker)
+  }
+
+  return markers
+}
+
+export const addMarkers = (
+  map: mapboxgl.Map,
+  geoJson: mapboxgl.geoJson,
+  markerType: string
+) => {
+  const markers = []
+  for (const feature of geoJson.features) {
+    // create the marker HTML element
+    const el = document.createElement('div')
+    el.className = `${markerType}-map-marker`
+
+    // display a popup with the project name on hover
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 20,
+      anchor: 'left',
+      className: 'default',
+    })
+      .setLngLat(feature.geometry.coordinates)
+      .setText(feature.properties.name)
+
+    el.addEventListener('mouseenter', () => popup.addTo(map))
+    el.addEventListener('mouseleave', () => popup.remove())
+
     const marker = new mapboxgl.Marker(el)
       .setLngLat(feature.geometry.coordinates)
       .addTo(map)

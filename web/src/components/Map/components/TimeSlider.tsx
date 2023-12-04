@@ -18,14 +18,6 @@ export const TimeSlider = ({ map }) => {
     maxDate.format('YYYY-MM')
   )
 
-  // Iff the user toggles the satellite history on or off
-  // we want to show the latest satellite layer available
-  useEffect(() => {
-    if (!isSatelliteHistoryEnabled) {
-      setIsFirstRender(true)
-    }
-  }, [isSatelliteHistoryEnabled])
-
   useEffect(() => {
     const showLatestLayer = () => {
       map.setLayoutProperty(
@@ -34,8 +26,17 @@ export const TimeSlider = ({ map }) => {
         'visible'
       )
     }
+    const maxDate = dayjs().subtract(6, 'week').set('date', 1)
+
     if (map && isSatelliteHistoryEnabled && isFirstRender) {
       map.on('styledata', showLatestLayer)
+    }
+
+    // If the user toggles the satellite history on or off
+    // we want to show the latest satellite layer available
+    if (!isSatelliteHistoryEnabled) {
+      setIsFirstRender(true)
+      setCurrentDate(maxDate.format('YYYY-MM'))
     }
     return () => {
       if (map) {

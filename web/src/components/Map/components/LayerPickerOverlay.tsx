@@ -21,20 +21,20 @@ export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
-        width: '208px',
+        width: '250px',
         height: '100px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
-        bottom: 108,
+        bottom: 36,
         right: 8,
         borderRadius: '8px',
         padding: '16px 8px 8px 8px',
       }}
     >
+      <SatelliteLayerBox map={map} />
+      <OrthomosaicToggle map={map} />
       <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
       <TreeCoverBox map={map} />
-      <OrthomosaicToggle map={map} />
-      {/* <PotentialTreeCoverBox map={map} /> */}
     </div>
   )
 }
@@ -70,7 +70,7 @@ const OrthomosaicToggle = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>orthomosaic {isVisible ? 'on' : 'off'}</p>
+      <p style={{ fontSize: '10px' }}>drone {isVisible ? 'on' : 'off'}</p>
     </div>
   )
 }
@@ -163,7 +163,7 @@ const LandCoverBox = ({ map, activeProjectPolygon }) => {
       <LayerPickerButton
         type="image"
         src={imageSrc}
-        alt="toggle light/dark layer"
+        alt="toggle land cover layer display"
         onClick={() => {
           if (!isVisible) {
             toggleLandCoverLayer(map, 'visible')
@@ -200,18 +200,23 @@ const SatelliteLayerBox = ({ map }) => {
         alt="toggle satellite layer"
         onClick={() => {
           if (!isVisible) {
-            map.setStyle(`mapbox://styles/mapbox/satellite-streets-v12`)
+            map.setStyle(`mapbox://styles/mapbox/dark-v11`)
             togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(true)
+            map.setLayoutProperty(
+              `planetLayer${currentDate}`,
+              'visibility',
+              'none'
+            )
           } else {
-            map.setStyle(`mapbox://styles/mapbox/dark-v11`)
+            map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
             togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(false)
           }
         }}
       />
       <p style={{ fontSize: '10px' }}>
-        satellite mode {isVisible ? 'on' : 'off'}
+        satellite history {isVisible ? 'on' : 'off'}
       </p>
     </div>
   )

@@ -12,26 +12,37 @@ export const TimeSlider = ({ map }) => {
   const isSatelliteHistoryEnabled = useSelector(
     (state: State) => state.satelliteHistory.enabled
   )
+  const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
 
   const [currentDate, setCurrentDate] = useState<string>(
     maxDate.format('YYYY-MM')
   )
 
+  // Iff the user toggles the satellite history on or off
+  // we want to show the latest satellite layer available
   useEffect(() => {
-    if (map && isSatelliteHistoryEnabled) {
-      const functions = () => {
-        console.log('setting the layout')
-        map.setLayoutProperty(
-          `planetLayer${maxDate.format('YYYY-MM')}`,
-          'visibility',
-          'visible'
-        )
-      }
-
-      map.on('styledata', functions)
-      map.off('styledata', functions)
+    if (!isSatelliteHistoryEnabled) {
+      setIsFirstRender(true)
     }
-  }, [map, isSatelliteHistoryEnabled, maxDate])
+  }, [isSatelliteHistoryEnabled])
+
+  useEffect(() => {
+    const showLatestLayer = () => {
+      map.setLayoutProperty(
+        `planetLayer${maxDate.format('YYYY-MM')}`,
+        'visibility',
+        'visible'
+      )
+    }
+    if (map && isSatelliteHistoryEnabled && isFirstRender) {
+      map.on('styledata', showLatestLayer)
+    }
+    return () => {
+      if (map) {
+        map.off('styledata', showLatestLayer)
+      }
+    }
+  }, [map, isSatelliteHistoryEnabled, maxDate, isFirstRender])
 
   if (isSatelliteHistoryEnabled) {
     return (
@@ -57,6 +68,7 @@ export const TimeSlider = ({ map }) => {
           step={1}
           type="range"
           onChange={(e) => {
+            setIsFirstRender(false)
             map.setLayoutProperty(
               `planetLayer${maxDate.format('YYYY-MM')}`,
               'visibility',

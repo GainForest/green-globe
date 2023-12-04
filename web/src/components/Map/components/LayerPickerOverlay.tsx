@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react'
 
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
+
+import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
 
 import {
   toggleLandCoverLayer,
@@ -184,6 +187,7 @@ const LandCoverBox = ({ map, activeProjectPolygon }) => {
 
 const SatelliteLayerBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   return (
     <div
@@ -203,15 +207,12 @@ const SatelliteLayerBox = ({ map }) => {
             map.setStyle(`mapbox://styles/mapbox/dark-v11`)
             togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(true)
-            map.setLayoutProperty(
-              `planetLayer${currentDate}`,
-              'visibility',
-              'none'
-            )
+            dispatch(setDisplaySatelliteHistory(true))
           } else {
             map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
             togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(false)
+            dispatch(setDisplaySatelliteHistory(false))
           }
         }}
       />

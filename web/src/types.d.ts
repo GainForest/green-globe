@@ -1,4 +1,8 @@
 interface State {
+  satelliteHistory: {
+    enabled: boolean
+    displayedDate: any //dayjs.Date
+  }
   shop: {
     basket: number
   }

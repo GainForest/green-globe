@@ -43,7 +43,6 @@ export const addAllSourcesAndLayers = (
   addProjectPolygonsSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
-  // addOrthomosaicSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations)
 }
 
@@ -67,22 +66,6 @@ export const addHiveSourceAndLayers = (map: mapboxgl.Map, hiveLocations) => {
         'circle-stroke-color': '#623c74',
         'circle-stroke-width': 1,
       },
-    })
-  }
-}
-
-export const addOrthomosaicSourceAndLayer = ({ map, endpoint }) => {
-  if (!map.getSource('orthomosaic') && endpoint) {
-    map.addSource('orthomosaic', {
-      type: 'raster',
-      url: endpoint,
-    })
-  }
-  if (!map.getLayer('orthomosaic')) {
-    map.addLayer({
-      id: 'orthomosaic',
-      source: 'orthomosaic',
-      type: 'raster',
     })
   }
 }

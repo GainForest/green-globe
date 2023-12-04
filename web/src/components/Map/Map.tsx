@@ -182,10 +182,17 @@ export const Map = ({ urlProjectId }) => {
   // Display mosaic data
   useEffect(() => {
     if (map && activeProjectMosaic) {
-      addOrthomosaicSourceAndLayer({
-        map,
-        endpoint: activeProjectMosaic,
+      map.addSource('orthomosaic', {
+        type: 'raster',
+        url: activeProjectMosaic,
       })
+      if (!map.getLayer('orthomosaic')) {
+        map.addLayer({
+          id: 'orthomosaic',
+          source: 'orthomosaic',
+          type: 'raster',
+        })
+      }
     }
   }, [map, activeProjectMosaic])
 

@@ -51,6 +51,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
+  const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const numHexagons = useRef(0)
 
@@ -127,11 +128,12 @@ export const Map = ({ urlProjectId }) => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
       const fetchData = async () => {
-        const projectPolygonCID = await fetchProjectInfo(
-          activeProjectId,
-          setActiveProjectData
-        )
+        const { projectPolygonCID, projectMosaicEndpoint } =
+          await fetchProjectInfo(activeProjectId, setActiveProjectData)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
+        if (projectMosaicEndpoint) {
+          setActiveProjectMosaic(projectMosaicEndpoint)
+        }
       }
       fetchHiveLocations(setHiveLocations)
       fetchData().catch(console.error)
@@ -206,6 +208,12 @@ export const Map = ({ urlProjectId }) => {
       })
     }
   }, [map])
+
+  useEffect(() => {
+    if (activeProjectMosaic) {
+      map.getSource('orthomosaic').setUrl(activeProjectMosaic)
+    }
+  }, [activeProjectMosaic, map])
 
   // Remove layers when you exit the display overlay
   useEffect(() => {

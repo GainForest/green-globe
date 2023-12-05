@@ -83,7 +83,10 @@ export const fetchProjectInfo = async (projectId: string, setResult) => {
       const projectPolygonCID = result?.data?.project?.assets
         ?.filter((d) => d?.classification == 'Shapefiles')
         .filter((d) => d?.shapefile?.default == true)?.[0]?.awsCID
-      return projectPolygonCID
+      const projectMosaicEndpoint = result?.data?.project?.assets?.filter(
+        (d) => d?.classification == 'Drone Mosaic'
+      )?.[0]?.awsCID
+      return { projectMosaicEndpoint, projectPolygonCID }
     })
 
   return response

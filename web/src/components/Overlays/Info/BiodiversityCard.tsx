@@ -7,6 +7,8 @@ import { InfoBox } from './InfoBox'
 
 export const BiodiversityCard = ({ activeProjectData }) => {
   const [biodiversity, setBiodiversity] = useState([])
+  const [measuredData, setMeasuredData] = useState([])
+  const [viewPredicted, setViewPredicted] = useState(true)
 
   useEffect(() => {
     if (!activeProjectData) return
@@ -62,7 +64,6 @@ export const BiodiversityCard = ({ activeProjectData }) => {
           fetch(`${process.env.AWS_STORAGE}/shapefiles/${treePlantings}`)
             .then((response) => response.json())
             .then((json) => {
-              console.log(json)
               const allSpecies = new Set()
               const similarityThreshold = 3
               json.features.map((tree) => {
@@ -86,7 +87,11 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                   }
                 }
               })
-              console.log(allSpecies)
+
+              setMeasuredData([
+                ...measuredData,
+                { title: 'Plants', species: allSpecies },
+              ])
             })
           return setBiodiversity(biodiversity)
         })
@@ -130,14 +135,43 @@ export const BiodiversityCard = ({ activeProjectData }) => {
   return (
     <InfoBox>
       <div style={{ margin: '16px 24px' }}>
-        <h2>Biodiversity Predictions</h2>
-        <p>
-          Predicted distribution of species habitats within 150km of the project
-          area.
-        </p>
+        {measuredData && (
+          <div style={{ margin: '16px 24px' }}>
+            <button
+              onClick={() => setViewPredicted(true)}
+              style={{ margin: '0 8px' }}
+            >
+              Predicted
+            </button>
+            <button
+              onClick={() => setViewPredicted(false)}
+              style={{ margin: '0 8px' }}
+            >
+              Measured
+            </button>
+          </div>
+        )}
+        {viewPredicted ? (
+          <div>
+            <h2>Biodiversity Predictions</h2>
+            <p>
+              Predicted distribution of species habitats within 150km of the
+              project area.
+            </p>
+          </div>
+        ) : (
+          <div>
+            <h2>Measured Biodiversity</h2>
+            <p>Species that have been measured in the area.</p>
+          </div>
+        )}
       </div>
       <div style={{ margin: '16px 24px' }}>
-        <PredictedAnimalsGrid biodiversity={biodiversity} />
+        {viewPredicted ? (
+          <PredictedAnimalsGrid biodiversity={biodiversity} />
+        ) : (
+          <MeasuredDataGrid measuredData={measuredData} />
+        )}
       </div>
     </InfoBox>
   )
@@ -157,6 +191,35 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
                 {/* <RedlistStatus redlist={s.redlist} /> */}
               </div>
+            ))}
+          </>
+        ))}
+      </>
+    )
+  } else {
+    return (
+      <>
+        <h3>
+          <ThemedSkeleton width={'120px'} />
+        </h3>
+        <div></div>
+      </>
+    )
+  }
+}
+
+const MeasuredDataGrid = ({ measuredData }) => {
+  if (measuredData.length) {
+    return (
+      <>
+        {measuredData.map((group) => (
+          <>
+            <h3 key={group.title}>{group.title}</h3>
+            {group.species.map((species) => (
+              <p key={species}>{species}</p>
+              // <div key={species}>
+              //   <AnimalPhoto species={species} taxa={group.title} />
+              // </div>
             ))}
           </>
         ))}

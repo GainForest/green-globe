@@ -73,10 +73,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                   species = toTitleCase(species)
                   let isSimilar = false
                   allSpecies.forEach((existingSpecies) => {
-                    const distance = levenshteinDistance(
-                      species,
-                      existingSpecies
-                    )
+                    const distance = stringDistance(species, existingSpecies)
                     if (distance <= similarityThreshold) {
                       isSimilar = true
                     }
@@ -99,7 +96,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
   }, [activeProjectData])
 
   // checks for typos between instances
-  function levenshteinDistance(a, b) {
+  const stringDistance = (a, b) => {
     const matrix = []
 
     for (let i = 0; i <= b.length; i++) {

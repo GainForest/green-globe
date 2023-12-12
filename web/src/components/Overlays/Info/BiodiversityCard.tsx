@@ -65,7 +65,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
           fetch(`${process.env.AWS_STORAGE}/shapefiles/${treePlantings}`)
             .then((response) => response.json())
             .then((json) => {
-              const allSpecies = new Set()
+              const speciesCount = {}
               const similarityThreshold = 3
               json.features.map((tree) => {
                 let species =
@@ -74,22 +74,29 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                   species = species.trim()
                   species = toTitleCase(species)
                   let isSimilar = false
-                  allSpecies.forEach((existingSpecies) => {
+                  Object.keys(speciesCount).forEach((existingSpecies) => {
                     const distance = stringDistance(species, existingSpecies)
                     if (distance <= similarityThreshold) {
                       isSimilar = true
+                      species = existingSpecies
                     }
                   })
 
                   if (!isSimilar) {
-                    allSpecies.add(species)
+                    speciesCount[species] = 1
+                  } else {
+                    speciesCount[species] += 1
                   }
                 }
               })
 
+              const speciesArray = Object.keys(speciesCount).map((species) => ({
+                name: species,
+                count: speciesCount[species],
+              }))
               setMeasuredData([
                 ...measuredData,
-                { title: 'Plants', species: allSpecies },
+                { title: 'Plants', species: speciesArray },
               ])
             })
           return setBiodiversity(biodiversity)
@@ -206,10 +213,9 @@ const MeasuredDataGrid = ({ measuredData }) => {
           <>
             <h3 key={group.title}>{group.title}</h3>
             {group.species.map((species) => (
-              <p key={species}>{species}</p>
-              // <div key={species}>
-              //   <AnimalPhoto species={species} taxa={group.title} />
-              // </div>
+              <div key={species.name}>
+                <MeasuredDataPhoto species={species} taxa={group.title} />
+              </div>
             ))}
           </>
         ))}
@@ -263,6 +269,52 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
           {species.common}
         </p>
         <i style={{ fontSize: '0.75rem' }}>{species.scientificname}</i>
+        {/* <RedlistStatus redlist={species.redlist} /> */}
+      </div>
+    </div>
+  )
+}
+
+interface MeasuredSpecies {
+  image_url: string
+  name: string
+  family: string
+  family_common: string
+  count: string
+  redlist: string
+}
+
+const MeasuredDataPhoto = ({
+  species,
+  taxa,
+}: {
+  species: MeasuredSpecies
+  taxa: string
+}) => {
+  const src = species.image_url
+    ? species.image_url
+    : `https://mol.org/static/img/groups/taxa_${
+        !taxa.includes('(')
+          ? taxa.toLowerCase()
+          : taxa.split(' ')[0].toLowerCase()
+      }.png`
+
+  return (
+    <div style={{ display: 'flex' }}>
+      <img
+        alt={species.name}
+        src={src}
+        style={{
+          objectFit: 'cover',
+          clipPath:
+            'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
+          height: '120px',
+          width: '120px',
+        }}
+      />
+      <div style={{ margin: '12px 0 0 24px' }}>
+        <p style={{ fontSize: '1rem', marginBottom: '0px' }}>{species.name}</p>
+        <i style={{ fontSize: '0.75rem' }}>{species.count}</i>
         <RedlistStatus redlist={species.redlist} />
       </div>
     </div>

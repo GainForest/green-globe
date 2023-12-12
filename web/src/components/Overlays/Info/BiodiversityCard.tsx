@@ -2,13 +2,14 @@
 import { useEffect, useState } from 'react'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
+import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
 export const BiodiversityCard = ({ activeProjectData }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
-  const [viewPredicted, setViewPredicted] = useState(true)
+  const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
 
   useEffect(() => {
     if (!activeProjectData) return
@@ -67,7 +68,8 @@ export const BiodiversityCard = ({ activeProjectData }) => {
               const allSpecies = new Set()
               const similarityThreshold = 3
               json.features.map((tree) => {
-                let species = tree.properties.species
+                let species =
+                  tree.properties.species || tree.properties.Plant_Name
                 if (species) {
                   species = species.trim()
                   species = toTitleCase(species)
@@ -132,23 +134,14 @@ export const BiodiversityCard = ({ activeProjectData }) => {
   return (
     <InfoBox>
       <div style={{ margin: '16px 24px' }}>
-        {measuredData && (
-          <div style={{ margin: '16px 24px' }}>
-            <button
-              onClick={() => setViewPredicted(true)}
-              style={{ margin: '0 8px' }}
-            >
-              Predicted
-            </button>
-            <button
-              onClick={() => setViewPredicted(false)}
-              style={{ margin: '0 8px' }}
-            >
-              Measured
-            </button>
-          </div>
+        {measuredData.length > 0 && (
+          <ToggleButton
+            active={toggle}
+            setToggle={setToggle}
+            options={['Predicted', 'Measured']}
+          />
         )}
-        {viewPredicted ? (
+        {toggle === 'Predicted' ? (
           <div>
             <h2>Biodiversity Predictions</h2>
             <p>
@@ -164,7 +157,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
         )}
       </div>
       <div style={{ margin: '16px 24px' }}>
-        {viewPredicted ? (
+        {toggle === 'Predicted' ? (
           <PredictedAnimalsGrid biodiversity={biodiversity} />
         ) : (
           <MeasuredDataGrid measuredData={measuredData} />

@@ -89,34 +89,46 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                       imageUrl: tree.properties.awsUrl,
                       tallest: parseFloat(tree.properties.height),
                       shortest: parseFloat(tree.properties.height),
-                      // average: parseFloat(tree.properties.height),
+                      average: parseFloat(tree.properties.height),
                     }
                   } else {
                     const currObj = speciesCount[species]
                     speciesCount[species] = {
                       ...currObj,
                       count: currObj.count + 1,
-                      tallest: currObj.tallest
-                        ? Math.max(
-                            currObj.tallest,
-                            parseFloat(tree.properties.height)
-                          )
-                        : parseFloat(tree.properties.height),
-                      shortest: currObj.shortest
-                        ? Math.min(
-                            currObj.shortest,
-                            parseFloat(tree.properties.height)
-                          )
-                        : parseFloat(tree.properties.height),
+                      tallest: Math.max(
+                        currObj.tallest,
+                        parseFloat(tree.properties.height)
+                      ),
+                      shortest: Math.min(
+                        currObj.shortest,
+                        parseFloat(tree.properties.height)
+                      ),
+                      average:
+                        parseFloat(tree.properties.height) + currObj.average,
                     }
                   }
                 } else {
-                  speciesCount['Unknown'] = (speciesCount['Unknown'] || 0) + 1
+                  if ('Unknown' in speciesCount) {
+                    speciesCount['Unknown'].count += 1
+                  } else {
+                    speciesCount['Unknown'] = {
+                      name: 'Unknown',
+                      count: 1,
+                    }
+                  }
                 }
               })
 
               const speciesArray = Object.keys(speciesCount).map((species) => ({
                 ...speciesCount[species],
+                average:
+                  // round to two decimals
+                  Math.round(
+                    (speciesCount[species].average /
+                      speciesCount[species].count) *
+                      100
+                  ) / 100,
               }))
               setMeasuredData([
                 ...measuredData,
@@ -302,11 +314,14 @@ interface MeasuredSpecies {
   name: string
   shortest: number
   tallest: number
+  average: number
   count: number
 }
 
 const MeasuredDataPhoto = (species: MeasuredSpecies) => {
   const src = species.imageUrl
+    ? species.imageUrl
+    : `https://mol.org/static/img/groups/taxa_plants.png`
 
   return (
     <div style={{ display: 'flex' }}>
@@ -326,12 +341,19 @@ const MeasuredDataPhoto = (species: MeasuredSpecies) => {
         <i style={{ fontSize: '0.75rem', display: 'block' }}>
           Count: {species.count}
         </i>
-        <i style={{ fontSize: '0.75rem', display: 'block' }}>
-          Tallest: {species.tallest} m
-        </i>
-        <i style={{ fontSize: '0.75rem', display: 'block' }}>
-          Shortest: {species.shortest} m
-        </i>
+        {species.tallest && (
+          <div>
+            <i style={{ fontSize: '0.75rem', display: 'block' }}>
+              Tallest: {species.tallest} m
+            </i>
+            <i style={{ fontSize: '0.75rem', display: 'block' }}>
+              Shortest: {species.shortest} m
+            </i>
+            <i style={{ fontSize: '0.75rem', display: 'block' }}>
+              Average: {species.average} m
+            </i>
+          </div>
+        )}
         {/* <RedlistStatus redlist={species.redlist} /> */}
       </div>
     </div>

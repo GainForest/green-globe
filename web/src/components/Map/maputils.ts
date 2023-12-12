@@ -211,7 +211,6 @@ export const treePopupHtml = ({
 
 export const getPopupTreeInformation = (e, activeProject) => {
   const tree = e?.features[0]?.properties
-
   const treeName = getSpeciesName(tree)
 
   const treeHeight = getTreeHeight(tree)

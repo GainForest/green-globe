@@ -6,6 +6,11 @@ export const getDateOfMeasurement = (tree) => {
     return `${date.getDate()} ${date.toLocaleString('default', {
       month: 'short',
     })} ${date.getFullYear()}`
+  } else if (tree?.dateMeasured) {
+    const date = new Date(tree?.dateMeasured)
+    return `${date.getDate()} ${date.toLocaleString('default', {
+      month: 'short',
+    })} ${date.getFullYear()}`
   } else {
     return 'unknown'
   }

@@ -83,20 +83,44 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                   })
 
                   if (!isSimilar) {
-                    speciesCount[species] = 1
+                    speciesCount[species] = {
+                      name: species,
+                      count: 1,
+                      imageUrl: tree.properties.awsUrl,
+                      tallest: parseFloat(tree.properties.height),
+                      shortest: parseFloat(tree.properties.height),
+                      // average: parseFloat(tree.properties.height),
+                    }
                   } else {
-                    speciesCount[species] += 1
+                    const currObj = speciesCount[species]
+                    speciesCount[species] = {
+                      ...currObj,
+                      count: currObj.count + 1,
+                      tallest: currObj.tallest
+                        ? Math.max(
+                            currObj.tallest,
+                            parseFloat(tree.properties.height)
+                          )
+                        : parseFloat(tree.properties.height),
+                      shortest: currObj.shortest
+                        ? Math.min(
+                            currObj.shortest,
+                            parseFloat(tree.properties.height)
+                          )
+                        : parseFloat(tree.properties.height),
+                    }
                   }
+                } else {
+                  speciesCount['Unknown'] = (speciesCount['Unknown'] || 0) + 1
                 }
               })
 
               const speciesArray = Object.keys(speciesCount).map((species) => ({
-                name: species,
-                count: speciesCount[species],
+                ...speciesCount[species],
               }))
               setMeasuredData([
                 ...measuredData,
-                { title: 'Plants', species: speciesArray },
+                { title: 'Trees', species: speciesArray },
               ])
             })
           return setBiodiversity(biodiversity)
@@ -179,17 +203,15 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
     return (
       <>
         {biodiversity.map((biodiversityGroup) => (
-          <>
-            <h3 key={biodiversityGroup.title}>
-              Predicted {biodiversityGroup.title}
-            </h3>
+          <div key={biodiversityGroup.title}>
+            <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.name}>
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
                 {/* <RedlistStatus redlist={s.redlist} /> */}
               </div>
             ))}
-          </>
+          </div>
         ))}
       </>
     )
@@ -210,14 +232,14 @@ const MeasuredDataGrid = ({ measuredData }) => {
     return (
       <>
         {measuredData.map((group) => (
-          <>
-            <h3 key={group.title}>{group.title}</h3>
+          <div key={group.title}>
+            <h3>{group.title}</h3>
             {group.species.map((species) => (
               <div key={species.name}>
-                <MeasuredDataPhoto species={species} taxa={group.title} />
+                <MeasuredDataPhoto {...species} />
               </div>
             ))}
-          </>
+          </div>
         ))}
       </>
     )
@@ -276,28 +298,15 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
 }
 
 interface MeasuredSpecies {
-  image_url: string
+  imageUrl: string
   name: string
-  family: string
-  family_common: string
-  count: string
-  redlist: string
+  shortest: number
+  tallest: number
+  count: number
 }
 
-const MeasuredDataPhoto = ({
-  species,
-  taxa,
-}: {
-  species: MeasuredSpecies
-  taxa: string
-}) => {
-  const src = species.image_url
-    ? species.image_url
-    : `https://mol.org/static/img/groups/taxa_${
-        !taxa.includes('(')
-          ? taxa.toLowerCase()
-          : taxa.split(' ')[0].toLowerCase()
-      }.png`
+const MeasuredDataPhoto = (species: MeasuredSpecies) => {
+  const src = species.imageUrl
 
   return (
     <div style={{ display: 'flex' }}>
@@ -314,8 +323,16 @@ const MeasuredDataPhoto = ({
       />
       <div style={{ margin: '12px 0 0 24px' }}>
         <p style={{ fontSize: '1rem', marginBottom: '0px' }}>{species.name}</p>
-        <i style={{ fontSize: '0.75rem' }}>{species.count}</i>
-        <RedlistStatus redlist={species.redlist} />
+        <i style={{ fontSize: '0.75rem', display: 'block' }}>
+          Count: {species.count}
+        </i>
+        <i style={{ fontSize: '0.75rem', display: 'block' }}>
+          Tallest: {species.tallest} m
+        </i>
+        <i style={{ fontSize: '0.75rem', display: 'block' }}>
+          Shortest: {species.shortest} m
+        </i>
+        {/* <RedlistStatus redlist={species.redlist} /> */}
       </div>
     </div>
   )

@@ -177,13 +177,11 @@ export const BiodiversityCard = ({ activeProjectData }) => {
   return (
     <InfoBox>
       <div style={{ margin: '16px 24px' }}>
-        {measuredData.length > 0 && (
-          <ToggleButton
-            active={toggle}
-            setToggle={setToggle}
-            options={['Predicted', 'Measured']}
-          />
-        )}
+        <ToggleButton
+          active={toggle}
+          setToggle={setToggle}
+          options={['Predicted', 'Measured']}
+        />
         {toggle === 'Predicted' ? (
           <div>
             <h2>Biodiversity Predictions</h2>
@@ -203,7 +201,10 @@ export const BiodiversityCard = ({ activeProjectData }) => {
         {toggle === 'Predicted' ? (
           <PredictedAnimalsGrid biodiversity={biodiversity} />
         ) : (
-          <MeasuredDataGrid measuredData={measuredData} />
+          <MeasuredDataGrid
+            measuredData={measuredData}
+            biodiversity={biodiversity}
+          />
         )}
       </div>
     </InfoBox>
@@ -239,22 +240,28 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
   }
 }
 
-const MeasuredDataGrid = ({ measuredData }) => {
-  if (measuredData.length) {
-    return (
-      <>
-        {measuredData.map((group) => (
-          <div key={group.title}>
-            <h3>{group.title}</h3>
-            {group.species.map((species) => (
-              <div key={species.name}>
-                <MeasuredDataPhoto {...species} />
-              </div>
-            ))}
-          </div>
-        ))}
-      </>
-    )
+const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
+  // if data hasn't loaded yet, return skeleton
+  if (biodiversity.length > 0) {
+    // if data is loaded but no measured data, return "no data" message
+    if (measuredData.length > 0) {
+      return (
+        <>
+          {measuredData.map((group) => (
+            <div key={group.title}>
+              <h3>{group.title}</h3>
+              {group.species.map((species) => (
+                <div key={species.name}>
+                  <MeasuredDataPhoto {...species} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </>
+      )
+    } else {
+      return <p>There is not yet any measured biodiversity for this project.</p>
+    }
   } else {
     return (
       <>
@@ -341,7 +348,7 @@ const MeasuredDataPhoto = (species: MeasuredSpecies) => {
         <i style={{ fontSize: '0.75rem', display: 'block' }}>
           Count: {species.count}
         </i>
-        {species.tallest && (
+        {typeof species.tallest === 'number' && !isNaN(species.tallest) && (
           <div>
             <i style={{ fontSize: '0.75rem', display: 'block' }}>
               Tallest: {species.tallest} m

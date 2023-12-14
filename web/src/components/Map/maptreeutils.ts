@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 
 export const getDateOfMeasurement = (tree) => {
-  console.log(tree)
   if (tree?.dateOfMeasurement) {
     return tree?.dateOfMeasurement
   } else if (tree?.datePlanted) {

@@ -1,16 +1,17 @@
+import dayjs from 'dayjs'
+
 export const getDateOfMeasurement = (tree) => {
+  console.log(tree)
   if (tree?.dateOfMeasurement) {
     return tree?.dateOfMeasurement
   } else if (tree?.datePlanted) {
-    const date = new Date(tree?.datePlanted)
-    return `${date.getDate()} ${date.toLocaleString('default', {
-      month: 'short',
-    })} ${date.getFullYear()}`
+    return dayjs(tree?.datePlanted).format('DD/MM/YYYY')
   } else if (tree?.dateMeasured) {
-    const date = new Date(tree?.dateMeasured)
-    return `${date.getDate()} ${date.toLocaleString('default', {
-      month: 'short',
-    })} ${date.getFullYear()}`
+    return dayjs(tree?.dateMeasured).format('DD/MM/YYYY')
+  } else if (tree['FCD-tree_records-tree_time']) {
+    return dayjs(tree['FCD-tree_records-tree_time'], 'DD/MM/YY HH:mm').format(
+      'DD/MM/YYYY'
+    )
   } else {
     return 'unknown'
   }

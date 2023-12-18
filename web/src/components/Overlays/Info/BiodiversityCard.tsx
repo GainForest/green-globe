@@ -91,18 +91,26 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                       )?.[1] ||
                       tree?.ID ||
                       'unknown'
+
                     const imageUrl = getTreePhoto(
-                      tree,
+                      tree.properties,
                       activeProjectData.project.id,
                       treeID
                     )
+
                     speciesCount[species] = {
                       name: species,
                       count: 1,
                       imageUrl,
-                      tallest: parseFloat(tree.properties.height),
-                      shortest: parseFloat(tree.properties.height),
-                      average: parseFloat(tree.properties.height),
+                      tallest: parseFloat(
+                        tree.properties.height || tree.properties.Height
+                      ),
+                      shortest: parseFloat(
+                        tree.properties.height || tree.properties.Height
+                      ),
+                      average: parseFloat(
+                        tree.properties.height || tree.properties.Height
+                      ),
                     }
                   } else {
                     const currObj = speciesCount[species]

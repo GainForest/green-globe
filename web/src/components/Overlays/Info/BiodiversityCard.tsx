@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { getTreePhoto, getTreeDBH } from 'src/components/Map/maptreeutils'
+import { getTreePhoto } from 'src/components/Map/maptreeutils'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
@@ -22,6 +22,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
       )
         .then((response) => response.json())
         .then((json) => {
+          console.log(json)
           const biodiversity = json.map((b) => {
             const threatened = b.species.filter(
               (d) =>
@@ -94,7 +95,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
 
                     const imageUrl = getTreePhoto(
                       tree.properties,
-                      activeProjectData.project.id,
+                      project.id,
                       treeID
                     )
 

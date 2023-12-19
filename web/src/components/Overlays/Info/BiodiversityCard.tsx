@@ -86,7 +86,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
 
                   if (!isSimilar) {
                     const treeID =
-                      tree?.['FCD-tree_records-tree_photo']?.split(
+                      tree?.properties['FCD-tree_records-tree_photo']?.split(
                         '?id='
                       )?.[1] ||
                       tree?.ID ||
@@ -94,7 +94,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
 
                     const imageUrl = getTreePhoto(
                       tree.properties,
-                      activeProjectData.project.id,
+                      project.id,
                       treeID
                     )
 

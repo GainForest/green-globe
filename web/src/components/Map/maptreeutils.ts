@@ -1,5 +1,20 @@
 import dayjs from 'dayjs'
 
+function formatDateTime(input) {
+  const [datePart, timePart] = input.split(' ')
+  let [day, month, year] = datePart.split('/')
+  year = year.length === 2 ? `20${year}` : year
+  const isoDateString = `${year}-${month}-${day}T${timePart}:00`
+  const date = new Date(isoDateString)
+  const formattedDate = date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+
+  return formattedDate
+}
+
 export const getDateOfMeasurement = (tree) => {
   if (tree?.dateOfMeasurement) {
     return tree?.dateOfMeasurement
@@ -8,9 +23,7 @@ export const getDateOfMeasurement = (tree) => {
   } else if (tree?.dateMeasured) {
     return dayjs(tree?.dateMeasured).format('DD/MM/YYYY')
   } else if (tree['FCD-tree_records-tree_time']) {
-    return dayjs(tree['FCD-tree_records-tree_time'], 'DD/MM/YY HH:mm').format(
-      'DD/MM/YYYY'
-    )
+    return formatDateTime(tree['FCD-tree_records-tree_time'])
   } else {
     return 'unknown'
   }

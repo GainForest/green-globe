@@ -22,7 +22,6 @@ export const BiodiversityCard = ({ activeProjectData }) => {
       )
         .then((response) => response.json())
         .then((json) => {
-          console.log(json)
           const biodiversity = json.map((b) => {
             const threatened = b.species.filter(
               (d) =>

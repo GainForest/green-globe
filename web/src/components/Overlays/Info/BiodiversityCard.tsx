@@ -22,6 +22,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
       )
         .then((response) => response.json())
         .then((json) => {
+          console.log(json)
           const biodiversity = json.map((b) => {
             const threatened = b.species.filter(
               (d) =>
@@ -67,6 +68,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
           fetch(`${process.env.AWS_STORAGE}/shapefiles/${treePlantings}`)
             .then((response) => response.json())
             .then((json) => {
+              console.log(json.features)
               const speciesCount = {}
               const similarityThreshold = 3
               json.features.map((tree) => {
@@ -240,7 +242,7 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
           <div key={biodiversityGroup.title}>
             <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
-              <div key={species.name}>
+              <div key={species.scientificname}>
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
                 {/* <RedlistStatus redlist={s.redlist} /> */}
               </div>

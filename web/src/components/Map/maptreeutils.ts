@@ -60,7 +60,8 @@ export const getTreePhoto = (tree, activeProject: string, treeID: string) => {
     return tree?.koboUrl
   } else if (
     activeProject ==
-    '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a'
+      '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a' &&
+    treeID !== 'unknown'
   ) {
     return `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
   } else {

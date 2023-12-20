@@ -75,6 +75,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                 if (species) {
                   species = species.trim()
                   species = toTitleCase(species)
+
                   let isSimilar = false
                   Object.keys(speciesCount).forEach((existingSpecies) => {
                     const distance = stringDistance(species, existingSpecies)
@@ -97,6 +98,16 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                       treeID
                     )
 
+                    // fetch(imageUrl, { method: 'HEAD' })
+                    //   .then((response) => {
+                    //     if (!response.ok) {
+                    //       imageUrl = `{process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+                    //     }
+                    //   })
+                    //   .catch(() => {
+                    //     imageUrl = `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+                    //   })
+
                     speciesCount[species] = {
                       name: species,
                       count: 1,
@@ -118,14 +129,20 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                       count: currObj.count + 1,
                       tallest: Math.max(
                         currObj.tallest,
-                        parseFloat(tree.properties.height)
+                        parseFloat(
+                          tree.properties.height || tree.properties.Height
+                        )
                       ),
                       shortest: Math.min(
                         currObj.shortest,
-                        parseFloat(tree.properties.height)
+                        parseFloat(
+                          tree.properties.height || tree.properties.Height
+                        )
                       ),
                       average:
-                        parseFloat(tree.properties.height) + currObj.average,
+                        parseFloat(
+                          tree.properties.height || tree.properties.Height
+                        ) + currObj.average,
                     }
                   }
                 } else {

@@ -14,7 +14,9 @@ export const BiodiversityCard = ({ activeProjectData }) => {
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
 
   useEffect(() => {
-    if (!activeProjectData) return
+    if (!activeProjectData) {
+      return
+    }
     const { project } = activeProjectData
     if (project) {
       fetch(

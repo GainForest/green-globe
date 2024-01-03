@@ -9,6 +9,7 @@ import { CommunityCard } from './Info/CommunityCard'
 import { DiscordCard } from './Info/DiscordCard'
 // import { HexagonCard } from './Info/HexagonCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
+import { PaymentCard } from './Info/PaymentsCard'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
 
@@ -52,8 +53,14 @@ export const InfoOverlay = ({
         onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
-        buttonIcon={'chat'}
+        buttonIcon={'payments'}
         position={5}
+        active={infoOverlay == 6}
+        onClick={() => dispatch(setInfoOverlay(6))}
+      />
+      <InfoOverlayButton
+        buttonIcon={'chat'}
+        position={6}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
@@ -75,6 +82,9 @@ export const InfoOverlay = ({
       )}
       {infoOverlay == 5 && (
         <DiscordCard activeProjectData={activeProjectData} />
+      )}
+      {infoOverlay == 6 && (
+        <PaymentCard activeProjectData={activeProjectData} />
       )}
       {/* {infoOverlay == 6 && <HexagonCard numHexagons={numHexagons} />} */}
     </>

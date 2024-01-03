@@ -4,25 +4,6 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 
 import { InfoBox } from './InfoBox'
 export const CommunityCard = ({ activeProjectData }) => {
-  useEffect(() => {
-    const addresses = activeProjectData?.project?.CommunityMember.map(
-      (member) => member?.Wallet?.CeloAccount
-    )
-    if (addresses) {
-      fetch(
-        'https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=0xBF8480fc387b72892Ca28F4e9F07F95ed5672b3f'
-      )
-        .then((res) => res.json())
-        .then((data) =>
-          console.log(
-            data['result'].filter((transaction) =>
-              addresses.includes(transaction.to)
-            )
-          )
-        )
-    }
-  })
-
   if (
     !activeProjectData ||
     !activeProjectData?.project ||

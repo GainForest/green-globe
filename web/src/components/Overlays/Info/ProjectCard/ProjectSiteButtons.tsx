@@ -15,7 +15,7 @@ export const ProjectSiteButtons = ({
   const [activeShortname, setActiveShortname] = useState<string>(undefined)
 
   useEffect(() => {
-    const defaultShapefile = assets.filter(
+    const defaultShapefile = assets?.filter(
       (d) => d.classification == 'Shapefiles' && d.shapefile?.default
     )[0]?.shapefile?.shortName
     setActiveShortname(defaultShapefile)

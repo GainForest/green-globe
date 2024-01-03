@@ -71,11 +71,21 @@ export const CommunityCard = ({ activeProjectData }) => {
             } else {
               fullName = ''
             }
-            const profileSrc =
-              d.profileUrl ||
-              `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
-                .toLowerCase()
-                .replace(' ', '-')}.svg`
+
+            let profileSrc
+            if (d.profileUrl) {
+              if (d.profileUrl.startsWith('http')) {
+                profileSrc = d.profileUrl
+              } else {
+                profileSrc = process.env.AWS_STORAGE + '/' + d.profileUrl
+              }
+            } else {
+              profileSrc = `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
+                .split(' ')
+                .map((name) => name[0])
+                .join('')
+                .slice(0, 2)}.svg`
+            }
             return (
               <div
                 style={{ marginTop: '32px' }}

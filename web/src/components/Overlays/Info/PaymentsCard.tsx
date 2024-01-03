@@ -12,8 +12,8 @@ export const PaymentCard = ({ activeProjectData }) => {
     const addresses = activeProjectData?.project?.CommunityMember.map(
       (member) => member?.Wallet?.CeloAccount
     )
-
     if (addresses) {
+      // fetch all gainforest wallet transactions
       fetch(
         `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${gainforestWallet}`
       )
@@ -24,11 +24,7 @@ export const PaymentCard = ({ activeProjectData }) => {
             // current fetch is returning duplicate transactions
             const isNew = !seen.has(transaction.hash)
             seen.add(transaction.hash)
-            return (
-              isNew &&
-              transaction['from'].toString() == gainforestWallet &&
-              addresses.includes(transaction.to)
-            )
+            return isNew && addresses.includes(transaction.to)
           })
           if (transactions.length > 0) {
             setPaymentData(transactions)
@@ -40,7 +36,7 @@ export const PaymentCard = ({ activeProjectData }) => {
         .then((res) => res.json())
         .then((data) => setExchangeRate(data['celo-euro'].usd))
     }
-  }, [])
+  }, [activeProjectData?.project?.CommunityMember])
 
   const getBlockDate = (timeStamp) => {
     const blockDate = new Date(timeStamp * 1000)

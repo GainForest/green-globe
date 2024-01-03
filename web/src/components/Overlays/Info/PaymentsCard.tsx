@@ -83,6 +83,7 @@ export const PaymentCard = ({ activeProjectData }) => {
   }
 
   const [paymentData, setPaymentData] = useState([])
+  const gainforestWallet = '0xBF8480fc387b72892Ca28F4e9F07F95ed5672b3f'
 
   useEffect(() => {
     const addresses = activeProjectData?.project?.CommunityMember.map(
@@ -90,13 +91,14 @@ export const PaymentCard = ({ activeProjectData }) => {
     )
     if (addresses) {
       fetch(
-        'https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=0xBF8480fc387b72892Ca28F4e9F07F95ed5672b3f'
+        `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${gainforestWallet}`
       )
         .then((res) => res.json())
         .then((data) => {
-          const transactions = data['result'].filter((transaction) =>
-            addresses.includes(transaction.to)
-          )
+          const transactions = data['result']
+          // .filter((transaction) =>
+          //   addresses.includes(transaction.to)
+          // )
           if (transactions.length > 0) {
             setPaymentData(transactions)
           }
@@ -164,7 +166,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                           wordBreak: 'break-all',
                           overflowWrap: 'break-word',
                         }}
-                        href={`https://explorer.celo.org/mainnet/address/${payment.contractAddress}`}
+                        href={`https://explorer.celo.org/mainnet/tx/${payment.hash}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

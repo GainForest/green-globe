@@ -5,7 +5,6 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
-  const [exchangeRate, setExchangeRate] = useState(1)
   const gainforestWallet = '0xbf8480fc387b72892ca28f4e9f07f95ed5672b3f'
 
   useEffect(() => {
@@ -30,11 +29,6 @@ export const PaymentCard = ({ activeProjectData }) => {
             setPaymentData(transactions)
           }
         })
-      fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=celo-euro&vs_currencies=usd'
-      )
-        .then((res) => res.json())
-        .then((data) => setExchangeRate(data['celo-euro'].usd))
     }
   }, [activeProjectData?.project?.CommunityMember])
 
@@ -75,37 +69,41 @@ export const PaymentCard = ({ activeProjectData }) => {
       <div style={{ margin: '24px' }}>
         <h1>Community Payments</h1>
         <div>
-          {paymentData.map((payment) => {
-            return (
-              <div style={{ marginTop: '32px' }} key={payment.hash}>
-                <div style={{ display: 'flex' }}>
-                  <div style={{ marginLeft: '16px' }}>
-                    <h3> {getBlockDate(payment.timeStamp)}</h3>
-                    <p>
-                      To:{' '}
-                      <a
-                        style={{
-                          margin: 0,
-                          color: '#808080',
-                          wordWrap: 'break-word',
-                          wordBreak: 'break-all',
-                          overflowWrap: 'break-word',
-                        }}
-                        href={`https://explorer.celo.org/mainnet/tx/${payment.hash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {payment.to}
-                      </a>
-                    </p>
-                    <p style={{ color: '#67962A' }}>
-                      ${((payment.value / 1e18) * exchangeRate).toFixed(6)}
-                    </p>
+          {paymentData.length > 0 ? (
+            paymentData.map((payment) => {
+              return (
+                <div style={{ marginTop: '32px' }} key={payment.hash}>
+                  <div style={{ display: 'flex' }}>
+                    <div style={{ marginLeft: '16px' }}>
+                      <h3> {getBlockDate(payment.timeStamp)}</h3>
+                      <p>
+                        To:{' '}
+                        <a
+                          style={{
+                            margin: 0,
+                            color: '#808080',
+                            wordWrap: 'break-word',
+                            wordBreak: 'break-all',
+                            overflowWrap: 'break-word',
+                          }}
+                          href={`https://explorer.celo.org/mainnet/tx/${payment.hash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {payment.to}
+                        </a>
+                      </p>
+                      <p style={{ color: '#67962A' }}>
+                        ${(payment.value / 1e18).toFixed(6)}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })
+          ) : (
+            <p style={{ marginTop: '32px' }}>No transactions found.</p>
+          )}
         </div>
       </div>
     </InfoBox>

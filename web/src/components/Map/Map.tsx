@@ -145,7 +145,7 @@ export const Map = ({ urlProjectId }) => {
     if (map && activeProjectPolygon) {
       // TODO: Take into account all of the shapefiles the project has
       map.getSource('project')?.setData(activeProjectPolygon)
-      dispatch(setInfoOverlay(1))
+      !infoOverlay && dispatch(setInfoOverlay(1))
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {

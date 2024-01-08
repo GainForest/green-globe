@@ -15,7 +15,11 @@ import {
   toggleTreesPlantedLayer,
 } from '../maputils'
 
-export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
+export const LayerPickerOverlay = ({
+  map,
+  activeProjectPolygon,
+  activeProjectMosaic,
+}) => {
   const { theme } = useThemeUI()
 
   return (
@@ -35,19 +39,18 @@ export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
       }}
     >
       <SatelliteLayerBox map={map} />
-      <OrthomosaicToggle map={map} />
+      <OrthomosaicToggle map={map} activeProjectMosaic={activeProjectMosaic} />
       <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
       <TreeCoverBox map={map} />
     </div>
   )
 }
 
-const OrthomosaicToggle = ({ map }) => {
+const OrthomosaicToggle = ({ map, activeProjectMosaic }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
   const imageSrc = 'orthomosaic.png'
-
-  return (
+  return activeProjectMosaic?.length > 0 ? (
     <div
       style={{
         display: 'flex',
@@ -75,7 +78,7 @@ const OrthomosaicToggle = ({ map }) => {
       />
       <p style={{ fontSize: '10px' }}>drone {isVisible ? 'on' : 'off'}</p>
     </div>
-  )
+  ) : null
 }
 
 const PotentialTreeCoverBox = ({ map }) => {

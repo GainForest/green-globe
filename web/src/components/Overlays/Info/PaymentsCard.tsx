@@ -21,7 +21,9 @@ export const PaymentCard = ({ activeProjectData }) => {
           const seen = new Set()
           const transactions = data['result'].filter((transaction) => {
             // current fetch is returning duplicate transactions
-            const isNew = !seen.has(transaction.hash)
+            const isNew =
+              transaction.tokenSymbol === 'cUSD' && !seen.has(transaction.hash)
+
             seen.add(transaction.hash)
             return isNew && addresses.includes(transaction.to)
           })

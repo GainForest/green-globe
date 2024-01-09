@@ -8,20 +8,19 @@ export const PaymentCard = ({ activeProjectData }) => {
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {
-    // const recipients = activeProjectData?.project?.CommunityMember.map(
-    //   (member) => member?.Wallet?.CeloAccount
-    // )
+    const recipients = activeProjectData?.project?.CommunityMember.map(
+      (member) => member?.Wallet?.CeloAccount
+    )
 
     //test recipients, one from each wallet
-    const recipients = [
-      '8gFVfdDm9UNBSrELC4Ngt2PTBo4TtwrrCYzbohnvKycd',
-      '0xe034805f09e26045259bf0d0b8cd41491cada701',
-    ]
+    // const recipients = [
+    //   '8gFVfdDm9UNBSrELC4Ngt2PTBo4TtwrrCYzbohnvKycd',
+    //   '0xe034805f09e26045259bf0d0b8cd41491cada701',
+    // ]
 
     const fetchPayments = async () => {
       const allPayments = []
       for (const address of wallets.Celo) {
-        // fetch all gainforest wallet transactions
         const res = await fetch(
           `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
         )
@@ -41,8 +40,9 @@ export const PaymentCard = ({ activeProjectData }) => {
         })
         transactions = transactions.map((transaction) => ({
           to: transaction.to,
-          date: getBlockDate(transaction.timeStamp),
+          date: getDate(transaction.timeStamp),
           amount: transaction.value,
+          type: 'celo',
           hash: transaction.hash,
         }))
         if (transactions.length > 0) {
@@ -86,9 +86,10 @@ export const PaymentCard = ({ activeProjectData }) => {
         )
         transactions = transactions.map((transaction) => ({
           to: transaction.receiver.address,
-          date: transaction.date.date,
+          date: getDate(transaction.date.date),
           amount: transaction.amount,
-          hash: transaction.signature,
+          type: 'solana',
+          hash: transaction.transaction.signature,
         }))
         if (transactions.length > 0) {
           allPayments.push(...transactions)
@@ -104,13 +105,19 @@ export const PaymentCard = ({ activeProjectData }) => {
     }
   }, [activeProjectData?.project?.CommunityMember])
 
-  const getBlockDate = (timeStamp) => {
-    const blockDate = new Date(timeStamp * 1000)
-    return blockDate.toLocaleDateString('en-US', {
-      day: '2-digit',
+  const getDate = (timeStamp) => {
+    const options = {
+      day: 'numeric',
       month: 'long',
       year: 'numeric',
-    })
+    }
+    let dateObj
+    if (timeStamp.split('-').length > 1) {
+      dateObj = new Date(timeStamp)
+    } else {
+      dateObj = new Date(timeStamp * 1000)
+    }
+    return dateObj.toLocaleDateString('en-GB', options)
   }
 
   if (
@@ -147,7 +154,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                 <div style={{ marginTop: '32px' }} key={payment.hash}>
                   <div style={{ display: 'flex' }}>
                     <div style={{ marginLeft: '16px' }}>
-                      {/* <h3> {payment.date}</h3> */}
+                      <h3> {payment.date}</h3>
                       <p>
                         To:{' '}
                         <a
@@ -158,7 +165,11 @@ export const PaymentCard = ({ activeProjectData }) => {
                             wordBreak: 'break-all',
                             overflowWrap: 'break-word',
                           }}
-                          href={`https://explorer.celo.org/mainnet/tx/${payment.hash}`}
+                          href={
+                            payment.type === 'celo'
+                              ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
+                              : `https://explorer.solana.com/tx/${payment.hash}`
+                          }
                           target="_blank"
                           rel="noopener noreferrer"
                         >

@@ -28,6 +28,7 @@ export const LayerPickerOverlay = ({
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
+        justifyContent: 'space-around',
         width: '250px',
         height: '100px',
         backgroundColor: theme.colors.background as string,
@@ -111,7 +112,12 @@ const PotentialTreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
         potential tree cover {isVisible ? 'on' : 'off'}
       </p>
     </div>
@@ -148,7 +154,14 @@ const TreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>tree cover {isVisible ? 'on' : 'off'}</p>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
+        tree cover {isVisible ? 'on' : 'off'}
+      </p>
     </div>
   )
 }
@@ -183,7 +196,14 @@ const LandCoverBox = ({ map, activeProjectPolygon }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>land cover {isVisible ? 'on' : 'off'}</p>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
+        land cover {isVisible ? 'on' : 'off'}
+      </p>
     </div>
   )
 }
@@ -219,7 +239,12 @@ const SatelliteLayerBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
         satellite history {isVisible ? 'on' : 'off'}
       </p>
     </div>

@@ -5,34 +5,100 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
-  const gainforestWallet = '0xbf8480fc387b72892ca28f4e9f07f95ed5672b3f'
+  const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {
-    const addresses = activeProjectData?.project?.CommunityMember.map(
+    const recipients = activeProjectData?.project?.CommunityMember.map(
       (member) => member?.Wallet?.CeloAccount
     )
-    if (addresses) {
-      // fetch all gainforest wallet transactions
-      fetch(
-        `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${gainforestWallet}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          const seen = new Set()
-          const transactions = data['result'].filter((transaction) => {
-            // current fetch is returning duplicate transactions
-            const isNew =
-              transaction.tokenSymbol === 'cUSD' && !seen.has(transaction.hash)
 
-            seen.add(transaction.hash)
-            return isNew && addresses.includes(transaction.to)
+    //test recipients, one from each wallet
+    // const recipients = [
+    //   '8gFVfdDm9UNBSrELC4Ngt2PTBo4TtwrrCYzbohnvKycd',
+    //   '0x749d650b1d2be55acb0120ccc166b03db4ee829c94a276de9a9a34cd52df44b8',
+    // ]
+    if (recipients) {
+      for (const address of wallets.Celo) {
+        // fetch all gainforest wallet transactions
+        fetch(
+          `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            const seen = new Set()
+            const transactions = data['result']
+              .filter((transaction) => {
+                const isValid =
+                  transaction.tokenSymbol === 'cUSD' &&
+                  recipients.includes(transaction.to)
+
+                // current fetch is returning duplicate transactions
+                const isNew = !seen.has(transaction.hash)
+                if (isValid && isNew) {
+                  seen.add(transaction.hash)
+                  return isNew && recipients.includes(transaction.to)
+                }
+              })
+              .map((transaction) => ({
+                to: transaction.to,
+                date: getBlockDate(transaction.timeStamp),
+                amount: transaction.value,
+              }))
+            if (transactions.length > 0) {
+              setPaymentData([...paymentData, transactions])
+            }
           })
-          if (transactions.length > 0) {
-            setPaymentData(transactions)
-          }
+      }
+      for (const address of wallets.Solana) {
+        const query = `
+              query MyQuery {
+                solana {
+                  transfers(senderAddress: {is: "${address}"}) {
+                    amount
+                    currency {
+                      name
+                    }
+                    receiver {
+                      address
+                    }
+                    date {
+                      date
+                    }
+                  }
+                }
+              }
+      `
+        fetch('https://graphql.bitquery.io', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY': process.env.BITQUERY_API_KEY,
+          },
+          body: JSON.stringify({ query }),
         })
+          .then((res) => res.json())
+          .then((result) => {
+            const transactions = result.data.solana.transfers
+              .filter((transaction) =>
+                recipients.includes(transaction.receiver.address)
+              )
+              .map((transaction) => ({
+                to: transaction.receiver.address,
+                date: transaction.date,
+                amount: transaction.amount,
+              }))
+            if (transactions.length > 0) {
+              setPaymentData([...paymentData, transactions])
+            }
+          })
+          .catch((error) => console.error('Error making query:', error))
+      }
     }
   }, [activeProjectData?.project?.CommunityMember])
+
+  useEffect(() => {
+    console.log(paymentData)
+  }, [paymentData])
 
   const getBlockDate = (timeStamp) => {
     const blockDate = new Date(timeStamp * 1000)
@@ -74,10 +140,10 @@ export const PaymentCard = ({ activeProjectData }) => {
           {paymentData.length > 0 ? (
             paymentData.map((payment) => {
               return (
-                <div style={{ marginTop: '32px' }} key={payment.hash}>
+                <div style={{ marginTop: '32px' }} key={payment.to}>
                   <div style={{ display: 'flex' }}>
                     <div style={{ marginLeft: '16px' }}>
-                      <h3> {getBlockDate(payment.timeStamp)}</h3>
+                      <h3> {payment.date}</h3>
                       <p>
                         To:{' '}
                         <a
@@ -88,16 +154,14 @@ export const PaymentCard = ({ activeProjectData }) => {
                             wordBreak: 'break-all',
                             overflowWrap: 'break-word',
                           }}
-                          href={`https://explorer.celo.org/mainnet/tx/${payment.hash}`}
+                          href={`https://explorer.celo.org/mainnet/tx/${payment.to}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           {payment.to}
                         </a>
                       </p>
-                      <p style={{ color: '#67962A' }}>
-                        ${(payment.value / 1e18).toFixed(6)}
-                      </p>
+                      <p style={{ color: '#67962A' }}>${payment.amount}</p>
                     </div>
                   </div>
                 </div>

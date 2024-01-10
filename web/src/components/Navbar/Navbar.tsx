@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
+import { useAuth } from 'src/auth'
 import { showBasket, showProfile } from 'src/reducers/overlaysReducer'
 
 import DonateButton from './DonateButton'
@@ -12,6 +13,7 @@ const Navbar = ({ isAuthenticated, style }) => {
   const dispatch = useDispatch()
   const location = window.location.origin
   const logo = location.includes('vidi') ? 'vidi.eco' : 'gainforest'
+  const { logOut } = useAuth()
 
   return (
     <div
@@ -49,6 +51,17 @@ const Navbar = ({ isAuthenticated, style }) => {
             alignItems: 'flex-end',
           }}
         >
+          <button
+            style={{
+              border: 'none',
+              backgroundColor: theme.colors.secondaryBackground as string,
+              color: '#8c8c8c',
+              margin: '0 10px 8px 0',
+            }}
+            onClick={() => logOut()}
+          >
+            Log Out
+          </button>
           <ProfileButton
             onClick={() => dispatch(showProfile())}
           ></ProfileButton>

@@ -5,8 +5,9 @@ import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { ExitButton } from '../Map/components/ExitButton'
 
 import { BiodiversityCard } from './Info/BiodiversityCard'
+import { ChatCard } from './Info/ChatCard'
 import { CommunityCard } from './Info/CommunityCard'
-import { DiscordCard } from './Info/DiscordCard'
+// import { DiscordCard } from './Info/DiscordCard'
 // import { HexagonCard } from './Info/HexagonCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { PaymentCard } from './Info/PaymentsCard'
@@ -80,9 +81,7 @@ export const InfoOverlay = ({
       {infoOverlay == 4 && (
         <CommunityCard activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 5 && (
-        <DiscordCard activeProjectData={activeProjectData} />
-      )}
+      {infoOverlay == 5 && <ChatCard activeProjectData={activeProjectData} />}
       {infoOverlay == 6 && (
         <PaymentCard activeProjectData={activeProjectData} />
       )}

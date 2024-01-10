@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import ThemedSkeleton from '../../Map/components/Skeleton'
 
 import { InfoBox } from './InfoBox'

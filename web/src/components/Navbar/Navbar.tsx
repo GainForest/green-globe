@@ -65,9 +65,9 @@ const Navbar = ({ isAuthenticated, style }) => {
           <ProfileButton
             onClick={() => dispatch(showProfile())}
           ></ProfileButton>
-          <ShoppingCartButton
+          {/* <ShoppingCartButton
             onClick={() => dispatch(showBasket())}
-          ></ShoppingCartButton>
+          ></ShoppingCartButton> */}
         </div>
       )}
     </div>

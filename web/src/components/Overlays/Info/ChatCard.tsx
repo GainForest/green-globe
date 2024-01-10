@@ -1,31 +1,63 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 
 import styled from 'styled-components'
+
+import { useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 
 import { InfoBox } from './InfoBox'
-export const ChatCard = ({ activeProjectData }) => {
-  const { currentUser, signUp } = useAuth()
 
-  const InputBox = styled.input<{ theme }>`
-    z-index: 2;
-    border: none;
-    height: 40px;
-    width: 300px;
-    padding: 8px 12px;
-    top: 6px;
-    left: 140px;
-    color: #ffffff;
-    font-size: 0.875rem;
-    background-color: #c9c8c7;
-    font-family: Karla;
-    border-radius: 8px;
+const InputBox = styled.input<{ theme }>`
+  z-index: 2;
+  border: none;
+  height: 40px;
+  width: 300px;
+  padding: 8px 12px;
+  top: 6px;
+  left: 140px;
+  color: #ffffff;
+  font-size: 0.875rem;
+  background-color: #c9c8c7;
+  font-family: Karla;
+  border-radius: 8px;
+`
+const SignupButton = styled.button<{ theme }>`
+  z-index: 2;
+  border: none;
+  height: 40px;
+  width: 300px;
+  padding: 8px 12px;
+  top: 6px;
+  left: 140px;
+  color: #ffffff;
+  font-size: 0.875rem;
+  background-color: #c9c8c7;
+  font-family: Karla;
+  border-radius: 8px;
+`
+
+export const ChatCard = ({ activeProjectData }) => {
+  const [message, setMessage] = useState('')
+  const { isAuthenticated, userMetadata, signUp } = useAuth()
+
+  const SAVE_TO_REDIS_MUTATION = gql`
+    mutation saveToRedis($key: String!, $value: String!) {
+      saveToRedis(key: $key, value: $value)
+    }
   `
 
-  useEffect(() => {
-    console.log(currentUser)
-  }, [currentUser])
+  const [logChat] = useMutation(SAVE_TO_REDIS_MUTATION)
+
+  const writeToRedis = (e) => {
+    e.preventDefault()
+    if (message.trim() !== '') {
+      const id = activeProjectData.project.id
+      const now = Date.now()
+      const key = `${id}:${now}:${userMetadata.email}`
+      logChat({ variables: { key: key, value: message } })
+    }
+  }
 
   return (
     <InfoBox>
@@ -48,14 +80,18 @@ export const ChatCard = ({ activeProjectData }) => {
             width: '100%',
           }}
         >
-          <InputBox
-            placeholder={
-              currentUser
-                ? 'type here to ask a question'
-                : 'Click here to log in and participate in chat!'
-            }
-            onClick={!currentUser && signUp}
-          />
+          {isAuthenticated ? (
+            <form onSubmit={writeToRedis}>
+              <InputBox
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder={'type here to ask a question'}
+              />
+            </form>
+          ) : (
+            <SignupButton onClick={signUp}>
+              Click here to log in and participate in chat
+            </SignupButton>
+          )}
         </div>
       </div>
     </InfoBox>

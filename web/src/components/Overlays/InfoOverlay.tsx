@@ -11,6 +11,7 @@ import { DiscordCard } from './Info/DiscordCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
+import { DownloadCard } from './Info/DownloadCard'
 
 export const InfoOverlay = ({
   activeProjectData,
@@ -57,6 +58,12 @@ export const InfoOverlay = ({
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
+      <InfoOverlayButton
+        buttonIcon={'download'}
+        position={6}
+        active={infoOverlay == 6}
+        onClick={() => dispatch(setInfoOverlay(6))}
+      />
       {infoOverlay == 1 && (
         <ProjectCard
           activeProjectData={activeProjectData}
@@ -76,7 +83,7 @@ export const InfoOverlay = ({
       {infoOverlay == 5 && (
         <DiscordCard activeProjectData={activeProjectData} />
       )}
-      {/* {infoOverlay == 6 && <HexagonCard numHexagons={numHexagons} />} */}
+      {infoOverlay == 6 && <DownloadCard />}
     </>
   )
 }

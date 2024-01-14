@@ -41,6 +41,8 @@ export const fetchProjectInfo = async (projectId: string, setResult) => {
             id
             name
             country
+            dataDownloadUrl
+            dataDownloadInfo
             description
             longDescription
             stripeUrl

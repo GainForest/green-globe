@@ -6,10 +6,10 @@ export const DownloadCard = ({ activeProjectData }) => {
     <InfoBox>
       <div style={{ margin: '8px 24px' }}>
         <h2>Forestbench</h2>
-        {activeProjectData?.dataDownloadInfo}
+        {activeProjectData?.project?.dataDownloadInfo}
         <p></p>
-        {activeProjectData?.dataDownloadUrl ? (
-          <a target="_blank" href={activeProjectData?.dataDownloadUrl}>
+        {activeProjectData?.project?.dataDownloadUrl ? (
+          <a target="_blank" href={activeProjectData?.project?.dataDownloadUrl}>
             <Button>Download Data</Button>
           </a>
         ) : (

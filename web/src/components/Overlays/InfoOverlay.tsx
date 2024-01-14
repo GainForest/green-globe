@@ -83,7 +83,7 @@ export const InfoOverlay = ({
       {infoOverlay == 5 && (
         <DiscordCard activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 6 && <DownloadCard activeProjectData={activeProjectData/>}
+      {infoOverlay == 6 && <DownloadCard activeProjectData={activeProjectData}/>}
     </>
   )
 }

@@ -8,15 +8,15 @@ export const PaymentCard = ({ activeProjectData }) => {
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {
-    const recipients = activeProjectData?.project?.CommunityMember.map(
-      (member) => member?.Wallet?.CeloAccount
-    )
+    // const recipients = activeProjectData?.project?.CommunityMember.map(
+    //   (member) => member?.Wallet?.CeloAccount
+    // )
 
     // test recipients, one from each wallet
-    // const recipients = [
-    //   '5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ',
-    //   '0xe034805f09e26045259bf0d0b8cd41491cada701',
-    // ]
+    const recipients = [
+      '5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ',
+      '0xe034805f09e26045259bf0d0b8cd41491cada701',
+    ]
 
     const fetchPayments = async () => {
       const allPayments = []
@@ -25,6 +25,8 @@ export const PaymentCard = ({ activeProjectData }) => {
           `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
         )
         const data = await res.json()
+        console.log(address)
+        console.log(data)
         const seen = new Set()
         let transactions = data['result'].filter((transaction) => {
           const isValid =
@@ -79,6 +81,7 @@ export const PaymentCard = ({ activeProjectData }) => {
           body: JSON.stringify({ query }),
         })
         const result = await res.json()
+        console.log(result)
         let transactions = result.data.solana.transfers.filter(
           (transaction) =>
             recipients.includes(transaction.receiver.address) &&

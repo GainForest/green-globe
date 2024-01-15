@@ -76,13 +76,20 @@ export const ChatCard = ({ activeProjectData }) => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
           height: '90%',
           margin: '16px 24px',
         }}
       >
         <h2>Chat</h2>
-        <div>
+
+        {/* Message Container */}
+        <div
+          style={{
+            overflowY: 'auto',
+            flex: 1,
+            marginBottom: '1rem',
+          }}
+        >
           {messageLog.map((msg) => (
             <div key={msg.timestamp} className="message">
               <div className="message-outer">
@@ -108,6 +115,7 @@ export const ChatCard = ({ activeProjectData }) => {
           ))}
         </div>
 
+        {/* Input Box */}
         <div
           style={{
             position: 'relative',

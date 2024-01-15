@@ -123,3 +123,22 @@ input:focus {
   cursor: pointer; /* Cursor on hover */
 }
 
+.message-outer {
+  display: flex;
+  margin: 4px;
+}
+
+.message-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.message-bubble {
+  max-width: calc(100% - 67px);
+  overflow-wrap: break-word;
+  background-color: #67962A;
+  border-radius: 10px;
+  border-end-end-radius: 4px;
+  padding: 0 6px
+}

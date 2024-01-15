@@ -38,7 +38,11 @@ const SignupButton = styled.button<{ theme }>`
 `
 
 export const ChatCard = ({ activeProjectData }) => {
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState({
+    text: '',
+    sender: null,
+    timestamp: null,
+  })
   const [messageLog, setMessageLog] = useState([])
   const { isAuthenticated, userMetadata, signUp } = useAuth()
 
@@ -53,12 +57,12 @@ export const ChatCard = ({ activeProjectData }) => {
   const writeToRedis = (e) => {
     e.preventDefault()
     setMessageLog([...messageLog, message])
-    setMessage('')
-    if (message.trim() !== '') {
+    setMessage({ text: '', sender: null, timestamp: null })
+    if (message.text.trim() !== '') {
       const id = activeProjectData.project.id
       const now = Date.now()
       const key = `${id}:${now}:${userMetadata.email}`
-      logChat({ variables: { key: key, value: message } })
+      logChat({ variables: { key: key, value: message.text } })
     }
   }
 
@@ -80,11 +84,23 @@ export const ChatCard = ({ activeProjectData }) => {
         <h2>Chat</h2>
         <div>
           {messageLog.map((msg) => (
-            <div key={msg} className="message">
+            <div key={msg.timestamp} className="message">
               <div className="message-outer">
-                <div className="message-inner">
-                  <div className="message-bubble">
-                    <p>{msg}</p>
+                <div
+                  className={
+                    msg.sender === 'user'
+                      ? 'message-inner-right'
+                      : 'message-inner-left'
+                  }
+                >
+                  <div
+                    className={
+                      msg.sender === 'user'
+                        ? 'message-bubble-right'
+                        : 'message-bubble-left'
+                    }
+                  >
+                    <p>{msg.text}</p>
                   </div>
                 </div>
               </div>
@@ -102,8 +118,14 @@ export const ChatCard = ({ activeProjectData }) => {
           {isAuthenticated ? (
             <form onSubmit={writeToRedis}>
               <InputBox
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                value={message.text}
+                onChange={(e) =>
+                  setMessage({
+                    text: e.target.value,
+                    sender: 'user',
+                    timestamp: Date.now(),
+                  })
+                }
                 placeholder={'type here to ask a question'}
               />
             </form>

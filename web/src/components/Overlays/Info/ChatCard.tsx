@@ -36,6 +36,18 @@ const SignupButton = styled.button<{ theme }>`
   font-family: Karla;
   border-radius: 8px;
 `
+const getDate = (input) => {
+  const dateObj = new Date(input)
+  const options = {
+    year: '2-digit',
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }
+
+  return dateObj.toLocaleString('en-GB', options)
+}
 
 export const ChatCard = ({ activeProjectData }) => {
   const [message, setMessage] = useState({
@@ -91,8 +103,15 @@ export const ChatCard = ({ activeProjectData }) => {
           }}
         >
           {messageLog.map((msg) => (
-            <div key={msg.timestamp} className="message">
-              <div className="message-outer">
+            <div key={msg.timestamp}>
+              <div
+                className={
+                  msg.sender === 'user'
+                    ? 'message-outer-right'
+                    : 'message-outer-left'
+                }
+              >
+                {`${userMetadata.given_name} ${getDate(msg.timestamp)}`}
                 <div
                   className={
                     msg.sender === 'user'
@@ -107,7 +126,7 @@ export const ChatCard = ({ activeProjectData }) => {
                         : 'message-bubble-left'
                     }
                   >
-                    <p>{msg.text}</p>
+                    <p className="message-text">{msg.text}</p>
                   </div>
                 </div>
               </div>

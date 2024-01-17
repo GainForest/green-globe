@@ -53,14 +53,8 @@ export const InfoOverlay = ({
         onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
-        buttonIcon={'payments'}
-        position={5}
-        active={infoOverlay == 6}
-        onClick={() => dispatch(setInfoOverlay(6))}
-      />
-      <InfoOverlayButton
         buttonIcon={'chat'}
-        position={6}
+        position={5}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />

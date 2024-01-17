@@ -144,49 +144,47 @@ export const PaymentCard = ({ activeProjectData }) => {
   }
 
   return (
-    <InfoBox>
-      <div style={{ margin: '24px' }}>
-        <h1>Community Payments</h1>
-        <div>
-          {paymentData.length > 0 ? (
-            paymentData.map((payment) => {
-              return (
-                <div style={{ marginTop: '32px' }} key={payment.hash}>
-                  <div style={{ display: 'flex' }}>
-                    <div style={{ marginLeft: '16px' }}>
-                      <h3> {payment.date}</h3>
-                      <p>
-                        To:{' '}
-                        <a
-                          style={{
-                            margin: 0,
-                            color: '#808080',
-                            wordWrap: 'break-word',
-                            wordBreak: 'break-all',
-                            overflowWrap: 'break-word',
-                          }}
-                          href={
-                            payment.type === 'celo'
-                              ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
-                              : `https://explorer.solana.com/tx/${payment.hash}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {payment.to}
-                        </a>
-                      </p>
-                      <p style={{ color: '#67962A' }}>${payment.amount}</p>
-                    </div>
+    <div style={{ margin: '24px' }}>
+      <h1>Community Payments</h1>
+      <div>
+        {paymentData.length > 0 ? (
+          paymentData.map((payment) => {
+            return (
+              <div style={{ marginTop: '32px' }} key={payment.hash}>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ marginLeft: '16px' }}>
+                    <h3> {payment.date}</h3>
+                    <p>
+                      To:{' '}
+                      <a
+                        style={{
+                          margin: 0,
+                          color: '#808080',
+                          wordWrap: 'break-word',
+                          wordBreak: 'break-all',
+                          overflowWrap: 'break-word',
+                        }}
+                        href={
+                          payment.type === 'celo'
+                            ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
+                            : `https://explorer.solana.com/tx/${payment.hash}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {payment.to}
+                      </a>
+                    </p>
+                    <p style={{ color: '#67962A' }}>${payment.amount}</p>
                   </div>
                 </div>
-              )
-            })
-          ) : (
-            <p style={{ marginTop: '32px' }}>No transactions found.</p>
-          )}
-        </div>
+              </div>
+            )
+          })
+        ) : (
+          <p style={{ marginTop: '32px' }}>No transactions found.</p>
+        )}
       </div>
-    </InfoBox>
+    </div>
   )
 }

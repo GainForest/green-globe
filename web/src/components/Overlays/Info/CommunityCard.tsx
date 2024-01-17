@@ -1,9 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
+import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
+import { PaymentCard } from './PaymentsCard'
 export const CommunityCard = ({ activeProjectData }) => {
+  const [toggle, setToggle] = useState<'Members' | 'Payments'>('Members')
+
   if (
     !activeProjectData ||
     !activeProjectData?.project ||
@@ -49,85 +53,96 @@ export const CommunityCard = ({ activeProjectData }) => {
   return (
     <InfoBox>
       <div style={{ margin: '24px' }}>
-        <h1>Community</h1>
-        <h2>Total Funds Received</h2>
-        <p style={{ color: '#67962A', fontWeight: 'bold' }}>
-          {'$' + formatedTotalFundsReceived}
-        </p>
-        <div>
-          <h2>People</h2>
-          <p>
-            <b style={{ color: '#67962A' }}>{communityMembersCount}</b>{' '}
-            {memberOrMembers} from the local communities are registered to
-            receive financial benefits from this project.
-          </p>
-          {topFiveCommunityMembers.map((d) => {
-            let fullName
-            if (d.firstName && d.lastName) {
-              fullName = `${d.firstName} ${d.lastName}`
-            } else if (d.firstName && !d.lastName) {
-              fullName = `${d.firstName}`
-            } else if (!d.firstName && d.lastName) {
-              fullName = `${d.lastName}`
-            } else {
-              fullName = ''
-            }
-            const profileSrc =
-              d.profileUrl ||
-              `https://avatars.dicebear.com/api/initials/${fullName
-                .toLowerCase()
-                .replace(' ', '-')}.svg`
-            return (
-              <div
-                style={{ marginTop: '32px' }}
-                key={`community-member-${d.id}`}
-              >
-                <div style={{ display: 'flex' }}>
-                  <div>
-                    <img
-                      alt={`${d.name}-profile`}
-                      src={profileSrc}
-                      width={100}
-                      height={100}
-                      style={{ borderRadius: 50 }}
-                    />
+        <h1 style={{ marginBottom: '8px' }}>Community</h1>
+        <ToggleButton
+          active={toggle}
+          setToggle={setToggle}
+          options={['Members', 'Payments']}
+        />
+        {toggle === 'Members' ? (
+          <div>
+            <h2>Total Funds Received</h2>
+            <p style={{ color: '#67962A', fontWeight: 'bold' }}>
+              {'$' + formatedTotalFundsReceived}
+            </p>
+            <div>
+              <h2>People</h2>
+              <p>
+                <b style={{ color: '#67962A' }}>{communityMembersCount}</b>{' '}
+                {memberOrMembers} from the local communities are registered to
+                receive financial benefits from this project.
+              </p>
+              {topFiveCommunityMembers.map((d) => {
+                let fullName
+                if (d.firstName && d.lastName) {
+                  fullName = `${d.firstName} ${d.lastName}`
+                } else if (d.firstName && !d.lastName) {
+                  fullName = `${d.firstName}`
+                } else if (!d.firstName && d.lastName) {
+                  fullName = `${d.lastName}`
+                } else {
+                  fullName = ''
+                }
+                const profileSrc =
+                  d.profileUrl ||
+                  `https://avatars.dicebear.com/api/initials/${fullName
+                    .toLowerCase()
+                    .replace(' ', '-')}.svg`
+                return (
+                  <div
+                    style={{ marginTop: '32px' }}
+                    key={`community-member-${d.id}`}
+                  >
+                    <div style={{ display: 'flex' }}>
+                      <div>
+                        <img
+                          alt={`${d.name}-profile`}
+                          src={profileSrc}
+                          width={100}
+                          height={100}
+                          style={{ borderRadius: 50 }}
+                        />
+                      </div>
+                      <div style={{ marginLeft: '16px' }}>
+                        <h3>
+                          {d.firstName} {d.lastName}
+                        </h3>
+                        <p style={{ margin: 0, color: '#808080' }}>{d.role}</p>
+                        <p style={{ color: '#67962A' }}>
+                          {d.fundsReceived == 0
+                            ? 'No funds received.'
+                            : '$' + d.fundsReceived}
+                        </p>
+                      </div>
+                    </div>
+                    <div style={{ marginTop: '12px' }}>{d.bio}</div>
                   </div>
-                  <div style={{ marginLeft: '16px' }}>
-                    <h3>
-                      {d.firstName} {d.lastName}
-                    </h3>
-                    <p style={{ margin: 0, color: '#808080' }}>{d.role}</p>
-                    <p style={{ color: '#67962A' }}>
-                      {d.fundsReceived == 0
-                        ? 'No funds received.'
-                        : '$' + d.fundsReceived}
-                    </p>
-                  </div>
+                )
+              })}
+              {moreCommunityNumbersCount > 0 && (
+                <div style={{ textAlign: 'center' }}>
+                  <button
+                    style={{
+                      border: 'none',
+                      borderRadius: '0.5em',
+                      backgroundColor: '#67962A',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      color: '#ffffff',
+                      height: '40px',
+                      width: '240px',
+                      marginTop: '16px',
+                    }}
+                  >
+                    View {moreCommunityNumbersCount} more community members
+                  </button>
                 </div>
-                <div style={{ marginTop: '12px' }}>{d.bio}</div>
-              </div>
-            )
-          })}
-          {moreCommunityNumbersCount > 0 && (
-            <div style={{ textAlign: 'center' }}>
-              <button
-                style={{
-                  border: 'none',
-                  borderRadius: '0.5em',
-                  backgroundColor: '#67962A',
-                  cursor: 'pointer',
-                  textAlign: 'center',
-                  color: '#ffffff',
-                  height: '40px',
-                  width: '240px',
-                  marginTop: '16px',
-                }}
-              >
-                View {moreCommunityNumbersCount} more community members
-              </button>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <PaymentCard activeProjectData={activeProjectData} />
+        )}
       </div>
     </InfoBox>
   )

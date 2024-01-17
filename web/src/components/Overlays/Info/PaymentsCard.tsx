@@ -79,7 +79,6 @@ export const PaymentCard = ({ activeProjectData }) => {
           body: JSON.stringify({ query }),
         })
         const result = await res.json()
-        console.log(result)
         let transactions = result.data.solana.transfers.filter(
           (transaction) =>
             recipients.includes(transaction.receiver.address) &&

@@ -49,13 +49,13 @@ const getDate = (input) => {
 }
 
 export const ChatCard = ({ activeProjectData }) => {
-  const [message, setMessage] = useState({
-    text: '',
-    sender: null,
-    timestamp: null,
-  })
   const [messageLog, setMessageLog] = useState([])
   const { isAuthenticated, userMetadata, signUp } = useAuth()
+  const [message, setMessage] = useState({
+    text: '',
+    sender: userMetadata?.email,
+    timestamp: null,
+  })
 
   const SAVE_TO_REDIS_MUTATION = gql`
     mutation saveToRedis($key: String!, $value: String!) {
@@ -81,7 +81,7 @@ export const ChatCard = ({ activeProjectData }) => {
   const writeToRedis = (e) => {
     e.preventDefault()
     setMessageLog([...messageLog, message])
-    setMessage({ text: '', sender: null, timestamp: null })
+    setMessage({ text: '', sender: userMetadata.email, timestamp: null })
     if (message.text.trim() !== '') {
       const id = activeProjectData.project.id
       const now = Date.now()
@@ -95,16 +95,19 @@ export const ChatCard = ({ activeProjectData }) => {
       if (isAuthenticated) {
         try {
           const response = await getChat
-          // Check if the data is present and the component is still mounted
           if (response.data && !response.loading) {
             setMessageLog(
-              response.data.getFromRedis.map((msg) => {
-                return {
-                  timestamp: parseInt(msg.timestamp),
-                  sender: msg.email,
-                  text: msg.message,
-                }
-              })
+              [...response.data.getFromRedis]
+                .sort((a, b) => {
+                  return parseInt(a.timestamp) - parseInt(b.timestamp)
+                })
+                .map((msg) => {
+                  return {
+                    timestamp: parseInt(msg.timestamp),
+                    sender: msg.email,
+                    text: msg.message,
+                  }
+                })
             )
           }
         } catch (error) {
@@ -123,7 +126,7 @@ export const ChatCard = ({ activeProjectData }) => {
           display: 'flex',
           flexDirection: 'column',
           height: '90%',
-          margin: '16px 24px',
+          margin: '16px 0 16px 24px',
         }}
       >
         <h2>Chat</h2>
@@ -185,7 +188,7 @@ export const ChatCard = ({ activeProjectData }) => {
                 onChange={(e) =>
                   setMessage({
                     text: e.target.value,
-                    sender: 'user',
+                    sender: userMetadata.email,
                     timestamp: Date.now(),
                   })
                 }

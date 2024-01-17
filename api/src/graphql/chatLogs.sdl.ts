@@ -4,6 +4,6 @@ export const schema = gql`
   }
 
   type Query {
-    getFromRedis(key: String!): String! @requireAuth
+    getFromRedis(key: String!): [String]! @requireAuth
   }
 `

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 import styled from 'styled-components'
 
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 
@@ -64,7 +64,16 @@ export const ChatCard = ({ activeProjectData }) => {
     }
   `
 
+  const GET_FROM_REDIS_QUERY = gql`
+    query getFromRedis($key: String!) {
+      getFromRedis(key: $key)
+    }
+  `
+
   const [logChat] = useMutation(SAVE_TO_REDIS_MUTATION)
+  const getChat = useQuery(GET_FROM_REDIS_QUERY, {
+    variables: { key: userMetadata.email },
+  })
 
   const writeToRedis = (e) => {
     e.preventDefault()
@@ -73,14 +82,26 @@ export const ChatCard = ({ activeProjectData }) => {
     if (message.text.trim() !== '') {
       const id = activeProjectData.project.id
       const now = Date.now()
-      const key = `${id}:${now}:${userMetadata.email}`
+      const key = `${userMetadata.email}:${now}:${id}`
       logChat({ variables: { key: key, value: message.text } })
     }
   }
 
   useEffect(() => {
-    console.log(messageLog)
-  }, [messageLog])
+    const getLog = async () => {
+      const response = await getChat
+      const log = response.data.getFromRedis.map((message) => ({
+        sender: 'user',
+        timestamp: null,
+        text: message,
+      }))
+      console.log(response)
+      setMessageLog([...log])
+    }
+    if (isAuthenticated) {
+      getLog()
+    }
+  }, [isAuthenticated, userMetadata.email])
 
   return (
     <InfoBox>
@@ -111,7 +132,9 @@ export const ChatCard = ({ activeProjectData }) => {
                     : 'message-outer-left'
                 }
               >
-                {`${userMetadata.given_name} ${getDate(msg.timestamp)}`}
+                {msg.timestamp
+                  ? `${userMetadata.given_name} ${getDate(msg.timestamp)}`
+                  : userMetadata.given_name}
                 <div
                   className={
                     msg.sender === 'user'

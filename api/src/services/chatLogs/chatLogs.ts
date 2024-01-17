@@ -11,13 +11,30 @@ export const saveToRedis = async ({ key, value }) => {
   }
 }
 
-export const getFromRedis = async (key) => {
+export const getFromRedis = async (data) => {
   await connectRedis()
+  let cursor = 0
+  const keys = []
+  const emailPattern = `${data.key}:*`
+  console.log(data.key)
+  console.log(emailPattern)
+
   try {
-    const response = await redisClient.get(key)
-    return response
+    do {
+      const reply = await redisClient.scan(cursor, {
+        MATCH: emailPattern,
+        COUNT: 100,
+      })
+
+      console.log(reply)
+      cursor = reply.cursor
+
+      keys.push(...reply.keys)
+    } while (cursor !== 0)
+
+    const messages = await Promise.all(keys.map((key) => redisClient.get(key)))
+    return messages
   } catch (error) {
     console.log(error)
-    return error
   }
 }

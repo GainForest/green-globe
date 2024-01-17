@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import styled from 'styled-components'
 
@@ -56,6 +56,12 @@ export const ChatCard = ({ activeProjectData }) => {
     sender: userMetadata?.email,
     timestamp: null,
   })
+
+  const messagesEndRef = useRef(null)
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView()
+  }, [messageLog])
 
   const SAVE_TO_REDIS_MUTATION = gql`
     mutation saveToRedis($key: String!, $value: String!) {
@@ -171,8 +177,8 @@ export const ChatCard = ({ activeProjectData }) => {
               </div>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
-
         {/* Input Box */}
         <div
           style={{

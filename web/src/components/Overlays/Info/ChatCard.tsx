@@ -21,6 +21,7 @@ const InputBox = styled.input<{ theme }>`
   background-color: #ffffff;
   font-family: Karla;
   border-radius: 8px;
+  margin-left: 8px;
 `
 const SignupButton = styled.button<{ theme }>`
   z-index: 2;
@@ -142,7 +143,8 @@ export const ChatCard = ({ activeProjectData }) => {
           style={{
             overflowY: 'auto',
             flex: 1,
-            marginBottom: '1rem',
+            margin: '1rem 0',
+            padding: '.5rem 0',
           }}
         >
           {messageLog.map((msg) => (
@@ -183,6 +185,7 @@ export const ChatCard = ({ activeProjectData }) => {
             position: 'relative',
             alignSelf: 'center',
             width: '100%',
+            height: '2%',
           }}
         >
           {isAuthenticated ? (
@@ -196,7 +199,7 @@ export const ChatCard = ({ activeProjectData }) => {
                     timestamp: Date.now(),
                   })
                 }
-                placeholder={'type here to ask a question'}
+                placeholder={'Type here to ask a question'}
               />
             </form>
           ) : (

@@ -95,7 +95,6 @@ export const ChatCard = ({ activeProjectData }) => {
         timestamp: null,
         text: message,
       }))
-      console.log(response)
       setMessageLog([...log])
     }
     if (isAuthenticated) {

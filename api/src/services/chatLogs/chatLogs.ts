@@ -16,8 +16,6 @@ export const getFromRedis = async (data) => {
   let cursor = 0
   const keys = []
   const emailPattern = `${data.key}:*`
-  console.log(data.key)
-  console.log(emailPattern)
 
   try {
     do {
@@ -26,7 +24,6 @@ export const getFromRedis = async (data) => {
         COUNT: 100,
       })
 
-      console.log(reply)
       cursor = reply.cursor
 
       keys.push(...reply.keys)

@@ -3,7 +3,12 @@ export const schema = gql`
     saveToRedis(key: String!, value: String!): String! @requireAuth
   }
 
+  type RedisQueryResult {
+    timestamp: String!
+    email: String!
+    message: String!
+  }
   type Query {
-    getFromRedis(key: String!): [String]! @requireAuth
+    getFromRedis(key: String!): [RedisQueryResult] @requireAuth
   }
 `

@@ -39,7 +39,6 @@ const SignupButton = styled.button<{ theme }>`
 const getDate = (input) => {
   const dateObj = new Date(input)
   const options = {
-    year: '2-digit',
     month: 'numeric',
     day: 'numeric',
     hour: '2-digit',
@@ -66,13 +65,17 @@ export const ChatCard = ({ activeProjectData }) => {
 
   const GET_FROM_REDIS_QUERY = gql`
     query getFromRedis($key: String!) {
-      getFromRedis(key: $key)
+      getFromRedis(key: $key) {
+        timestamp
+        email
+        message
+      }
     }
   `
 
   const [logChat] = useMutation(SAVE_TO_REDIS_MUTATION)
   const getChat = useQuery(GET_FROM_REDIS_QUERY, {
-    variables: { key: userMetadata.email },
+    variables: { key: activeProjectData?.project?.id },
   })
 
   const writeToRedis = (e) => {
@@ -82,25 +85,36 @@ export const ChatCard = ({ activeProjectData }) => {
     if (message.text.trim() !== '') {
       const id = activeProjectData.project.id
       const now = Date.now()
-      const key = `${userMetadata.email}:${now}:${id}`
+      const key = `${id}:${now}:${userMetadata.email}`
       logChat({ variables: { key: key, value: message.text } })
     }
   }
 
   useEffect(() => {
     const getLog = async () => {
-      const response = await getChat
-      const log = response.data.getFromRedis.map((message) => ({
-        sender: 'user',
-        timestamp: null,
-        text: message,
-      }))
-      setMessageLog([...log])
+      if (isAuthenticated) {
+        try {
+          const response = await getChat
+          // Check if the data is present and the component is still mounted
+          if (response.data && !response.loading) {
+            setMessageLog(
+              response.data.getFromRedis.map((msg) => {
+                return {
+                  timestamp: parseInt(msg.timestamp),
+                  sender: msg.email,
+                  text: msg.message,
+                }
+              })
+            )
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      }
     }
-    if (isAuthenticated) {
-      getLog()
-    }
-  }, [isAuthenticated, userMetadata.email])
+
+    getLog()
+  }, [isAuthenticated, userMetadata.email, getChat]) // Re-run the effect if any of these dependencies change
 
   return (
     <InfoBox>
@@ -126,24 +140,24 @@ export const ChatCard = ({ activeProjectData }) => {
             <div key={msg.timestamp}>
               <div
                 className={
-                  msg.sender === 'user'
+                  msg.sender !== 'Peggy'
                     ? 'message-outer-right'
                     : 'message-outer-left'
                 }
               >
                 {msg.timestamp
-                  ? `${userMetadata.given_name} ${getDate(msg.timestamp)}`
-                  : userMetadata.given_name}
+                  ? `${msg.sender} ${getDate(msg.timestamp)}`
+                  : msg.sender}
                 <div
                   className={
-                    msg.sender === 'user'
+                    msg.sender !== 'Peggy'
                       ? 'message-inner-right'
                       : 'message-inner-left'
                   }
                 >
                   <div
                     className={
-                      msg.sender === 'user'
+                      msg.sender !== 'Peggy'
                         ? 'message-bubble-right'
                         : 'message-bubble-left'
                     }

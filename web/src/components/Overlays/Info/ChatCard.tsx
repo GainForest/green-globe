@@ -39,7 +39,7 @@ const SignupButton = styled.button<{ theme }>`
 const getDate = (input) => {
   const dateObj = new Date(input)
   const options = {
-    month: 'numeric',
+    month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
@@ -123,7 +123,7 @@ export const ChatCard = ({ activeProjectData }) => {
     }
 
     getLog()
-  }, [isAuthenticated, userMetadata.email, getChat]) // Re-run the effect if any of these dependencies change
+  }, [isAuthenticated, userMetadata?.email, getChat])
 
   return (
     <InfoBox>
@@ -154,9 +154,7 @@ export const ChatCard = ({ activeProjectData }) => {
                     : 'message-outer-left'
                 }
               >
-                {msg.timestamp
-                  ? `${msg.sender} ${getDate(msg.timestamp)}`
-                  : msg.sender}
+                {`${getDate(msg.timestamp)} ${msg.sender}`}
                 <div
                   className={
                     msg.sender !== 'Peggy'

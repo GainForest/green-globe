@@ -5,6 +5,7 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
+  const [loading, setLoading] = useState(true)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {
@@ -98,10 +99,13 @@ export const PaymentCard = ({ activeProjectData }) => {
       if (allPayments.length > 0) {
         setPaymentData(allPayments)
       }
+      setLoading(false)
     }
 
     if (recipients.length > 0) {
       fetchPayments()
+    } else {
+      setLoading(false)
     }
   }, [activeProjectData?.project?.CommunityMember])
 
@@ -142,7 +146,14 @@ export const PaymentCard = ({ activeProjectData }) => {
       </InfoBox>
     )
   }
-
+  if (loading) {
+    return (
+      <div style={{ margin: '24px' }}>
+        <h1>Community Payments</h1>
+        <p style={{ marginTop: '32px' }}>loading...</p>
+      </div>
+    )
+  }
   return (
     <div style={{ margin: '24px' }}>
       <h1>Community Payments</h1>

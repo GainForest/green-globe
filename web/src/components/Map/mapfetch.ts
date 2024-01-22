@@ -28,7 +28,7 @@ export const fetchGainForestCenterpoints = (setGeoJson) => {
     .then((newGeojson) => setGeoJson(newGeojson))
 }
 
-export const fetchProjectInfo = async (projectId: string, setResult) => {
+export const fetchProjectInfo = async (projectId) => {
   const response = fetch(`${process.env.GAINFOREST_ENDPOINT}/api/graphql`, {
     method: 'POST',
     headers: {
@@ -41,6 +41,8 @@ export const fetchProjectInfo = async (projectId: string, setResult) => {
             id
             name
             country
+            dataDownloadUrl
+            dataDownloadInfo
             description
             longDescription
             stripeUrl
@@ -79,11 +81,7 @@ export const fetchProjectInfo = async (projectId: string, setResult) => {
   })
     .then((res) => res.json())
     .then((result) => {
-      setResult(result.data)
-      const projectPolygonCID = result?.data?.project?.assets
-        ?.filter((d) => d?.classification == 'Shapefiles')
-        .filter((d) => d?.shapefile?.default == true)?.[0]?.awsCID
-      return projectPolygonCID
+      return result.data
     })
 
   return response

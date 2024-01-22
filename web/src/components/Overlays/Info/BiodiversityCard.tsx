@@ -1,12 +1,17 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
+import { getTreePhoto, getTreeDBH } from 'src/components/Map/maptreeutils'
+
 import ThemedSkeleton from '../../Map/components/Skeleton'
+import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
 export const BiodiversityCard = ({ activeProjectData }) => {
   const [biodiversity, setBiodiversity] = useState([])
+  const [measuredData, setMeasuredData] = useState([])
+  const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
 
   useEffect(() => {
     if (!activeProjectData) return
@@ -54,22 +59,191 @@ export const BiodiversityCard = ({ activeProjectData }) => {
               dataDeficientPercentage,
             }
           })
+          const treePlantings = `${project.name
+            .toLowerCase()
+            //removes whitespace and underscores
+            .split(/[\s_]+/)
+            .join('-')}-all-tree-plantings.geojson`
+          fetch(`${process.env.AWS_STORAGE}/shapefiles/${treePlantings}`)
+            .then((response) => response.json())
+            .then((json) => {
+              const speciesCount = {}
+              const similarityThreshold = 3
+              json.features.map((tree) => {
+                let species =
+                  tree.properties.species || tree.properties.Plant_Name
+                if (species) {
+                  species = species.trim()
+                  species = toTitleCase(species)
+
+                  let isSimilar = false
+                  Object.keys(speciesCount).forEach((existingSpecies) => {
+                    const distance = stringDistance(species, existingSpecies)
+                    if (distance <= similarityThreshold) {
+                      isSimilar = true
+                      species = existingSpecies
+                    }
+                  })
+
+                  if (!isSimilar) {
+                    const treeID =
+                      tree?.properties['FCD-tree_records-tree_photo']?.split(
+                        '?id='
+                      )?.[1] ||
+                      tree?.ID ||
+                      'unknown'
+
+                    const imageUrl = getTreePhoto(
+                      tree.properties,
+                      project.id,
+                      treeID
+                    )
+
+                    // fetch(imageUrl, { method: 'HEAD' })
+                    //   .then((response) => {
+                    //     if (!response.ok) {
+                    //       imageUrl = `{process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+                    //     }
+                    //   })
+                    //   .catch(() => {
+                    //     imageUrl = `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+                    //   })
+
+                    speciesCount[species] = {
+                      name: species,
+                      count: 1,
+                      imageUrl,
+                      tallest: parseFloat(
+                        tree.properties.height || tree.properties.Height
+                      ),
+                      shortest: parseFloat(
+                        tree.properties.height || tree.properties.Height
+                      ),
+                      average: parseFloat(
+                        tree.properties.height || tree.properties.Height
+                      ),
+                    }
+                  } else {
+                    const currObj = speciesCount[species]
+                    speciesCount[species] = {
+                      ...currObj,
+                      count: currObj.count + 1,
+                      tallest: Math.max(
+                        currObj.tallest,
+                        parseFloat(
+                          tree.properties.height || tree.properties.Height
+                        )
+                      ),
+                      shortest: Math.min(
+                        currObj.shortest,
+                        parseFloat(
+                          tree.properties.height || tree.properties.Height
+                        )
+                      ),
+                      average:
+                        parseFloat(
+                          tree.properties.height || tree.properties.Height
+                        ) + currObj.average,
+                    }
+                  }
+                } else {
+                  if ('Unknown' in speciesCount) {
+                    speciesCount['Unknown'].count += 1
+                  } else {
+                    speciesCount['Unknown'] = {
+                      name: 'Unknown',
+                      count: 1,
+                    }
+                  }
+                }
+              })
+
+              const speciesArray = Object.keys(speciesCount).map((species) => ({
+                ...speciesCount[species],
+                average:
+                  // round to two decimals
+                  Math.round(
+                    (speciesCount[species].average /
+                      speciesCount[species].count) *
+                      100
+                  ) / 100,
+              }))
+              setMeasuredData([
+                ...measuredData,
+                { title: 'Trees', species: speciesArray },
+              ])
+            })
           return setBiodiversity(biodiversity)
         })
     }
   }, [activeProjectData])
 
+  // checks for typos between instances
+  const stringDistance = (a, b) => {
+    const matrix = []
+
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i]
+    }
+
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j
+    }
+
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1]
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+          )
+        }
+      }
+    }
+
+    return matrix[b.length][a.length]
+  }
+
+  const toTitleCase = (str) => {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    })
+  }
+
   return (
     <InfoBox>
       <div style={{ margin: '16px 24px' }}>
-        <h2>Biodiversity Predictions</h2>
-        <p>
-          Predicted distribution of species habitats within 150km of the project
-          area.
-        </p>
+        <ToggleButton
+          active={toggle}
+          setToggle={setToggle}
+          options={['Predicted', 'Measured']}
+        />
+        {toggle === 'Predicted' ? (
+          <div>
+            <h2>Biodiversity Predictions</h2>
+            <p>
+              Predicted distribution of species habitats within 150km of the
+              project area.
+            </p>
+          </div>
+        ) : (
+          <div>
+            <h2>Measured Biodiversity</h2>
+            <p>Species that have been measured in the area.</p>
+          </div>
+        )}
       </div>
       <div style={{ margin: '16px 24px' }}>
-        <PredictedAnimalsGrid biodiversity={biodiversity} />
+        {toggle === 'Predicted' ? (
+          <PredictedAnimalsGrid biodiversity={biodiversity} />
+        ) : (
+          <MeasuredDataGrid
+            measuredData={measuredData}
+            biodiversity={biodiversity}
+          />
+        )}
       </div>
     </InfoBox>
   )
@@ -80,20 +254,52 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
     return (
       <>
         {biodiversity.map((biodiversityGroup) => (
-          <>
-            <h3 key={biodiversityGroup.title}>
-              Predicted {biodiversityGroup.title}
-            </h3>
+          <div key={biodiversityGroup.title}>
+            <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.name}>
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
                 {/* <RedlistStatus redlist={s.redlist} /> */}
               </div>
             ))}
-          </>
+          </div>
         ))}
       </>
     )
+  } else {
+    return (
+      <>
+        <h3>
+          <ThemedSkeleton width={'120px'} />
+        </h3>
+        <div></div>
+      </>
+    )
+  }
+}
+
+const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
+  // if data hasn't loaded yet, return skeleton
+  if (biodiversity.length > 0) {
+    // if data is loaded but no measured data, return "no data" message
+    if (measuredData.length > 0) {
+      return (
+        <>
+          {measuredData.map((group) => (
+            <div key={group.title}>
+              <h3>{group.title}</h3>
+              {group.species.map((species) => (
+                <div key={species.name}>
+                  <MeasuredDataPhoto {...species} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </>
+      )
+    } else {
+      return <p>There is not yet any measured biodiversity for this project.</p>
+    }
   } else {
     return (
       <>
@@ -142,7 +348,58 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
           {species.common}
         </p>
         <i style={{ fontSize: '0.75rem' }}>{species.scientificname}</i>
-        <RedlistStatus redlist={species.redlist} />
+        {/* <RedlistStatus redlist={species.redlist} /> */}
+      </div>
+    </div>
+  )
+}
+
+interface MeasuredSpecies {
+  imageUrl: string
+  name: string
+  shortest: number
+  tallest: number
+  average: number
+  count: number
+}
+
+const MeasuredDataPhoto = (species: MeasuredSpecies) => {
+  const src = species.imageUrl
+    ? species.imageUrl
+    : `https://mol.org/static/img/groups/taxa_plants.png`
+
+  return (
+    <div style={{ display: 'flex' }}>
+      <img
+        alt={species.name}
+        src={src}
+        style={{
+          objectFit: 'cover',
+          clipPath:
+            'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
+          height: '120px',
+          width: '120px',
+        }}
+      />
+      <div style={{ margin: '12px 0 0 24px' }}>
+        <p style={{ fontSize: '1rem', marginBottom: '0px' }}>{species.name}</p>
+        <i style={{ fontSize: '0.75rem', display: 'block' }}>
+          Count: {species.count}
+        </i>
+        {typeof species.tallest === 'number' && !isNaN(species.tallest) && (
+          <div>
+            <i style={{ fontSize: '0.75rem', display: 'block' }}>
+              Tallest: {species.tallest} m
+            </i>
+            <i style={{ fontSize: '0.75rem', display: 'block' }}>
+              Shortest: {species.shortest} m
+            </i>
+            <i style={{ fontSize: '0.75rem', display: 'block' }}>
+              Average: {species.average} m
+            </i>
+          </div>
+        )}
+        {/* <RedlistStatus redlist={species.redlist} /> */}
       </div>
     </div>
   )

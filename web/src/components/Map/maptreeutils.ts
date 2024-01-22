@@ -1,11 +1,29 @@
+import dayjs from 'dayjs'
+
+function formatDateTime(input) {
+  const [datePart, timePart] = input.split(' ')
+  let [day, month, year] = datePart.split('/')
+  year = year.length === 2 ? `20${year}` : year
+  const isoDateString = `${year}-${month}-${day}T${timePart}:00`
+  const date = new Date(isoDateString)
+  const formattedDate = date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+
+  return formattedDate
+}
+
 export const getDateOfMeasurement = (tree) => {
   if (tree?.dateOfMeasurement) {
     return tree?.dateOfMeasurement
   } else if (tree?.datePlanted) {
-    const date = new Date(tree?.datePlanted)
-    return `${date.getDate()} ${date.toLocaleString('default', {
-      month: 'short',
-    })} ${date.getFullYear()}`
+    return dayjs(tree?.datePlanted).format('DD/MM/YYYY')
+  } else if (tree?.dateMeasured) {
+    return dayjs(tree?.dateMeasured).format('DD/MM/YYYY')
+  } else if (tree['FCD-tree_records-tree_time']) {
+    return formatDateTime(tree['FCD-tree_records-tree_time'])
   } else {
     return 'unknown'
   }
@@ -42,7 +60,8 @@ export const getTreePhoto = (tree, activeProject: string, treeID: string) => {
     return tree?.koboUrl
   } else if (
     activeProject ==
-    '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a'
+      '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a' &&
+    treeID !== 'unknown'
   ) {
     return `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
   } else {

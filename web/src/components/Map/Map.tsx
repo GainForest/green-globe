@@ -52,6 +52,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
+  const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -127,10 +128,15 @@ export const Map = ({ urlProjectId }) => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
       const fetchData = async () => {
-        const projectPolygonCID = await fetchProjectInfo(
-          activeProjectId,
-          setActiveProjectData
+        const result = await fetchProjectInfo(activeProjectId)
+        const projectPolygonCID = result?.project?.assets
+          ?.filter((d) => d?.classification == 'Shapefiles')
+          .filter((d) => d?.shapefile?.default == true)?.[0]?.awsCID
+        const projectMosaic = result?.project?.assets?.filter(
+          (d) => d?.classification == 'Drone Mosaic'
         )
+        setActiveProjectData(result)
+        setActiveProjectMosaic(projectMosaic)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
       }
       fetchHiveLocations(setHiveLocations)
@@ -145,7 +151,7 @@ export const Map = ({ urlProjectId }) => {
     if (map && activeProjectPolygon) {
       // TODO: Take into account all of the shapefiles the project has
       map.getSource('project')?.setData(activeProjectPolygon)
-      dispatch(setInfoOverlay(1))
+      !infoOverlay && dispatch(setInfoOverlay(1))
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
@@ -305,6 +311,7 @@ export const Map = ({ urlProjectId }) => {
       <LayerPickerOverlay
         map={map}
         activeProjectPolygon={activeProjectPolygon}
+        activeProjectMosaic={activeProjectMosaic}
       />
       <TimeSlider map={map} />
     </>

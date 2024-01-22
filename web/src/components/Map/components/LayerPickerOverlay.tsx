@@ -15,7 +15,11 @@ import {
   toggleTreesPlantedLayer,
 } from '../maputils'
 
-export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
+export const LayerPickerOverlay = ({
+  map,
+  activeProjectPolygon,
+  activeProjectMosaic,
+}) => {
   const { theme } = useThemeUI()
 
   return (
@@ -24,6 +28,7 @@ export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         cursor: 'pointer',
         display: 'flex',
+        justifyContent: 'space-around',
         width: '250px',
         height: '100px',
         backgroundColor: theme.colors.background as string,
@@ -35,19 +40,18 @@ export const LayerPickerOverlay = ({ map, activeProjectPolygon }) => {
       }}
     >
       <SatelliteLayerBox map={map} />
-      <OrthomosaicToggle map={map} />
+      <OrthomosaicToggle map={map} activeProjectMosaic={activeProjectMosaic} />
       <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
       <TreeCoverBox map={map} />
     </div>
   )
 }
 
-const OrthomosaicToggle = ({ map }) => {
+const OrthomosaicToggle = ({ map, activeProjectMosaic }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
   const imageSrc = 'orthomosaic.png'
-
-  return (
+  return activeProjectMosaic?.length > 0 ? (
     <div
       style={{
         display: 'flex',
@@ -75,7 +79,7 @@ const OrthomosaicToggle = ({ map }) => {
       />
       <p style={{ fontSize: '10px' }}>drone {isVisible ? 'on' : 'off'}</p>
     </div>
-  )
+  ) : null
 }
 
 const PotentialTreeCoverBox = ({ map }) => {
@@ -108,7 +112,12 @@ const PotentialTreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
         potential tree cover {isVisible ? 'on' : 'off'}
       </p>
     </div>
@@ -145,7 +154,14 @@ const TreeCoverBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>tree cover {isVisible ? 'on' : 'off'}</p>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
+        tree cover {isVisible ? 'on' : 'off'}
+      </p>
     </div>
   )
 }
@@ -180,7 +196,14 @@ const LandCoverBox = ({ map, activeProjectPolygon }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>land cover {isVisible ? 'on' : 'off'}</p>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
+        land cover {isVisible ? 'on' : 'off'}
+      </p>
     </div>
   )
 }
@@ -216,7 +239,12 @@ const SatelliteLayerBox = ({ map }) => {
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>
+      <p
+        style={{
+          fontSize: '10px',
+          width: '48px',
+        }}
+      >
         satellite history {isVisible ? 'on' : 'off'}
       </p>
     </div>

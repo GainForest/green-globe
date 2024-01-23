@@ -57,6 +57,7 @@ const Navbar = ({ isAuthenticated, style }) => {
               backgroundColor: theme.colors.secondaryBackground as string,
               color: '#8c8c8c',
               margin: '0 10px 8px 0',
+              cursor: 'pointer',
             }}
             onClick={() => logOut()}
           >

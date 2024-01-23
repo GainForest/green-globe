@@ -34,8 +34,12 @@ const SignupButton = styled.button<{ theme }>`
   color: #000000;
   font-size: 0.875rem;
   background-color: #c9c8c7;
+  :hover {
+    background-color: #e9f5da;
+  }
   font-family: Karla;
   border-radius: 8px;
+  cursor: pointer;
 `
 const getDate = (input) => {
   const dateObj = new Date(input)

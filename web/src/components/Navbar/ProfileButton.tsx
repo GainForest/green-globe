@@ -6,7 +6,7 @@ const ProfileButton = ({ onClick }) => {
 
   return (
     <>
-      <p style={{ fontSize: '14px' }}>
+      <p style={{ marginBottom: '4px', fontSize: '14px' }}>
         {given_name} {family_name}
       </p>
       {/* <div

@@ -9,9 +9,26 @@ export const PaymentCard = ({ activeProjectData }) => {
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {
-    const recipients = activeProjectData?.project?.CommunityMember.map(
-      (member) => member?.Wallet?.CeloAccount
-    )
+    let celoRecipients = [
+      activeProjectData?.project?.CommunityMember.map(
+        (member) => member?.Wallet?.CeloAccount
+      ),
+    ]
+    celoRecipients = [
+      ...celoRecipients,
+      activeProjectData?.project?.Wallet?.CeloAccount,
+    ]
+
+    let solanaRecipients = [
+      activeProjectData?.project?.CommunityMember.map(
+        (member) => member?.Wallet?.SOLAccount
+      ),
+    ]
+
+    solanaRecipients = [
+      ...solanaRecipients,
+      activeProjectData?.project?.Wallet?.SOLAccount,
+    ]
 
     // test recipients, one from each wallet
     // const recipients = [
@@ -19,81 +36,18 @@ export const PaymentCard = ({ activeProjectData }) => {
     //   '0xe034805f09e26045259bf0d0b8cd41491cada701',
     // ]
 
-    const fetchPayments = async () => {
+    const checkPayments = async () => {
       const allPayments = []
-      for (const address of wallets.Celo) {
-        const res = await fetch(
-          `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
-        )
-        const data = await res.json()
-        const seen = new Set()
-        let transactions = data['result'].filter((transaction) => {
-          const isValid =
-            transaction.tokenSymbol === 'cUSD' &&
-            recipients.includes(transaction.to)
-          // current fetch is returning duplicate transactions
-          const isNew = !seen.has(transaction.hash)
-          if (isValid && isNew) {
-            seen.add(transaction.hash)
-            return recipients.includes(transaction.to)
-          }
-        })
-        transactions = transactions.map((transaction) => ({
-          to: transaction.to,
-          date: getDate(transaction.timeStamp),
-          amount: transaction.value / 1e18,
-          type: 'celo',
-          hash: transaction.hash,
-        }))
-        if (transactions.length > 0) {
-          allPayments.push(...transactions)
+      if (solanaRecipients.length > 0) {
+        const solanaPayments = await fetchSolanaPayments(solanaRecipients)
+        if (solanaPayments.length > 0) {
+          allPayments.push(solanaPayments)
         }
       }
-      for (const address of wallets.Solana) {
-        const query = `
-              query MyQuery {
-                solana {
-                  transfers(senderAddress: {is: "${address}"}) {
-                    amount
-                    currency {
-                      name
-                    }
-                    receiver {
-                      address
-                    }
-                    date {
-                      date
-                    }
-                    transaction {
-                      signature
-                    }
-                  }
-                }
-              }
-      `
-        const res = await fetch('https://graphql.bitquery.io', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': process.env.BITQUERY_API_KEY,
-          },
-          body: JSON.stringify({ query }),
-        })
-        const result = await res.json()
-        let transactions = result.data.solana.transfers.filter(
-          (transaction) =>
-            recipients.includes(transaction.receiver.address) &&
-            transaction.currency.name === 'USD Coin'
-        )
-        transactions = transactions.map((transaction) => ({
-          to: transaction.receiver.address,
-          date: getDate(transaction.date.date),
-          amount: transaction.amount,
-          type: 'solana',
-          hash: transaction.transaction.signature,
-        }))
-        if (transactions.length > 0) {
-          allPayments.push(...transactions)
+      if (celoRecipients.length > 0) {
+        const celoPayments = await fetchCeloPayments(celoRecipients)
+        if (celoPayments.length > 0) {
+          allPayments.push(celoPayments)
         }
       }
       if (allPayments.length > 0) {
@@ -101,13 +55,96 @@ export const PaymentCard = ({ activeProjectData }) => {
       }
       setLoading(false)
     }
+    checkPayments()
+  }, [
+    activeProjectData?.project?.CommunityMember,
+    activeProjectData.project?.Wallet,
+  ])
 
-    if (recipients.length > 0) {
-      fetchPayments()
-    } else {
-      setLoading(false)
+  const fetchCeloPayments = async (recipients) => {
+    const payments = []
+    for (const address of wallets.Celo) {
+      const res = await fetch(
+        `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
+      )
+      const data = await res.json()
+      const seen = new Set()
+      let transactions = data['result'].filter((transaction) => {
+        const isValid =
+          transaction.tokenSymbol === 'cUSD' &&
+          recipients.includes(transaction.to)
+        // current fetch is returning duplicate transactions
+        const isNew = !seen.has(transaction.hash)
+        if (isValid && isNew) {
+          seen.add(transaction.hash)
+          return recipients.includes(transaction.to)
+        }
+      })
+      transactions = transactions.map((transaction) => ({
+        to: transaction.to,
+        date: getDate(transaction.timeStamp),
+        amount: transaction.value / 1e18,
+        type: 'celo',
+        hash: transaction.hash,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
     }
-  }, [activeProjectData?.project?.CommunityMember])
+    return payments
+  }
+
+  const fetchSolanaPayments = async (recipients) => {
+    const payments = []
+    for (const address of wallets.Solana) {
+      const query = `
+            query MyQuery {
+              solana {
+                transfers(senderAddress: {is: "${address}"}) {
+                  amount
+                  currency {
+                    name
+                  }
+                  receiver {
+                    address
+                  }
+                  date {
+                    date
+                  }
+                  transaction {
+                    signature
+                  }
+                }
+              }
+            }
+    `
+      const res = await fetch('https://graphql.bitquery.io', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': process.env.BITQUERY_API_KEY,
+        },
+        body: JSON.stringify({ query }),
+      })
+      const result = await res.json()
+      let transactions = result.data.solana.transfers.filter(
+        (transaction) =>
+          recipients.includes(transaction.receiver.address) &&
+          transaction.currency.name === 'USD Coin'
+      )
+      transactions = transactions.map((transaction) => ({
+        to: transaction.receiver.address,
+        date: getDate(transaction.date.date),
+        amount: transaction.amount,
+        type: 'solana',
+        hash: transaction.transaction.signature,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+    return payments
+  }
 
   const getDate = (timeStamp) => {
     const options = {

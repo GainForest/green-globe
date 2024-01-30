@@ -123,3 +123,38 @@ input:focus {
   cursor: pointer; /* Cursor on hover */
 }
 
+.message-outer-left, .message-outer-right {
+font-size: 10px;
+color: gray;
+margin-top: 4px;
+}
+
+.message-outer-right {
+  text-align: right;
+  margin-right: 6px
+}
+
+.message-inner-left {
+  display: flex;
+  flex-direction: row;
+}
+
+.message-inner-right {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.message-bubble-right, .message-bubble-left {
+  display: inline-block;
+  max-width: calc(100% - 67px);
+  overflow-wrap: break-word;
+  background-color: #67962A;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border-bottom-right-radius: 0;
+  margin-top: 4px;
+}
+
+.message-text {
+  color: white;
+}

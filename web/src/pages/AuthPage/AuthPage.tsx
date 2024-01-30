@@ -17,9 +17,9 @@ const AuthPage = () => {
           paddingTop: '25vh',
         }}
       >
-        <p style={{ color: '#000000', padding: '24px' }}>
+        {/* <p style={{ color: '#000000', padding: '24px' }}>
           Vidi.eco is currently in development.
-        </p>
+        </p> */}
         <Button onClick={signUp} style={{ margin: '0 auto' }}>
           Log in
         </Button>

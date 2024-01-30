@@ -26,7 +26,7 @@ export const DiscordCard = ({ activeProjectData }) => {
     )
   }
   return (
-    <InfoBox style={{ overflowY: 'none' }}>
+    <InfoBox style={{ overflow: 'none' }}>
       <iframe
         title={activeProjectData?.project?.discordId}
         src={

@@ -1,17 +1,18 @@
 import { useDispatch } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
-import { showBasket, showProfile } from 'src/reducers/overlaysReducer'
+import { useAuth } from 'src/auth'
+import { showProfile } from 'src/reducers/overlaysReducer'
 
 import DonateButton from './DonateButton'
 import ProfileButton from './ProfileButton'
-import ShoppingCartButton from './ShoppingCartButton'
 
 const Navbar = ({ isAuthenticated, style }) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
   const location = window.location.origin
   const logo = location.includes('vidi') ? 'vidi.eco' : 'gainforest'
+  const { logOut } = useAuth()
 
   return (
     <div
@@ -49,12 +50,21 @@ const Navbar = ({ isAuthenticated, style }) => {
             alignItems: 'flex-end',
           }}
         >
+          <button
+            style={{
+              border: 'none',
+              backgroundColor: theme.colors.secondaryBackground as string,
+              color: '#8c8c8c',
+              margin: '0 10px 4px 0',
+              cursor: 'pointer',
+            }}
+            onClick={() => logOut()}
+          >
+            Log Out
+          </button>
           <ProfileButton
             onClick={() => dispatch(showProfile())}
           ></ProfileButton>
-          <ShoppingCartButton
-            onClick={() => dispatch(showBasket())}
-          ></ShoppingCartButton>
         </div>
       )}
     </div>

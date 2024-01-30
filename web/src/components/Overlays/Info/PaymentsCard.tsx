@@ -5,7 +5,9 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
-  console.log(process.env.GAINFOREST_WALLETS)
+  console.log(`wallets: ${process.env.GAINFOREST_WALLETS}`)
+  console.log(`api key: ${process.env.BITQUERY_API_KEY}`)
+
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {

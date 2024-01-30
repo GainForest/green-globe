@@ -9,8 +9,7 @@
   title = "GainForest Maps"
   port = 8915
   apiUrl = "/.redwood/functions" # you can customise graphql and dbauth urls individually too: see https://redwoodjs.com/docs/app-configuration-redwood-toml#api-paths
-   includeEnvironmentVariables = ['MAPBOXGL_ACCESSTOKEN', 'AWS_STORAGE', 'NICFI_API_KEY', 'AUTH0_DOMAIN', 'AUTH0_CLIENT_ID', 'AUTH0_REDIRECT_URI', 'AUTH0_AUDIENCE', 'GAINFOREST_ENDPOINT'] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
-
+   includeEnvironmentVariables = ['GAINFOREST_ENDPOINT', 'BITQUERY_API_KEY', 'MAPBOXGL_ACCESSTOKEN', 'AWS_STORAGE', 'NICFI_API_KEY', 'AUTH0_DOMAIN', 'AUTH0_CLIENT_ID', 'AUTH0_REDIRECT_URI', 'AUTH0_AUDIENCE', 'GAINFOREST_ENDPOINT'] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8916
 [browser]

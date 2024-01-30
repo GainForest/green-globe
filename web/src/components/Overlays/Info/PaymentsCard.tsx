@@ -7,7 +7,7 @@ export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
   console.log(`wallets: ${process.env.GAINFOREST_WALLETS}`)
   console.log(`api key: ${process.env.BITQUERY_API_KEY}`)
-  console.log(`auth0 redirect: ${AUTH0_REDIRECT_URI}`)
+  console.log(`auth0 redirect: ${process.env.AUTH0_REDIRECT_URI}`)
 
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 

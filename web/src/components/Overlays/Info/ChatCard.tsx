@@ -84,13 +84,6 @@ export const ChatCard = ({ activeProjectData }) => {
     }
   `
 
-  useEffect(() => {
-    console.log(process.env.AUTH0_AUDIENCE)
-    console.log(process.env.AUTH0_REDIRECT_URI)
-    console.log(process.env.AUTH0_CLIENT_ID)
-    console.log(process.env.AUTH0_DOMAIN)
-  })
-
   const [logChat] = useMutation(SAVE_TO_REDIS_MUTATION)
   const getChat = useQuery(GET_FROM_REDIS_QUERY, {
     variables: { key: activeProjectData?.project?.id },

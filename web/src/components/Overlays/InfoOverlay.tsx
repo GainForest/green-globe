@@ -9,11 +9,11 @@ import { ChatCard } from './Info/ChatCard'
 import { CommunityCard } from './Info/CommunityCard'
 // import { DiscordCard } from './Info/DiscordCard'
 // import { HexagonCard } from './Info/HexagonCard'
+import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { PaymentCard } from './Info/PaymentsCard'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
-import { DownloadCard } from './Info/DownloadCard'
 
 export const InfoOverlay = ({
   activeProjectData,
@@ -57,20 +57,20 @@ export const InfoOverlay = ({
       <InfoOverlayButton
         buttonIcon={'payments'}
         position={5}
-        active={infoOverlay == 6}
-        onClick={() => dispatch(setInfoOverlay(6))}
-      />
-      <InfoOverlayButton
-        buttonIcon={'chat'}
-        position={6}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
       <InfoOverlayButton
-        buttonIcon={'download'}
+        buttonIcon={'chat'}
         position={6}
         active={infoOverlay == 6}
         onClick={() => dispatch(setInfoOverlay(6))}
+      />
+      <InfoOverlayButton
+        buttonIcon={'download'}
+        position={7}
+        active={infoOverlay == 7}
+        onClick={() => dispatch(setInfoOverlay(7))}
       />
       {infoOverlay == 1 && (
         <ProjectCard
@@ -88,11 +88,13 @@ export const InfoOverlay = ({
       {infoOverlay == 4 && (
         <CommunityCard activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 5 && <ChatCard activeProjectData={activeProjectData} />}
-      {infoOverlay == 6 && (
+      {infoOverlay == 5 && (
         <PaymentCard activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 6 && <DownloadCard activeProjectData={activeProjectData}/>}
+      {infoOverlay == 6 && <ChatCard activeProjectData={activeProjectData} />}
+      {infoOverlay == 7 && (
+        <DownloadCard activeProjectData={activeProjectData} />
+      )}
     </>
   )
 }

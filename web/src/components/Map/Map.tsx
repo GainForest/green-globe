@@ -13,6 +13,7 @@ import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
+import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
 import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
@@ -53,6 +54,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
+  const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -229,8 +231,8 @@ export const Map = ({ urlProjectId }) => {
       // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
         popup.remove()
-
         const treeInformation = getPopupTreeInformation(e, activeProjectId)
+        setTreeData(treeInformation)
         const lngLat = [e.lngLat.lng, e.lngLat.lat]
         const { treeID } = treeInformation
         popup
@@ -292,6 +294,8 @@ export const Map = ({ urlProjectId }) => {
         />
       )}
       {/* <BackToGlobe map={map} /> */}
+
+      {treeData && <TreeInfoBox treeData={treeData} />}
       {infoOverlay && (
         <InfoOverlay
           numHexagons={numHexagons}

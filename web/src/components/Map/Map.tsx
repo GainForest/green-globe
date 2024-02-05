@@ -33,10 +33,8 @@ import {
   addAllSourcesAndLayers,
   addClickableMarkers,
   addTreesPlantedSourceAndLayers,
-  getPopupTreeInformation,
-  popup,
+  getTreeInformation,
   toggleTreesPlantedLayer,
-  // treePopupHtml,
 } from './maputils'
 
 export const Map = ({ urlProjectId }) => {
@@ -129,6 +127,7 @@ export const Map = ({ urlProjectId }) => {
   useEffect(() => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
+      setTreeData({})
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
         const projectPolygonCID = result?.project?.assets
@@ -229,7 +228,7 @@ export const Map = ({ urlProjectId }) => {
       })
       // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
-        const treeInformation = getPopupTreeInformation(e, activeProjectId)
+        const treeInformation = getTreeInformation(e, activeProjectId)
         setTreeData(treeInformation)
       })
     }

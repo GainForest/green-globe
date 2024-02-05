@@ -9,7 +9,7 @@ export const TreeInfoBox = ({ treeData }) => {
         cursor: 'pointer',
         display: 'flex',
         justifyContent: 'space-around',
-        width: '250px',
+        width: '350px',
         height: '100px',
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
@@ -27,8 +27,9 @@ export const TreeInfoBox = ({ treeData }) => {
               width: '48px',
             }}
           >
-            Date measured: {treeData.dateOfMeasurement}
+            Species
           </p>
+          <p>{treeData.treeName}</p>
         </div>
         <div style={{ margin: '0 4px', flexDirection: 'column' }}>
           <p
@@ -37,8 +38,9 @@ export const TreeInfoBox = ({ treeData }) => {
               width: '48px',
             }}
           >
-            Height: {treeData.treeHeight}
+            Height
           </p>
+          <p>{treeData.treeHeight}</p>
         </div>
         <div style={{ margin: '0 4px', flexDirection: 'column' }}>
           <p
@@ -47,8 +49,9 @@ export const TreeInfoBox = ({ treeData }) => {
               width: '48px',
             }}
           >
-            Id: {treeData.treeID}
+            Width
           </p>
+          <p>{treeData.treeDBH}</p>
         </div>
         <div style={{ margin: '0 4px', flexDirection: 'column' }}>
           <p
@@ -57,8 +60,20 @@ export const TreeInfoBox = ({ treeData }) => {
               width: '48px',
             }}
           >
-            Name: {treeData.treeName}
+            Id
           </p>
+          <p>{treeData.treeID}</p>
+        </div>
+        <div style={{ margin: '0 4px', flexDirection: 'column' }}>
+          <p
+            style={{
+              fontSize: '10px',
+              width: '48px',
+            }}
+          >
+            Date
+          </p>
+          <p>{treeData.dateOfMeasurement}</p>
         </div>
       </div>
       {/*

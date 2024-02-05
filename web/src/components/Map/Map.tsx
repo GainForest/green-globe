@@ -36,7 +36,7 @@ import {
   getPopupTreeInformation,
   popup,
   toggleTreesPlantedLayer,
-  treePopupHtml,
+  // treePopupHtml,
 } from './maputils'
 
 export const Map = ({ urlProjectId }) => {
@@ -227,21 +227,10 @@ export const Map = ({ urlProjectId }) => {
       map.on('click', 'projectFill', () => {
         toggleTreesPlantedLayer(map, 'visible')
       })
-
       // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
-        popup.remove()
         const treeInformation = getPopupTreeInformation(e, activeProjectId)
         setTreeData(treeInformation)
-        const lngLat = [e.lngLat.lng, e.lngLat.lat]
-        const { treeID } = treeInformation
-        popup
-          .setLngLat(lngLat)
-          .setHTML(treePopupHtml(treeInformation))
-          .addTo(map)
-      })
-      map.on('mouseleave', 'unclusteredTrees', (e) => {
-        popup.remove()
       })
     }
     // TODO: separate these out

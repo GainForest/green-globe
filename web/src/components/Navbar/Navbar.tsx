@@ -58,7 +58,7 @@ const Navbar = ({ isAuthenticated, style }) => {
               margin: '0 10px 4px 0',
               cursor: 'pointer',
             }}
-            onClick={() => logOut()}
+            onClick={() => logOut({ returnTo: process.env.AUTH0_REDIRECT_URI })}
           >
             Log Out
           </button>

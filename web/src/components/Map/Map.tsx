@@ -284,7 +284,7 @@ export const Map = ({ urlProjectId }) => {
       {/* <BackToGlobe map={map} /> */}
 
       {Object.values(treeData)?.length > 0 && (
-        <TreeInfoBox treeData={treeData} />
+        <TreeInfoBox treeData={treeData} setTreeData={setTreeData} />
       )}
       {infoOverlay && (
         <InfoOverlay

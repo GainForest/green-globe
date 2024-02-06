@@ -1,6 +1,8 @@
 import { useThemeUI } from 'theme-ui'
 
-export const TreeInfoBox = ({ treeData }) => {
+import { CloseButton } from 'src/components/Buttons/Close'
+
+export const TreeInfoBox = ({ treeData, setTreeData }) => {
   const { theme } = useThemeUI()
   return (
     <>
@@ -73,6 +75,13 @@ export const TreeInfoBox = ({ treeData }) => {
             </p>
             <p>{treeData.dateOfMeasurement}</p>
           </div>
+          <CloseButton
+            style={null}
+            fontSize="24px"
+            onClick={() => {
+              setTreeData({})
+            }}
+          />
         </div>
       </div>
       {!treeData.treePhoto.endsWith('taxa_plants.png') && (

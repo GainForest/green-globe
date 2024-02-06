@@ -12,8 +12,8 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
           cursor: 'pointer',
           display: 'flex',
           justifyContent: 'space-around',
-          width: '350px',
-          height: '100px',
+          maxWidth: '300px',
+          height: '80px',
           backgroundColor: theme.colors.background as string,
           position: 'absolute',
           top: 150,
@@ -31,53 +31,53 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             justifyContent: 'space-between',
           }}
         >
-          <div style={{ margin: '0 6px', flexDirection: 'column' }}>
+          <div style={{ margin: '0 4px', flexDirection: 'column' }}>
             <p
               style={{
                 fontSize: '10px',
-                width: '48px',
+                width: '36px',
               }}
             >
               Species
             </p>
-            <p>{treeData.treeName}</p>
+            <p style={{ fontSize: '14px' }}>{treeData.treeName}</p>
           </div>
-          <div style={{ margin: '0 6px', flexDirection: 'column' }}>
+          <div style={{ margin: '0 4px', flexDirection: 'column' }}>
             <p
               style={{
                 fontSize: '10px',
-                width: '48px',
+                width: '36px',
               }}
             >
               Height
             </p>
-            <p>{treeData.treeHeight}</p>
+            <p style={{ fontSize: '14px' }}>{treeData.treeHeight}</p>
           </div>
-          <div style={{ margin: '0 6px', flexDirection: 'column' }}>
+          <div style={{ margin: '0 4px', flexDirection: 'column' }}>
             <p
               style={{
                 fontSize: '10px',
-                width: '48px',
+                width: '36px',
               }}
             >
               Width
             </p>
-            <p>{treeData.treeDBH}</p>
+            <p style={{ fontSize: '14px' }}>{treeData.treeDBH}</p>
           </div>
-          <div style={{ margin: '0 6px', flexDirection: 'column' }}>
+          <div style={{ margin: '0 4px', flexDirection: 'column' }}>
             <p
               style={{
                 fontSize: '10px',
-                width: '48px',
+                width: '36px',
               }}
             >
               Date
             </p>
-            <p>{treeData.dateOfMeasurement}</p>
+            <p style={{ fontSize: '14px' }}>{treeData.dateOfMeasurement}</p>
           </div>
           <CloseButton
             style={null}
-            fontSize="24px"
+            fontSize="36px"
             onClick={() => {
               setTreeData({})
             }}
@@ -88,9 +88,9 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
         <div>
           <img
             style={{
-              maxWidth: '350px',
+              maxWidth: '300px',
               position: 'absolute',
-              top: 250,
+              top: 230,
               right: 8,
             }}
             alt={treeData.name}

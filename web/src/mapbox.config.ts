@@ -144,6 +144,18 @@ export const unclusteredTreesLayer = {
   },
 }
 
+export const unclusteredTreesHoverLayer = {
+  id: 'unclusteredTreesHover',
+  type: 'circle',
+  source: 'trees',
+  paint: {
+    'circle-color': 'red',
+    'circle-radius': 5,
+    'circle-stroke-color': 'green',
+    'circle-opacity': 0,
+  },
+}
+
 export const projectSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,

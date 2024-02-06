@@ -223,16 +223,65 @@ export const Map = ({ urlProjectId }) => {
     }
 
     if (map) {
-      map.on('click', 'projectFill', () => {
-        toggleTreesPlantedLayer(map, 'visible')
-      })
-      // Remove the on mouse move once you get out of the unclustered trees
-      map.on('mousemove', 'unclusteredTrees', (e) => {
-        const treeInformation = getTreeInformation(e, activeProjectId)
-        setTreeData(treeInformation)
-      })
+      const onMapLoad = () => {
+        toggleTreesPlantedLayer(map, infoOverlay ? 'visible' : 'none')
+
+        map.setPaintProperty('unclusteredTreesHover', 'circle-opacity', [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          1, // Opacity for hover state.
+          0, // Opacity for non-hover state.
+        ])
+
+        let hoveredTreeId = null
+
+        // Remove the on mouse move once you get out of the unclustered trees
+        map.on('mousemove', 'unclusteredTrees', (e) => {
+          if (e.features.length > 0) {
+            console.log(e.features)
+            const treeId = e.feature[0].id
+
+            if (hoveredTreeId !== treeId) {
+              if (hoveredTreeId !== null) {
+                map.setFeatureState(
+                  { source: 'trees', id: hoveredTreeId },
+                  { hover: false }
+                )
+              }
+              hoveredTreeId = treeId
+              map.setFeatureState(
+                { source: 'trees', id: hoveredTreeId },
+                { hover: true }
+              )
+            }
+
+            const treeInformation = getTreeInformation(e, activeProjectId)
+            setTreeData(treeInformation)
+          }
+        })
+
+        map.on('mouseleave', 'unclusteredTrees', () => {
+          if (hoveredTreeId) {
+            map.setFeatureState(
+              { source: 'trees', id: hoveredTreeId },
+              { hover: false }
+            )
+          }
+          hoveredTreeId = null
+        })
+      }
+      if (map.isStyleLoaded()) {
+        onMapLoad()
+      } else {
+        map.on('load', onMapLoad)
+      }
+
+      return () => {
+        if (map) {
+          map.off('load', onMapLoad)
+        }
+      }
     }
-    // TODO: separate these out
   }, [map, activeProjectId, infoOverlay])
 
   useEffect(() => {

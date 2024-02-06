@@ -20,6 +20,7 @@ import {
   treeCoverSource,
   treesSource,
   unclusteredTreesLayer,
+  unclusteredTreesHoverLayer,
 } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
@@ -185,30 +186,6 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
-// export const treePopupHtml = ({
-//   treeName,
-//   treeHeight,
-//   treeDBH,
-//   treePhoto,
-//   dateOfMeasurement,
-// }) => {
-//   if (
-//     treePhoto.includes('.mp4') ||
-//     treePhoto.includes('.mov') ||
-//     treePhoto.includes('.MOV')
-//   ) {
-//     return `<div class="default">
-//     <video width="100%" maxHeight="160px" autoPlay>
-//     <source src="${treePhoto}" type="video/mp4">
-//     </video>
-//   <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-//   } else {
-//     return `<div class="default">
-//   <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
-// <br /> <br /><b>Date of measurement:</b> ${dateOfMeasurement}<br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-//   }
-// }
-
 export const getTreeInformation = (e, activeProject) => {
   const tree = e?.features[0]?.properties
   const treeName = getSpeciesName(tree)
@@ -347,20 +324,30 @@ export const addTreesPlantedSourceAndLayers = (
   if (!map.getLayer('unclusteredTrees')) {
     map.addLayer(unclusteredTreesLayer)
   }
+  if (!map.getLayer('unclusteredTreesHover')) {
+    map.addLayer({ ...unclusteredTreesHoverLayer })
+  }
 }
 
 export const toggleTreesPlantedLayer = (
   map: mapboxgl.Map,
   visibility: 'visible' | 'none'
 ) => {
-  if (map.getLayer('clusteredTrees')) {
-    map.setLayoutProperty('clusteredTrees', 'visibility', visibility)
-  }
-  if (map.getLayer('clusteredTreesCountText')) {
-    map.setLayoutProperty('clusteredTreesCountText', 'visibility', visibility)
-  }
-  if (map.getLayer('unclusteredTrees')) {
-    map.setLayoutProperty('unclusteredTrees', 'visibility', visibility)
+  const layersToToggle = [
+    'clusteredTrees',
+    'clusteredTreesCountText',
+    'unclusteredTrees',
+  ]
+
+  layersToToggle.forEach((layerId) => {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, 'visibility', visibility)
+    }
+  })
+
+  // Ensure the hover layer is always visible
+  if (map.getLayer('unclusteredTreesHover')) {
+    map.setLayoutProperty('unclusteredTreesHover', 'visibility', 'visible')
   }
 }
 

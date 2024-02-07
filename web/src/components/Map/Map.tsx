@@ -221,15 +221,28 @@ export const Map = ({ urlProjectId }) => {
         toggleTreesPlantedLayer(map, 'none')
       }
     }
-
+    let hoveredTreeId = null
     if (map) {
       map.on('click', 'projectFill', () => {
         toggleTreesPlantedLayer(map, 'visible')
       })
       // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
-        const treeInformation = getTreeInformation(e, activeProjectId)
-        setTreeData(treeInformation)
+        if (e.features.length > 0) {
+          const treeInformation = getTreeInformation(e, activeProjectId)
+          setTreeData(treeInformation)
+          if (hoveredTreeId !== null) {
+            map.setFeatureState(
+              { source: 'trees', id: hoveredTreeId },
+              { hover: false }
+            )
+          }
+          hoveredTreeId = e.features[0].id
+          map.setFeatureState(
+            { source: 'trees', id: hoveredTreeId },
+            { hover: true }
+          )
+        }
       })
     }
     // TODO: separate these out

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { getTreePhoto, getTreeDBH } from 'src/components/Map/maptreeutils'
+import { getTreePhotos, getTreeDBH } from 'src/components/Map/maptreeutils'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
@@ -93,7 +93,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                       tree?.ID ||
                       'unknown'
 
-                    const imageUrl = getTreePhoto(
+                    const imageUrl = getTreePhotos(
                       tree.properties,
                       project.id,
                       treeID

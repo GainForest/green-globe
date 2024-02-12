@@ -230,7 +230,6 @@ export const Map = ({ urlProjectId }) => {
       map.on('mousemove', 'unclusteredTrees', (e) => {
         if (e.features.length > 0) {
           const treeInformation = getTreeInformation(e, activeProjectId)
-          console.log(treeInformation)
           setTreeData(treeInformation)
           if (hoveredTreeId !== null) {
             map.setFeatureState(

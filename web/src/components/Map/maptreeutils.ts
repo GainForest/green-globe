@@ -66,22 +66,22 @@ export const getTreePhotos = (tree, activeProject: string, treeID: string) => {
     return [`${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`]
   }
 
-  if (tree?.awsUrl) {
-    result.push(tree?.awsUrl)
-  } else if (tree?.koboUrl) {
+  if (tree?.koboUrl) {
     result.push(tree?.koboUrl)
+  } else if (tree?.awsUrl) {
+    result.push(tree?.awsUrl)
   }
 
-  if (tree?.leafAwsUrl) {
-    result.push(tree?.leafAwsUrl)
-  } else if (tree?.leafKoboUrl) {
+  if (tree?.leafKoboUrl) {
     result.push(tree?.leafKoboUrl)
+  } else if (tree?.leafAwsUrl) {
+    result.push(tree?.leafAwsUrl)
   }
 
-  if (tree?.barkAwsUrl) {
-    result.push(tree?.barkAwsUrl)
-  } else if (tree?.barkKoboUrl) {
+  if (tree?.barkKoboUrl) {
     result.push(tree?.barkKoboUrl)
+  } else if (tree?.barkAwsUrl) {
+    result.push(tree?.barkAwsUrl)
   }
   return result
 }

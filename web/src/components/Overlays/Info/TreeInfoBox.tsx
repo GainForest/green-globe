@@ -104,7 +104,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             alt={treeData.name}
             src={treeData.treePhotos[photoIndex]}
           />
-          {treeData.treePhotos.length > 0 && (
+          {treeData.treePhotos.length > 1 && (
             <div>
               <button
                 style={{
@@ -115,6 +115,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                   right: 160,
                   fontSize: '32px',
                   color: 'white',
+                  cursor: 'pointer',
                 }}
                 onClick={() =>
                   setPhotoIndex((photoIndex) =>
@@ -135,6 +136,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                   right: 120,
                   fontSize: '32px',
                   color: 'white',
+                  cursor: 'pointer',
                 }}
                 onClick={() =>
                   setPhotoIndex((photoIndex) =>

@@ -150,7 +150,8 @@ export const unclusteredTreesLayer = {
       8,
       4,
     ],
-    'circle-stroke-color': 'red',
+    'circle-stroke-width': 1,
+    'circle-stroke-color': '#000000',
   },
 }
 

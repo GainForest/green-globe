@@ -105,6 +105,11 @@ export const fetchTreeShapefile = async (
   const response = fetch(`${process.env.AWS_STORAGE}/${endpoint}`)
     .then((res) => res.json())
     .then((result) => {
+      const indexedFeatures = result.features.map((feature, index) => ({
+        ...feature,
+        id: index,
+      }))
+      result.features = indexedFeatures
       setActiveProjectTreesPlanted(result)
     })
   return response

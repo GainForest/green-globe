@@ -138,9 +138,19 @@ export const unclusteredTreesLayer = {
   source: 'trees',
   filter: ['!', ['has', 'point_count']],
   paint: {
-    'circle-color': '#ff77c1',
-    'circle-radius': 4,
-    'circle-stroke-color': '#ff77c1',
+    'circle-color': [
+      'case',
+      ['boolean', ['feature-state', 'hover'], false],
+      '#0883fe',
+      '#ff77c1',
+    ],
+    'circle-radius': [
+      'case',
+      ['boolean', ['feature-state', 'hover'], false],
+      8,
+      4,
+    ],
+    'circle-stroke-color': 'red',
   },
 }
 

@@ -185,31 +185,31 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
-export const treePopupHtml = ({
-  treeName,
-  treeHeight,
-  treeDBH,
-  treePhoto,
-  dateOfMeasurement,
-}) => {
-  if (
-    treePhoto.includes('.mp4') ||
-    treePhoto.includes('.mov') ||
-    treePhoto.includes('.MOV')
-  ) {
-    return `<div class="default">
-    <video width="100%" maxHeight="160px" autoPlay>
-    <source src="${treePhoto}" type="video/mp4">
-    </video>
-  <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-  } else {
-    return `<div class="default">
-  <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
-<br /> <br /><b>Date of measurement:</b> ${dateOfMeasurement}<br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-  }
-}
+// export const treePopupHtml = ({
+//   treeName,
+//   treeHeight,
+//   treeDBH,
+//   treePhoto,
+//   dateOfMeasurement,
+// }) => {
+//   if (
+//     treePhoto.includes('.mp4') ||
+//     treePhoto.includes('.mov') ||
+//     treePhoto.includes('.MOV')
+//   ) {
+//     return `<div class="default">
+//     <video width="100%" maxHeight="160px" autoPlay>
+//     <source src="${treePhoto}" type="video/mp4">
+//     </video>
+//   <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
+//   } else {
+//     return `<div class="default">
+//   <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
+// <br /> <br /><b>Date of measurement:</b> ${dateOfMeasurement}<br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
+//   }
+// }
 
-export const getPopupTreeInformation = (e, activeProject) => {
+export const getTreeInformation = (e, activeProject) => {
   const tree = e?.features[0]?.properties
   const treeName = getSpeciesName(tree)
 

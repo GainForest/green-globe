@@ -31,23 +31,21 @@ export const PaymentCard = ({ activeProjectData }) => {
     ]
 
     // test recipients, one from each wallet
-    // const recipients = [
-    //   '5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ',
-    //   '0xe034805f09e26045259bf0d0b8cd41491cada701',
-    // ]
+    // const celoRecipients = ['0xe034805f09e26045259bf0d0b8cd41491cada701']
+    // const solanaRecipients = ['5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ']
 
     const checkPayments = async () => {
       const allPayments = []
       if (solanaRecipients.length > 0) {
         const solanaPayments = await fetchSolanaPayments(solanaRecipients)
         if (solanaPayments.length > 0) {
-          allPayments.push(solanaPayments)
+          allPayments.push(...solanaPayments)
         }
       }
       if (celoRecipients.length > 0) {
         const celoPayments = await fetchCeloPayments(celoRecipients)
         if (celoPayments.length > 0) {
-          allPayments.push(celoPayments)
+          allPayments.push(...celoPayments)
         }
       }
       if (allPayments.length > 0) {

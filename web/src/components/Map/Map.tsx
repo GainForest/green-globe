@@ -13,6 +13,7 @@ import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
+import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
 import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
@@ -32,10 +33,8 @@ import {
   addAllSourcesAndLayers,
   addClickableMarkers,
   addTreesPlantedSourceAndLayers,
-  getPopupTreeInformation,
-  popup,
+  getTreeInformation,
   toggleTreesPlantedLayer,
-  treePopupHtml,
 } from './maputils'
 
 export const Map = ({ urlProjectId }) => {
@@ -53,6 +52,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
+  const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -127,6 +127,7 @@ export const Map = ({ urlProjectId }) => {
   useEffect(() => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
+      setTreeData({})
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
         const projectPolygonCID = result?.project?.assets
@@ -220,26 +221,28 @@ export const Map = ({ urlProjectId }) => {
         toggleTreesPlantedLayer(map, 'none')
       }
     }
-
+    let hoveredTreeId = null
     if (map) {
       map.on('click', 'projectFill', () => {
         toggleTreesPlantedLayer(map, 'visible')
       })
-
       // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
-        popup.remove()
-
-        const treeInformation = getPopupTreeInformation(e, activeProjectId)
-        const lngLat = [e.lngLat.lng, e.lngLat.lat]
-        const { treeID } = treeInformation
-        popup
-          .setLngLat(lngLat)
-          .setHTML(treePopupHtml(treeInformation))
-          .addTo(map)
-      })
-      map.on('mouseleave', 'unclusteredTrees', (e) => {
-        popup.remove()
+        if (e.features.length > 0) {
+          const treeInformation = getTreeInformation(e, activeProjectId)
+          setTreeData(treeInformation)
+          if (hoveredTreeId !== null) {
+            map.setFeatureState(
+              { source: 'trees', id: hoveredTreeId },
+              { hover: false }
+            )
+          }
+          hoveredTreeId = e.features[0].id
+          map.setFeatureState(
+            { source: 'trees', id: hoveredTreeId },
+            { hover: true }
+          )
+        }
       })
     }
     // TODO: separate these out
@@ -292,6 +295,10 @@ export const Map = ({ urlProjectId }) => {
         />
       )}
       {/* <BackToGlobe map={map} /> */}
+
+      {Object.values(treeData)?.length > 0 && (
+        <TreeInfoBox treeData={treeData} setTreeData={setTreeData} />
+      )}
       {infoOverlay && (
         <InfoOverlay
           numHexagons={numHexagons}

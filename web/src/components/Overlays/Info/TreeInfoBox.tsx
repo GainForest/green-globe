@@ -16,12 +16,12 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
           height: '80px',
           backgroundColor: theme.colors.background as string,
           position: 'absolute',
-          top: 150,
+          top: 160,
           right: 8,
           borderRadius: treeData.treePhoto.endsWith('taxa_plants.png')
             ? '8px'
             : '8px 8px 0 0 ',
-          padding: '16px 8px 8px 8px',
+          padding: '8px',
         }}
       >
         <div
@@ -36,6 +36,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
               style={{
                 fontSize: '10px',
                 width: '36px',
+                color: theme.colors.secondary as string
               }}
             >
               Species
@@ -47,6 +48,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
               style={{
                 fontSize: '10px',
                 width: '36px',
+                color: theme.colors.secondary as string
               }}
             >
               Height
@@ -58,6 +60,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
               style={{
                 fontSize: '10px',
                 width: '36px',
+                color: theme.colors.secondary as string
               }}
             >
               Width
@@ -69,15 +72,16 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
               style={{
                 fontSize: '10px',
                 width: '36px',
+                color: theme.colors.secondary as string
               }}
             >
-              Date
+              Date Measured
             </p>
             <p style={{ fontSize: '14px' }}>{treeData.dateOfMeasurement}</p>
           </div>
           <CloseButton
             style={null}
-            fontSize="36px"
+            fontSize="22px"
             onClick={() => {
               setTreeData({})
             }}
@@ -90,8 +94,9 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             style={{
               maxWidth: '300px',
               position: 'absolute',
-              top: 230,
+              top: 240,
               right: 8,
+              borderRadius: '0px 0px 8px 8px'
             }}
             alt={treeData.name}
             src={treeData.treePhoto}

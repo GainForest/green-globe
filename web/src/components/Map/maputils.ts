@@ -211,7 +211,6 @@ export const popup = new mapboxgl.Popup({
 
 export const getTreeInformation = (e, activeProject) => {
   const tree = e?.features[0]?.properties
-  console.log(tree)
   const treeName = getSpeciesName(tree)
 
   const treeHeight = getTreeHeight(tree)

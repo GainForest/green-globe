@@ -36,7 +36,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             cursor: 'pointer',
             display: 'flex',
             justifyContent: 'space-around',
-            maxWidth: '300px',
+            width: '300px',
             height: '80px',
             backgroundColor: theme.colors.background as string,
             position: 'absolute',
@@ -116,7 +116,8 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
           <div>
             <img
               style={{
-                maxWidth: '300px',
+                width: '300px',
+                maxHeight: '500px',
                 position: 'absolute',
                 top: 240,
                 right: 8,

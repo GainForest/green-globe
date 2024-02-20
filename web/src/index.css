@@ -158,3 +158,108 @@ margin-top: 4px;
 .message-text {
   color: white;
 }
+
+.tree-video {
+  position: absolute;
+  top: 240;
+  right: 8;
+  border-radius: 8px;
+}
+
+.tree-info, .tree-photo {
+  position: absolute;
+  right: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.tree-info {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  top: 160px;
+  padding: 8px;
+  background-color: #22252A;
+}
+
+.tree-photo {
+  border-radius: 0px 0px 8px 8px;
+  top: 230px;
+}
+
+.tree-key {
+  color: #808080;
+}
+
+@media only screen and (min-width: 320px) {
+  .tree-info, .tree-photo {
+    width: 210px;
+  }
+  .tree-info {
+    height: 70px;
+    padding: 8px 16px;
+  }
+  .tree-photo {
+    max-height: 350px;
+  }
+  .tree-key {
+    font-size: 9px;
+    width: 24px;
+  }
+  .tree-val {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (min-width: 480px) {
+  .tree-info, .tree-photo {
+    width: 230px;
+  }
+  .tree-key {
+    font-size: 10px;
+  }
+  .tree-val {
+    font-size: 11px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .tree-info, .tree-photo {
+    width: 240px;
+  }
+  .tree-info {
+    height: 80px;
+  }
+  .tree-photo {
+    top: 240px;
+    max-height: 350px;
+  }
+  .tree-key {
+    font-size: 11px;
+    width: 30px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .tree-info, .tree-photo {
+    width: 280px;
+  }
+  .tree-photo {
+    max-height: 450px;
+  }
+  .tree-val {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .tree-info, .tree-photo {
+    width: 300px;
+  }
+  .tree-photo {
+    max-height: 500px;
+  }
+  .tree-key {
+    font-size: 12px;
+  }
+}
+

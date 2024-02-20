@@ -5,105 +5,144 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
+  const [loading, setLoading] = useState(true)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {
-    // const recipients = activeProjectData?.project?.CommunityMember.map(
-    //   (member) => member?.Wallet?.CeloAccount
-    // )
-
-    // test recipients, one from each wallet
-    const recipients = [
-      '5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ',
-      '0xe034805f09e26045259bf0d0b8cd41491cada701',
+    let celoRecipients = [
+      activeProjectData?.project?.CommunityMember.map(
+        (member) => member?.Wallet?.CeloAccount
+      ),
+    ]
+    celoRecipients = [
+      ...celoRecipients,
+      activeProjectData?.project?.Wallet?.CeloAccount,
     ]
 
-    const fetchPayments = async () => {
+    let solanaRecipients = [
+      activeProjectData?.project?.CommunityMember.map(
+        (member) => member?.Wallet?.SOLAccount
+      ),
+    ]
+
+    solanaRecipients = [
+      ...solanaRecipients,
+      activeProjectData?.project?.Wallet?.SOLAccount,
+    ]
+
+    // test recipients, one from each wallet
+    // const celoRecipients = ['0xe034805f09e26045259bf0d0b8cd41491cada701']
+    // const solanaRecipients = ['5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ']
+
+    const checkPayments = async () => {
       const allPayments = []
-      for (const address of wallets.Celo) {
-        const res = await fetch(
-          `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
-        )
-        const data = await res.json()
-        const seen = new Set()
-        let transactions = data['result'].filter((transaction) => {
-          const isValid =
-            transaction.tokenSymbol === 'cUSD' &&
-            recipients.includes(transaction.to)
-          // current fetch is returning duplicate transactions
-          const isNew = !seen.has(transaction.hash)
-          if (isValid && isNew) {
-            seen.add(transaction.hash)
-            return recipients.includes(transaction.to)
-          }
-        })
-        transactions = transactions.map((transaction) => ({
-          to: transaction.to,
-          date: getDate(transaction.timeStamp),
-          amount: transaction.value / 1e18,
-          type: 'celo',
-          hash: transaction.hash,
-        }))
-        if (transactions.length > 0) {
-          allPayments.push(...transactions)
+      if (solanaRecipients.length > 0) {
+        const solanaPayments = await fetchSolanaPayments(solanaRecipients)
+        if (solanaPayments.length > 0) {
+          allPayments.push(...solanaPayments)
         }
       }
-      for (const address of wallets.Solana) {
-        const query = `
-              query MyQuery {
-                solana {
-                  transfers(senderAddress: {is: "${address}"}) {
-                    amount
-                    currency {
-                      name
-                    }
-                    receiver {
-                      address
-                    }
-                    date {
-                      date
-                    }
-                    transaction {
-                      signature
-                    }
-                  }
-                }
-              }
-      `
-        const res = await fetch('https://graphql.bitquery.io', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': process.env.BITQUERY_API_KEY,
-          },
-          body: JSON.stringify({ query }),
-        })
-        const result = await res.json()
-        let transactions = result.data.solana.transfers.filter(
-          (transaction) =>
-            recipients.includes(transaction.receiver.address) &&
-            transaction.currency.name === 'USD Coin'
-        )
-        transactions = transactions.map((transaction) => ({
-          to: transaction.receiver.address,
-          date: getDate(transaction.date.date),
-          amount: transaction.amount,
-          type: 'solana',
-          hash: transaction.transaction.signature,
-        }))
-        if (transactions.length > 0) {
-          allPayments.push(...transactions)
+      if (celoRecipients.length > 0) {
+        const celoPayments = await fetchCeloPayments(celoRecipients)
+        if (celoPayments.length > 0) {
+          allPayments.push(...celoPayments)
         }
       }
       if (allPayments.length > 0) {
         setPaymentData(allPayments)
       }
+      setLoading(false)
     }
+    checkPayments()
+  }, [
+    activeProjectData?.project?.CommunityMember,
+    activeProjectData.project?.Wallet,
+  ])
 
-    if (recipients.length > 0) {
-      fetchPayments()
+  const fetchCeloPayments = async (recipients) => {
+    const payments = []
+    for (const address of wallets.Celo) {
+      const res = await fetch(
+        `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
+      )
+      const data = await res.json()
+      const seen = new Set()
+      let transactions = data['result'].filter((transaction) => {
+        const isValid =
+          transaction.tokenSymbol === 'cUSD' &&
+          recipients.includes(transaction.to)
+        // current fetch is returning duplicate transactions
+        const isNew = !seen.has(transaction.hash)
+        if (isValid && isNew) {
+          seen.add(transaction.hash)
+          return recipients.includes(transaction.to)
+        }
+      })
+      transactions = transactions.map((transaction) => ({
+        to: transaction.to,
+        date: getDate(transaction.timeStamp),
+        amount: transaction.value / 1e18,
+        type: 'celo',
+        hash: transaction.hash,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
     }
-  }, [activeProjectData?.project?.CommunityMember])
+    return payments
+  }
+
+  const fetchSolanaPayments = async (recipients) => {
+    const payments = []
+    for (const address of wallets.Solana) {
+      const query = `
+            query MyQuery {
+              solana {
+                transfers(senderAddress: {is: "${address}"}) {
+                  amount
+                  currency {
+                    name
+                  }
+                  receiver {
+                    address
+                  }
+                  date {
+                    date
+                  }
+                  transaction {
+                    signature
+                  }
+                }
+              }
+            }
+    `
+      const res = await fetch('https://graphql.bitquery.io', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': process.env.BITQUERY_API_KEY,
+        },
+        body: JSON.stringify({ query }),
+      })
+      const result = await res.json()
+      let transactions = result.data.solana.transfers.filter(
+        (transaction) =>
+          recipients.includes(transaction.receiver.address) &&
+          transaction.currency.name === 'USD Coin'
+      )
+      transactions = transactions.map((transaction) => ({
+        to: transaction.receiver.address,
+        date: getDate(transaction.date.date),
+        amount: transaction.amount,
+        type: 'solana',
+        hash: transaction.transaction.signature,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+    return payments
+  }
 
   const getDate = (timeStamp) => {
     const options = {
@@ -142,51 +181,56 @@ export const PaymentCard = ({ activeProjectData }) => {
       </InfoBox>
     )
   }
-
-  return (
-    <InfoBox>
+  if (loading) {
+    return (
       <div style={{ margin: '24px' }}>
         <h1>Community Payments</h1>
-        <div>
-          {paymentData.length > 0 ? (
-            paymentData.map((payment) => {
-              return (
-                <div style={{ marginTop: '32px' }} key={payment.hash}>
-                  <div style={{ display: 'flex' }}>
-                    <div style={{ marginLeft: '16px' }}>
-                      <h3> {payment.date}</h3>
-                      <p>
-                        To:{' '}
-                        <a
-                          style={{
-                            margin: 0,
-                            color: '#808080',
-                            wordWrap: 'break-word',
-                            wordBreak: 'break-all',
-                            overflowWrap: 'break-word',
-                          }}
-                          href={
-                            payment.type === 'celo'
-                              ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
-                              : `https://explorer.solana.com/tx/${payment.hash}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {payment.to}
-                        </a>
-                      </p>
-                      <p style={{ color: '#67962A' }}>${payment.amount}</p>
-                    </div>
+        <p style={{ marginTop: '32px' }}>loading...</p>
+      </div>
+    )
+  }
+  return (
+    <div style={{ margin: '24px' }}>
+      <h1>Community Payments</h1>
+      <div>
+        {paymentData.length > 0 ? (
+          paymentData.map((payment) => {
+            return (
+              <div style={{ marginTop: '32px' }} key={payment.hash}>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ marginLeft: '16px' }}>
+                    <h3> {payment.date}</h3>
+                    <p>
+                      To:{' '}
+                      <a
+                        style={{
+                          margin: 0,
+                          color: '#808080',
+                          wordWrap: 'break-word',
+                          wordBreak: 'break-all',
+                          overflowWrap: 'break-word',
+                        }}
+                        href={
+                          payment.type === 'celo'
+                            ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
+                            : `https://explorer.solana.com/tx/${payment.hash}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {payment.to}
+                      </a>
+                    </p>
+                    <p style={{ color: '#67962A' }}>${payment.amount}</p>
                   </div>
                 </div>
-              )
-            })
-          ) : (
-            <p style={{ marginTop: '32px' }}>No transactions found.</p>
-          )}
-        </div>
+              </div>
+            )
+          })
+        ) : (
+          <p style={{ marginTop: '32px' }}>No transactions found.</p>
+        )}
       </div>
-    </InfoBox>
+    </div>
   )
 }

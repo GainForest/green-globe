@@ -11,14 +11,13 @@ import { CommunityCard } from './Info/CommunityCard'
 // import { HexagonCard } from './Info/HexagonCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
-import { PaymentCard } from './Info/PaymentsCard'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
 
 export const InfoOverlay = ({
   activeProjectData,
   activeProjectPolygon,
-  numHexagons,
+  // numHexagons,
   setActiveProjectPolygon,
 }) => {
   const dispatch = useDispatch()
@@ -55,22 +54,16 @@ export const InfoOverlay = ({
         onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
-        buttonIcon={'payments'}
+        buttonIcon={'chat'}
         position={5}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
       <InfoOverlayButton
-        buttonIcon={'chat'}
+        buttonIcon={'download'}
         position={6}
         active={infoOverlay == 6}
         onClick={() => dispatch(setInfoOverlay(6))}
-      />
-      <InfoOverlayButton
-        buttonIcon={'download'}
-        position={7}
-        active={infoOverlay == 7}
-        onClick={() => dispatch(setInfoOverlay(7))}
       />
       {infoOverlay == 1 && (
         <ProjectCard
@@ -88,11 +81,8 @@ export const InfoOverlay = ({
       {infoOverlay == 4 && (
         <CommunityCard activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 5 && (
-        <PaymentCard activeProjectData={activeProjectData} />
-      )}
-      {infoOverlay == 6 && <ChatCard activeProjectData={activeProjectData} />}
-      {infoOverlay == 7 && (
+      {infoOverlay == 5 && <ChatCard activeProjectData={activeProjectData} />}
+      {infoOverlay == 6 && (
         <DownloadCard activeProjectData={activeProjectData} />
       )}
     </>

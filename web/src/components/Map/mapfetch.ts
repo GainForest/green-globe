@@ -69,7 +69,7 @@ export const fetchProjectInfo = async (projectId) => {
               role
               bio
               Wallet {
-                CeloAccount
+                CeloAccounts
               }
               fundsReceived
               profileUrl

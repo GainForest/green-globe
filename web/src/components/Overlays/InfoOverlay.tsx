@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import { useDispatch, useSelector } from 'react-redux'
 
 import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
@@ -20,6 +22,15 @@ export const InfoOverlay = ({
   // numHexagons,
   setActiveProjectPolygon,
 }) => {
+  const [mediaSize, setMediaSize] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMediaSize(window.innerWidth)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
@@ -30,36 +41,42 @@ export const InfoOverlay = ({
         onClick={() => dispatch(hideInfoOverlay())}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
         buttonIcon={'forest'}
         position={1}
         active={infoOverlay == 1}
         onClick={() => dispatch(setInfoOverlay(1))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
         buttonIcon={'pets'}
         position={2}
         active={infoOverlay == 2}
         onClick={() => dispatch(setInfoOverlay(2))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
         buttonIcon={'photo'}
         position={3}
         active={infoOverlay == 3}
         onClick={() => dispatch(setInfoOverlay(3))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
         buttonIcon={'emoji_people'}
         position={4}
         active={infoOverlay == 4}
         onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
         buttonIcon={'chat'}
         position={5}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
         buttonIcon={'download'}
         position={6}
         active={infoOverlay == 6}
@@ -67,6 +84,7 @@ export const InfoOverlay = ({
       />
       {infoOverlay == 1 && (
         <ProjectCard
+          mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}

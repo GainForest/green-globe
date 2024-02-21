@@ -1,6 +1,7 @@
 import { Theme } from 'theme-ui'
 
 export const theme: Theme = {
+  breakpoints: ['320px', '480px', '768px', '992px', '1200px'],
   fonts: {
     body: 'system-ui, sans-serif',
     heading: '"Avenir Next", sans-serif',

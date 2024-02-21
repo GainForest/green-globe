@@ -12,8 +12,10 @@ export const ProjectCard = ({
   activeProjectData,
   activeProjectPolygon,
   setActiveProjectPolygon,
+  mediaSize,
 }) => {
   const { theme } = useThemeUI()
+
   if (!activeProjectData) {
     return (
       <InfoBox>
@@ -36,10 +38,25 @@ export const ProjectCard = ({
   const projectId = activeProjectData?.project?.id
 
   return (
-    <InfoBox>
+    <InfoBox mediaSize={mediaSize}>
       <ProjectSplash activeProjectData={activeProjectData} />
       <TextContainer>
-        <h1>{activeProjectData?.project?.name || ''}</h1>
+        <h1
+          style={{
+            fontSize:
+              mediaSize >= 1200
+                ? 24
+                : mediaSize > 992
+                ? 22
+                : mediaSize > 768
+                ? 20
+                : mediaSize > 480
+                ? 18
+                : 16,
+          }}
+        >
+          {activeProjectData?.project?.name || ''}
+        </h1>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
         {/* {activeProjectData?.project?.stripeUrl && (
           <a href={activeProjectData?.project?.stripeUrl}>

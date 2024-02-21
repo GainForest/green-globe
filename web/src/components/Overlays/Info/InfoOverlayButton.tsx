@@ -47,14 +47,33 @@ export const InfoOverlayButton = ({
       mediaSize < 480
         ? '450px'
         : mediaSize < 768
-        ? '490px'
+        ? '485px'
         : mediaSize < 992
         ? '530px'
         : mediaSize < 1200
         ? '570px'
         : '610px'};
     border: none;
-    left: ${({ position }) => `${position * 54 - 48}px`};
+    left: ${({ position, mediaSize }) =>
+      `${
+        position *
+          (mediaSize < 480
+            ? 44
+            : mediaSize < 768
+            ? 46
+            : mediaSize < 992
+            ? 50
+            : 54) -
+        (mediaSize < 480
+          ? 28
+          : mediaSize < 768
+          ? 36
+          : mediaSize < 992
+          ? 40
+          : mediaSize < 1200
+          ? 42
+          : 44)
+      }px`};
     background-color: ${({ active }) => (active ? '#67962A' : '#ffffff')};
     :hover {
       background-color: ${({ active }) => (active ? '#67962A' : '#e9f5da')};
@@ -73,7 +92,16 @@ export const InfoOverlayButton = ({
         style={{
           fontSize: '24px',
           color: active ? '#ffffff' : '#000000',
-          lineHeight: '44px',
+          lineHeight:
+            mediaSize < 480
+              ? '28px'
+              : mediaSize < 768
+              ? '36px'
+              : mediaSize < 992
+              ? '40px'
+              : mediaSize < 1200
+              ? '42px'
+              : '44px',
         }}
       >
         {buttonIcon}

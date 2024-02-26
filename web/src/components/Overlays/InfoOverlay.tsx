@@ -37,7 +37,7 @@ export const InfoOverlay = ({
   return (
     <>
       <ExitButton
-        style={{ left: 320, bottom: 546 }}
+        mediaSize={mediaSize}
         onClick={() => dispatch(hideInfoOverlay())}
       />
       <InfoOverlayButton

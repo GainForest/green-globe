@@ -1,5 +1,6 @@
 import { useThemeUI } from 'theme-ui'
-import { breakpoints } from 'src/constants'}
+
+import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import Button from '../../../Map/components/Button'
@@ -18,8 +19,8 @@ export const ProjectCard = ({
 
   if (!activeProjectData) {
     return (
-      <InfoBox>
-        <ThemedSkeleton height={250} />
+      <InfoBox mediaSize={mediaSize}>
+        <ThemedSkeleton />
         <div style={{ margin: '8px 24px' }}>
           <h1>
             <ThemedSkeleton width={'80%'} />

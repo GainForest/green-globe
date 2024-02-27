@@ -327,6 +327,10 @@ export const Map = ({ urlProjectId }) => {
     }
   }, [map])
 
+  useEffect(() => {
+    console.log(activeProjectData)
+  }, [activeProjectData])
+
   return (
     <>
       <div

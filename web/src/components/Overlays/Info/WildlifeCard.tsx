@@ -5,7 +5,7 @@ import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
-export const WildlifeCard = ({ activeProjectData }) => {
+export const WildlifeCard = ({ activeProjectData, mediaSize }) => {
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
 
   const projectId = activeProjectData?.project?.id
@@ -21,7 +21,7 @@ export const WildlifeCard = ({ activeProjectData }) => {
     )?.[0]?.awsCID || ''
 
   return (
-    <InfoBox>
+    <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
         <h2>Observed Wildlife</h2>
         <div style={{ width: '100%', height: '12px' }} />

@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
 
 import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
@@ -21,16 +19,8 @@ export const InfoOverlay = ({
   activeProjectPolygon,
   // numHexagons,
   setActiveProjectPolygon,
+  mediaSize,
 }) => {
-  const [mediaSize, setMediaSize] = useState(window.innerWidth)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setMediaSize(window.innerWidth)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right

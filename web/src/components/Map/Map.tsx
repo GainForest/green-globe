@@ -54,6 +54,15 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
+  const [mediaSize, setMediaSize] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMediaSize(window.innerWidth)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
@@ -357,6 +366,7 @@ export const Map = ({ urlProjectId }) => {
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
+          mediaSize={mediaSize}
         />
       )}
       {/* <ProjectSeriesPickerOverlay
@@ -371,6 +381,7 @@ export const Map = ({ urlProjectId }) => {
         map={map}
         activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
+        mediaSize={mediaSize}
       />
       <TimeSlider map={map} />
     </>

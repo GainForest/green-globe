@@ -1,5 +1,5 @@
 import { useThemeUI } from 'theme-ui'
-
+import { breakpoints } from 'src/constants'}
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import Button from '../../../Map/components/Button'
@@ -44,13 +44,13 @@ export const ProjectCard = ({
         <h1
           style={{
             fontSize:
-              mediaSize >= 1200
+              mediaSize >= breakpoints.xl
                 ? 24
-                : mediaSize > 992
+                : mediaSize > breakpoints.l
                 ? 22
-                : mediaSize > 768
+                : mediaSize > breakpoints.m
                 ? 20
-                : mediaSize > 480
+                : mediaSize > breakpoints.s
                 ? 18
                 : 16,
           }}

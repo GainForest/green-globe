@@ -1,5 +1,7 @@
 import { useThemeUI } from 'theme-ui'
 
+import { breakpoints } from 'src/constants'
+
 export const InfoBox = ({
   children,
   style,
@@ -16,23 +18,23 @@ export const InfoBox = ({
       style={{
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         height:
-          mediaSize >= 1200
+          mediaSize >= breakpoints.xl
             ? '560px'
-            : mediaSize > 992
+            : mediaSize > breakpoints.l
             ? '520px'
-            : mediaSize > 768
+            : mediaSize > breakpoints.m
             ? '480px'
-            : mediaSize > 480
+            : mediaSize > breakpoints.s
             ? '440px'
             : '400px',
         width:
-          mediaSize >= 1200
+          mediaSize >= breakpoints.xl
             ? '360px'
-            : mediaSize > 992
+            : mediaSize > breakpoints.l
             ? '330px'
-            : mediaSize > 768
+            : mediaSize > breakpoints.m
             ? '300px'
-            : mediaSize > 480
+            : mediaSize > breakpoints.s
             ? '270px'
             : '240px',
         position: 'absolute',

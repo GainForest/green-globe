@@ -1,3 +1,5 @@
+import { breakpoints } from 'src/constants'
+
 import { UnstyledButton } from './UnstyledButton'
 
 export const ExitButton = ({ style, onClick, mediaSize }) => {
@@ -7,43 +9,43 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
         zIndex: 2,
         textAlign: 'center',
         left:
-          mediaSize >= 1200
+          mediaSize >= breakpoints.xl
             ? 320
-            : mediaSize > 992
+            : mediaSize > breakpoints.l
             ? 290
-            : mediaSize > 768
+            : mediaSize > breakpoints.m
             ? 260
-            : mediaSize > 480
+            : mediaSize > breakpoints.s
             ? 230
             : 200,
         bottom:
-          mediaSize >= 1200
+          mediaSize >= breakpoints.xl
             ? 546
-            : mediaSize > 992
+            : mediaSize > breakpoints.l
             ? 506
-            : mediaSize > 768
+            : mediaSize > breakpoints.m
             ? 466
-            : mediaSize > 480
+            : mediaSize > breakpoints.s
             ? 426
             : 386,
         height:
-          mediaSize >= 1200
+          mediaSize >= breakpoints.xl
             ? '36px'
-            : mediaSize > 992
+            : mediaSize > breakpoints.l
             ? '34px'
-            : mediaSize > 768
+            : mediaSize > breakpoints.m
             ? '32px'
-            : mediaSize > 480
+            : mediaSize > breakpoints.s
             ? '30px'
             : '28px',
         width:
-          mediaSize >= 1200
+          mediaSize >= breakpoints.xl
             ? '36px'
-            : mediaSize > 992
+            : mediaSize > breakpoints.l
             ? '34px'
-            : mediaSize > 768
+            : mediaSize > breakpoints.m
             ? '32px'
-            : mediaSize > 480
+            : mediaSize > breakpoints.s
             ? '30px'
             : '28px',
         ...style,
@@ -53,23 +55,23 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
       <div
         style={{
           fontSize:
-            mediaSize < 480
+            mediaSize < breakpoints.s
               ? '16px'
-              : mediaSize < 768
+              : mediaSize < breakpoints.m
               ? '18px'
-              : mediaSize < 992
+              : mediaSize < breakpoints.l
               ? '20px'
-              : mediaSize < 1200
+              : mediaSize < breakpoints.xl
               ? '22px'
               : '24px',
           lineHeight:
-            mediaSize < 480
+            mediaSize < breakpoints.s
               ? '30px'
-              : mediaSize < 768
+              : mediaSize < breakpoints.m
               ? '32px'
-              : mediaSize < 992
+              : mediaSize < breakpoints.l
               ? '34px'
-              : mediaSize < 1200
+              : mediaSize < breakpoints.xl
               ? '36px'
               : '38px',
         }}

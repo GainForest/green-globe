@@ -1,9 +1,6 @@
-import { useThemeUI } from 'theme-ui'
-
 import { CloseButton } from 'src/components/Buttons/Close'
 
 export const TreeInfoBox = ({ treeData, setTreeData }) => {
-  const { theme } = useThemeUI()
   if (
     treeData.treePhoto.endsWith('mov') ||
     treeData.treePhoto.endsWith('MOV') ||

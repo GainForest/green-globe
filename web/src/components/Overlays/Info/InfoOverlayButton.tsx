@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { breakpoints } from 'src/constants'}
 export const InfoOverlayButton = ({
   buttonIcon,
   position,
@@ -22,53 +23,53 @@ export const InfoOverlayButton = ({
     border-radius: 0.5em;
     cursor: pointer;
     height: ${({ mediaSize }) =>
-      mediaSize < 480
+      mediaSize < breakpoints.s
         ? '28px'
-        : mediaSize < 768
+        : mediaSize < breakpoints.m
         ? '36px'
-        : mediaSize < 992
+        : mediaSize < breakpoints.l
         ? '40px'
-        : mediaSize < 1200
+        : mediaSize < breakpoints.xl
         ? '42px'
         : '44px'};
     width: ${({ mediaSize }) =>
-      mediaSize < 480
+      mediaSize < breakpoints.s
         ? '28px'
-        : mediaSize < 768
+        : mediaSize < breakpoints.m
         ? '36px'
-        : mediaSize < 992
+        : mediaSize < breakpoints.l
         ? '40px'
-        : mediaSize < 1200
+        : mediaSize < breakpoints.xl
         ? '42px'
         : '44px'};
     bottom: ${({ mediaSize }) =>
-      mediaSize < 480
+      mediaSize < breakpoints.s
         ? '450px'
-        : mediaSize < 768
+        : mediaSize < breakpoints.m
         ? '485px'
-        : mediaSize < 992
+        : mediaSize < breakpoints.l
         ? '530px'
-        : mediaSize < 1200
+        : mediaSize < breakpoints.xl
         ? '570px'
         : '610px'};
     border: none;
     left: ${({ position, mediaSize }) =>
       `${
         position *
-          (mediaSize < 480
+          (mediaSize < breakpoints.s
             ? 44
-            : mediaSize < 768
+            : mediaSize < breakpoints.m
             ? 46
-            : mediaSize < 992
+            : mediaSize < breakpoints.l
             ? 50
             : 54) -
-        (mediaSize < 480
+        (mediaSize < breakpoints.s
           ? 28
-          : mediaSize < 768
+          : mediaSize < breakpoints.m
           ? 36
-          : mediaSize < 992
+          : mediaSize < breakpoints.l
           ? 40
-          : mediaSize < 1200
+          : mediaSize < breakpoints.xl
           ? 42
           : 44)
       }px`};
@@ -91,13 +92,13 @@ export const InfoOverlayButton = ({
           fontSize: '24px',
           color: active ? '#ffffff' : '#000000',
           lineHeight:
-            mediaSize < 480
+            mediaSize < breakpoints.s
               ? '28px'
-              : mediaSize < 768
+              : mediaSize < breakpoints.m
               ? '36px'
-              : mediaSize < 992
+              : mediaSize < breakpoints.l
               ? '40px'
-              : mediaSize < 1200
+              : mediaSize < breakpoints.xl
               ? '42px'
               : '44px',
         }}

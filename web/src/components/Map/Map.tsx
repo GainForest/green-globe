@@ -224,6 +224,7 @@ export const Map = ({ urlProjectId }) => {
   useEffect(() => {
     if (map) {
       const onClick = (e) => {
+        console.log(e)
         const { lat, lng } = e.lngLat
         dispatch(setClickedCoordinates({ lat, lon: lng }))
         dispatch(setInfoOverlay(6))
@@ -335,10 +336,6 @@ export const Map = ({ urlProjectId }) => {
       }
     }
   }, [map])
-
-  useEffect(() => {
-    console.log(activeProjectData)
-  }, [activeProjectData])
 
   return (
     <>

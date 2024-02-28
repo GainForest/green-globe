@@ -70,6 +70,7 @@ export const fetchProjectInfo = async (projectId) => {
               bio
               Wallet {
                 CeloAccounts
+                SOLAccounts
               }
               fundsReceived
               profileUrl

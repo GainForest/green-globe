@@ -55,9 +55,9 @@ export const getTreeHeight = (tree) => {
 export const getTreePhoto = (tree, activeProject: string, treeID: string) => {
   if (tree?.tree_photo) {
     return tree?.tree_photo
-  } else if (tree?.koboUrl) {
+  } else if (tree?.awsUrl) {
     // kobo api
-    return tree?.koboUrl
+    return tree?.awsUrl
   } else if (
     activeProject ==
       '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a' &&

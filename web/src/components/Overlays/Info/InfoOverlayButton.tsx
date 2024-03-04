@@ -23,53 +23,54 @@ export const InfoOverlayButton = ({
     position: absolute;
     border-radius: 0.5em;
     cursor: pointer;
+    padding: 0;
     height: ${({ mediaSize }) =>
       mediaSize < breakpoints.s
-        ? '28px'
+        ? '24px'
         : mediaSize < breakpoints.m
-        ? '36px'
+        ? '28px'
         : mediaSize < breakpoints.l
-        ? '40px'
+        ? '36px'
         : mediaSize < breakpoints.xl
         ? '42px'
         : '44px'};
     width: ${({ mediaSize }) =>
       mediaSize < breakpoints.s
-        ? '28px'
+        ? '24px'
         : mediaSize < breakpoints.m
-        ? '36px'
+        ? '28px'
         : mediaSize < breakpoints.l
-        ? '40px'
+        ? '36px'
         : mediaSize < breakpoints.xl
         ? '42px'
         : '44px'};
     bottom: ${({ mediaSize }) =>
       mediaSize < breakpoints.s
-        ? '450px'
+        ? '290px'
         : mediaSize < breakpoints.m
-        ? '485px'
+        ? '370px'
         : mediaSize < breakpoints.l
-        ? '530px'
+        ? '450px'
         : mediaSize < breakpoints.xl
-        ? '570px'
+        ? '530px'
         : '610px'};
     border: none;
     left: ${({ position, mediaSize }) =>
       `${
         position *
           (mediaSize < breakpoints.s
-            ? 44
+            ? 32
             : mediaSize < breakpoints.m
-            ? 46
+            ? 36
             : mediaSize < breakpoints.l
-            ? 50
+            ? 48
             : 54) -
         (mediaSize < breakpoints.s
-          ? 28
+          ? 24
           : mediaSize < breakpoints.m
-          ? 36
+          ? 28
           : mediaSize < breakpoints.l
-          ? 40
+          ? 36
           : mediaSize < breakpoints.xl
           ? 42
           : 44)

@@ -21,22 +21,22 @@ export const InfoBox = ({
           mediaSize >= breakpoints.xl
             ? '560px'
             : mediaSize > breakpoints.l
-            ? '520px'
-            : mediaSize > breakpoints.m
             ? '480px'
+            : mediaSize > breakpoints.m
+            ? '400px'
             : mediaSize > breakpoints.s
-            ? '440px'
-            : '400px',
+            ? '320px'
+            : '240px',
         width:
           mediaSize >= breakpoints.xl
             ? '360px'
             : mediaSize > breakpoints.l
-            ? '330px'
+            ? '310px'
             : mediaSize > breakpoints.m
-            ? '300px'
+            ? '260px'
             : mediaSize > breakpoints.s
-            ? '270px'
-            : '240px',
+            ? '210px'
+            : '160px',
         position: 'absolute',
         bottom: 40,
         left: 8,

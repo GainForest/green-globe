@@ -77,6 +77,10 @@ export const Map = ({ urlProjectId }) => {
     }
   }, [gainforestCenterpoints])
 
+  useEffect(() => {
+    console.log(activeProjectData)
+  }, [setActiveProjectData])
+
   // Set initial layers on load
   useEffect(() => {
     if (map && gainforestCenterpoints && hexagons) {
@@ -135,6 +139,7 @@ export const Map = ({ urlProjectId }) => {
   // Fetch default project site
   useEffect(() => {
     if (activeProjectId) {
+      console.log('activeProjectId: ', activeProjectId)
       navigate(`/${activeProjectId}`)
       setTreeData({})
       const fetchData = async () => {

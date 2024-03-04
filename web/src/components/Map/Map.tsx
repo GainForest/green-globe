@@ -194,7 +194,7 @@ export const Map = ({ urlProjectId }) => {
       toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
-        padding: { top: 40, bottom: 40, left: 420, right: 40 },
+        padding: { top: 40, bottom: 40, left: 40, right: 40 },
       })
     }
   }, [map, activeProjectPolygon])

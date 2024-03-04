@@ -19,10 +19,10 @@ export const initializeMapbox = (
           mediaSize >= breakpoints.xl
             ? 24
             : mediaSize > breakpoints.l
-            ? 20
+            ? 12
             : mediaSize > breakpoints.m
-            ? 16
-            : 12,
+            ? 6
+            : 2,
       },
       zoom: 2,
       center: [102, 9],
@@ -39,10 +39,10 @@ export const initializeMapbox = (
           mediaSize >= breakpoints.xl
             ? 24
             : mediaSize > breakpoints.l
-            ? 20
+            ? 12
             : mediaSize > breakpoints.m
-            ? 16
-            : 12,
+            ? 6
+            : 2,
       },
       bounds,
     })

@@ -6,10 +6,6 @@ import {
   clusteredTreesLayer,
   generatePlanetLayer,
   generatePlanetSource,
-  hexagonClickFillLayer,
-  hexagonHoverFillLayer,
-  hexagonOutlineLayer,
-  hexagonsSource,
   landCoverLayer,
   landCoverSource,
   potentialTreeCoverLayer,
@@ -33,7 +29,7 @@ import {
 
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
-  hexagons,
+
   hiveLocations
 ) => {
   addPlanetLabsSourceAndLayers(map)
@@ -42,7 +38,6 @@ export const addAllSourcesAndLayers = (
   addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
-  addHexagonsSourceAndLayers(map, hexagons)
   addOrthomosaicSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations)
 }
@@ -311,21 +306,6 @@ export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
   }
   if (map.getSource('project') && !map.getLayer('projectFill')) {
     map.addLayer(projectFillLayer('#00FF00'))
-  }
-}
-
-export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
-  if (!map.getSource('hexagons')) {
-    map.addSource('hexagons', hexagonsSource(hexagons))
-  }
-  if (!map.getLayer('hexagonClickFillLayer')) {
-    map.addLayer(hexagonClickFillLayer())
-  }
-  if (!map.getLayer('hexagonOutline')) {
-    map.addLayer(hexagonOutlineLayer('#00FF00'))
-  }
-  if (!map.getLayer('hexagonHoverFill')) {
-    map.addLayer(hexagonHoverFillLayer())
   }
 }
 

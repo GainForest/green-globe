@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
-import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
@@ -25,7 +24,6 @@ import {
   fetchTreeShapefile,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
-  fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
@@ -45,7 +43,6 @@ export const Map = ({ urlProjectId }) => {
   const [__, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
-  const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
   const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
@@ -53,7 +50,6 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const [treeData, setTreeData] = useState({})
-  const numHexagons = useRef(0)
   const [mediaSize, setMediaSize] = useState(window.innerWidth)
 
   useEffect(() => {
@@ -67,7 +63,6 @@ export const Map = ({ urlProjectId }) => {
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
-    fetchHexagons(setHexagons)
   }, [])
 
   // Initialize Map
@@ -78,12 +73,13 @@ export const Map = ({ urlProjectId }) => {
   }, [gainforestCenterpoints])
 
   useEffect(() => {
+    console.log('activeProjectData: ')
     console.log(activeProjectData)
-  }, [setActiveProjectData])
+  }, [activeProjectData])
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && gainforestCenterpoints && hexagons) {
+    if (map && gainforestCenterpoints) {
       map.on('load', () => {
         map.setFog({
           color: '#000000', // Lower atmosphere
@@ -92,7 +88,7 @@ export const Map = ({ urlProjectId }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
+        addAllSourcesAndLayers(map, hiveLocations)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -111,10 +107,10 @@ export const Map = ({ urlProjectId }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
+        addAllSourcesAndLayers(map, hiveLocations)
       })
     }
-  }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
+  }, [map, gainforestCenterpoints, dispatch, hiveLocations])
 
   // Rotate the globe
   useEffect(() => {
@@ -200,34 +196,6 @@ export const Map = ({ urlProjectId }) => {
     }
   }, [map, activeProjectTreesPlanted])
 
-  // Hexagon onclick
-  useEffect(() => {
-    if (map) {
-      map.on('click', 'hexagonHoverFill', (e) => {
-        const { lat, lng } = e.lngLat
-        dispatch(setClickedCoordinates({ lat, lon: lng }))
-        dispatch(setInfoOverlay(6))
-        const hoveredHexagonId = e.features[0]?.id
-        if (
-          map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
-            ?.clicked
-        ) {
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { clicked: false }
-          )
-          numHexagons.current = numHexagons.current - 1
-        } else {
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { clicked: true }
-          )
-          numHexagons.current = numHexagons.current + 1
-        }
-      })
-    }
-  }, [map])
-
   // Remove layers when you exit the display overlay
   useEffect(() => {
     if (map && map.getLayer('unclusteredTrees')) {
@@ -262,37 +230,6 @@ export const Map = ({ urlProjectId }) => {
     // TODO: separate these out
   }, [map, activeProjectId, infoOverlay])
 
-  useEffect(() => {
-    if (map) {
-      let hoveredHexagonId = null
-      map.on('mousemove', 'hexagonHoverFill', (e) => {
-        if (e.features.length > 0) {
-          if (hoveredHexagonId !== null) {
-            map.setFeatureState(
-              { source: 'hexagons', id: hoveredHexagonId },
-              { hover: false }
-            )
-          }
-          hoveredHexagonId = e.features[0]?.id
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { hover: true }
-          )
-        }
-      })
-
-      map.on('mouseleave', 'hexagonHoverFill', () => {
-        if (hoveredHexagonId !== null) {
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { hover: false }
-          )
-          hoveredHexagonId = null
-        }
-      })
-    }
-  }, [map])
-
   return (
     <>
       <div
@@ -315,7 +252,6 @@ export const Map = ({ urlProjectId }) => {
       )}
       {infoOverlay && (
         <InfoOverlay
-          // numHexagons={numHexagons}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}

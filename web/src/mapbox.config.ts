@@ -14,16 +14,6 @@ export const initializeMapbox = (
       container: containerId,
       projection: 'globe',
       style: 'mapbox://styles/mapbox/satellite-v9',
-      fitBoundsOptions: {
-        padding:
-          mediaSize >= breakpoints.xl
-            ? 24
-            : mediaSize > breakpoints.l
-            ? 12
-            : mediaSize > breakpoints.m
-            ? 6
-            : 2,
-      },
       zoom: 2,
       center: [102, 9],
       bounds,
@@ -34,16 +24,6 @@ export const initializeMapbox = (
     const map = new mapboxgl.Map({
       container: containerId,
       style: 'mapbox://styles/mapbox/dark-v11',
-      fitBoundsOptions: {
-        padding:
-          mediaSize >= breakpoints.xl
-            ? 24
-            : mediaSize > breakpoints.l
-            ? 12
-            : mediaSize > breakpoints.m
-            ? 6
-            : 2,
-      },
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

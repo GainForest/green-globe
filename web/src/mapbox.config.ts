@@ -34,7 +34,16 @@ export const initializeMapbox = (
     const map = new mapboxgl.Map({
       container: containerId,
       style: 'mapbox://styles/mapbox/dark-v11',
-      fitBoundsOptions: { padding: 24 },
+      fitBoundsOptions: {
+        padding:
+          mediaSize >= breakpoints.xl
+            ? 24
+            : mediaSize > breakpoints.l
+            ? 20
+            : mediaSize > breakpoints.m
+            ? 16
+            : 12,
+      },
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

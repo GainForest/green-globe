@@ -1,5 +1,7 @@
 import mapboxgl from 'mapbox-gl'
 
+import { breakpoints } from 'src/constants'
+
 export const initializeMapbox = (
   containerId: string,
   setMap: React.Dispatch<mapboxgl.Map>,

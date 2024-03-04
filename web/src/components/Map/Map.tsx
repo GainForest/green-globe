@@ -73,9 +73,13 @@ export const Map = ({ urlProjectId }) => {
   // Initialize Map
   useEffect(() => {
     if (gainforestCenterpoints) {
-      initializeMapbox('map-container', setMap)
+      initializeMapbox('map-container', setMap, mediaSize)
     }
   }, [gainforestCenterpoints])
+
+  useEffect(() => {
+    console.log(mediaSize)
+  }, [mediaSize])
 
   // Set initial layers on load
   useEffect(() => {

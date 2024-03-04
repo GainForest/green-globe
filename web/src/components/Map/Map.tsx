@@ -68,7 +68,7 @@ export const Map = ({ urlProjectId }) => {
   // Initialize Map
   useEffect(() => {
     if (gainforestCenterpoints) {
-      initializeMapbox('map-container', setMap)
+      initializeMapbox('map-container', setMap, mediaSize)
     }
   }, [gainforestCenterpoints])
 

@@ -80,13 +80,13 @@ export const Map = ({ urlProjectId }) => {
   // Set initial layers on load
   useEffect(() => {
     if (map && gainforestCenterpoints && hexagons) {
-      const onLoad = () => {
+      map.on('load', () => {
         map.setFog({
           color: '#000000', // Lower atmosphere
           'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-          'horizon-blend': 0.02, // Atmosphere thickness
+          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
           'space-color': 'rgb(11, 11, 25)', // Background color
-          'star-intensity': 0.05, // Background star brightness
+          'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
         addAllSourcesAndLayers(map, hexagons, hiveLocations)
         const gainForestMarkers = addClickableMarkers(
@@ -98,28 +98,17 @@ export const Map = ({ urlProjectId }) => {
         )
 
         setMarkers([...gainForestMarkers])
-      }
-
-      const onStyleData = () => {
+      })
+      map.on('styledata', () => {
         map.setFog({
           color: '#000000', // Lower atmosphere
           'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-          'horizon-blend': 0.02, // Atmosphere thickness
+          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
           'space-color': 'rgb(11, 11, 25)', // Background color
-          'star-intensity': 0.05, // Background star brightness
+          'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
         addAllSourcesAndLayers(map, hexagons, hiveLocations)
-      }
-
-      map.on('load', onLoad)
-      map.on('styledata', onStyleData)
-
-      return () => {
-        if (map) {
-          map.off('load', onLoad)
-          map.off('styledata', onStyleData)
-        }
-      }
+      })
     }
   }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
 
@@ -129,30 +118,16 @@ export const Map = ({ urlProjectId }) => {
       // Start the spin
       let isGlobeSpinning = true
       spinGlobe(map, isGlobeSpinning)
-
       // Spin again once the animation is complete
-      const onMoveEnd = () => {
+      map.on('moveend', () => {
         spinGlobe(map, isGlobeSpinning)
-      }
-      map.on('moveend', onMoveEnd)
-
-      const onMouseDown = () => {
+      })
+      map.on('mousedown', () => {
         isGlobeSpinning = false
-      }
-      map.on('mousedown', onMouseDown)
-
-      const onTouchStart = () => {
+      })
+      map.on('touchstart', () => {
         isGlobeSpinning = false
-      }
-      map.on('touchstart', onTouchStart)
-
-      return () => {
-        if (map) {
-          map.off('moveend', onMoveEnd)
-          map.off('mousedown', onMouseDown)
-          map.off('touchstart', onTouchStart)
-        }
-      }
+      })
     }
   }, [map])
 
@@ -223,8 +198,7 @@ export const Map = ({ urlProjectId }) => {
   // Hexagon onclick
   useEffect(() => {
     if (map) {
-      const onClick = (e) => {
-        console.log(e)
+      map.on('click', 'hexagonHoverFill', (e) => {
         const { lat, lng } = e.lngLat
         dispatch(setClickedCoordinates({ lat, lon: lng }))
         dispatch(setInfoOverlay(6))
@@ -245,29 +219,24 @@ export const Map = ({ urlProjectId }) => {
           )
           numHexagons.current = numHexagons.current + 1
         }
-      }
-
-      map.on('click', 'hexagonHoverFill', onClick)
-
-      return () => {
-        if (map) {
-          map.off('click', 'hexagonHoverFill', onClick)
-        }
-      }
+      })
     }
   }, [map])
 
   // Remove layers when you exit the display overlay
   useEffect(() => {
-    if (map) {
-      if (map.getLayer('unclusteredTrees') && !infoOverlay) {
+    if (map && map.getLayer('unclusteredTrees')) {
+      if (!infoOverlay) {
         toggleTreesPlantedLayer(map, 'none')
       }
-      let hoveredTreeId = null
-      const onClickProjectFill = () => {
+    }
+    let hoveredTreeId = null
+    if (map) {
+      map.on('click', 'projectFill', () => {
         toggleTreesPlantedLayer(map, 'visible')
-      }
-      const onMouseMoveUnclusteredTrees = (e) => {
+      })
+      // Remove the on mouse move once you get out of the unclustered trees
+      map.on('mousemove', 'unclusteredTrees', (e) => {
         if (e.features.length > 0) {
           const treeInformation = getTreeInformation(e, activeProjectId)
           setTreeData(treeInformation)
@@ -283,22 +252,15 @@ export const Map = ({ urlProjectId }) => {
             { hover: true }
           )
         }
-      }
-      map.on('click', 'projectFill', onClickProjectFill)
-      map.on('mousemove', 'unclusteredTrees', onMouseMoveUnclusteredTrees)
-      return () => {
-        if (map) {
-          map.off('click', 'projectFill', onClickProjectFill)
-          map.off('mousemove', 'unclusteredTrees', onMouseMoveUnclusteredTrees)
-        }
-      }
+      })
     }
+    // TODO: separate these out
   }, [map, activeProjectId, infoOverlay])
 
   useEffect(() => {
     if (map) {
       let hoveredHexagonId = null
-      const onMouseMoveHexagonHoverFill = (e) => {
+      map.on('mousemove', 'hexagonHoverFill', (e) => {
         if (e.features.length > 0) {
           if (hoveredHexagonId !== null) {
             map.setFeatureState(
@@ -312,8 +274,9 @@ export const Map = ({ urlProjectId }) => {
             { hover: true }
           )
         }
-      }
-      const onMouseLeaveHexagonHoverFill = () => {
+      })
+
+      map.on('mouseleave', 'hexagonHoverFill', () => {
         if (hoveredHexagonId !== null) {
           map.setFeatureState(
             { source: 'hexagons', id: hoveredHexagonId },
@@ -321,19 +284,7 @@ export const Map = ({ urlProjectId }) => {
           )
           hoveredHexagonId = null
         }
-      }
-      map.on('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
-      map.on('mouseleave', 'hexagonHoverFill', onMouseLeaveHexagonHoverFill)
-      return () => {
-        if (map) {
-          map.off('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
-          map.off(
-            'mouseleave',
-            'hexagonHoverFill',
-            onMouseLeaveHexagonHoverFill
-          )
-        }
-      }
+      })
     }
   }, [map])
 

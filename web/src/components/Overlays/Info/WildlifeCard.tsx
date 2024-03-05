@@ -38,7 +38,7 @@ export const WildlifeCard = ({ activeProjectData }) => {
             {photoEndpoints?.map((photo) => (
               <PhotoCard key={photo} photoEndpoint={photo} />
             ))}
-            {photoEndpoints.length === 0 ? (
+            {photoEndpoints?.length === 0 ? (
               <>This organization has not uploaded any photos.</>
             ) : (
               <p>
@@ -60,7 +60,7 @@ export const WildlifeCard = ({ activeProjectData }) => {
             {videoEndpoints?.map((video) => (
               <VideoCard key={video} videoEndpoint={video} />
             ))}
-            {videoEndpoints.length === 0 ? (
+            {videoEndpoints?.length === 0 ? (
               <>This organization has not uploaded any videos.</>
             ) : (
               <p>

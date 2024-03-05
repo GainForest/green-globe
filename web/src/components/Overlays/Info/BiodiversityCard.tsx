@@ -230,12 +230,10 @@ export const BiodiversityCard = ({ activeProjectData }) => {
             <a
               style={{
                 fontSize: 10,
-                textDecoration: 'none',
-                color: '#808080',
               }}
               href="https://mol.org/"
             >
-              Data provided by MoL
+              Map of Life
             </a>
           </div>
         ) : (
@@ -358,7 +356,7 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
           {species.common}
         </p>
         <i style={{ fontSize: '0.75rem' }}>{species.scientificname}</i>
-        {/* <RedlistStatus redlist={species.redlist} /> */}
+        <RedlistStatus redlist={species.redlist} />
       </div>
     </div>
   )

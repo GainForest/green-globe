@@ -68,6 +68,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
             .then((response) => response.json())
             .then((json) => {
               const speciesCount = {}
+              let total = 0
               const similarityThreshold = 3
               json.features.map((tree) => {
                 let species =
@@ -98,16 +99,6 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                       project.id,
                       treeID
                     )
-
-                    // fetch(imageUrl, { method: 'HEAD' })
-                    //   .then((response) => {
-                    //     if (!response.ok) {
-                    //       imageUrl = `{process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
-                    //     }
-                    //   })
-                    //   .catch(() => {
-                    //     imageUrl = `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
-                    //   })
 
                     speciesCount[species] = {
                       name: species,
@@ -156,6 +147,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                     }
                   }
                 }
+                total += 1
               })
 
               const speciesArray = Object.keys(speciesCount).map((species) => ({
@@ -170,7 +162,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
               }))
               setMeasuredData([
                 ...measuredData,
-                { title: 'Trees', species: speciesArray },
+                { title: 'Trees', species: speciesArray, total },
               ])
             })
           return setBiodiversity(biodiversity)
@@ -294,6 +286,10 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
         <>
           {measuredData.map((group) => (
             <div key={group.title}>
+              <p>
+                {' '}
+                Total {group.title.toLowerCase()}: {group.total}
+              </p>
               <h3>{group.title}</h3>
               {group.species.map((species) => (
                 <div key={species.name}>

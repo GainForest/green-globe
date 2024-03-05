@@ -269,7 +269,7 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.name}>
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
-                {/* <RedlistStatus redlist={s.redlist} /> */}
+                <RedlistStatus redlist={species.redlist} />
               </div>
             ))}
           </div>

@@ -85,7 +85,7 @@ export const CommunityCard = ({ activeProjectData }) => {
                 }
                 const profileSrc =
                   d.profileUrl ||
-                  `https://avatars.dicebear.com/api/initials/${fullName
+                  `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
                     .toLowerCase()
                     .replace(' ', '-')}.svg`
                 return (

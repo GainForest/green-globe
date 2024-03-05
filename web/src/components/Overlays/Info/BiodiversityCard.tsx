@@ -227,6 +227,16 @@ export const BiodiversityCard = ({ activeProjectData }) => {
               Predicted distribution of species habitats within 150km of the
               project area.
             </p>
+            <a
+              style={{
+                fontSize: 10,
+                textDecoration: 'none',
+                color: '#808080',
+              }}
+              href="https://mol.org/"
+            >
+              Data provided by MoL
+            </a>
           </div>
         ) : (
           <div>

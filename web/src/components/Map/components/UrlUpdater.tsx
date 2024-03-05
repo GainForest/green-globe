@@ -9,13 +9,11 @@ const UrlUpdater = ({ urlProjectId }) => {
 
   useEffect(() => {
     if (infoOverlay != null) {
-      // Assuming `infoOverlay` is null or undefined by default
-      // Update the URL without navigating
       navigate(`/${urlProjectId}/${infoOverlay}`, { replace: true })
     }
   }, [infoOverlay, urlProjectId])
 
-  return null // This component does not render anything
+  return null
 }
 
 export default UrlUpdater

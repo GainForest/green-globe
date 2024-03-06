@@ -42,7 +42,7 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [__, setMarkers] = useState([])
+  const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
@@ -79,7 +79,7 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
+        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -98,7 +98,7 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
+        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
       })
     }
   }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
@@ -140,7 +140,23 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
         setActiveProjectMosaic(projectMosaic)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
       }
-      fetchHiveLocations(setHiveLocations)
+      if (
+        activeProjectId ==
+          '7f7b643aca10dae0c71afc9910b3f67bff441504d97e0d90a12c40db5d2d02c1' &&
+        !hiveLocations
+      ) {
+        fetchHiveLocations(setHiveLocations)
+      } else {
+        const nonHiveMarkers = markers.filter((marker) => {
+          if (marker._element.className.includes('hive')) {
+            marker.remove()
+            return false
+          }
+          return true
+        })
+        setMarkers(nonHiveMarkers)
+        setHiveLocations(null)
+      }
       fetchData().catch(console.error)
     }
   }, [activeProjectId])

@@ -11,7 +11,7 @@ const UrlUpdater = ({ urlProjectId }) => {
     if (infoOverlay != null) {
       navigate(`/${urlProjectId}/${infoOverlay}`, { replace: true })
     }
-  }, [infoOverlay, urlProjectId])
+  }, [infoOverlay])
 
   return null
 }

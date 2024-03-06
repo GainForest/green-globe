@@ -34,7 +34,8 @@ import {
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
   hexagons,
-  hiveLocations
+  hiveLocations,
+  setMarkers
 ) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -44,14 +45,19 @@ export const addAllSourcesAndLayers = (
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
   addOrthomosaicSourceAndLayer(map)
-  addHiveSourceAndLayers(map, hiveLocations)
+  addHiveSourceAndLayers(map, hiveLocations, setMarkers)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
 
-export const addHiveSourceAndLayers = (map: mapboxgl.Map, hiveLocations) => {
+export const addHiveSourceAndLayers = (
+  map: mapboxgl.Map,
+  hiveLocations,
+  setMarkers
+) => {
   if (hiveLocations) {
-    addMarkers(map, hiveLocations, 'hive')
+    const newMarkers = addMarkers(map, hiveLocations, 'hive')
+    setMarkers((markers) => [...markers, ...newMarkers])
   }
 }
 

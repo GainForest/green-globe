@@ -15,21 +15,12 @@ export const WildlifeCard = ({ activeProjectData }) => {
         d.classification.includes('Community Photos')) &&
       d.awsCID.includes('.jpg')
   )
-  const photoEndpoints = photos.map((photo) => photo.awsCID)
+  const photoEndpoints = photos?.map((photo) => photo.awsCID)
   const videos = activeProjectData?.project?.assets?.filter(
     (d) =>
       d.classification.includes('Camera Traps') && d.awsCID.includes('.mp4')
   )
-  const videoEndpoints = videos.map((video) => video.awsCID || '')
-
-  useEffect(() => {
-    console.log(
-      activeProjectData?.project?.assets.filter((d) =>
-        d.awsCID.includes('.jpg')
-      )
-    )
-    console.log(photos)
-  }, [activeProjectData, photos])
+  const videoEndpoints = videos?.map((video) => video.awsCID || '')
 
   return (
     <InfoBox>
@@ -44,10 +35,10 @@ export const WildlifeCard = ({ activeProjectData }) => {
         <div style={{ height: '24px', width: '100%' }} />
         {toggle == 'Photos' && (
           <>
-            {photoEndpoints.map((photo) => (
+            {photoEndpoints?.map((photo) => (
               <PhotoCard key={photo} photoEndpoint={photo} />
             ))}
-            {photoEndpoints.length === 0 ? (
+            {photoEndpoints?.length === 0 ? (
               <>This organization has not uploaded any photos.</>
             ) : (
               <p>
@@ -66,10 +57,10 @@ export const WildlifeCard = ({ activeProjectData }) => {
         )}
         {toggle == 'Videos' && (
           <>
-            {videoEndpoints.map((video) => (
+            {videoEndpoints?.map((video) => (
               <VideoCard key={video} videoEndpoint={video} />
             ))}
-            {videoEndpoints.length === 0 ? (
+            {videoEndpoints?.length === 0 ? (
               <>This organization has not uploaded any videos.</>
             ) : (
               <p>

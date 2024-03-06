@@ -20,6 +20,7 @@ import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
+import UrlUpdater from './components/UrlUpdater'
 import {
   fetchProjectInfo,
   fetchTreeShapefile,
@@ -38,10 +39,9 @@ import {
   toggleTreesPlantedLayer,
 } from './maputils'
 
-export const Map = ({ urlProjectId }) => {
+export const Map = ({ urlProjectId, initialOverlay }) => {
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-
   const [map, setMap] = useState<mapboxgl.Map>()
   const [__, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
@@ -156,6 +156,13 @@ export const Map = ({ urlProjectId }) => {
       fetchData().catch(console.error)
     }
   }, [activeProjectId])
+
+  useEffect(() => {
+    if (initialOverlay) {
+      const overlayValue = parseInt(initialOverlay, 10)
+      dispatch(setInfoOverlay(overlayValue))
+    }
+  }, [initialOverlay, dispatch])
 
   // If the active project changes
   // Display project boundaries, the overlay, and the trees planted
@@ -312,12 +319,15 @@ export const Map = ({ urlProjectId }) => {
         <TreeInfoBox treeData={treeData} setTreeData={setTreeData} />
       )}
       {infoOverlay && (
-        <InfoOverlay
-          numHexagons={numHexagons}
-          activeProjectData={activeProjectData}
-          activeProjectPolygon={activeProjectPolygon}
-          setActiveProjectPolygon={setActiveProjectPolygon}
-        />
+        <>
+          <UrlUpdater urlProjectId={urlProjectId} />
+          <InfoOverlay
+            numHexagons={numHexagons}
+            activeProjectData={activeProjectData}
+            activeProjectPolygon={activeProjectPolygon}
+            setActiveProjectPolygon={setActiveProjectPolygon}
+          />
+        </>
       )}
       {/* <ProjectSeriesPickerOverlay
         map={map}

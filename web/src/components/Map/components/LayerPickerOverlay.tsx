@@ -21,9 +21,11 @@ export const LayerPickerOverlay = ({
   activeProjectPolygon,
   activeProjectMosaic,
   mediaSize,
+  expand,
 }) => {
   const { theme } = useThemeUI()
 
+  if (!expand) return null
   return (
     <div
       style={{
@@ -54,7 +56,7 @@ export const LayerPickerOverlay = ({
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
         bottom: 36,
-        right: 8,
+        right: 100,
         borderRadius: '8px',
         padding: '16px 8px 8px 8px',
       }}
@@ -323,7 +325,7 @@ const SatelliteLayerBox = ({ map, mediaSize }) => {
   )
 }
 
-const LayerPickerButton = styled.img`
+export const LayerPickerButton = styled.img`
   display: block;
   margin: 0 auto;
   cursor: pointer;

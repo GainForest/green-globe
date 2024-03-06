@@ -18,6 +18,7 @@ import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
+import LayerToggle from './components/LayerToggle'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import {
@@ -52,6 +53,7 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
+  const [expand, setExpand] = useState(false)
   const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
   const [mediaSize, setMediaSize] = useState(window.innerWidth)
@@ -383,7 +385,9 @@ export const Map = ({ urlProjectId }) => {
         activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
         mediaSize={mediaSize}
+        expand={expand}
       />
+      <LayerToggle setExpand={setExpand} />
       <TimeSlider map={map} />
     </>
   )

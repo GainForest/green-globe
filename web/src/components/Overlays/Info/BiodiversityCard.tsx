@@ -232,8 +232,8 @@ export const BiodiversityCard = ({ activeProjectData }) => {
           <div>
             <h2>Measured Biodiversity</h2>
             <p>
-              Species that have been measured in the area of the organization
-              (not site-specific).
+              Species that have been measured for all the sites in this
+              organization.
             </p>
           </div>
         )}

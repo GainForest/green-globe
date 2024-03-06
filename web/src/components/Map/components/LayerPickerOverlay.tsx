@@ -19,8 +19,11 @@ export const LayerPickerOverlay = ({
   map,
   activeProjectPolygon,
   activeProjectMosaic,
+  expandLayers,
 }) => {
   const { theme } = useThemeUI()
+
+  if (!expandLayers) return null
 
   return (
     <div
@@ -34,7 +37,7 @@ export const LayerPickerOverlay = ({
         backgroundColor: theme.colors.background as string,
         position: 'absolute',
         bottom: 36,
-        right: 8,
+        right: 100,
         borderRadius: '8px',
         padding: '16px 8px 8px 8px',
       }}

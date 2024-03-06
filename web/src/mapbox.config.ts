@@ -160,6 +160,11 @@ export const projectSource = (geoJson) => ({
   data: geoJson,
 })
 
+export const allSitesSource = (geoJson) => ({
+  type: 'geojson',
+  data: geoJson,
+})
+
 export const verraSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,

@@ -68,10 +68,6 @@ export const Map = ({ urlProjectId, mediaSize }) => {
     }
   }, [gainforestCenterpoints])
 
-  useEffect(() => {
-    console.log(mediaSize)
-  }, [mediaSize])
-
   // Set initial layers on load
   useEffect(() => {
     if (map && gainforestCenterpoints && hexagons) {
@@ -374,6 +370,7 @@ export const Map = ({ urlProjectId, mediaSize }) => {
         map={map}
         activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
+        mediaSize={mediaSize}
       />
       <TimeSlider map={map} />
     </>

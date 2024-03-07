@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
+import { breakpoints } from 'src/constants'
 import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
 
 import {
@@ -19,6 +20,7 @@ export const LayerPickerOverlay = ({
   map,
   activeProjectPolygon,
   activeProjectMosaic,
+  mediaSize,
 }) => {
   const { theme } = useThemeUI()
   const [expandLayers, setExpandLayers] = useState(false)
@@ -26,19 +28,19 @@ export const LayerPickerOverlay = ({
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleMouseEnter = () => {
-    clearTimeout(timeoutRef.current)
-    setExpandLayers(true)
+    if (mediaSize >= breakpoints.m) {
+      clearTimeout(timeoutRef.current)
+      setExpandLayers(true)
+    }
   }
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setExpandLayers(false)
-    }, 1000)
+    if (mediaSize >= breakpoints.m) {
+      timeoutRef.current = setTimeout(() => {
+        setExpandLayers(false)
+      }, 1000)
+    }
   }
-
-  useEffect(() => {
-    console.log(expandLayers)
-  }, [expandLayers])
 
   return (
     <div>
@@ -85,7 +87,7 @@ export const LayerPickerOverlay = ({
       >
         <div style={{ display: 'block' }}>
           <button
-            onClick={() => setExpandLayers((prev) => !prev)}
+            onClick={() => setExpandLayers((layers) => !layers)}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             style={{

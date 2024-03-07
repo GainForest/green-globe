@@ -21,7 +21,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
           position: 'absolute',
           top: 160,
           right: 8,
-          borderRadius: treeData.treePhotos[0].endsWith('taxa_plants.png')
+          borderRadius: treeData.treePhotos[0]?.endsWith('taxa_plants.png')
             ? '8px'
             : '8px 8px 0 0 ',
           padding: '8px',
@@ -91,7 +91,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
           />
         </div>
       </div>
-      {!treeData.treePhotos[0].endsWith('taxa_plants.png') && (
+      {!treeData.treePhotos[0]?.endsWith('taxa_plants.png') && (
         <div>
           <img
             style={{
@@ -102,9 +102,9 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
               borderRadius: '0px 0px 8px 8px',
             }}
             alt={treeData.name}
-            src={treeData.treePhotos[photoIndex]}
+            src={treeData.treePhotos?.photoIndex}
           />
-          {treeData.treePhotos.length > 1 && (
+          {treeData.treePhotos?.length > 1 && (
             <div>
               <button
                 style={{
@@ -120,7 +120,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                 onClick={() =>
                   setPhotoIndex((photoIndex) =>
                     photoIndex === 0
-                      ? treeData.treePhotos.length - 1
+                      ? treeData.treePhotos?.length - 1
                       : photoIndex - 1
                   )
                 }
@@ -140,7 +140,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                 }}
                 onClick={() =>
                   setPhotoIndex((photoIndex) =>
-                    photoIndex === treeData.treePhotos.length - 1
+                    photoIndex === treeData.treePhotos?.length - 1
                       ? 0
                       : photoIndex + 1
                   )

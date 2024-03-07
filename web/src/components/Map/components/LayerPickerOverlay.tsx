@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
-import { breakpoints } from 'src/constants'
 import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
 
 import {
@@ -20,64 +19,110 @@ export const LayerPickerOverlay = ({
   map,
   activeProjectPolygon,
   activeProjectMosaic,
-  mediaSize,
-  expand,
 }) => {
   const { theme } = useThemeUI()
+  const [expandLayers, setExpandLayers] = useState(false)
 
-  if (!expand) return null
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleMouseEnter = () => {
+    clearTimeout(timeoutRef.current)
+    setExpandLayers(true)
+  }
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setExpandLayers(false)
+    }, 1000)
+  }
+
+  useEffect(() => {
+    console.log(expandLayers)
+  }, [expandLayers])
+
   return (
-    <div
-      style={{
-        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-        cursor: 'pointer',
-        display: 'flex',
-        justifyContent: 'space-around',
-        width:
-          mediaSize >= breakpoints.xl
-            ? '250px'
-            : mediaSize > breakpoints.l
-            ? '230px'
-            : mediaSize > breakpoints.m
-            ? '210px'
-            : mediaSize > breakpoints.s
-            ? '190px'
-            : '160px',
-        height:
-          mediaSize >= breakpoints.xl
-            ? '100px'
-            : mediaSize > breakpoints.l
-            ? '92px'
-            : mediaSize > breakpoints.m
-            ? '86px'
-            : mediaSize > breakpoints.s
-            ? '78px'
-            : '72px',
-        backgroundColor: theme.colors.background as string,
-        position: 'absolute',
-        bottom: 36,
-        right: 100,
-        borderRadius: '8px',
-        padding: '16px 8px 8px 8px',
-      }}
-    >
-      <SatelliteLayerBox map={map} mediaSize={mediaSize} />
-      <OrthomosaicToggle
-        map={map}
-        activeProjectMosaic={activeProjectMosaic}
-        mediaSize={mediaSize}
-      />
-      <LandCoverBox
-        map={map}
-        activeProjectPolygon={activeProjectPolygon}
-        mediaSize={mediaSize}
-      />
-      <TreeCoverBox map={map} mediaSize={mediaSize} />
+    <div>
+      {expandLayers && (
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-around',
+            width: '250px',
+            height: '100px',
+            backgroundColor: theme.colors.background as string,
+            position: 'absolute',
+            bottom: 36,
+            right: 100,
+            borderRadius: '8px',
+            padding: '16px 8px 8px 8px',
+          }}
+        >
+          <SatelliteLayerBox map={map} />
+          <OrthomosaicToggle
+            map={map}
+            activeProjectMosaic={activeProjectMosaic}
+          />
+          <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
+          <TreeCoverBox map={map} />
+        </div>
+      )}
+      <div
+        style={{
+          cursor: 'pointer',
+          display: 'flex',
+          width: '60px',
+          height: '60px',
+          position: 'absolute',
+          bottom: 56,
+          right: 20,
+          borderRadius: '8px',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ display: 'block' }}>
+          <button
+            onClick={() => setExpandLayers((prev) => !prev)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              width: '60px',
+              height: '60px',
+              background: `url(/satellite.png) no-repeat center center`,
+              border: '2px solid black',
+              padding: 0,
+              color: 'white',
+              fontSize: '12px',
+              textShadow:
+                '1px 1px 1px black, -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black',
+              cursor: 'pointer',
+              overflow: 'hidden',
+              borderRadius: '4px',
+            }}
+          >
+            <img
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                borderRadius: '4px',
+                objectFit: 'cover',
+                backgroundSize: 'cover',
+              }}
+              src="/satellite.png"
+              alt="layers"
+            />
+            Layers
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
 
-const OrthomosaicToggle = ({ map, activeProjectMosaic, mediaSize }) => {
+const OrthomosaicToggle = ({ map, activeProjectMosaic }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
   const imageSrc = 'orthomosaic.png'
@@ -86,16 +131,7 @@ const OrthomosaicToggle = ({ map, activeProjectMosaic, mediaSize }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        margin:
-          mediaSize >= breakpoints.xl
-            ? '0px 8px'
-            : mediaSize > breakpoints.l
-            ? '0px 6px'
-            : mediaSize > breakpoints.m
-            ? '0px 4px'
-            : mediaSize > breakpoints.s
-            ? '0px 2px'
-            : '0px',
+        margin: '0px 8px',
         textAlign: 'center',
       }}
     >
@@ -121,7 +157,7 @@ const OrthomosaicToggle = ({ map, activeProjectMosaic, mediaSize }) => {
   ) : null
 }
 
-const PotentialTreeCoverBox = ({ map, mediaSize }) => {
+const PotentialTreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const imageSrc = '/potentialTreeCoverDark.png'
@@ -131,16 +167,7 @@ const PotentialTreeCoverBox = ({ map, mediaSize }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        margin:
-          mediaSize >= breakpoints.xl
-            ? '0px 8px'
-            : mediaSize > breakpoints.l
-            ? '0px 6px'
-            : mediaSize > breakpoints.m
-            ? '0px 4px'
-            : mediaSize > breakpoints.s
-            ? '0px 2px'
-            : '0px',
+        margin: '0px 8px',
         textAlign: 'center',
       }}
     >
@@ -172,7 +199,7 @@ const PotentialTreeCoverBox = ({ map, mediaSize }) => {
   )
 }
 
-const TreeCoverBox = ({ map, mediaSize }) => {
+const TreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const imageSrc = 'treeCoverDark.png'
@@ -182,16 +209,7 @@ const TreeCoverBox = ({ map, mediaSize }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        margin:
-          mediaSize >= breakpoints.xl
-            ? '0px 8px'
-            : mediaSize > breakpoints.l
-            ? '0px 6px'
-            : mediaSize > breakpoints.m
-            ? '0px 4px'
-            : mediaSize > breakpoints.s
-            ? '0px 2px'
-            : '0px',
+        margin: '0px 8px',
         textAlign: 'center',
       }}
     >
@@ -223,7 +241,7 @@ const TreeCoverBox = ({ map, mediaSize }) => {
   )
 }
 
-const LandCoverBox = ({ map, activeProjectPolygon, mediaSize }) => {
+const LandCoverBox = ({ map, activeProjectPolygon }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const imageSrc = 'landCover.png'
 
@@ -232,16 +250,7 @@ const LandCoverBox = ({ map, activeProjectPolygon, mediaSize }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        margin:
-          mediaSize >= breakpoints.xl
-            ? '0px 8px'
-            : mediaSize > breakpoints.l
-            ? '0px 6px'
-            : mediaSize > breakpoints.m
-            ? '0px 4px'
-            : mediaSize > breakpoints.s
-            ? '0px 2px'
-            : '0px',
+        margin: '0px 8px',
         textAlign: 'center',
       }}
     >
@@ -274,7 +283,7 @@ const LandCoverBox = ({ map, activeProjectPolygon, mediaSize }) => {
   )
 }
 
-const SatelliteLayerBox = ({ map, mediaSize }) => {
+const SatelliteLayerBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const dispatch = useDispatch()
 
@@ -283,20 +292,12 @@ const SatelliteLayerBox = ({ map, mediaSize }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        margin:
-          mediaSize >= breakpoints.xl
-            ? '0px 8px'
-            : mediaSize > breakpoints.l
-            ? '0px 6px'
-            : mediaSize > breakpoints.m
-            ? '0px 4px'
-            : mediaSize > breakpoints.s
-            ? '0px 2px'
-            : '0px',
+        margin: '0px 8px',
         textAlign: 'center',
       }}
     >
       <LayerPickerButton
+        objectFit="fill"
         src="/satellite.png"
         alt="toggle satellite layer"
         onClick={() => {
@@ -325,31 +326,13 @@ const SatelliteLayerBox = ({ map, mediaSize }) => {
   )
 }
 
-export const LayerPickerButton = styled.img`
+const LayerPickerButton = styled.img`
   display: block;
   margin: 0 auto;
   cursor: pointer;
-  width: ${({ mediaSize }) =>
-    mediaSize >= breakpoints.xl
-      ? '40px'
-      : mediaSize > breakpoints.l
-      ? '38px'
-      : mediaSize > breakpoints.m
-      ? '36px'
-      : mediaSize > breakpoints.s
-      ? '34px'
-      : '32px'};
-  height: ${({ mediaSize }) =>
-    mediaSize >= breakpoints.xl
-      ? '40px'
-      : mediaSize > breakpoints.l
-      ? '38px'
-      : mediaSize > breakpoints.m
-      ? '36px'
-      : mediaSize > breakpoints.s
-      ? '34px'
-      : '32px'};
+  width: 40px;
   object-fit: cover;
+  height: 40px;
   background-size: cover;
   border-radius: 4px;
   :hover {

@@ -17,7 +17,7 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
             ? 220
             : mediaSize > breakpoints.s
             ? 170
-            : 120,
+            : 130,
         bottom:
           mediaSize >= breakpoints.xl
             ? 546
@@ -27,7 +27,7 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
             ? 386
             : mediaSize > breakpoints.s
             ? 306
-            : 226,
+            : 246,
         height:
           mediaSize >= breakpoints.xl
             ? '36px'

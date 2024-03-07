@@ -384,8 +384,6 @@ export const Map = ({ urlProjectId }) => {
         map={map}
         activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
-        mediaSize={mediaSize}
-        expand={expand}
       />
       <LayerToggle setExpand={setExpand} />
       <TimeSlider map={map} />

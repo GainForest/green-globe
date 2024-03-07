@@ -46,9 +46,9 @@ export const InfoOverlayButton = ({
         : '44px'};
     bottom: ${({ mediaSize }) =>
       mediaSize < breakpoints.s
-        ? '290px'
+        ? '285px'
         : mediaSize < breakpoints.m
-        ? '370px'
+        ? '365px'
         : mediaSize < breakpoints.l
         ? '450px'
         : mediaSize < breakpoints.xl
@@ -59,12 +59,12 @@ export const InfoOverlayButton = ({
       `${
         position *
           (mediaSize < breakpoints.s
-            ? 32
+            ? 28
             : mediaSize < breakpoints.m
             ? 36
             : mediaSize < breakpoints.l
-            ? 48
-            : 54) -
+            ? 44
+            : 52) -
         (mediaSize < breakpoints.s
           ? 24
           : mediaSize < breakpoints.m
@@ -91,13 +91,23 @@ export const InfoOverlayButton = ({
       <span
         className="material-icons-round"
         style={{
-          fontSize: '24px',
+          fontSize:
+            mediaSize < breakpoints.s
+              ? '20px'
+              : mediaSize < breakpoints.m
+              ? '21px'
+              : mediaSize < breakpoints.l
+              ? '22px'
+              : mediaSize < breakpoints.xl
+              ? '23px'
+              : '24px',
+
           color: active ? '#ffffff' : '#000000',
           lineHeight:
             mediaSize < breakpoints.s
-              ? '28px'
+              ? '26px'
               : mediaSize < breakpoints.m
-              ? '36px'
+              ? '34px'
               : mediaSize < breakpoints.l
               ? '40px'
               : mediaSize < breakpoints.xl

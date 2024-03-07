@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
-export const TimeSlider = ({ map }) => {
+export const TimeSlider = ({ map, mediaSize }) => {
   const minDate = dayjs('2020-09-01')
   const maxDate = dayjs().subtract(6, 'week').set('date', 1)
   const monthsBetween = maxDate.diff(minDate, 'month')
@@ -57,7 +57,7 @@ export const TimeSlider = ({ map }) => {
           height: '68px',
           padding: '8px',
           bottom: 36,
-          left: 8,
+          left: mediaSize / 3,
         }}
       >
         <input

@@ -372,7 +372,7 @@ export const Map = ({ urlProjectId, mediaSize }) => {
         activeProjectMosaic={activeProjectMosaic}
         mediaSize={mediaSize}
       />
-      <TimeSlider map={map} />
+      <TimeSlider map={map} mediaSize={mediaSize} />
     </>
   )
 }

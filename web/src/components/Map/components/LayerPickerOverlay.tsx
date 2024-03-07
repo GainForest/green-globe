@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -24,6 +24,10 @@ export const LayerPickerOverlay = ({
 }) => {
   const { theme } = useThemeUI()
   const [expandLayers, setExpandLayers] = useState(false)
+  const [satellite, setSatellite] = useState(false)
+  const [landCover, setLandCover] = useState(false)
+  const [orthomosaic, setOrthoMosaic] = useState(false)
+  const [treeCover, setTreeCover] = useState(false)
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -63,13 +67,28 @@ export const LayerPickerOverlay = ({
             padding: '16px 8px 8px 8px',
           }}
         >
-          <SatelliteLayerBox map={map} />
+          <SatelliteLayerBox
+            map={map}
+            satellite={satellite}
+            setSatellite={setSatellite}
+          />
           <OrthomosaicToggle
             map={map}
             activeProjectMosaic={activeProjectMosaic}
+            orthomosaic={orthomosaic}
+            setOrthomosaic={setOrthoMosaic}
           />
-          <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
-          <TreeCoverBox map={map} />
+          <LandCoverBox
+            map={map}
+            landCover={landCover}
+            setLandCover={setLandCover}
+            activeProjectPolygon={activeProjectPolygon}
+          />
+          <TreeCoverBox
+            treeCover={treeCover}
+            setTreeCover={setTreeCover}
+            map={map}
+          />
         </div>
       )}
       <div
@@ -124,10 +143,13 @@ export const LayerPickerOverlay = ({
   )
 }
 
-const OrthomosaicToggle = ({ map, activeProjectMosaic }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(true)
-
-  const imageSrc = 'orthomosaic.png'
+const OrthomosaicToggle = ({
+  map,
+  activeProjectMosaic,
+  orthomosaic,
+  setOrthomosaic,
+}) => {
+  const imageSrc = '/orthomosaic.png'
   return activeProjectMosaic?.length > 0 ? (
     <div
       style={{
@@ -141,70 +163,68 @@ const OrthomosaicToggle = ({ map, activeProjectMosaic }) => {
         type="image"
         src={imageSrc}
         alt="toggle light/dark layer"
-        active={isVisible}
+        active={orthomosaic}
         onClick={() => {
-          if (!isVisible) {
+          if (!orthomosaic) {
             toggleOrthomosaic(map, 'visible')
             toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(true)
+            setOrthomosaic(true)
           } else {
             toggleOrthomosaic(map, 'none')
             toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(false)
+            setOrthomosaic(false)
           }
         }}
       />
-      <p style={{ fontSize: '10px' }}>drone {isVisible ? 'on' : 'off'}</p>
+      <p style={{ fontSize: '10px' }}>drone {orthomosaic ? 'on' : 'off'}</p>
     </div>
   ) : null
 }
 
-const PotentialTreeCoverBox = ({ map }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+// const PotentialTreeCoverBox = ({ map }) => {
+//   const [isVisible, setIsVisible] = useState<boolean>(false)
 
-  const imageSrc = '/potentialTreeCoverDark.png'
+//   const imageSrc = '/potentialTreeCoverDark.png'
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0px 8px',
-        textAlign: 'center',
-      }}
-    >
-      <LayerPickerButton
-        type="image"
-        src={imageSrc}
-        alt="toggle potential tree cover"
-        onClick={() => {
-          if (!isVisible) {
-            togglePotentialTreeCoverLayer(map, 'visible')
-            toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(true)
-          } else {
-            togglePotentialTreeCoverLayer(map, 'none')
-            toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(false)
-          }
-        }}
-      />
-      <p
-        style={{
-          fontSize: '10px',
-          width: '48px',
-        }}
-      >
-        potential tree cover {isVisible ? 'on' : 'off'}
-      </p>
-    </div>
-  )
-}
+//   return (
+//     <div
+//       style={{
+//         display: 'flex',
+//         flexDirection: 'column',
+//         margin: '0px 8px',
+//         textAlign: 'center',
+//       }}
+//     >
+//       <LayerPickerButton
+//         type="image"
+//         src={imageSrc}
+//         alt="toggle potential tree cover"
+//         onClick={() => {
+//           if (!isVisible) {
+//             togglePotentialTreeCoverLayer(map, 'visible')
+//             toggleTreesPlantedLayer(map, 'visible')
+//             setIsVisible(true)
+//           } else {
+//             togglePotentialTreeCoverLayer(map, 'none')
+//             toggleTreesPlantedLayer(map, 'visible')
+//             setIsVisible(false)
+//           }
+//         }}
+//       />
+//       <p
+//         style={{
+//           fontSize: '10px',
+//           width: '48px',
+//         }}
+//       >
+//         potential tree cover {isVisible ? 'on' : 'off'}
+//       </p>
+//     </div>
+//   )
+// }
 
-const TreeCoverBox = ({ map }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false)
-
-  const imageSrc = 'treeCoverDark.png'
+const TreeCoverBox = ({ map, treeCover, setTreeCover }) => {
+  const imageSrc = '/treeCoverDark.png'
 
   return (
     <div
@@ -220,14 +240,14 @@ const TreeCoverBox = ({ map }) => {
         src={imageSrc}
         alt="toggle light/dark layer"
         onClick={() => {
-          if (!isVisible) {
+          if (!treeCover) {
             toggleTreeCoverLayer(map, 'visible')
             toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(true)
+            setTreeCover(true)
           } else {
             toggleTreeCoverLayer(map, 'none')
             toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(false)
+            setTreeCover(false)
           }
         }}
       />
@@ -237,15 +257,19 @@ const TreeCoverBox = ({ map }) => {
           width: '48px',
         }}
       >
-        tree cover {isVisible ? 'on' : 'off'}
+        tree cover {treeCover ? 'on' : 'off'}
       </p>
     </div>
   )
 }
 
-const LandCoverBox = ({ map, activeProjectPolygon }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false)
-  const imageSrc = 'landCover.png'
+const LandCoverBox = ({
+  map,
+  activeProjectPolygon,
+  landCover,
+  setLandCover,
+}) => {
+  const imageSrc = '/landCover.png'
 
   return (
     <div
@@ -261,15 +285,15 @@ const LandCoverBox = ({ map, activeProjectPolygon }) => {
         src={imageSrc}
         alt="toggle land cover layer display"
         onClick={() => {
-          if (!isVisible) {
+          if (!landCover) {
             toggleLandCoverLayer(map, 'visible')
             toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(true)
+            setLandCover(true)
             map.getSource('project').setData(activeProjectPolygon)
           } else {
             toggleLandCoverLayer(map, 'none')
             toggleTreesPlantedLayer(map, 'visible')
-            setIsVisible(false)
+            setLandCover(false)
           }
         }}
       />
@@ -279,14 +303,13 @@ const LandCoverBox = ({ map, activeProjectPolygon }) => {
           width: '48px',
         }}
       >
-        land cover {isVisible ? 'on' : 'off'}
+        land cover {landCover ? 'on' : 'off'}
       </p>
     </div>
   )
 }
 
-const SatelliteLayerBox = ({ map }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+const SatelliteLayerBox = ({ map, satellite, setSatellite }) => {
   const dispatch = useDispatch()
 
   return (
@@ -303,15 +326,15 @@ const SatelliteLayerBox = ({ map }) => {
         src="/satellite.png"
         alt="toggle satellite layer"
         onClick={() => {
-          if (!isVisible) {
+          if (!satellite) {
             map.setStyle(`mapbox://styles/mapbox/dark-v11`)
             togglePotentialTreeCoverLayer(map, 'visible')
-            setIsVisible(true)
+            setSatellite(true)
             dispatch(setDisplaySatelliteHistory(true))
           } else {
             map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
             togglePotentialTreeCoverLayer(map, 'visible')
-            setIsVisible(false)
+            setSatellite(false)
             dispatch(setDisplaySatelliteHistory(false))
           }
         }}
@@ -322,7 +345,7 @@ const SatelliteLayerBox = ({ map }) => {
           width: '48px',
         }}
       >
-        satellite history {isVisible ? 'on' : 'off'}
+        satellite history {satellite ? 'on' : 'off'}
       </p>
     </div>
   )

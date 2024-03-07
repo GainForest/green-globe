@@ -18,7 +18,6 @@ import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
-import LayerToggle from './components/LayerToggle'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import {
@@ -38,7 +37,7 @@ import {
   toggleTreesPlantedLayer,
 } from './maputils'
 
-export const Map = ({ urlProjectId }) => {
+export const Map = ({ urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
 
@@ -53,18 +52,8 @@ export const Map = ({ urlProjectId }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
-  const [expand, setExpand] = useState(false)
   const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
-  const [mediaSize, setMediaSize] = useState(window.innerWidth)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setMediaSize(window.innerWidth)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
@@ -356,6 +345,7 @@ export const Map = ({ urlProjectId }) => {
           map={map}
           setActiveProject={setActiveProjectId}
           allCenterpoints={gainforestCenterpoints}
+          mediaSize={mediaSize}
         />
       )}
       {/* <BackToGlobe map={map} /> */}
@@ -385,7 +375,6 @@ export const Map = ({ urlProjectId }) => {
         activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
       />
-      <LayerToggle setExpand={setExpand} />
       <TimeSlider map={map} />
     </>
   )

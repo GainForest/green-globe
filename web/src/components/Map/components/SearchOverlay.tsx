@@ -3,15 +3,24 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
+import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
+export const SearchOverlay = ({
+  map,
+  setActiveProject,
+  allCenterpoints,
+  mediaSize,
+}) => {
   const { theme } = useThemeUI()
   const allProjects = allCenterpoints?.features?.map((d) => d.properties)
   const [filteredProjects, setFilteredProjects] =
     useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
   const [searchInput, setSearchInput] = useState<string>()
+  const [showSearchBar, setShowSearchBar] = useState<boolean>(
+    mediaSize < breakpoints.m ? false : true
+  )
 
   useEffect(() => {
     if (!allProjects || !allProjects.length) {
@@ -48,20 +57,45 @@ export const SearchOverlay = ({ map, setActiveProject, allCenterpoints }) => {
 
   return (
     <>
-      <SearchInputBox
-        style={{
-          borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
-        }}
-        placeholder={'Search for projects or country'}
-        onClick={() => {
-          setShowListOfProjects(!showListOfProjects)
-        }}
-        onChange={(e) => {
-          setSearchInput(e.target.value)
-        }}
-        value={searchInput}
-        theme={theme}
-      />
+      {mediaSize < breakpoints.m && (
+        <button
+          style={{
+            width: '20px',
+            height: '20px',
+            position: 'absolute',
+            left: '125px',
+            top: '17px',
+            backgroundColor: 'transparent',
+            border: 'none',
+            padding: '0',
+          }}
+          onClick={() => {
+            setShowSearchBar((showSearchBar) => !showSearchBar)
+          }}
+        >
+          <img
+            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+            alt="search"
+            src={'/search.png'}
+          />
+        </button>
+      )}
+      {showSearchBar && (
+        <SearchInputBox
+          style={{
+            borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
+          }}
+          placeholder={'Search for projects or country'}
+          onClick={() => {
+            setShowListOfProjects(!showListOfProjects)
+          }}
+          onChange={(e) => {
+            setSearchInput(e.target.value)
+          }}
+          value={searchInput}
+          theme={theme}
+        />
+      )}
       {showListOfProjects && (
         <>
           <OptionsContainer theme={theme}>
@@ -108,6 +142,12 @@ const SearchInputBox = styled.input<{ theme }>`
   background-color: ${(props) => props.theme.colors.hinted};
   font-size: 0.875rem;
   font-family: Karla;
+
+  @media (max-width: 767px) {
+    width: 280px;
+    top: 60px;
+    left: 6px;
+  }
 `
 
 const OptionsContainer = styled.div<{ theme; numOptions: number }>`
@@ -121,6 +161,12 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;
   z-index: 3;
+
+  @media (max-width: 767px) {
+    width: 280px;
+    top: 110px;
+    left: 6px;
+  }
 `
 
 const Option = styled.button<{ theme; position: number }>`
@@ -136,5 +182,8 @@ const Option = styled.button<{ theme; position: number }>`
   :hover {
     color: ${(props) => props.theme.colors.text};
     background-color: ${(props) => props.theme.colors.secondaryBackground};
+  }
+  @media (max-width: 767px) {
+    width: 280px;
   }
 `

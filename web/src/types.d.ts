@@ -17,6 +17,9 @@ interface State {
       lon: number
     }
   }
+  project: {
+    id: string
+  }
 }
 
 interface Cart {

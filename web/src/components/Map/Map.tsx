@@ -37,9 +37,12 @@ import {
   getTreeInformation,
   toggleTreesPlantedLayer,
 } from './maputils'
+import { setProjectId } from 'src/reducers/projectsReducer'
 
-export const Map = ({ urlProjectId, initialOverlay }) => {
+export const Map = ({ initialOverlay }) => {
   const dispatch = useDispatch()
+  const activeProjectId = useSelector((state: State) => state.project.id)
+  const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
   const [markers, setMarkers] = useState([])
@@ -47,7 +50,6 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
-  const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
@@ -313,7 +315,6 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
       {gainforestCenterpoints && (
         <SearchOverlay
           map={map}
-          setActiveProject={setActiveProjectId}
           allCenterpoints={gainforestCenterpoints}
         />
       )}
@@ -324,7 +325,7 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
       )}
       {infoOverlay && (
         <>
-          <UrlUpdater urlProjectId={urlProjectId} />
+          <UrlUpdater />
           <InfoOverlay
             numHexagons={numHexagons}
             activeProjectData={activeProjectData}

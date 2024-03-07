@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -19,33 +19,100 @@ export const LayerPickerOverlay = ({
   map,
   activeProjectPolygon,
   activeProjectMosaic,
-  expandLayers,
 }) => {
   const { theme } = useThemeUI()
+  const [expandLayers, setExpandLayers] = useState(false)
 
-  if (!expandLayers) return null
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleMouseEnter = () => {
+    clearTimeout(timeoutRef.current)
+    setExpandLayers(true)
+  }
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setExpandLayers(false)
+    }, 1000)
+  }
 
   return (
-    <div
-      style={{
-        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-        cursor: 'pointer',
-        display: 'flex',
-        justifyContent: 'space-around',
-        width: '250px',
-        height: '100px',
-        backgroundColor: theme.colors.background as string,
-        position: 'absolute',
-        bottom: 36,
-        right: 100,
-        borderRadius: '8px',
-        padding: '16px 8px 8px 8px',
-      }}
-    >
-      <SatelliteLayerBox map={map} />
-      <OrthomosaicToggle map={map} activeProjectMosaic={activeProjectMosaic} />
-      <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
-      <TreeCoverBox map={map} />
+    <div>
+      {expandLayers && (
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-around',
+            width: '250px',
+            height: '100px',
+            backgroundColor: theme.colors.background as string,
+            position: 'absolute',
+            bottom: 36,
+            right: 100,
+            borderRadius: '8px',
+            padding: '16px 8px 8px 8px',
+          }}
+        >
+          <SatelliteLayerBox map={map} />
+          <OrthomosaicToggle
+            map={map}
+            activeProjectMosaic={activeProjectMosaic}
+          />
+          <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
+          <TreeCoverBox map={map} />
+        </div>
+      )}
+      <div
+        style={{
+          cursor: 'pointer',
+          display: 'flex',
+          width: '60px',
+          height: '60px',
+          position: 'absolute',
+          bottom: 56,
+          right: 20,
+          borderRadius: '8px',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ display: 'block' }}>
+          <button
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              width: '60px',
+              height: '60px',
+              background: `url(/satellite.png) no-repeat center center`,
+              border: '2px solid black',
+              padding: 0,
+              color: 'white',
+              fontSize: '12px',
+              textShadow:
+                '1px 1px 1px black, -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black',
+              cursor: 'pointer',
+              overflow: 'hidden',
+              borderRadius: '4px',
+            }}
+          >
+            <img
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                borderRadius: '4px',
+                objectFit: 'cover',
+                backgroundSize: 'cover',
+              }}
+              src="/satellite.png"
+              alt="layers"
+            />
+            Layers
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

@@ -59,7 +59,7 @@ export const TimeSlider = ({ map, mediaSize }) => {
           height: '40px',
           padding: '2px 4px 0 0',
           marginBottom: '0',
-          bottom: 28,
+          bottom: mediaSize < breakpoints.m ? 0 : 28,
           left: mediaSize < breakpoints.m ? 8 : mediaSize / 3,
           zIndex: 3,
         }}

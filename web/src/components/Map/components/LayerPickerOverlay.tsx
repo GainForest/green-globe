@@ -127,7 +127,7 @@ const PotentialTreeCoverBox = ({ map }) => {
 const TreeCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
-  const imageSrc = 'treeCoverDark.png'
+  const imageSrc = '/treeCoverDark.png'
 
   return (
     <div
@@ -168,7 +168,7 @@ const TreeCoverBox = ({ map }) => {
 
 const LandCoverBox = ({ map, activeProjectPolygon }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const imageSrc = 'landCover.png'
+  const imageSrc = '/landCover.png'
 
   return (
     <div

@@ -38,17 +38,19 @@ import {
   getTreeInformation,
   toggleTreesPlantedLayer,
 } from './maputils'
+import { setProjectId } from 'src/reducers/projectsReducer'
 
-export const Map = ({ urlProjectId, initialOverlay }) => {
+export const Map = ({ initialOverlay }) => {
   const dispatch = useDispatch()
+  const activeProjectId = useSelector((state: State) => state.project.id)
+  const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [__, setMarkers] = useState([])
+  const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
-  const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
@@ -81,7 +83,7 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
+        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -100,7 +102,7 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
+        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
       })
     }
   }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
@@ -152,7 +154,23 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
         await fetchAllSiteData(endpoints, setAllSiteData)
       }
-      fetchHiveLocations(setHiveLocations)
+      if (
+        activeProjectId ==
+          '7f7b643aca10dae0c71afc9910b3f67bff441504d97e0d90a12c40db5d2d02c1' &&
+        !hiveLocations
+      ) {
+        fetchHiveLocations(setHiveLocations)
+      } else {
+        const nonHiveMarkers = markers.filter((marker) => {
+          if (marker._element.className.includes('hive')) {
+            marker.remove()
+            return false
+          }
+          return true
+        })
+        setMarkers(nonHiveMarkers)
+        setHiveLocations(null)
+      }
       fetchData().catch(console.error)
     }
   }, [activeProjectId])
@@ -309,7 +327,6 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
       {gainforestCenterpoints && (
         <SearchOverlay
           map={map}
-          setActiveProject={setActiveProjectId}
           allCenterpoints={gainforestCenterpoints}
         />
       )}
@@ -320,7 +337,7 @@ export const Map = ({ urlProjectId, initialOverlay }) => {
       )}
       {infoOverlay && (
         <>
-          <UrlUpdater urlProjectId={urlProjectId} />
+          <UrlUpdater />
           <InfoOverlay
             numHexagons={numHexagons}
             activeProjectData={activeProjectData}

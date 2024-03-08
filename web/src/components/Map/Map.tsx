@@ -17,6 +17,7 @@ import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
 import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
+import Button from './components/Button'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
@@ -357,6 +358,14 @@ export const Map = ({ urlProjectId, mediaSize }) => {
           setActiveProjectPolygon={setActiveProjectPolygon}
           mediaSize={mediaSize}
         />
+      )}
+      {activeProjectPolygon && !infoOverlay && (
+        <Button
+          style={{ position: 'absolute', bottom: '5%', left: '3%' }}
+          onClick={() => dispatch(setInfoOverlay(1))}
+        >
+          Project Info
+        </Button>
       )}
       {/* <ProjectSeriesPickerOverlay
         map={map}

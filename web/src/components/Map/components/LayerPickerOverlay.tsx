@@ -65,6 +65,7 @@ export const LayerPickerOverlay = ({
             right: 100,
             borderRadius: '8px',
             padding: '16px 8px 8px 8px',
+            zIndex: 2,
           }}
         >
           <SatelliteLayerBox

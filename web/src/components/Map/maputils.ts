@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import mapboxgl from 'mapbox-gl'
 
 import {
+  allSitesOutlineLayer,
   clusteredTreesCountTextLayer,
   clusteredTreesLayer,
   generatePlanetLayer,
@@ -336,8 +337,8 @@ export const addAllSitesSourceAndLayer = (map: mapboxgl.Map) => {
       },
     })
   }
-  if (map.getSource('allSites') && !map.getLayer('projectOutline')) {
-    map.addLayer(projectOutlineLayer('#00FF00'))
+  if (map.getSource('allSites') && !map.getLayer('allSitesOutline')) {
+    map.addLayer(allSitesOutlineLayer('#00FF00'))
   }
 }
 

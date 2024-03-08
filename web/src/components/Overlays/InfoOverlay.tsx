@@ -1,8 +1,11 @@
+import { useState } from 'react'
+
 import { useDispatch, useSelector } from 'react-redux'
 
 import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
+import { MaximizeButton } from '../Map/components/MaximizeButton'
 
 import { BiodiversityCard } from './Info/BiodiversityCard'
 import { ChatCard } from './Info/ChatCard'
@@ -22,12 +25,20 @@ export const InfoOverlay = ({
   mediaSize,
 }) => {
   const dispatch = useDispatch()
+  const [maximize, setMaximize] = useState<boolean>(false)
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
   return (
     <>
+      <MaximizeButton
+        mediaSize={mediaSize}
+        maximize={maximize}
+        onClick={() => setMaximize((max) => !max)}
+        style={null}
+      />
       <ExitButton
         mediaSize={mediaSize}
+        maximize={maximize}
         onClick={() => dispatch(hideInfoOverlay())}
         style={null}
       />
@@ -75,6 +86,7 @@ export const InfoOverlay = ({
       />
       {infoOverlay == 1 && (
         <ProjectCard
+          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}

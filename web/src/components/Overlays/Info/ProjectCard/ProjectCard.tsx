@@ -14,6 +14,7 @@ export const ProjectCard = ({
   activeProjectPolygon,
   setActiveProjectPolygon,
   mediaSize,
+  maximize,
 }) => {
   const { theme } = useThemeUI()
 
@@ -39,7 +40,7 @@ export const ProjectCard = ({
   const projectId = activeProjectData?.project?.id
 
   return (
-    <InfoBox mediaSize={mediaSize}>
+    <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <ProjectSplash activeProjectData={activeProjectData} />
       <TextContainer>
         <h1

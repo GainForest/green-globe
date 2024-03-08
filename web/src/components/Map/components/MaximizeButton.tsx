@@ -2,7 +2,7 @@ import { breakpoints } from 'src/constants'
 
 import { UnstyledButton } from './UnstyledButton'
 
-export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
+export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
   const height =
     mediaSize >= breakpoints.xl
       ? '36px'
@@ -64,7 +64,7 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
         style={{
           zIndex: 2,
           textAlign: 'center',
-          right: '16px',
+          right: '56px',
           bottom: bottom,
           height: height,
           width: width,
@@ -79,7 +79,11 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
           }}
           className="material-icons-round"
         >
-          close
+          <img
+            alt="maximize"
+            style={{ width: '80%', height: 'auto', paddingBottom: '4px' }}
+            src="/maximize.png"
+          />
         </div>
       </UnstyledButton>
     )
@@ -91,14 +95,14 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
           textAlign: 'center',
           left:
             mediaSize >= breakpoints.xl
-              ? 320
+              ? 280
               : mediaSize > breakpoints.l
-              ? 270
+              ? 232
               : mediaSize > breakpoints.m
-              ? 220
+              ? 184
               : mediaSize > breakpoints.s
-              ? 170
-              : 130,
+              ? 136
+              : 98,
           bottom: bottom,
           height: height,
           width: width,
@@ -113,7 +117,11 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
           }}
           className="material-icons-round"
         >
-          close
+          <img
+            alt="maximize"
+            style={{ width: '80%', height: 'auto', paddingBottom: '4px' }}
+            src="/maximize.png"
+          />
         </div>
       </UnstyledButton>
     )

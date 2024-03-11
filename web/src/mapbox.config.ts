@@ -40,20 +40,10 @@ export const allSitesOutlineLayer = (lineColor: string) => ({
   },
 })
 
-export const projectOutlineLayer = (lineColor: string) => ({
-  id: 'projectOutline',
-  type: 'line',
-  source: 'project',
-  paint: {
-    'line-color': lineColor,
-    'line-width': 3,
-  },
-})
-
-export const projectFillLayer = (lineColor: string) => ({
-  id: 'projectFill',
+export const allSitesFillLayer = (lineColor: string) => ({
+  id: 'allSitesFill',
   type: 'fill',
-  source: 'project', // reference the data source
+  source: 'allSites', // reference the data source
   paint: {
     'fill-color': lineColor, // gainforest color fill
     'fill-opacity': 0.05,
@@ -164,12 +154,6 @@ export const unclusteredTreesLayer = {
     'circle-stroke-color': '#000000',
   },
 }
-
-export const projectSource = (geoJson) => ({
-  type: 'geojson',
-  data: geoJson,
-})
-
 export const allSitesSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,

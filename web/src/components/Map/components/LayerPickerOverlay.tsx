@@ -17,7 +17,6 @@ import {
 
 export const LayerPickerOverlay = ({
   map,
-  activeProjectPolygon,
   activeProjectMosaic,
 }) => {
   const { theme } = useThemeUI()
@@ -41,8 +40,8 @@ export const LayerPickerOverlay = ({
     >
       <SatelliteLayerBox map={map} />
       <OrthomosaicToggle map={map} activeProjectMosaic={activeProjectMosaic} />
-      <LandCoverBox map={map} activeProjectPolygon={activeProjectPolygon} />
-      <TreeCoverBox map={map} />
+      <LandCoverBox map={map} />
+      <TreeCoverBox map={map}/>
     </div>
   )
 }
@@ -145,11 +144,9 @@ const TreeCoverBox = ({ map }) => {
         onClick={() => {
           if (!isVisible) {
             toggleTreeCoverLayer(map, 'visible')
-            toggleTreesPlantedLayer(map, 'visible')
             setIsVisible(true)
           } else {
             toggleTreeCoverLayer(map, 'none')
-            toggleTreesPlantedLayer(map, 'visible')
             setIsVisible(false)
           }
         }}
@@ -166,7 +163,7 @@ const TreeCoverBox = ({ map }) => {
   )
 }
 
-const LandCoverBox = ({ map, activeProjectPolygon }) => {
+const LandCoverBox = ({ map }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const imageSrc = '/landCover.png'
 
@@ -186,12 +183,9 @@ const LandCoverBox = ({ map, activeProjectPolygon }) => {
         onClick={() => {
           if (!isVisible) {
             toggleLandCoverLayer(map, 'visible')
-            toggleTreesPlantedLayer(map, 'visible')
             setIsVisible(true)
-            map.getSource('project').setData(activeProjectPolygon)
           } else {
             toggleLandCoverLayer(map, 'none')
-            toggleTreesPlantedLayer(map, 'visible')
             setIsVisible(false)
           }
         }}
@@ -228,12 +222,10 @@ const SatelliteLayerBox = ({ map }) => {
         onClick={() => {
           if (!isVisible) {
             map.setStyle(`mapbox://styles/mapbox/dark-v11`)
-            togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(true)
             dispatch(setDisplaySatelliteHistory(true))
           } else {
             map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
-            togglePotentialTreeCoverLayer(map, 'visible')
             setIsVisible(false)
             dispatch(setDisplaySatelliteHistory(false))
           }

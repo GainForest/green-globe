@@ -50,6 +50,16 @@ export const allSitesFillLayer = (lineColor: string) => ({
   },
 })
 
+export const highlightedSiteOutlineLayer = (lineColor: string) => ({
+  id: 'highlightedSiteOutline',
+  type: 'line',
+  source: 'highlightedSite',
+  paint: {
+    'line-color': lineColor,
+    'line-width': 3,
+  },
+})
+
 export const verraOutlineLayer = (lineColor: string) => ({
   id: 'verraOutlineLayer',
   type: 'line',

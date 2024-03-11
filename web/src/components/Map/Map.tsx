@@ -34,7 +34,6 @@ import { spinGlobe } from './maprotate'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
-  addTreesPlantedSourceAndLayers,
   getTreeInformation,
 } from './maputils'
 import { setProjectId } from 'src/reducers/projectsReducer'
@@ -50,11 +49,11 @@ export const Map = ({ initialOverlay }) => {
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
-  const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
+  const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
+  const [allSitePolygons, setAllSitePolygons] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
-  const [allSiteData, setAllSiteData] = useState([])
   const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
 
@@ -126,10 +125,12 @@ export const Map = ({ initialOverlay }) => {
   }, [map])
 
   useEffect(() => {
-    if (map && allSiteData) {
-      map.getSource('allSites')?.setData(allSiteData)
+    if (map && allSitePolygons) {
+      map.on('styledata', () => {
+        map.getSource('allSites')?.setData(allSitePolygons)
+      })
     }
-  }, [allSiteData])
+  }, [map, allSitePolygons])
 
   // Fetch project data to display on the overlay
   // Fetch default project site
@@ -151,7 +152,7 @@ export const Map = ({ initialOverlay }) => {
         setActiveProjectData(result)
         setActiveProjectMosaic(projectMosaic)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
-        await fetchAllSiteData(endpoints, setAllSiteData)
+        await fetchAllSiteData(endpoints, setAllSitePolygons)
       }
       if (
         activeProjectId ==
@@ -181,8 +182,8 @@ export const Map = ({ initialOverlay }) => {
     }
   }, [initialOverlay, dispatch])
 
-  // If the active project change, zoom in to the default project site.
-  // Re-draw on style change.
+  // If the active project change, zoom in to the default project site and change
+  // its color
   useEffect(() => {
     if (map && activeProjectPolygon) {
       !infoOverlay && dispatch(setInfoOverlay(1))
@@ -190,6 +191,7 @@ export const Map = ({ initialOverlay }) => {
       map.fitBounds(boundingBox, {
         padding: { top: 40, bottom: 40, left: 420, right: 40 },
       })
+      map.getSource('highlightedSite')?.setData(activeProjectPolygon)
     }
   }, [map, activeProjectPolygon])
 
@@ -210,11 +212,11 @@ export const Map = ({ initialOverlay }) => {
   }, [activeProjectData])
 
   // Display tree data
-  // Add trees planted source and layers on every style change
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
-      // Needed on initial fetch
-      addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
+      map.on('styledata', () => {
+        map.getSource('trees')?.setData(activeProjectTreesPlanted)
+      })
     }
   }, [map, activeProjectTreesPlanted])
 
@@ -342,7 +344,6 @@ export const Map = ({ initialOverlay }) => {
       /> */}
       <LayerPickerOverlay
         map={map}
-        activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
       />
       <TimeSlider map={map} />

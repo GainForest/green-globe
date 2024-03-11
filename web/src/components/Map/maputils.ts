@@ -12,6 +12,7 @@ import {
   hexagonHoverFillLayer,
   hexagonOutlineLayer,
   hexagonsSource,
+  highlightedSiteOutlineLayer,
   landCoverLayer,
   landCoverSource,
   potentialTreeCoverLayer,
@@ -42,10 +43,12 @@ export const addAllSourcesAndLayers = (
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
+  addHighlightedSiteSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
   addOrthomosaicSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
+  addTreesPlantedSourceAndLayers(map)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
@@ -191,30 +194,6 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
-// export const treePopupHtml = ({
-//   treeName,
-//   treeHeight,
-//   treeDBH,
-//   treePhoto,
-//   dateOfMeasurement,
-// }) => {
-//   if (
-//     treePhoto.includes('.mp4') ||
-//     treePhoto.includes('.mov') ||
-//     treePhoto.includes('.MOV')
-//   ) {
-//     return `<div class="default">
-//     <video width="100%" maxHeight="160px" autoPlay>
-//     <source src="${treePhoto}" type="video/mp4">
-//     </video>
-//   <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-//   } else {
-//     return `<div class="default">
-//   <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
-// <br /> <br /><b>Date of measurement:</b> ${dateOfMeasurement}<br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-//   }
-// }
-
 export const getTreeInformation = (e, activeProject) => {
   const tree = e?.features[0]?.properties
   const treeName = getSpeciesName(tree)
@@ -321,6 +300,26 @@ export const addAllSitesSourceAndLayer = (map: mapboxgl.Map) => {
   }
 }
 
+export const addHighlightedSiteSourceAndLayer= (map: mapboxgl.Map) => {
+  if (!map.getSource('highlightedSite')) {
+    map.addSource('highlightedSite', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: null,
+          },
+        ],
+      },
+    })
+  }
+  if (map.getSource('highlightedSite') && !map.getLayer('highlightedSiteOutline')) {
+    map.addLayer(highlightedSiteOutlineLayer('#FFEA00'))
+  }
+}
+
 export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
   if (!map.getSource('hexagons')) {
     map.addSource('hexagons', hexagonsSource(hexagons))
@@ -338,12 +337,17 @@ export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
 
 export const addTreesPlantedSourceAndLayers = (
   map: mapboxgl.Map,
-  treesGeoJson
 ) => {
   if (!map.getSource('trees')) {
-    map.addSource('trees', treesSource(treesGeoJson))
-  } else {
-    map.getSource('trees').setData(treesGeoJson)
+    map.addSource('trees', treesSource({
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: null,
+        },
+      ],
+    },))
   }
   if (!map.getLayer('clusteredTrees')) {
     map.addLayer(clusteredTreesLayer)

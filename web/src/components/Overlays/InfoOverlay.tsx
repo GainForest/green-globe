@@ -95,27 +95,35 @@ export const InfoOverlay = ({
       )}
       {infoOverlay == 2 && (
         <BiodiversityCard
+          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
       {infoOverlay == 3 && (
         <WildlifeCard
+          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
       {infoOverlay == 4 && (
         <CommunityCard
+          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
       {infoOverlay == 5 && (
-        <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
+        <ChatCard
+          maximize={maximize}
+          mediaSize={mediaSize}
+          activeProjectData={activeProjectData}
+        />
       )}
       {infoOverlay == 6 && (
         <DownloadCard
+          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />

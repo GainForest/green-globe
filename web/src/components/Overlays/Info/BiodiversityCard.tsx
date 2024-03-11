@@ -8,7 +8,11 @@ import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
-export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
+export const BiodiversityCard = ({
+  activeProjectData,
+  mediaSize,
+  maximize,
+}) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
@@ -196,7 +200,7 @@ export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
   }
 
   return (
-    <InfoBox mediaSize={mediaSize}>
+    <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
         <ToggleButton
           active={toggle}

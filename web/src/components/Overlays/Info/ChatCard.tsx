@@ -53,7 +53,7 @@ const getDate = (input) => {
   return dateObj.toLocaleString('en-GB', options)
 }
 
-export const ChatCard = ({ activeProjectData, mediaSize }) => {
+export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
   const [messageLog, setMessageLog] = useState([])
   const { isAuthenticated, userMetadata, signUp } = useAuth()
   const [message, setMessage] = useState({
@@ -131,7 +131,7 @@ export const ChatCard = ({ activeProjectData, mediaSize }) => {
   }, [isAuthenticated, userMetadata?.email, getChat])
 
   return (
-    <InfoBox mediaSize={mediaSize}>
+    <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div
         style={{
           display: 'flex',

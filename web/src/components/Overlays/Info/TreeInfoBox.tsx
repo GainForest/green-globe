@@ -1,18 +1,21 @@
+import { useState } from 'react'
+
 import { useThemeUI } from 'theme-ui'
 
 import { CloseButton } from 'src/components/Buttons/Close'
 
 export const TreeInfoBox = ({ treeData, setTreeData }) => {
   const { theme } = useThemeUI()
+  const [photoIndex, setPhotoIndex] = useState(0)
   if (
-    treeData.treePhoto.endsWith('mov') ||
-    treeData.treePhoto.endsWith('MOV') ||
-    treeData.treePhoto.endsWith('mp4')
+    treeData.treePhotos[photoIndex]?.endsWith('mov') ||
+    treeData.treePhotos[photoIndex]?.endsWith('MOV') ||
+    treeData.treePhotos[photoIndex]?.endsWith('mp4')
   )
     return (
       <div>
         <video
-          key={treeData.treePhoto}
+          key={treeData.treePhotos[photoIndex]}
           style={{
             maxWidth: '300px',
             position: 'absolute',
@@ -23,7 +26,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
           autoPlay
         >
           <track kind="captions" />
-          <source src={treeData.treePhoto} />
+          <source src={treeData.treePhotos[photoIndex]} />
         </video>
       </div>
     )
@@ -42,7 +45,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             position: 'absolute',
             top: 160,
             right: 8,
-            borderRadius: treeData.treePhoto.endsWith('taxa_plants.png')
+            borderRadius: treeData.treePhotos[0]?.endsWith('taxa_plants.png')
               ? '8px'
               : '8px 8px 0 0 ',
             padding: '8px',
@@ -112,7 +115,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             />
           </div>
         </div>
-        {!treeData.treePhoto.endsWith('taxa_plants.png') && (
+        {!treeData.treePhotos[0].endsWith('taxa_plants.png') && (
           <div>
             <img
               style={{
@@ -124,8 +127,54 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                 borderRadius: '0px 0px 8px 8px',
               }}
               alt={treeData.name}
-              src={treeData.treePhoto}
+              src={treeData.treePhotos[photoIndex]}
             />
+            {treeData.treePhotos?.length > 1 && (
+              <div>
+                <button
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    position: 'absolute',
+                    top: 640,
+                    right: 160,
+                    fontSize: '32px',
+                    color: 'white',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() =>
+                    setPhotoIndex((photoIndex) =>
+                      photoIndex === 0
+                        ? treeData.treePhotos?.length - 1
+                        : photoIndex - 1
+                    )
+                  }
+                >
+                  {'<'}
+                </button>
+                <button
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    position: 'absolute',
+                    top: 640,
+                    right: 120,
+                    fontSize: '32px',
+                    color: 'white',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() =>
+                    setPhotoIndex((photoIndex) =>
+                      photoIndex === treeData.treePhotos?.length - 1
+                        ? 0
+                        : photoIndex + 1
+                    )
+                  }
+                >
+                  {'>'}
+                </button>
+              </div>
+            )}
           </div>
         )}
       </>

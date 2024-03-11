@@ -63,6 +63,7 @@ export const getTreePhoto = (tree, activeProject: string, treeID: string) => {
       '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a' &&
     treeID !== 'unknown'
   ) {
+    console.log(`${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`)
     return `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
   } else {
     return `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`

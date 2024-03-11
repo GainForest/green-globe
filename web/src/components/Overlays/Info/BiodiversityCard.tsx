@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { getTreePhoto, getTreeDBH } from 'src/components/Map/maptreeutils'
+import { getTreePhoto } from 'src/components/Map/maptreeutils'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
@@ -14,7 +14,9 @@ export const BiodiversityCard = ({ activeProjectData }) => {
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
 
   useEffect(() => {
-    if (!activeProjectData) return
+    if (!activeProjectData) {
+      return
+    }
     const { project } = activeProjectData
     if (project) {
       fetch(
@@ -93,7 +95,6 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                       )?.[1] ||
                       tree?.ID ||
                       'unknown'
-
                     const imageUrl = getTreePhoto(
                       tree.properties,
                       project.id,
@@ -259,7 +260,7 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
           <div key={biodiversityGroup.title}>
             <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
-              <div key={species.name}>
+              <div key={species.scientificname}>
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
               </div>
             ))}

@@ -26,6 +26,7 @@ import {
   fetchTreeShapefile,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
+  fetchAllSiteData,
   fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
@@ -54,6 +55,7 @@ export const Map = ({ initialOverlay }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
+  const [allSiteData, setAllSiteData] = useState([])
   const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
 
@@ -124,6 +126,12 @@ export const Map = ({ initialOverlay }) => {
     }
   }, [map])
 
+  useEffect(() => {
+    if (map && allSiteData) {
+      map.getSource('allSites')?.setData(allSiteData)
+    }
+  }, [allSiteData])
+
   // Fetch project data to display on the overlay
   // Fetch default project site
   useEffect(() => {
@@ -138,9 +146,13 @@ export const Map = ({ initialOverlay }) => {
         const projectMosaic = result?.project?.assets?.filter(
           (d) => d?.classification == 'Drone Mosaic'
         )
+        const endpoints = result?.project?.assets
+          ?.filter((d) => d?.classification == 'Shapefiles')
+          .map((d) => d?.awsCID)
         setActiveProjectData(result)
         setActiveProjectMosaic(projectMosaic)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
+        await fetchAllSiteData(endpoints, setAllSiteData)
       }
       if (
         activeProjectId ==

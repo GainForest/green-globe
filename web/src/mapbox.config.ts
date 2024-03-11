@@ -30,6 +30,16 @@ export const initializeMapbox = (
   }
 }
 
+export const allSitesOutlineLayer = (lineColor: string) => ({
+  id: 'allSitesOutline',
+  type: 'line',
+  source: 'allSites',
+  paint: {
+    'line-color': lineColor,
+    'line-width': 3,
+  },
+})
+
 export const projectOutlineLayer = (lineColor: string) => ({
   id: 'projectOutline',
   type: 'line',
@@ -156,6 +166,11 @@ export const unclusteredTreesLayer = {
 }
 
 export const projectSource = (geoJson) => ({
+  type: 'geojson',
+  data: geoJson,
+})
+
+export const allSitesSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,
 })

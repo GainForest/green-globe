@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import mapboxgl from 'mapbox-gl'
 
 import {
+  allSitesOutlineLayer,
   clusteredTreesCountTextLayer,
   clusteredTreesLayer,
   generatePlanetLayer,
@@ -42,6 +43,7 @@ export const addAllSourcesAndLayers = (
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
   addProjectPolygonsSourceAndLayer(map)
+  addAllSitesSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
   addOrthomosaicSourceAndLayer(map)
@@ -312,11 +314,31 @@ export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
       },
     })
   }
-  if (map.getSource('project') && !map.getLayer('projectOutline')) {
-    map.addLayer(projectOutlineLayer('#00FF00'))
-  }
+  // if (map.getSource('project') && !map.getLayer('projectOutline')) {
+  //   map.addLayer(projectOutlineLayer('#00FF00'))
+  // }
   if (map.getSource('project') && !map.getLayer('projectFill')) {
     map.addLayer(projectFillLayer('#00FF00'))
+  }
+}
+
+export const addAllSitesSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('allSites')) {
+    map.addSource('allSites', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: null,
+          },
+        ],
+      },
+    })
+  }
+  if (map.getSource('allSites') && !map.getLayer('allSitesOutline')) {
+    map.addLayer(allSitesOutlineLayer('#00FF00'))
   }
 }
 

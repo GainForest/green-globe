@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { getTreePhoto, getTreeDBH } from 'src/components/Map/maptreeutils'
+import { getTreePhotos } from 'src/components/Map/maptreeutils'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
@@ -14,7 +14,9 @@ export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
 
   useEffect(() => {
-    if (!activeProjectData) return
+    if (!activeProjectData) {
+      return
+    }
     const { project } = activeProjectData
     if (project) {
       fetch(
@@ -68,6 +70,7 @@ export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
             .then((response) => response.json())
             .then((json) => {
               const speciesCount = {}
+              let total = 0
               const similarityThreshold = 3
               json.features.map((tree) => {
                 let species =
@@ -86,28 +89,7 @@ export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
                   })
 
                   if (!isSimilar) {
-                    const treeID =
-                      tree?.properties['FCD-tree_records-tree_photo']?.split(
-                        '?id='
-                      )?.[1] ||
-                      tree?.ID ||
-                      'unknown'
-
-                    const imageUrl = getTreePhoto(
-                      tree.properties,
-                      project.id,
-                      treeID
-                    )
-
-                    // fetch(imageUrl, { method: 'HEAD' })
-                    //   .then((response) => {
-                    //     if (!response.ok) {
-                    //       imageUrl = `{process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
-                    //     }
-                    //   })
-                    //   .catch(() => {
-                    //     imageUrl = `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
-                    //   })
+                    const imageUrl = getTreePhotos(tree.properties, project.id)
 
                     speciesCount[species] = {
                       name: species,
@@ -156,6 +138,7 @@ export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
                     }
                   }
                 }
+                total += 1
               })
 
               const speciesArray = Object.keys(speciesCount).map((species) => ({
@@ -170,7 +153,7 @@ export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
               }))
               setMeasuredData([
                 ...measuredData,
-                { title: 'Trees', species: speciesArray },
+                { title: 'Trees', species: speciesArray, total },
               ])
             })
           return setBiodiversity(biodiversity)
@@ -227,11 +210,21 @@ export const BiodiversityCard = ({ activeProjectData, mediaSize }) => {
               Predicted distribution of species habitats within 150km of the
               project area.
             </p>
+            <p
+              style={{
+                fontSize: 10,
+              }}
+            >
+              Data provided by <a href="https://mol.org/">Map of Life</a>
+            </p>
           </div>
         ) : (
           <div>
             <h2>Measured Biodiversity</h2>
-            <p>Species that have been measured in the area.</p>
+            <p>
+              Species that have been measured for all the sites in this
+              organization.
+            </p>
           </div>
         )}
       </div>
@@ -257,9 +250,8 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
           <div key={biodiversityGroup.title}>
             <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
-              <div key={species.name}>
+              <div key={species.scientificname}>
                 <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
-                {/* <RedlistStatus redlist={s.redlist} /> */}
               </div>
             ))}
           </div>
@@ -287,6 +279,10 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
         <>
           {measuredData.map((group) => (
             <div key={group.title}>
+              <p>
+                {' '}
+                Total {group.title.toLowerCase()}: {group.total}
+              </p>
               <h3>{group.title}</h3>
               {group.species.map((species) => (
                 <div key={species.name}>
@@ -348,7 +344,7 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
           {species.common}
         </p>
         <i style={{ fontSize: '0.75rem' }}>{species.scientificname}</i>
-        {/* <RedlistStatus redlist={species.redlist} /> */}
+        <RedlistStatus redlist={species.redlist} />
       </div>
     </div>
   )

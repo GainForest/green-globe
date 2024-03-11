@@ -7,7 +7,7 @@ import { useAuth } from 'src/auth'
 import Map from 'src/components/Map/Map'
 import Navbar from 'src/components/Navbar/Navbar'
 
-const MapPage = ({ urlProjectId }) => {
+const MapPage = ({ urlProjectId, initialOverlay }) => {
   const { isAuthenticated } = useAuth()
 
   const [mediaSize, setMediaSize] = useState(window.innerWidth)
@@ -26,7 +26,7 @@ const MapPage = ({ urlProjectId }) => {
 
       <div style={{ width: '100vw', height: '100vh' }}>
         <Navbar isAuthenticated={isAuthenticated} mediaSize={mediaSize} />
-        <Map urlProjectId={urlProjectId} mediaSize={mediaSize} />
+        <Map initialOverlay={initialOverlay} mediaSize={mediaSize} />
       </div>
     </>
   )

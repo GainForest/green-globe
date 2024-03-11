@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
 import { breakpoints } from 'src/constants'
+import { setProjectId } from 'src/reducers/projectsReducer'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 export const SearchOverlay = ({
@@ -13,6 +15,7 @@ export const SearchOverlay = ({
   mediaSize,
 }) => {
   const { theme } = useThemeUI()
+  const dispatch = useDispatch()
   const allProjects = allCenterpoints?.features?.map((d) => d.properties)
   const [filteredProjects, setFilteredProjects] =
     useState<Array<{ name: string; country: string }>>(allProjects)
@@ -28,9 +31,9 @@ export const SearchOverlay = ({
     }
     const found = allProjects.find((d) => d?.name == searchInput)
     if (found) {
-      setActiveProject(found?.projectId)
+      dispatch(setProjectId(found?.projectId))
     }
-  }, [allProjects, searchInput, setActiveProject])
+  }, [allProjects, searchInput])
 
   useEffect(() => {
     if (map) {

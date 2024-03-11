@@ -28,13 +28,14 @@ import {
   getSpeciesName,
   getTreeDBH,
   getTreeHeight,
-  getTreePhoto,
+  getTreePhotos,
 } from './maptreeutils'
 
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
   hexagons,
-  hiveLocations
+  hiveLocations,
+  setMarkers
 ) => {
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -44,14 +45,19 @@ export const addAllSourcesAndLayers = (
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
   addOrthomosaicSourceAndLayer(map)
-  addHiveSourceAndLayers(map, hiveLocations)
+  addHiveSourceAndLayers(map, hiveLocations, setMarkers)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
 
-export const addHiveSourceAndLayers = (map: mapboxgl.Map, hiveLocations) => {
+export const addHiveSourceAndLayers = (
+  map: mapboxgl.Map,
+  hiveLocations,
+  setMarkers
+) => {
   if (hiveLocations) {
-    addMarkers(map, hiveLocations, 'hive')
+    const newMarkers = addMarkers(map, hiveLocations, 'hive')
+    setMarkers((markers) => [...markers, ...newMarkers])
   }
 }
 
@@ -185,30 +191,6 @@ export const popup = new mapboxgl.Popup({
   closeOnClick: false,
 })
 
-// export const treePopupHtml = ({
-//   treeName,
-//   treeHeight,
-//   treeDBH,
-//   treePhoto,
-//   dateOfMeasurement,
-// }) => {
-//   if (
-//     treePhoto.includes('.mp4') ||
-//     treePhoto.includes('.mov') ||
-//     treePhoto.includes('.MOV')
-//   ) {
-//     return `<div class="default">
-//     <video width="100%" maxHeight="160px" autoPlay>
-//     <source src="${treePhoto}" type="video/mp4">
-//     </video>
-//   <br /> <br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-//   } else {
-//     return `<div class="default">
-//   <img width="200" height="200" src="${treePhoto}" style="object-fit: contain;"/>
-// <br /> <br /><b>Date of measurement:</b> ${dateOfMeasurement}<br /><b>Species:</b> ${treeName} <br /> <b> Plant height: </b> ${treeHeight} <br /> <b> DBH: </b> ${treeDBH}<div>`
-//   }
-// }
-
 export const getTreeInformation = (e, activeProject) => {
   const tree = e?.features[0]?.properties
   const treeName = getSpeciesName(tree)
@@ -222,8 +204,15 @@ export const getTreeInformation = (e, activeProject) => {
     tree?.ID ||
     'unknown'
 
-  const treePhoto = getTreePhoto(tree, activeProject, treeID)
-  return { treeName, treeHeight, treeDBH, treeID, treePhoto, dateOfMeasurement }
+  const treePhotos = getTreePhotos(tree, activeProject, treeID)
+
+  return {
+    treeName,
+    treeHeight,
+    treeDBH,
+    treePhotos,
+    dateOfMeasurement,
+  }
 }
 
 const addPotentialTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {

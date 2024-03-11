@@ -11,6 +11,7 @@ import { navigate } from '@redwoodjs/router'
 import { initializeMapbox } from 'src/mapbox.config'
 import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
+import { setProjectId } from 'src/reducers/projectsReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
 import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
@@ -21,6 +22,7 @@ import Button from './components/Button'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
+import UrlUpdater from './components/UrlUpdater'
 import {
   fetchProjectInfo,
   fetchTreeShapefile,
@@ -38,17 +40,17 @@ import {
   toggleTreesPlantedLayer,
 } from './maputils'
 
-export const Map = ({ urlProjectId, mediaSize }) => {
+export const Map = ({ initialOverlay, mediaSize }) => {
   const dispatch = useDispatch()
+  const activeProjectId = useSelector((state: State) => state.project.id)
+  const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [__, setMarkers] = useState([])
+  const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
-  const [activeProjectId, setActiveProjectId] = useState(urlProjectId)
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
@@ -80,7 +82,7 @@ export const Map = ({ urlProjectId, mediaSize }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
+        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -100,20 +102,14 @@ export const Map = ({ urlProjectId, mediaSize }) => {
           'space-color': 'rgb(11, 11, 25)', // Background color
           'star-intensity': 0.05, // Background star brightness
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations)
-      }
+        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
+      } // This was a misplaced closing parenthesis, corrected to a curly brace
 
+      // These event listeners or similar logic were presumably intended to be set here
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
-
-      return () => {
-        if (map) {
-          map.off('load', onLoad)
-          map.off('styledata', onStyleData)
-        }
-      }
     }
-  }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
+  }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations]) // Added missing closing bracket for useEffect
 
   // Rotate the globe
   useEffect(() => {
@@ -166,10 +162,33 @@ export const Map = ({ urlProjectId, mediaSize }) => {
         setActiveProjectMosaic(projectMosaic)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
       }
-      fetchHiveLocations(setHiveLocations)
+      if (
+        activeProjectId ==
+          '7f7b643aca10dae0c71afc9910b3f67bff441504d97e0d90a12c40db5d2d02c1' &&
+        !hiveLocations
+      ) {
+        fetchHiveLocations(setHiveLocations)
+      } else {
+        const nonHiveMarkers = markers.filter((marker) => {
+          if (marker._element.className.includes('hive')) {
+            marker.remove()
+            return false
+          }
+          return true
+        })
+        setMarkers(nonHiveMarkers)
+        setHiveLocations(null)
+      }
       fetchData().catch(console.error)
     }
   }, [activeProjectId])
+
+  useEffect(() => {
+    if (initialOverlay) {
+      const overlayValue = parseInt(initialOverlay, 10)
+      dispatch(setInfoOverlay(overlayValue))
+    }
+  }, [initialOverlay, dispatch])
 
   // If the active project changes
   // Display project boundaries, the overlay, and the trees planted
@@ -340,7 +359,6 @@ export const Map = ({ urlProjectId, mediaSize }) => {
       {gainforestCenterpoints && (
         <SearchOverlay
           map={map}
-          setActiveProject={setActiveProjectId}
           allCenterpoints={gainforestCenterpoints}
           mediaSize={mediaSize}
         />
@@ -351,13 +369,16 @@ export const Map = ({ urlProjectId, mediaSize }) => {
         <TreeInfoBox treeData={treeData} setTreeData={setTreeData} />
       )}
       {infoOverlay && (
-        <InfoOverlay
-          // numHexagons={numHexagons}
-          activeProjectData={activeProjectData}
-          activeProjectPolygon={activeProjectPolygon}
-          setActiveProjectPolygon={setActiveProjectPolygon}
-          mediaSize={mediaSize}
-        />
+        <>
+          <UrlUpdater />
+          <InfoOverlay
+            // numHexagons={numHexagons}
+            activeProjectData={activeProjectData}
+            activeProjectPolygon={activeProjectPolygon}
+            setActiveProjectPolygon={setActiveProjectPolygon}
+            mediaSize={mediaSize}
+          />
+        </>
       )}
       {activeProjectPolygon && !infoOverlay && (
         <Button

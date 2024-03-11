@@ -8,12 +8,7 @@ import { breakpoints } from 'src/constants'
 import { setProjectId } from 'src/reducers/projectsReducer'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-export const SearchOverlay = ({
-  map,
-  setActiveProject,
-  allCenterpoints,
-  mediaSize,
-}) => {
+export const SearchOverlay = ({ map, allCenterpoints, mediaSize }) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
   const allProjects = allCenterpoints?.features?.map((d) => d.properties)

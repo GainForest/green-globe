@@ -271,9 +271,6 @@ export const Map = ({ initialOverlay, mediaSize }) => {
   // Remove layers when you exit the display overlay
   useEffect(() => {
     if (map) {
-      if (map.getLayer('unclusteredTrees') && !infoOverlay) {
-        toggleTreesPlantedLayer(map, 'none')
-      }
       let hoveredTreeId = null
       const onClickProjectFill = () => {
         toggleTreesPlantedLayer(map, 'visible')
@@ -366,7 +363,11 @@ export const Map = ({ initialOverlay, mediaSize }) => {
       {/* <BackToGlobe map={map} /> */}
 
       {Object.values(treeData)?.length > 0 && (
-        <TreeInfoBox treeData={treeData} setTreeData={setTreeData} />
+        <TreeInfoBox
+          treeData={treeData}
+          setTreeData={setTreeData}
+          mediaSize={mediaSize}
+        />
       )}
       {infoOverlay && (
         <>

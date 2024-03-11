@@ -14,73 +14,6 @@ export const InfoOverlayButton = ({
   mediaSize?: number
   onClick: () => void
 }) => {
-  const StyledButton = styled.button<{
-    position: number
-    active: boolean
-    mediaSize: number
-  }>`
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    position: absolute;
-    border-radius: 0.5em;
-    cursor: pointer;
-    padding: 0;
-    height: ${({ mediaSize }) =>
-      mediaSize < breakpoints.s
-        ? '24px'
-        : mediaSize < breakpoints.m
-        ? '28px'
-        : mediaSize < breakpoints.l
-        ? '36px'
-        : mediaSize < breakpoints.xl
-        ? '42px'
-        : '44px'};
-    width: ${({ mediaSize }) =>
-      mediaSize < breakpoints.s
-        ? '24px'
-        : mediaSize < breakpoints.m
-        ? '28px'
-        : mediaSize < breakpoints.l
-        ? '36px'
-        : mediaSize < breakpoints.xl
-        ? '42px'
-        : '44px'};
-    bottom: ${({ mediaSize }) =>
-      mediaSize < breakpoints.s
-        ? '285px'
-        : mediaSize < breakpoints.m
-        ? '365px'
-        : mediaSize < breakpoints.l
-        ? '450px'
-        : mediaSize < breakpoints.xl
-        ? '530px'
-        : '610px'};
-    border: none;
-    left: ${({ position, mediaSize }) =>
-      `${
-        position *
-          (mediaSize < breakpoints.s
-            ? 28
-            : mediaSize < breakpoints.m
-            ? 36
-            : mediaSize < breakpoints.l
-            ? 44
-            : 52) -
-        (mediaSize < breakpoints.s
-          ? 24
-          : mediaSize < breakpoints.m
-          ? 28
-          : mediaSize < breakpoints.l
-          ? 36
-          : mediaSize < breakpoints.xl
-          ? 42
-          : 44)
-      }px`};
-    background-color: ${({ active }) => (active ? '#67962A' : '#ffffff')};
-    :hover {
-      background-color: ${({ active }) => (active ? '#67962A' : '#e9f5da')};
-    }
-  `
-
   return (
     <StyledButton
       mediaSize={mediaSize}
@@ -120,3 +53,52 @@ export const InfoOverlayButton = ({
     </StyledButton>
   )
 }
+
+const StyledButton = styled.button<{ position: number; active: boolean }>`
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  position: absolute;
+  border-radius: 0.5em;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background-color: ${({ active }) => (active ? '#67962A' : '#ffffff')};
+
+  &:hover {
+    background-color: ${({ active }) => (active ? '#67962A' : '#e9f5da')};
+  }
+
+  // Default sizes and positions
+  height: 44px;
+  width: 44px;
+  bottom: 610px;
+  left: ${({ position }) => `${position * 52 - 44}px`};
+
+  // Adjustments for different breakpoints
+  @media (max-width: ${breakpoints.xl}px) {
+    height: 42px;
+    width: 42px;
+    bottom: 530px;
+    left: ${({ position }) => `${position * 52 - 42}px`};
+  }
+
+  @media (max-width: ${breakpoints.l}px) {
+    height: 36px;
+    width: 36px;
+    bottom: 450px;
+    left: ${({ position }) => `${position * 44 - 36}px`};
+  }
+
+  @media (max-width: ${breakpoints.m}px) {
+    height: 28px;
+    width: 28px;
+    bottom: 365px;
+    left: ${({ position }) => `${position * 36 - 28}px`};
+  }
+
+  @media (max-width: ${breakpoints.s}px) {
+    height: 24px;
+    width: 24px;
+    bottom: 285px;
+    left: ${({ position }) => `${position * 28 - 24}px`};
+  }
+`

@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { useThemeUI } from 'theme-ui'
 
 import { CloseButton } from 'src/components/Buttons/Close'
+import { breakpoints } from 'src/constants'
 
-export const TreeInfoBox = ({ treeData, setTreeData }) => {
+export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
   const { theme } = useThemeUI()
   const [photoIndex, setPhotoIndex] = useState(0)
   if (
@@ -36,8 +37,6 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             cursor: 'pointer',
             display: 'flex',
             justifyContent: 'space-around',
-            width: '300px',
-            height: '80px',
             backgroundColor: theme.colors.background as string,
             position: 'absolute',
             top: 160,
@@ -93,8 +92,26 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                     background: 'none',
                     border: 'none',
                     position: 'absolute',
-                    top: 640,
-                    right: 160,
+                    top:
+                      mediaSize >= breakpoints.xl
+                        ? 640
+                        : mediaSize > breakpoints.l
+                        ? 610
+                        : mediaSize > breakpoints.m
+                        ? 560
+                        : mediaSize > breakpoints.s
+                        ? 540
+                        : 470,
+                    right:
+                      mediaSize >= breakpoints.xl
+                        ? 160
+                        : mediaSize > breakpoints.l
+                        ? 150
+                        : mediaSize > breakpoints.m
+                        ? 135
+                        : mediaSize > breakpoints.s
+                        ? 125
+                        : 100,
                     fontSize: '32px',
                     color: 'white',
                     cursor: 'pointer',
@@ -114,8 +131,26 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                     background: 'none',
                     border: 'none',
                     position: 'absolute',
-                    top: 640,
-                    right: 120,
+                    top:
+                      mediaSize >= breakpoints.xl
+                        ? 640
+                        : mediaSize > breakpoints.l
+                        ? 610
+                        : mediaSize > breakpoints.m
+                        ? 560
+                        : mediaSize > breakpoints.s
+                        ? 540
+                        : 470,
+                    right:
+                      mediaSize >= breakpoints.xl
+                        ? 120
+                        : mediaSize > breakpoints.l
+                        ? 110
+                        : mediaSize > breakpoints.m
+                        ? 95
+                        : mediaSize > breakpoints.s
+                        ? 85
+                        : 70,
                     fontSize: '32px',
                     color: 'white',
                     cursor: 'pointer',

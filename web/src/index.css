@@ -190,25 +190,25 @@ margin-top: 4px;
   color: #808080;
 }
 
-@media only screen and (min-width: 320px) {
+
   .tree-info, .tree-photo {
-    width: 210px;
+    width: 180px;
   }
   .tree-info {
     height: 70px;
     padding: 8px 16px;
   }
   .tree-photo {
-    max-height: 350px;
+    max-height: 320px;
   }
   .tree-key {
-    font-size: 9px;
+    font-size: 8px;
     width: 24px;
   }
   .tree-val {
-    font-size: 10px;
+    font-size: 9px;
   }
-}
+
 
 @media only screen and (min-width: 480px) {
   .tree-info, .tree-photo {

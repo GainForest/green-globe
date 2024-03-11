@@ -5,12 +5,26 @@ const redisClient = createClient({
   password: process.env.REDISPASSWORD,
 })
 
+let isConnected = false
+
+redisClient.on('connect', () => {
+  console.log('Redis client connected')
+  isConnected = true
+})
+
+redisClient.on('end', () => {
+  console.log('Redis client disconnected')
+  isConnected = false
+})
+
 const connectRedis = async () => {
-  try {
-    await redisClient.connect()
-    console.log('Connected to Redis')
-  } catch (err) {
-    console.error('Redis connection error:', err)
+  if (!isConnected) {
+    try {
+      await redisClient.connect()
+      console.log('Connected to Redis')
+    } catch (err) {
+      console.error('Redis connection error:', err)
+    }
   }
 }
 

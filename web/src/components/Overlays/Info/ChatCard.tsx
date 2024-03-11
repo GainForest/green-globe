@@ -74,6 +74,12 @@ export const ChatCard = ({ activeProjectData }) => {
     }
   `
 
+  const DELETE_FROM_REDIS_MUTATION = gql`
+    mutation deleteFromRedis($key: String!) {
+      deleteFromRedis(key: $key)
+    }
+  `
+
   const GET_FROM_REDIS_QUERY = gql`
     query getFromRedis($key: String!) {
       getFromRedis(key: $key) {
@@ -83,11 +89,20 @@ export const ChatCard = ({ activeProjectData }) => {
       }
     }
   `
-
+  const [deleteChat] = useMutation(DELETE_FROM_REDIS_MUTATION)
   const [logChat] = useMutation(SAVE_TO_REDIS_MUTATION)
   const getChat = useQuery(GET_FROM_REDIS_QUERY, {
     variables: { key: activeProjectData?.project?.id },
   })
+
+  const deleteMessage = (message) => {
+    const id = activeProjectData.project.id
+    const key = `${id}:${message.timestamp}:${userMetadata.email}`
+    deleteChat({ variables: { key: key } })
+    setMessageLog((messageLog) =>
+      messageLog.filter((msg) => msg.timestamp !== message.timestamp)
+    )
+  }
 
   const writeToRedis = (e) => {
     e.preventDefault()
@@ -97,6 +112,7 @@ export const ChatCard = ({ activeProjectData }) => {
       const id = activeProjectData.project.id
       const now = Date.now()
       const key = `${id}:${now}:${userMetadata.email}`
+      console.log(key)
       logChat({ variables: { key: key, value: message.text } })
     }
   }
@@ -178,6 +194,20 @@ export const ChatCard = ({ activeProjectData }) => {
                     <p className="message-text">{msg.text}</p>
                   </div>
                 </div>
+                {userMetadata?.email == msg.sender && (
+                  <button
+                    onClick={() => deleteMessage(msg)}
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      color: 'gray',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                    }}
+                  >
+                    X
+                  </button>
+                )}
               </div>
             </div>
           ))}

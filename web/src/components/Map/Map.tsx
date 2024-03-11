@@ -36,7 +36,6 @@ import {
   addClickableMarkers,
   addTreesPlantedSourceAndLayers,
   getTreeInformation,
-  toggleTreesPlantedLayer,
 } from './maputils'
 import { setProjectId } from 'src/reducers/projectsReducer'
 
@@ -182,15 +181,11 @@ export const Map = ({ initialOverlay }) => {
     }
   }, [initialOverlay, dispatch])
 
-  // If the active project changes
-  // Display project boundaries, the overlay, and the trees planted
+  // If the active project change, zoom in to the default project site.
   // Re-draw on style change.
   useEffect(() => {
     if (map && activeProjectPolygon) {
-      // TODO: Take into account all of the shapefiles the project has
-      map.getSource('project')?.setData(activeProjectPolygon)
       !infoOverlay && dispatch(setInfoOverlay(1))
-      toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
         padding: { top: 40, bottom: 40, left: 420, right: 40 },
@@ -251,18 +246,10 @@ export const Map = ({ initialOverlay }) => {
     }
   }, [map])
 
-  // Remove layers when you exit the display overlay
+  // Set hovered tree ID on mouse move
   useEffect(() => {
-    if (map && map.getLayer('unclusteredTrees')) {
-      if (!infoOverlay) {
-        toggleTreesPlantedLayer(map, 'none')
-      }
-    }
     let hoveredTreeId = null
     if (map) {
-      map.on('click', 'projectFill', () => {
-        toggleTreesPlantedLayer(map, 'visible')
-      })
       // Remove the on mouse move once you get out of the unclustered trees
       map.on('mousemove', 'unclusteredTrees', (e) => {
         if (e.features.length > 0) {
@@ -282,7 +269,6 @@ export const Map = ({ initialOverlay }) => {
         }
       })
     }
-    // TODO: separate these out
   }, [map, activeProjectId, infoOverlay])
 
   useEffect(() => {

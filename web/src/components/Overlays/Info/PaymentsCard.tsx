@@ -9,26 +9,34 @@ export const PaymentCard = ({ activeProjectData }) => {
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   useEffect(() => {
-    let celoRecipients = [
-      activeProjectData?.project?.CommunityMember.map(
-        (member) => member?.Wallet?.CeloAccount
-      ),
-    ]
-    celoRecipients = [
-      ...celoRecipients,
-      activeProjectData?.project?.Wallet?.CeloAccount,
-    ]
-
-    let solanaRecipients = [
-      activeProjectData?.project?.CommunityMember.map(
-        (member) => member?.Wallet?.SOLAccount
-      ),
-    ]
-
-    solanaRecipients = [
-      ...solanaRecipients,
-      activeProjectData?.project?.Wallet?.SOLAccount,
-    ]
+    let celoRecipients = []
+    let solanaRecipients = []
+    activeProjectData?.project?.CommunityMember.forEach((item) => {
+      if (item.Wallet && item.Wallet.CeloAccounts) {
+        celoRecipients = celoRecipients.concat(
+          item.Wallet.CeloAccounts.filter((account) => account)
+        )
+      }
+      if (activeProjectData?.project?.Wallet?.CeloAccounts) {
+        celoRecipients = celoRecipients.concat(
+          activeProjectData.project.Wallet.CeloAccounts.filter(
+            (account) => account
+          )
+        )
+      }
+      if (item.Wallet && item.Wallet.SOLAccounts) {
+        solanaRecipients = solanaRecipients.concat(
+          item.Wallet.SOLAccounts.filter((account) => account)
+        )
+      }
+    })
+    if (activeProjectData?.project?.Wallet?.SOLAccounts) {
+      solanaRecipients = solanaRecipients.concat(
+        activeProjectData.project.Wallet.SOLAccounts.filter(
+          (account) => account
+        )
+      )
+    }
 
     // test recipients, one from each wallet
     // const celoRecipients = ['0xe034805f09e26045259bf0d0b8cd41491cada701']

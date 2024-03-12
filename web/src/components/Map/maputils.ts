@@ -29,7 +29,7 @@ import {
   getSpeciesName,
   getTreeDBH,
   getTreeHeight,
-  getTreePhoto,
+  getTreePhotos,
 } from './maptreeutils'
 
 export const addAllSourcesAndLayers = (
@@ -207,8 +207,15 @@ export const getTreeInformation = (e, activeProject) => {
     tree?.ID ||
     'unknown'
 
-  const treePhoto = getTreePhoto(tree, activeProject, treeID)
-  return { treeName, treeHeight, treeDBH, treeID, treePhoto, dateOfMeasurement }
+  const treePhotos = getTreePhotos(tree, activeProject, treeID)
+
+  return {
+    treeName,
+    treeHeight,
+    treeDBH,
+    treePhotos,
+    dateOfMeasurement,
+  }
 }
 
 const addPotentialTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { getTreePhoto } from 'src/components/Map/maptreeutils'
+import { getTreePhotos } from 'src/components/Map/maptreeutils'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
@@ -89,17 +89,7 @@ export const BiodiversityCard = ({ activeProjectData }) => {
                   })
 
                   if (!isSimilar) {
-                    const treeID =
-                      tree?.properties['FCD-tree_records-tree_photo']?.split(
-                        '?id='
-                      )?.[1] ||
-                      tree?.ID ||
-                      'unknown'
-                    const imageUrl = getTreePhoto(
-                      tree.properties,
-                      project.id,
-                      treeID
-                    )
+                    const imageUrl = getTreePhotos(tree.properties, project.id)
 
                     speciesCount[species] = {
                       name: species,

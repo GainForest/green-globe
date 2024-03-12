@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'

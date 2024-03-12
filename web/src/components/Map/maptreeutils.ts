@@ -52,22 +52,43 @@ export const getTreeHeight = (tree) => {
   }
 }
 
-export const getTreePhoto = (tree, activeProject: string, treeID: string) => {
+export const getTreePhotos = (tree, activeProject: string, treeID: string) => {
+  const result = []
   if (tree?.tree_photo) {
-    return tree?.tree_photo
-  } else if (tree?.koboUrl) {
-    // kobo api
-    return tree?.koboUrl
-  } else if (
+    return [tree?.tree_photo]
+  }
+  if (
     activeProject ==
       '40367dfcbafa0a8d1fa26ff481d6b2609536c0e14719f8e88060a9aee8c8ab0a' &&
     treeID !== 'unknown'
   ) {
-    console.log(`${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`)
-    return `${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`
-  } else {
-    return `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+    {
+      return [`${process.env.AWS_STORAGE}/trees-measured/${treeID}.jpg`]
+    }
   }
+  if (tree?.awsUrl) {
+    result.push(tree?.awsUrl)
+  } else if (tree?.koboUrl) {
+    result.push(tree?.koboUrl)
+  }
+
+  if (tree?.leafAwsUrl) {
+    result.push(tree?.leafAwsUrl)
+  } else if (tree?.leafKoboUrl) {
+    result.push(tree?.leafKoboUrl)
+  }
+
+  if (tree?.barkAwsUrl) {
+    result.push(tree?.barkAwsUrl)
+  } else if (tree?.barkKoboUrl) {
+    result.push(tree?.barkKoboUrl)
+  }
+  if (result.length == 0) {
+    result.push(
+      `${process.env.AWS_STORAGE}/miscellaneous/placeholders/taxa_plants.png`
+    )
+  }
+  return result
 }
 
 export const getSpeciesName = (tree) => {

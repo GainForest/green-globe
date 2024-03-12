@@ -59,7 +59,7 @@ export const DonateOverlay = ({ setDisplayDonateOverlay }) => {
         <p style={{ fontSize: '12px', textAlign: 'center' }}>
           Help us make conservation and restoration an economically viable
           option. Find out more in our{' '}
-          <a href="https://blog.gainforest.earth/what-is-m2e">blog post</a>.
+          <a href="https://https://substack.com/@gainforest/what-is-m2e">blog post</a>.
         </p>
 
         <br />

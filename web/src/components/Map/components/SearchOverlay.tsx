@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
-import { countryToEmoji } from 'src/utils/countryToEmoji'
 import { setProjectId } from 'src/reducers/projectsReducer'
-import { useDispatch } from 'react-redux'
-
+import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 export const SearchOverlay = ({ map, allCenterpoints }) => {
   const { theme } = useThemeUI()
@@ -36,6 +35,9 @@ export const SearchOverlay = ({ map, allCenterpoints }) => {
   }, [map])
 
   useEffect(() => {
+    if (searchInput && searchInput.length == 0) {
+      setFilteredProjects(allProjects)
+    }
     if (searchInput && searchInput.length > 0) {
       const filteredProjects = allProjects?.filter((d) => {
         const country = countryToEmoji[d?.country]?.name?.toLowerCase()

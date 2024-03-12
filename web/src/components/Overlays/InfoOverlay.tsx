@@ -44,6 +44,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'forest'}
         position={1}
         active={infoOverlay == 1}
@@ -51,6 +52,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'pets'}
         position={2}
         active={infoOverlay == 2}
@@ -58,6 +60,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'photo'}
         position={3}
         active={infoOverlay == 3}
@@ -65,6 +68,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'emoji_people'}
         position={4}
         active={infoOverlay == 4}
@@ -72,6 +76,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'chat'}
         position={5}
         active={infoOverlay == 5}
@@ -79,6 +84,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'download'}
         position={6}
         active={infoOverlay == 6}

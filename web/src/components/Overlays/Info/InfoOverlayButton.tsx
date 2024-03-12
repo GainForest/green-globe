@@ -6,12 +6,14 @@ export const InfoOverlayButton = ({
   position,
   active,
   mediaSize,
+  maximize,
   onClick,
 }: {
   buttonIcon: string
   position: number
   active: boolean
   mediaSize?: number
+  maximize?: boolean
   onClick: () => void
 }) => {
   return (
@@ -20,6 +22,7 @@ export const InfoOverlayButton = ({
       active={active}
       position={position}
       onClick={onClick}
+      maximize={maximize}
     >
       <span
         className="material-icons-round"
@@ -54,7 +57,12 @@ export const InfoOverlayButton = ({
   )
 }
 
-const StyledButton = styled.button<{ position: number; active: boolean }>`
+const StyledButton = styled.button<{
+  position: number
+  active: boolean
+  mediaSize: number
+  maximize: boolean
+}>`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: absolute;
   border-radius: 0.5em;
@@ -67,38 +75,78 @@ const StyledButton = styled.button<{ position: number; active: boolean }>`
     background-color: ${({ active }) => (active ? '#67962A' : '#e9f5da')};
   }
 
-  // Default sizes and positions
-  height: 44px;
-  width: 44px;
-  bottom: 610px;
-  left: ${({ position }) => `${position * 52 - 44}px`};
+  // Conditional styling based on maximize prop
+  ${({ maximize, position }) =>
+    maximize
+      ? `
+    height: 44px;
+    width: 44px;
+    top: ${position * 52 - 44 + 80}px;
+    left: 8px;
 
-  // Adjustments for different breakpoints
-  @media (max-width: ${breakpoints.xl}px) {
-    height: 42px;
-    width: 42px;
-    bottom: 530px;
-    left: ${({ position }) => `${position * 52 - 42}px`};
-  }
+    @media (max-width: ${breakpoints.xl}px) {
+      height: 42px;
+      width: 42px;
+      top: ${position * 52 - 42 + 80}px;
+      left: 8px;
+    }
 
-  @media (max-width: ${breakpoints.l}px) {
-    height: 36px;
-    width: 36px;
-    bottom: 450px;
-    left: ${({ position }) => `${position * 44 - 36}px`};
-  }
+    @media (max-width: ${breakpoints.l}px) {
+      height: 36px;
+      width: 36px;
+      top: ${position * 52 - 36 + 80}px;
+      left: 8px;
+    }
 
-  @media (max-width: ${breakpoints.m}px) {
-    height: 28px;
-    width: 28px;
-    bottom: 365px;
-    left: ${({ position }) => `${position * 36 - 28}px`};
-  }
+    @media (max-width: ${breakpoints.m}px) {
+      height: 28px;
+      width: 28px;
+      bottom: 365px;
+      top: auto;
+      left: ${position * 36 - 28}px;
+    }
 
-  @media (max-width: ${breakpoints.s}px) {
-    height: 24px;
-    width: 24px;
-    bottom: 285px;
-    left: ${({ position }) => `${position * 28 - 24}px`};
-  }
+    @media (max-width: ${breakpoints.s}px) {
+      height: 24px;
+      width: 24px;
+      bottom: 285px;
+      top: auto;
+      left: ${position * 28 - 24}px;
+    }
+  `
+      : `
+    // Styles when maximize is false
+    height: 44px;
+    width: 44px;
+    bottom: 610px;
+    left: ${position * 52 - 44}px;
+
+    @media (max-width: ${breakpoints.xl}px) {
+      height: 42px;
+      width: 42px;
+      bottom: 530px;
+      left: ${position * 52 - 42}px;
+    }
+
+    @media (max-width: ${breakpoints.l}px) {
+      height: 36px;
+      width: 36px;
+      bottom: 450px;
+      left: ${position * 44 - 36}px;
+    }
+
+    @media (max-width: ${breakpoints.m}px) {
+      height: 28px;
+      width: 28px;
+      bottom: 365px;
+      left: ${position * 36 - 28}px;
+    }
+
+    @media (max-width: ${breakpoints.s}px) {
+      height: 24px;
+      width: 24px;
+      bottom: 285px;
+      left: ${position * 28 - 24}px;
+    }
+  `}
 `

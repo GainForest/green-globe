@@ -58,71 +58,100 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
       ? 316
       : 246
 
-  if (maximize)
-    return (
-      <UnstyledButton
+  const maxedBottom =
+    mediaSize >= breakpoints.xl
+      ? null
+      : mediaSize > breakpoints.l
+      ? null
+      : mediaSize > breakpoints.m
+      ? 386
+      : mediaSize > breakpoints.s
+      ? 316
+      : 246
+
+  const left =
+    mediaSize >= breakpoints.xl
+      ? 280
+      : mediaSize > breakpoints.l
+      ? 230
+      : mediaSize > breakpoints.m
+      ? 190
+      : mediaSize > breakpoints.s
+      ? null
+      : null
+
+  const maxedLeft =
+    mediaSize >= breakpoints.xl
+      ? 660
+      : mediaSize > breakpoints.l
+      ? 620
+      : mediaSize > breakpoints.m
+      ? 520
+      : mediaSize > breakpoints.s
+      ? null
+      : null
+
+  const right =
+    mediaSize >= breakpoints.xl
+      ? null
+      : mediaSize > breakpoints.l
+      ? null
+      : mediaSize > breakpoints.m
+      ? null
+      : mediaSize > breakpoints.s
+      ? '56px'
+      : '56px'
+
+  const maxedRight =
+    mediaSize >= breakpoints.xl
+      ? null
+      : mediaSize > breakpoints.l
+      ? null
+      : mediaSize > breakpoints.m
+      ? null
+      : mediaSize > breakpoints.s
+      ? '56px'
+      : '56px'
+
+  const maxedTop =
+    mediaSize >= breakpoints.xl
+      ? 64
+      : mediaSize > breakpoints.l
+      ? 80
+      : mediaSize > breakpoints.m
+      ? 70
+      : mediaSize > breakpoints.s
+      ? null
+      : null
+
+  return (
+    <UnstyledButton
+      style={{
+        zIndex: 2,
+        textAlign: 'center',
+        left: maximize ? maxedLeft : left,
+        right: maximize ? maxedRight : right,
+        bottom: maximize ? maxedBottom : bottom,
+        top: maximize ? maxedTop : null,
+        height: height,
+        width: width,
+        ...style,
+      }}
+      onClick={onClick}
+    >
+      <div
         style={{
-          zIndex: 2,
-          textAlign: 'center',
-          right: '56px',
-          bottom: bottom,
-          height: height,
-          width: width,
-          ...style,
+          fontSize: fontSize,
+          lineHeight: lineHeight,
         }}
-        onClick={onClick}
+        className="material-icons-round"
       >
-        <div
-          style={{
-            fontSize: fontSize,
-            lineHeight: lineHeight,
-          }}
-          className="material-icons-round"
-        >
-          <img
-            alt="maximize"
-            style={{ width: '80%', height: 'auto', paddingBottom: '4px' }}
-            src="/maximize.png"
-          />
-        </div>
-      </UnstyledButton>
-    )
-  else
-    return (
-      <UnstyledButton
-        style={{
-          zIndex: 2,
-          textAlign: 'center',
-          left:
-            mediaSize >= breakpoints.xl
-              ? 280
-              : mediaSize > breakpoints.l
-              ? 232
-              : mediaSize > breakpoints.m
-              ? 184
-              : mediaSize > breakpoints.s
-              ? 136
-              : 98,
-          bottom: bottom,
-          height: height,
-          width: width,
-          ...style,
-        }}
-        onClick={onClick}
-      >
-        <div
-          style={{
-            fontSize: fontSize,
-            lineHeight: lineHeight,
-          }}
-          className="material-icons-round"
-        >
-          <img
-            alt="maximize"
-            style={{ width: '80%', height: 'auto', paddingBottom: '4px' }}
-            src="/maximize.png"
-          />
-        </div>
-      </UnstyledButton>
-    )
+        <img
+          alt="maximize"
+          style={{ width: '80%', height: 'auto', paddingBottom: '4px' }}
+          src="/maximize.png"
+        />
+      </div>
+    </UnstyledButton>
+  )
 }

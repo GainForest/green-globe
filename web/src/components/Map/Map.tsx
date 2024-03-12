@@ -38,7 +38,7 @@ import {
   getTreeInformation,
 } from './maputils'
 
-export const Map = ({ initialOverlay }) => {
+export const Map = ({ initialOverlay, urlProjectId }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
@@ -62,6 +62,18 @@ export const Map = ({ initialOverlay }) => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     fetchHexagons(setHexagons)
   }, [])
+
+  useEffect(() => {
+    if (urlProjectId && !activeProjectId) {
+      dispatch(setProjectId(urlProjectId))
+    }
+  }, [urlProjectId, activeProjectId])
+
+  useEffect(() => {
+    if (initialOverlay && !infoOverlay) {
+      dispatch(setInfoOverlay(initialOverlay))
+    }
+  }, [initialOverlay, infoOverlay])
 
   // Initialize Map
   useEffect(() => {

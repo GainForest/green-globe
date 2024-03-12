@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
+import { countryCodes } from 'src/constants'
 import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
 
 import {
@@ -18,6 +19,7 @@ import {
 export const LayerPickerOverlay = ({
   map,
   activeProjectMosaic,
+  activeProjectData,
 }) => {
   const { theme } = useThemeUI()
   const [expandLayers, setExpandLayers] = useState(false)
@@ -56,7 +58,7 @@ export const LayerPickerOverlay = ({
             padding: '16px 8px 8px 8px',
           }}
         >
-          <SatelliteLayerBox map={map} />
+          <SatelliteLayerBox activeProjectData={activeProjectData} map={map} />
           <OrthomosaicToggle
             map={map}
             activeProjectMosaic={activeProjectMosaic}
@@ -119,7 +121,7 @@ export const LayerPickerOverlay = ({
 const OrthomosaicToggle = ({ map, activeProjectMosaic }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
-  const imageSrc = 'orthomosaic.png'
+  const imageSrc = '/orthomosaic.png'
   return activeProjectMosaic?.length > 0 ? (
     <div
       style={{
@@ -272,11 +274,11 @@ const LandCoverBox = ({ map }) => {
   )
 }
 
-const SatelliteLayerBox = ({ map }) => {
+const SatelliteLayerBox = ({ map, activeProjectData }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const dispatch = useDispatch()
 
-  return (
+  return countryCodes.includes(activeProjectData?.project?.country) ? (
     <div
       style={{
         display: 'flex',
@@ -310,7 +312,7 @@ const SatelliteLayerBox = ({ map }) => {
         satellite history {isVisible ? 'on' : 'off'}
       </p>
     </div>
-  )
+  ) : null
 }
 
 const LayerPickerButton = styled.img`

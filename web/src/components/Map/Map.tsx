@@ -11,6 +11,7 @@ import { navigate } from '@redwoodjs/router'
 import { initializeMapbox } from 'src/mapbox.config'
 import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
+import { setProjectId } from 'src/reducers/projectsReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
 import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
@@ -36,7 +37,6 @@ import {
   addClickableMarkers,
   getTreeInformation,
 } from './maputils'
-import { setProjectId } from 'src/reducers/projectsReducer'
 
 export const Map = ({ initialOverlay }) => {
   const dispatch = useDispatch()
@@ -313,10 +313,7 @@ export const Map = ({ initialOverlay }) => {
       <ProfileOverlay />
       <BasketDetails />
       {gainforestCenterpoints && (
-        <SearchOverlay
-          map={map}
-          allCenterpoints={gainforestCenterpoints}
-        />
+        <SearchOverlay map={map} allCenterpoints={gainforestCenterpoints} />
       )}
       {/* <BackToGlobe map={map} /> */}
 
@@ -345,6 +342,7 @@ export const Map = ({ initialOverlay }) => {
       <LayerPickerOverlay
         map={map}
         activeProjectMosaic={activeProjectMosaic}
+        activeProjectData={activeProjectData}
       />
       <TimeSlider map={map} />
     </>

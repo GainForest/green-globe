@@ -4,13 +4,17 @@ import { useSelector } from 'react-redux'
 
 import { navigate } from '@redwoodjs/router'
 
-const UrlUpdater = () => {
+const UrlUpdater = ({ urlProjectId }) => {
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-  const urlProjectId = useSelector((state: State) => state.project.id)
+  const selectedId = useSelector((state: State) => state.project.id)
 
   useEffect(() => {
     if (infoOverlay != null) {
-      navigate(`/${urlProjectId}/${infoOverlay}`, { replace: true })
+      if (selectedId) {
+        navigate(`/${selectedId}/${infoOverlay}`, { replace: true })
+      } else {
+        navigate(`/${urlProjectId}/${infoOverlay}`, { replace: true })
+      }
     }
   }, [infoOverlay])
 

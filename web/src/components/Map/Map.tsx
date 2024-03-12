@@ -38,7 +38,7 @@ import {
   getTreeInformation,
 } from './maputils'
 
-export const Map = ({ initialOverlay }) => {
+export const Map = ({ initialOverlay, urlProjectId }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
@@ -322,7 +322,7 @@ export const Map = ({ initialOverlay }) => {
       )}
       {infoOverlay && (
         <>
-          <UrlUpdater />
+          <UrlUpdater urlProjectId={urlProjectId} />
           <InfoOverlay
             numHexagons={numHexagons}
             activeProjectData={activeProjectData}

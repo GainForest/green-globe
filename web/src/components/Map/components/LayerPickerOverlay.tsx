@@ -21,6 +21,7 @@ export const LayerPickerOverlay = ({
   activeProjectPolygon,
   activeProjectMosaic,
   mediaSize,
+  maximize,
 }) => {
   const { theme } = useThemeUI()
   const [expandLayers, setExpandLayers] = useState(false)
@@ -46,7 +47,7 @@ export const LayerPickerOverlay = ({
     }
   }
 
-  return (
+  return mediaSize >= breakpoints.m || !maximize ? (
     <div>
       {expandLayers && (
         <div
@@ -61,8 +62,10 @@ export const LayerPickerOverlay = ({
             height: '100px',
             backgroundColor: theme.colors.background as string,
             position: 'absolute',
-            bottom: 36,
-            right: 100,
+            bottom: mediaSize < breakpoints.m ? 'auto' : 36,
+            right: mediaSize < breakpoints.m ? 'auto' : 100,
+            top: mediaSize < breakpoints.m ? 60 : 'auto',
+            left: mediaSize < breakpoints.m ? 100 : 'auto',
             borderRadius: '8px',
             padding: '16px 8px 8px 8px',
           }}
@@ -98,8 +101,10 @@ export const LayerPickerOverlay = ({
           width: '60px',
           height: '60px',
           position: 'absolute',
-          bottom: 56,
-          right: 20,
+          bottom: mediaSize < breakpoints.m ? 'auto' : 56,
+          top: mediaSize < breakpoints.m ? 80 : 'auto',
+          right: mediaSize < breakpoints.m ? 'auto' : 20,
+          left: mediaSize < breakpoints.m ? 20 : 'auto',
           borderRadius: '8px',
           alignItems: 'center',
         }}
@@ -140,7 +145,7 @@ export const LayerPickerOverlay = ({
         </div>
       </div>
     </div>
-  )
+  ) : null
 }
 
 const OrthomosaicToggle = ({

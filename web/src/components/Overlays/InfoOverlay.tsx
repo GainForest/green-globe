@@ -23,9 +23,10 @@ export const InfoOverlay = ({
   // numHexagons,
   setActiveProjectPolygon,
   mediaSize,
+  maximize,
+  setMaximize,
 }) => {
   const dispatch = useDispatch()
-  const [maximize, setMaximize] = useState<boolean>(false)
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
   return (

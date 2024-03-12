@@ -55,6 +55,7 @@ export const Map = ({ initialOverlay, mediaSize }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
+  const [maximize, setMaximize] = useState<boolean>(false)
   const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
 
@@ -378,6 +379,8 @@ export const Map = ({ initialOverlay, mediaSize }) => {
             activeProjectPolygon={activeProjectPolygon}
             setActiveProjectPolygon={setActiveProjectPolygon}
             mediaSize={mediaSize}
+            maximize={maximize}
+            setMaximize={setMaximize}
           />
         </>
       )}
@@ -402,6 +405,7 @@ export const Map = ({ initialOverlay, mediaSize }) => {
         activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
         mediaSize={mediaSize}
+        maximize={maximize}
       />
       <TimeSlider map={map} mediaSize={mediaSize} />
     </>

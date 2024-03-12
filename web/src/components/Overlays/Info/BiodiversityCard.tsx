@@ -202,6 +202,7 @@ export const BiodiversityCard = ({
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
+        <h2>Biodiversity Predictions</h2>
         <ToggleButton
           active={toggle}
           setToggle={setToggle}
@@ -209,7 +210,6 @@ export const BiodiversityCard = ({
         />
         {toggle === 'Predicted' ? (
           <div>
-            <h2>Biodiversity Predictions</h2>
             <p>
               Predicted distribution of species habitats within 150km of the
               project area.

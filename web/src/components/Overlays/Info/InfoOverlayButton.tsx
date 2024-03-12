@@ -101,16 +101,16 @@ const StyledButton = styled.button<{
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
       width: 28px;
-      bottom: 365px;
-      top: auto;
+      bottom: auto;
+      top: 60px;
       left: ${position * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
       height: 24px;
       width: 24px;
-      bottom: 285px;
-      top: auto;
+      bottom: auto;
+      top: 54px;
       left: ${position * 28 - 24}px;
     }
   `

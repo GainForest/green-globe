@@ -68,6 +68,7 @@ export const LayerPickerOverlay = ({
             left: mediaSize < breakpoints.m ? 100 : 'auto',
             borderRadius: '8px',
             padding: '16px 8px 8px 8px',
+            zIndex: 2,
           }}
         >
           <SatelliteLayerBox

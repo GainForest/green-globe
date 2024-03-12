@@ -58,17 +58,6 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
       ? 316
       : 246
 
-  const maxedBottom =
-    mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.l
-      ? null
-      : mediaSize > breakpoints.m
-      ? 386
-      : mediaSize > breakpoints.s
-      ? 316
-      : 246
-
   const left =
     mediaSize >= breakpoints.xl
       ? 280
@@ -121,17 +110,17 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
       : mediaSize > breakpoints.m
       ? 70
       : mediaSize > breakpoints.s
-      ? null
-      : null
+      ? 100
+      : 100
 
   return (
     <UnstyledButton
       style={{
-        zIndex: 2,
+        zIndex: 3,
         textAlign: 'center',
         left: maximize ? maxedLeft : left,
         right: maximize ? maxedRight : right,
-        bottom: maximize ? maxedBottom : bottom,
+        bottom: maximize ? null : bottom,
         top: maximize ? maxedTop : null,
         height: height,
         width: width,

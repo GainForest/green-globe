@@ -84,7 +84,7 @@ export const CommunityCard = ({ activeProjectData }) => {
                   fullName = ''
                 }
                 const profileSrc =
-                  d.profileUrl ||
+                  `${process.env.AWS_STORAGE}/${d.profileUrl}` ||
                   `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
                     .toLowerCase()
                     .replace(' ', '-')}.svg`

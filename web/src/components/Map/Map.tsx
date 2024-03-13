@@ -92,11 +92,11 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (map && gainforestCenterpoints && hexagons) {
       const onLoad = () => {
         map.setFog({
-          color: '#000000', // Lower atmosphere
-          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-          'horizon-blend': 0.02, // Atmosphere thickness
-          'space-color': 'rgb(11, 11, 25)', // Background color
-          'star-intensity': 0.05, // Background star brightness
+          color: '#000000',
+          'high-color': 'rgb(36, 92, 223)',
+          'horizon-blend': 0.02,
+          'space-color': 'rgb(11, 11, 25)',
+          'star-intensity': 0.05,
         })
         addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
@@ -112,20 +112,18 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
       const onStyleData = () => {
         map.setFog({
-          color: '#000000', // Lower atmosphere
-          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-          'horizon-blend': 0.02, // Atmosphere thickness
-          'space-color': 'rgb(11, 11, 25)', // Background color
-          'star-intensity': 0.05, // Background star brightness
+          color: '#000000',
+          'high-color': 'rgb(36, 92, 223)',
+          'horizon-blend': 0.02,
+          'space-color': 'rgb(11, 11, 25)',
+          'star-intensity': 0.05,
         })
         addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
-      } // This was a misplaced closing parenthesis, corrected to a curly brace
-
-      // These event listeners or similar logic were presumably intended to be set here
+      }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
     }
-  }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations]) // Added missing closing bracket for useEffect
+  }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
 
   // Rotate the globe
   useEffect(() => {

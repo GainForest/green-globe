@@ -302,12 +302,12 @@ export const addAllSitesSourceAndLayer = (map: mapboxgl.Map) => {
   if (map.getSource('allSites') && !map.getLayer('allSitesOutline')) {
     map.addLayer(allSitesOutlineLayer('#00FF00'))
   }
-  if(map.getSource('allSites') && !map.getLayer('allSitesFill')) {
+  if (map.getSource('allSites') && !map.getLayer('allSitesFill')) {
     map.addLayer(allSitesFillLayer('#00FF00'))
   }
 }
 
-export const addHighlightedSiteSourceAndLayer= (map: mapboxgl.Map) => {
+export const addHighlightedSiteSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('highlightedSite')) {
     map.addSource('highlightedSite', {
       type: 'geojson',
@@ -322,7 +322,10 @@ export const addHighlightedSiteSourceAndLayer= (map: mapboxgl.Map) => {
       },
     })
   }
-  if (map.getSource('highlightedSite') && !map.getLayer('highlightedSiteOutline')) {
+  if (
+    map.getSource('highlightedSite') &&
+    !map.getLayer('highlightedSiteOutline')
+  ) {
     map.addLayer(highlightedSiteOutlineLayer('#FFEA00'))
   }
 }
@@ -342,19 +345,20 @@ export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
   }
 }
 
-export const addTreesPlantedSourceAndLayers = (
-  map: mapboxgl.Map,
-) => {
+export const addTreesPlantedSourceAndLayers = (map: mapboxgl.Map) => {
   if (!map.getSource('trees')) {
-    map.addSource('trees', treesSource({
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: null,
-        },
-      ],
-    },))
+    map.addSource(
+      'trees',
+      treesSource({
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: null,
+          },
+        ],
+      })
+    )
   }
   if (!map.getLayer('clusteredTrees')) {
     map.addLayer(clusteredTreesLayer)

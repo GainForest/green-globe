@@ -103,7 +103,7 @@ export const LayerPickerOverlay = ({
           height: '60px',
           position: 'absolute',
           bottom: mediaSize < breakpoints.m ? 'auto' : 56,
-          top: mediaSize < breakpoints.m ? 80 : 'auto',
+          top: mediaSize < breakpoints.m ? 100 : 'auto',
           right: mediaSize < breakpoints.m ? 'auto' : 20,
           left: mediaSize < breakpoints.m ? 20 : 'auto',
           borderRadius: '8px',

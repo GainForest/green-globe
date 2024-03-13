@@ -81,22 +81,8 @@ const StyledButton = styled.button<{
       ? `
     height: 44px;
     width: 44px;
-    top: ${position * 52 - 44 + 80}px;
+    top: ${position * 52 - 44 + 48}px;
     left: 8px;
-
-    @media (max-width: ${breakpoints.xl}px) {
-      height: 42px;
-      width: 42px;
-      top: ${position * 52 - 42 + 80}px;
-      left: 8px;
-    }
-
-    @media (max-width: ${breakpoints.l}px) {
-      height: 36px;
-      width: 36px;
-      top: ${position * 52 - 36 + 80}px;
-      left: 8px;
-    }
 
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
@@ -145,8 +131,8 @@ const StyledButton = styled.button<{
     @media (max-width: ${breakpoints.s}px) {
       height: 24px;
       width: 24px;
-      bottom: 285px;
-      left: ${position * 28 - 24}px;
+      bottom: 320px;
+      left: ${position * 28 - 24 + 5}px;
     }
   `}
 `

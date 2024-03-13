@@ -24,7 +24,7 @@ export const InfoBox = ({
       ? '400px'
       : mediaSize > breakpoints.s
       ? '320px'
-      : '240px'
+      : '280px'
 
   const maxedHeight =
     mediaSize >= breakpoints.xl
@@ -34,7 +34,7 @@ export const InfoBox = ({
       : mediaSize > breakpoints.m
       ? '90vh'
       : mediaSize > breakpoints.s
-      ? '80vh'
+      ? '85vh'
       : '85vh'
 
   const width =
@@ -67,14 +67,16 @@ export const InfoBox = ({
         position: 'absolute',
         height: maximize ? maxedHeight : height,
         width: maximize ? maxedWidth : width,
-        bottom: maximize && mediaSize <= breakpoints.m ? 'auto' : 40,
+        bottom: maximize && mediaSize > breakpoints.m ? 'auto' : 36,
         top:
-          maximize && mediaSize <= breakpoints.s
-            ? 80
-            : maximize && mediaSize <= breakpoints.m
+          maximize && mediaSize > breakpoints.m
+            ? 56
+            : maximize && mediaSize > breakpoints.s
             ? 90
+            : maximize && mediaSize > breakpoints.xs
+            ? 80
             : 'auto',
-        left: maximize && mediaSize > breakpoints.m ? 56 : 8,
+        left: maximize && mediaSize > breakpoints.m ? 56 : 4,
         backgroundColor: theme.colors.background as string,
         color: theme.colors.text as string,
         borderRadius: '0.5em',

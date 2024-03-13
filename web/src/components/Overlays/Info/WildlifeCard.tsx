@@ -32,9 +32,16 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
           setToggle={setToggle}
           options={['Photos', 'Videos']}
         />
-        <div style={{ height: '24px', width: '100%' }} />
+        <div
+          style={{
+            height: '24px',
+            width: '100%',
+            display: 'flex',
+            flexWrap: 'wrap',
+          }}
+        />
         {toggle == 'Photos' && (
-          <>
+          <div style={{ flex: '1 1 50%' }}>
             {photoEndpoints?.map((photo) => (
               <PhotoCard key={photo} photoEndpoint={photo} />
             ))}
@@ -53,10 +60,10 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
                 .
               </p>
             )}
-          </>
+          </div>
         )}
         {toggle == 'Videos' && (
-          <>
+          <div style={{ flex: '1 1 50%' }}>
             {videoEndpoints?.map((video) => (
               <VideoCard key={video} videoEndpoint={video} />
             ))}
@@ -75,7 +82,7 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
                 .
               </p>
             )}
-          </>
+          </div>
         )}
       </div>
     </InfoBox>
@@ -89,10 +96,9 @@ const PhotoCard = ({ photoEndpoint }) => {
         alt="Wildlife camera still"
         src={`${process.env.AWS_STORAGE}/${photoEndpoint}`}
         style={{
-          width: '100%',
           height: '280px',
           objectFit: 'cover',
-          paddingTop: '20px',
+          padding: '20px',
         }}
       />
     </>
@@ -105,7 +111,6 @@ const VideoCard = ({ videoEndpoint }) => {
       <video
         src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}
         style={{
-          width: '100%',
           height: '280px',
           objectFit: 'cover',
           paddingTop: '20px',

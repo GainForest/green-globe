@@ -7,7 +7,6 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
-
 export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,
@@ -93,7 +92,11 @@ export const BiodiversityCard = ({
                   })
 
                   if (!isSimilar) {
-                    const imageUrl = getTreePhotos(tree.properties, project.id)
+                    const imageUrl = getTreePhotos(
+                      tree.properties,
+                      project.id,
+                      null
+                    )
 
                     speciesCount[species] = {
                       name: species,
@@ -249,9 +252,9 @@ export const BiodiversityCard = ({
 const PredictedAnimalsGrid = ({ biodiversity }) => {
   if (biodiversity.length) {
     return (
-      <>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {biodiversity.map((biodiversityGroup) => (
-          <div key={biodiversityGroup.title}>
+          <div key={biodiversityGroup.title} style={{ flex: '1 1 50%' }}>
             <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.scientificname}>
@@ -260,7 +263,7 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
             ))}
           </div>
         ))}
-      </>
+      </div>
     )
   } else {
     return (
@@ -280,9 +283,9 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
     // if data is loaded but no measured data, return "no data" message
     if (measuredData.length > 0) {
       return (
-        <>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {measuredData.map((group) => (
-            <div key={group.title}>
+            <div style={{ flex: '1 1 50%' }} key={group.title}>
               <p>
                 {' '}
                 Total {group.title.toLowerCase()}: {group.total}
@@ -295,7 +298,7 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
               ))}
             </div>
           ))}
-        </>
+        </div>
       )
     } else {
       return <p>There is not yet any measured biodiversity for this project.</p>

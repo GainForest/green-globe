@@ -20,7 +20,7 @@ export const ProjectCard = ({
 
   if (!activeProjectData) {
     return (
-      <InfoBox mediaSize={mediaSize}>
+      <InfoBox mediaSize={mediaSize} maximize={maximize}>
         <ThemedSkeleton />
         <div style={{ margin: '8px 24px' }}>
           <h1>

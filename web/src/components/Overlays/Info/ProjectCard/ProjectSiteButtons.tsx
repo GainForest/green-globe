@@ -58,7 +58,7 @@ export const ProjectSiteButtons = ({
               return (
                 <Button
                   style={{ margin: '0px' }}
-                  key={`${shortName}-shapefile-button`}
+                  key={site.id}
                   active={activeShortname == shortName}
                   onClick={() => {
                     fetchAndSetSite(site?.awsCID)

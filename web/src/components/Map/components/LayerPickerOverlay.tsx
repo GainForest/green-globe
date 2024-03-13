@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
 import { breakpoints } from 'src/constants'
+import { countryCodes } from 'src/constants'
 import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
 
 import {
@@ -19,6 +20,7 @@ import {
 export const LayerPickerOverlay = ({
   map,
   activeProjectPolygon,
+  activeProjectData,
   activeProjectMosaic,
   mediaSize,
   maximize,
@@ -75,6 +77,7 @@ export const LayerPickerOverlay = ({
             map={map}
             satellite={satellite}
             setSatellite={setSatellite}
+            activeProjectData={activeProjectData}
           />
           <OrthomosaicToggle
             map={map}
@@ -187,48 +190,6 @@ const OrthomosaicToggle = ({
   ) : null
 }
 
-// const PotentialTreeCoverBox = ({ map }) => {
-//   const [isVisible, setIsVisible] = useState<boolean>(false)
-
-//   const imageSrc = '/potentialTreeCoverDark.png'
-
-//   return (
-//     <div
-//       style={{
-//         display: 'flex',
-//         flexDirection: 'column',
-//         margin: '0px 8px',
-//         textAlign: 'center',
-//       }}
-//     >
-//       <LayerPickerButton
-//         type="image"
-//         src={imageSrc}
-//         alt="toggle potential tree cover"
-//         onClick={() => {
-//           if (!isVisible) {
-//             togglePotentialTreeCoverLayer(map, 'visible')
-//             toggleTreesPlantedLayer(map, 'visible')
-//             setIsVisible(true)
-//           } else {
-//             togglePotentialTreeCoverLayer(map, 'none')
-//             toggleTreesPlantedLayer(map, 'visible')
-//             setIsVisible(false)
-//           }
-//         }}
-//       />
-//       <p
-//         style={{
-//           fontSize: '10px',
-//           width: '48px',
-//         }}
-//       >
-//         potential tree cover {isVisible ? 'on' : 'off'}
-//       </p>
-//     </div>
-//   )
-// }
-
 const TreeCoverBox = ({ map, treeCover, setTreeCover }) => {
   const imageSrc = '/treeCoverDark.png'
 
@@ -315,10 +276,15 @@ const LandCoverBox = ({
   )
 }
 
-const SatelliteLayerBox = ({ map, satellite, setSatellite }) => {
+const SatelliteLayerBox = ({
+  map,
+  satellite,
+  setSatellite,
+  activeProjectData,
+}) => {
   const dispatch = useDispatch()
 
-  return (
+  return countryCodes.includes(activeProjectData?.project?.country) ? (
     <div
       style={{
         display: 'flex',
@@ -354,7 +320,7 @@ const SatelliteLayerBox = ({ map, satellite, setSatellite }) => {
         satellite history {satellite ? 'on' : 'off'}
       </p>
     </div>
-  )
+  ) : null
 }
 
 const LayerPickerButton = styled.img`

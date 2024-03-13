@@ -26,7 +26,11 @@ const MapPage = ({ urlProjectId, initialOverlay }) => {
 
       <div style={{ width: '100vw', height: '100vh' }}>
         <Navbar isAuthenticated={isAuthenticated} mediaSize={mediaSize} />
-        <Map initialOverlay={initialOverlay} mediaSize={mediaSize} />
+        <Map
+          urlProjectId={urlProjectId}
+          initialOverlay={initialOverlay}
+          mediaSize={mediaSize}
+        />
       </div>
     </>
   )

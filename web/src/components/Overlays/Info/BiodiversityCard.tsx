@@ -17,6 +17,10 @@ export const BiodiversityCard = ({
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
 
   useEffect(() => {
+    console.log(measuredData)
+  }, [measuredData])
+
+  useEffect(() => {
     if (!activeProjectData) {
       return
     }
@@ -92,11 +96,19 @@ export const BiodiversityCard = ({
                   })
 
                   if (!isSimilar) {
-                    const imageUrl = getTreePhotos(
+                    const treeID =
+                      tree?.properties['FCD-tree_records-tree_photo']?.split(
+                        '?id='
+                      )?.[1] ||
+                      tree?.ID ||
+                      'unknown'
+
+                    const photo = getTreePhotos(
                       tree.properties,
                       project.id,
-                      null
+                      treeID
                     )
+                    const imageUrl = photo[0]
 
                     speciesCount[species] = {
                       name: species,

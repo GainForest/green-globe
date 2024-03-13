@@ -28,6 +28,7 @@ import {
   fetchTreeShapefile,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
+  fetchAllSiteData,
   fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
@@ -35,12 +36,11 @@ import { spinGlobe } from './maprotate'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
-  addTreesPlantedSourceAndLayers,
   getTreeInformation,
   toggleTreesPlantedLayer,
 } from './maputils'
 
-export const Map = ({ initialOverlay, mediaSize }) => {
+export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
@@ -51,7 +51,8 @@ export const Map = ({ initialOverlay, mediaSize }) => {
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
-  const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
+  const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
+  const [allSitePolygons, setAllSitePolygons] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
@@ -64,6 +65,18 @@ export const Map = ({ initialOverlay, mediaSize }) => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     fetchHexagons(setHexagons)
   }, [])
+
+  useEffect(() => {
+    if (urlProjectId && !activeProjectId) {
+      dispatch(setProjectId(urlProjectId))
+    }
+  }, [urlProjectId, activeProjectId])
+
+  useEffect(() => {
+    if (initialOverlay && !infoOverlay) {
+      dispatch(setInfoOverlay(initialOverlay))
+    }
+  }, [initialOverlay, infoOverlay])
 
   // Initialize Map
   useEffect(() => {
@@ -145,6 +158,14 @@ export const Map = ({ initialOverlay, mediaSize }) => {
     }
   }, [map])
 
+  useEffect(() => {
+    if (map && allSitePolygons) {
+      map.on('styledata', () => {
+        map.getSource('allSites')?.setData(allSitePolygons)
+      })
+    }
+  }, [map, allSitePolygons])
+
   // Fetch project data to display on the overlay
   // Fetch default project site
   useEffect(() => {
@@ -159,9 +180,13 @@ export const Map = ({ initialOverlay, mediaSize }) => {
         const projectMosaic = result?.project?.assets?.filter(
           (d) => d?.classification == 'Drone Mosaic'
         )
+        const endpoints = result?.project?.assets
+          ?.filter((d) => d?.classification == 'Shapefiles')
+          .map((d) => d?.awsCID)
         setActiveProjectData(result)
         setActiveProjectMosaic(projectMosaic)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
+        await fetchAllSiteData(endpoints, setAllSitePolygons)
       }
       if (
         activeProjectId ==
@@ -191,19 +216,15 @@ export const Map = ({ initialOverlay, mediaSize }) => {
     }
   }, [initialOverlay, dispatch])
 
-  // If the active project changes
-  // Display project boundaries, the overlay, and the trees planted
-  // Re-draw on style change.
+  // If the active project change, zoom in to the default project site and change
+  // its color
   useEffect(() => {
     if (map && activeProjectPolygon) {
-      // TODO: Take into account all of the shapefiles the project has
-      map.getSource('project')?.setData(activeProjectPolygon)
-      !infoOverlay && dispatch(setInfoOverlay(1))
-      toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
         padding: { top: 40, bottom: 40, left: 40, right: 40 },
       })
+      map.getSource('highlightedSite')?.setData(activeProjectPolygon)
     }
   }, [map, activeProjectPolygon])
 
@@ -224,11 +245,11 @@ export const Map = ({ initialOverlay, mediaSize }) => {
   }, [activeProjectData])
 
   // Display tree data
-  // Add trees planted source and layers on every style change
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
-      // Needed on initial fetch
-      addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
+      map.on('styledata', () => {
+        map.getSource('trees')?.setData(activeProjectTreesPlanted)
+      })
     }
   }, [map, activeProjectTreesPlanted])
 
@@ -269,7 +290,7 @@ export const Map = ({ initialOverlay, mediaSize }) => {
     }
   }, [map])
 
-  // Remove layers when you exit the display overlay
+  // Set hovered tree ID on mouse move
   useEffect(() => {
     if (map) {
       let hoveredTreeId = null
@@ -402,8 +423,9 @@ export const Map = ({ initialOverlay, mediaSize }) => {
       /> */}
       <LayerPickerOverlay
         map={map}
-        activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
+        activeProjectData={activeProjectData}
+        activeProjectPolygon={activeProjectPolygon}
         mediaSize={mediaSize}
         maximize={maximize}
       />

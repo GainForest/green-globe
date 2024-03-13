@@ -39,6 +39,9 @@ export const SearchOverlay = ({ map, allCenterpoints, mediaSize }) => {
   }, [map])
 
   useEffect(() => {
+    if (searchInput && searchInput.length == 0) {
+      setFilteredProjects(allProjects)
+    }
     if (searchInput && searchInput.length > 0) {
       const filteredProjects = allProjects?.filter((d) => {
         const country = countryToEmoji[d?.country]?.name?.toLowerCase()

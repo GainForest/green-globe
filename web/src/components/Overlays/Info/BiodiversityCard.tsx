@@ -17,10 +17,6 @@ export const BiodiversityCard = ({
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
 
   useEffect(() => {
-    console.log(measuredData)
-  }, [measuredData])
-
-  useEffect(() => {
     if (!activeProjectData) {
       return
     }
@@ -217,7 +213,7 @@ export const BiodiversityCard = ({
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
-        <h2>Biodiversity Predictions</h2>
+        <h2 style={{ paddingTop: '20px' }}>Biodiversity Predictions</h2>
         <ToggleButton
           active={toggle}
           setToggle={setToggle}

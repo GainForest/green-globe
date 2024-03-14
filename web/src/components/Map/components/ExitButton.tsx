@@ -51,12 +51,12 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
     mediaSize >= breakpoints.xl
       ? 546
       : mediaSize > breakpoints.l
-      ? 466
+      ? 476
       : mediaSize > breakpoints.m
-      ? 386
+      ? 396
       : mediaSize > breakpoints.s
       ? 316
-      : 246
+      : 280
 
   const left =
     mediaSize >= breakpoints.xl

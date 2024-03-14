@@ -27,6 +27,10 @@ export const SearchOverlay = ({ map, allCenterpoints, mediaSize }) => {
     const found = allProjects.find((d) => d?.name == searchInput)
     if (found) {
       dispatch(setProjectId(found?.projectId))
+      setSearchInput('')
+      if (mediaSize < breakpoints.m) {
+        setShowSearchBar(false)
+      }
     }
   }, [allProjects, searchInput])
 
@@ -131,7 +135,7 @@ const CountrySubtitle = styled.p`
 `
 
 const SearchInputBox = styled.input<{ theme }>`
-  z-index: 2;
+  z-index: 3;
   border: none;
   height: 40px;
   width: 360px;

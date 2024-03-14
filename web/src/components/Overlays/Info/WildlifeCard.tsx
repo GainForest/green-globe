@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import { ToggleButton } from '../../Map/components/ToggleButton'
 

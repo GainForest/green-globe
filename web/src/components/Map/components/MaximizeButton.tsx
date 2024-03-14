@@ -51,12 +51,12 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
     mediaSize >= breakpoints.xl
       ? 546
       : mediaSize > breakpoints.l
-      ? 466
+      ? 476
       : mediaSize > breakpoints.m
-      ? 386
+      ? 396
       : mediaSize > breakpoints.s
       ? 316
-      : 246
+      : 280
 
   const left =
     mediaSize >= breakpoints.xl
@@ -89,7 +89,7 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
       ? null
       : mediaSize > breakpoints.s
       ? '56px'
-      : '56px'
+      : '52px'
 
   const maxedRight =
     mediaSize >= breakpoints.xl

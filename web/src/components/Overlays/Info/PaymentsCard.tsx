@@ -74,6 +74,7 @@ export const PaymentCard = ({ activeProjectData }) => {
         `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
       )
       const data = await res.json()
+      console.log(data)
       const seen = new Set()
       let transactions = data['result'].filter((transaction) => {
         const isValid =
@@ -136,7 +137,7 @@ export const PaymentCard = ({ activeProjectData }) => {
       let transactions = result.data.solana.transfers.filter(
         (transaction) =>
           recipients.includes(transaction.receiver.address) &&
-          transaction.currency.name === 'USD Coin'
+          transaction.currency.name === 'USDC'
       )
       transactions = transactions.map((transaction) => ({
         to: transaction.receiver.address,

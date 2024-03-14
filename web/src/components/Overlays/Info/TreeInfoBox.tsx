@@ -16,6 +16,7 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
     return (
       <div>
         <video
+          className="tree-photo"
           key={treeData.treePhotos[photoIndex]}
           style={{
             borderRadius: '8px',

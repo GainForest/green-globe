@@ -75,6 +75,10 @@ export const fetchProjectInfo = async (projectId) => {
               fundsReceived
               profileUrl
             }
+            Wallet {
+              CeloAccounts
+              SOLAccounts
+            }
           }
         }
       `,

@@ -136,7 +136,7 @@ export const PaymentCard = ({ activeProjectData }) => {
       let transactions = result.data.solana.transfers.filter(
         (transaction) =>
           recipients.includes(transaction.receiver.address) &&
-          transaction.currency.name === 'USD Coin'
+          transaction.currency.name === 'USDC'
       )
       transactions = transactions.map((transaction) => ({
         to: transaction.receiver.address,

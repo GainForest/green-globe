@@ -1,8 +1,11 @@
+import { useState } from 'react'
+
 import { useDispatch, useSelector } from 'react-redux'
 
 import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
+import { MaximizeButton } from '../Map/components/MaximizeButton'
 
 import { BiodiversityCard } from './Info/BiodiversityCard'
 import { ChatCard } from './Info/ChatCard'
@@ -19,47 +22,70 @@ export const InfoOverlay = ({
   activeProjectPolygon,
   // numHexagons,
   setActiveProjectPolygon,
+  mediaSize,
+  maximize,
+  setMaximize,
 }) => {
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
   return (
     <>
+      <MaximizeButton
+        mediaSize={mediaSize}
+        maximize={maximize}
+        onClick={() => setMaximize((max) => !max)}
+        style={null}
+      />
       <ExitButton
-        style={{ left: 320, bottom: 546 }}
+        mediaSize={mediaSize}
+        maximize={maximize}
         onClick={() => dispatch(hideInfoOverlay())}
+        style={null}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'forest'}
         position={1}
         active={infoOverlay == 1}
         onClick={() => dispatch(setInfoOverlay(1))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'pets'}
         position={2}
         active={infoOverlay == 2}
         onClick={() => dispatch(setInfoOverlay(2))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'photo'}
         position={3}
         active={infoOverlay == 3}
         onClick={() => dispatch(setInfoOverlay(3))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'emoji_people'}
         position={4}
         active={infoOverlay == 4}
         onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'chat'}
         position={5}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
       <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
         buttonIcon={'download'}
         position={6}
         active={infoOverlay == 6}
@@ -67,23 +93,47 @@ export const InfoOverlay = ({
       />
       {infoOverlay == 1 && (
         <ProjectCard
+          maximize={maximize}
+          mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
         />
       )}
       {infoOverlay == 2 && (
-        <BiodiversityCard activeProjectData={activeProjectData} />
+        <BiodiversityCard
+          maximize={maximize}
+          mediaSize={mediaSize}
+          activeProjectData={activeProjectData}
+        />
       )}
       {infoOverlay == 3 && (
-        <WildlifeCard activeProjectData={activeProjectData} />
+        <WildlifeCard
+          maximize={maximize}
+          mediaSize={mediaSize}
+          activeProjectData={activeProjectData}
+        />
       )}
       {infoOverlay == 4 && (
-        <CommunityCard activeProjectData={activeProjectData} />
+        <CommunityCard
+          maximize={maximize}
+          mediaSize={mediaSize}
+          activeProjectData={activeProjectData}
+        />
       )}
-      {infoOverlay == 5 && <ChatCard activeProjectData={activeProjectData} />}
+      {infoOverlay == 5 && (
+        <ChatCard
+          maximize={maximize}
+          mediaSize={mediaSize}
+          activeProjectData={activeProjectData}
+        />
+      )}
       {infoOverlay == 6 && (
-        <DownloadCard activeProjectData={activeProjectData} />
+        <DownloadCard
+          maximize={maximize}
+          mediaSize={mediaSize}
+          activeProjectData={activeProjectData}
+        />
       )}
     </>
   )

@@ -1,8 +1,11 @@
 import mapboxgl from 'mapbox-gl'
 
+import { breakpoints } from 'src/constants'
+
 export const initializeMapbox = (
   containerId: string,
   setMap: React.Dispatch<mapboxgl.Map>,
+  mediaSize,
   bounds?: mapboxgl.LngLatBoundsLike
 ) => {
   mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
@@ -11,7 +14,6 @@ export const initializeMapbox = (
       container: containerId,
       projection: 'globe',
       style: 'mapbox://styles/mapbox/satellite-v9',
-      fitBoundsOptions: { padding: 24 },
       zoom: 2,
       center: [102, 9],
       bounds,
@@ -22,7 +24,6 @@ export const initializeMapbox = (
     const map = new mapboxgl.Map({
       container: containerId,
       style: 'mapbox://styles/mapbox/dark-v11',
-      fitBoundsOptions: { padding: 24 },
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

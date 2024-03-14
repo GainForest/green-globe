@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { useThemeUI } from 'theme-ui'
 
 import { CloseButton } from 'src/components/Buttons/Close'
+import { breakpoints } from 'src/constants'
 
-export const TreeInfoBox = ({ treeData, setTreeData }) => {
+export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
   const { theme } = useThemeUI()
   const [photoIndex, setPhotoIndex] = useState(0)
   if (
@@ -17,10 +18,6 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
         <video
           key={treeData.treePhotos[photoIndex]}
           style={{
-            maxWidth: '300px',
-            position: 'absolute',
-            top: 240,
-            right: 8,
             borderRadius: '8px',
           }}
           autoPlay
@@ -34,13 +31,12 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
     return (
       <>
         <div
+          className="tree-info"
           style={{
             boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
             cursor: 'pointer',
             display: 'flex',
             justifyContent: 'space-around',
-            width: '300px',
-            height: '80px',
             backgroundColor: theme.colors.background as string,
             position: 'absolute',
             top: 160,
@@ -48,7 +44,6 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             borderRadius: treeData.treePhotos[0]?.endsWith('taxa_plants.png')
               ? '8px'
               : '8px 8px 0 0 ',
-            padding: '8px',
           }}
         >
           <div
@@ -59,52 +54,20 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
             }}
           >
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
-              <p
-                style={{
-                  fontSize: '10px',
-                  width: '36px',
-                  color: theme.colors.secondary as string,
-                }}
-              >
-                Species
-              </p>
-              <p style={{ fontSize: '14px' }}>{treeData.treeName}</p>
+              <p className="tree-key">Species</p>
+              <p className="tree-val">{treeData.treeName}</p>
             </div>
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
-              <p
-                style={{
-                  fontSize: '10px',
-                  width: '36px',
-                  color: theme.colors.secondary as string,
-                }}
-              >
-                Height
-              </p>
-              <p style={{ fontSize: '14px' }}>{treeData.treeHeight}</p>
+              <p className="tree-key">Height</p>
+              <p className="tree-val">{treeData.treeHeight}</p>
             </div>
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
-              <p
-                style={{
-                  fontSize: '10px',
-                  width: '36px',
-                  color: theme.colors.secondary as string,
-                }}
-              >
-                Width
-              </p>
-              <p style={{ fontSize: '14px' }}>{treeData.treeDBH}</p>
+              <p className="tree-key">Width</p>
+              <p className="tree-val">{treeData.treeDBH}</p>
             </div>
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
-              <p
-                style={{
-                  fontSize: '10px',
-                  width: '36px',
-                  color: theme.colors.secondary as string,
-                }}
-              >
-                Date Measured
-              </p>
-              <p style={{ fontSize: '14px' }}>{treeData.dateOfMeasurement}</p>
+              <p className="tree-key">Date Measured</p>
+              <p className="tree-val">{treeData.dateOfMeasurement}</p>
             </div>
             <CloseButton
               style={null}
@@ -118,14 +81,7 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
         {!treeData.treePhotos[0].endsWith('taxa_plants.png') && (
           <div>
             <img
-              style={{
-                width: '300px',
-                maxHeight: '500px',
-                position: 'absolute',
-                top: 240,
-                right: 8,
-                borderRadius: '0px 0px 8px 8px',
-              }}
+              className="tree-photo"
               alt={treeData.name}
               src={treeData.treePhotos[photoIndex]}
             />
@@ -136,8 +92,26 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                     background: 'none',
                     border: 'none',
                     position: 'absolute',
-                    top: 640,
-                    right: 160,
+                    top:
+                      mediaSize >= breakpoints.xl
+                        ? 640
+                        : mediaSize > breakpoints.l
+                        ? 610
+                        : mediaSize > breakpoints.m
+                        ? 560
+                        : mediaSize > breakpoints.s
+                        ? 540
+                        : 470,
+                    right:
+                      mediaSize >= breakpoints.xl
+                        ? 160
+                        : mediaSize > breakpoints.l
+                        ? 150
+                        : mediaSize > breakpoints.m
+                        ? 135
+                        : mediaSize > breakpoints.s
+                        ? 125
+                        : 100,
                     fontSize: '32px',
                     color: 'white',
                     cursor: 'pointer',
@@ -157,8 +131,26 @@ export const TreeInfoBox = ({ treeData, setTreeData }) => {
                     background: 'none',
                     border: 'none',
                     position: 'absolute',
-                    top: 640,
-                    right: 120,
+                    top:
+                      mediaSize >= breakpoints.xl
+                        ? 640
+                        : mediaSize > breakpoints.l
+                        ? 610
+                        : mediaSize > breakpoints.m
+                        ? 560
+                        : mediaSize > breakpoints.s
+                        ? 540
+                        : 470,
+                    right:
+                      mediaSize >= breakpoints.xl
+                        ? 120
+                        : mediaSize > breakpoints.l
+                        ? 110
+                        : mediaSize > breakpoints.m
+                        ? 95
+                        : mediaSize > breakpoints.s
+                        ? 85
+                        : 70,
                     fontSize: '32px',
                     color: 'white',
                     cursor: 'pointer',

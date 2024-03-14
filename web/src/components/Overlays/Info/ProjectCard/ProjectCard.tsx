@@ -1,5 +1,6 @@
 import { useThemeUI } from 'theme-ui'
 
+import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import Button from '../../../Map/components/Button'
@@ -12,12 +13,15 @@ export const ProjectCard = ({
   activeProjectData,
   activeProjectPolygon,
   setActiveProjectPolygon,
+  mediaSize,
+  maximize,
 }) => {
   const { theme } = useThemeUI()
+
   if (!activeProjectData) {
     return (
-      <InfoBox>
-        <ThemedSkeleton height={250} />
+      <InfoBox mediaSize={mediaSize} maximize={maximize}>
+        <ThemedSkeleton />
         <div style={{ margin: '8px 24px' }}>
           <h1>
             <ThemedSkeleton width={'80%'} />
@@ -36,10 +40,25 @@ export const ProjectCard = ({
   const projectId = activeProjectData?.project?.id
 
   return (
-    <InfoBox>
+    <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <ProjectSplash activeProjectData={activeProjectData} />
       <TextContainer>
-        <h1>{activeProjectData?.project?.name || ''}</h1>
+        <h1
+          style={{
+            fontSize:
+              mediaSize >= breakpoints.xl
+                ? 24
+                : mediaSize > breakpoints.l
+                ? 22
+                : mediaSize > breakpoints.m
+                ? 20
+                : mediaSize > breakpoints.s
+                ? 18
+                : 16,
+          }}
+        >
+          {activeProjectData?.project?.name || ''}
+        </h1>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
         {/* {activeProjectData?.project?.stripeUrl && (
           <a href={activeProjectData?.project?.stripeUrl}>

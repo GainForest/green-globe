@@ -49,7 +49,7 @@ export const ProjectSiteButtons = ({
               display: 'flex',
               flexWrap: 'wrap',
               gap: '10px',
-              maxWidth: '360px',
+              maxWidth: '100%',
               marginBottom: '24px',
             }}
           >

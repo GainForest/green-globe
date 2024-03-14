@@ -74,7 +74,6 @@ export const PaymentCard = ({ activeProjectData }) => {
         `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
       )
       const data = await res.json()
-      console.log(data)
       const seen = new Set()
       let transactions = data['result'].filter((transaction) => {
         const isValid =

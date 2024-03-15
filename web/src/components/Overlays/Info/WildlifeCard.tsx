@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { breakpoints } from 'src/constants'
+
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
@@ -50,6 +52,8 @@ export const WildlifeCard = ({
                 key={photo}
                 photoEndpoint={photo}
                 handleClick={handleClick}
+                mediaSize={mediaSize}
+                maximize={maximize}
               />
             ))}
             {photoEndpoints?.length === 0 ? (
@@ -76,6 +80,8 @@ export const WildlifeCard = ({
                 key={video}
                 videoEndpoint={video}
                 handleClick={handleClick}
+                mediaSize={mediaSize}
+                maximize={maximize}
               />
             ))}
             {videoEndpoints?.length === 0 ? (
@@ -100,18 +106,41 @@ export const WildlifeCard = ({
   )
 }
 
-const PhotoCard = ({ photoEndpoint, handleClick }) => {
+const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   return (
     <>
       <button
-        style={{ paddingBottom: '20px', border: 0, background: 'transparent' }}
+        style={{
+          paddingBottom: '20px',
+          border: 0,
+          background: 'transparent',
+          cursor: 'pointer',
+        }}
         onClick={() => handleClick(photoEndpoint)}
       >
         <img
           alt="Wildlife camera still"
           src={`${process.env.AWS_STORAGE}/${photoEndpoint}`}
           style={{
-            height: '280px',
+            maxWidth: maximize
+              ? mediaSize >= breakpoints.xl
+                ? '650px'
+                : mediaSize >= breakpoints.l
+                ? '600px'
+                : mediaSize >= breakpoints.m
+                ? '500px'
+                : mediaSize >= breakpoints.s
+                ? '600px'
+                : '300px'
+              : mediaSize >= breakpoints.xl
+              ? '300px'
+              : mediaSize >= breakpoints.l
+              ? '260px'
+              : mediaSize >= breakpoints.m
+              ? '225px'
+              : mediaSize >= breakpoints.s
+              ? '600px'
+              : '300px',
             objectFit: 'cover',
             padding: 0,
           }}
@@ -121,21 +150,46 @@ const PhotoCard = ({ photoEndpoint, handleClick }) => {
   )
 }
 
-const VideoCard = ({ videoEndpoint, handleClick }) => {
+const VideoCard = ({ videoEndpoint, handleClick, mediaSize, maximize }) => {
   return (
     <>
-      <video
-        onClick={() => {
-          handleClick(videoEndpoint)
-        }}
-        src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}
+      <button
         style={{
-          height: '280px',
-          objectFit: 'cover',
-          paddingTop: '20px',
+          paddingBottom: '20px',
+          border: 0,
+          background: 'transparent',
+          cursor: 'pointer',
         }}
-        controls
-      />
+        onClick={() => handleClick(videoEndpoint)}
+      >
+        <video
+          src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}
+          style={{
+            maxWidth: maximize
+              ? mediaSize >= breakpoints.xl
+                ? '650px'
+                : mediaSize >= breakpoints.l
+                ? '600px'
+                : mediaSize >= breakpoints.m
+                ? '500px'
+                : mediaSize >= breakpoints.s
+                ? '600px'
+                : '300px'
+              : mediaSize >= breakpoints.xl
+              ? '300px'
+              : mediaSize >= breakpoints.l
+              ? '260px'
+              : mediaSize >= breakpoints.m
+              ? '225px'
+              : mediaSize >= breakpoints.s
+              ? '600px'
+              : '300px',
+            objectFit: 'cover',
+            padding: 0,
+          }}
+          controls
+        />
+      </button>
     </>
   )
 }

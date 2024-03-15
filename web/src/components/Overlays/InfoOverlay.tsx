@@ -168,7 +168,7 @@ export const ImageOverlay = ({ toggle, endpoint, handleClick }) => {
         <img
           src={`${process.env.AWS_STORAGE}/${endpoint}`}
           alt="Taken by community members"
-          className="full-size-image"
+          style={{ maxWidth: '90%' }}
         />
       ) : (
         <video

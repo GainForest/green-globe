@@ -198,13 +198,11 @@ export const ChatCard = ({ activeProjectData }) => {
               >
                 {`${getDate(msg.timestamp)} ${msg.sender}`}
                 <div
-                  onMouseEnter={() =>
-                    msg.sender === userMetadata.email &&
-                    setHoveredId(msg.timestamp)
-                  }
-                  onMouseLeave={() =>
-                    msg.sender === userMetadata.email && setHoveredId(null)
-                  }
+                  onMouseEnter={() => setHoveredId(msg.timestamp)}
+                  onMouseLeave={() => {
+                    setHoveredId(null)
+                    setShowPopup(false)
+                  }}
                   className={
                     msg.sender !== 'Peggy'
                       ? 'message-inner-right'
@@ -225,13 +223,17 @@ export const ChatCard = ({ activeProjectData }) => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
-                          setShowPopup(true)
+                          setShowPopup((showPopup) => !showPopup)
                         }}
                         style={{ background: 'transparent', border: 'none' }}
                       >
                         <img
                           alt="menu"
-                          style={{ height: '30px', width: 'auto' }}
+                          style={{
+                            paddingTop: '10px',
+                            height: '40px',
+                            width: 'auto',
+                          }}
                           src="/menu.png"
                         />
                       </button>
@@ -250,6 +252,7 @@ export const ChatCard = ({ activeProjectData }) => {
                         >
                           <button
                             style={{
+                              background: 'white',
                               border: 'none',
                               padding: '8px',
                               cursor: 'pointer',
@@ -263,6 +266,7 @@ export const ChatCard = ({ activeProjectData }) => {
                           </button>
                           <button
                             style={{
+                              background: 'white',
                               border: 'none',
                               padding: '8px',
                               cursor: 'pointer',

@@ -53,6 +53,21 @@ const getDate = (input) => {
   return dateObj.toLocaleString('en-GB', options)
 }
 
+const useOutsideClick = (ref, callback) => {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref, callback])
+}
+
 export const ChatCard = ({ activeProjectData }) => {
   const [messageLog, setMessageLog] = useState([])
   const { isAuthenticated, userMetadata, signUp } = useAuth()
@@ -61,12 +76,17 @@ export const ChatCard = ({ activeProjectData }) => {
     sender: userMetadata?.email,
     timestamp: null,
   })
+  const [hoveredId, setHoveredId] = useState<string>('')
+  const [showPopup, setShowPopup] = useState(false)
 
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView()
   }, [messageLog])
+
+  const popupRef = useRef(null)
+  useOutsideClick(popupRef, () => setShowPopup(false))
 
   const SAVE_TO_REDIS_MUTATION = gql`
     mutation saveToRedis($key: String!, $value: String!) {
@@ -168,7 +188,7 @@ export const ChatCard = ({ activeProjectData }) => {
           }}
         >
           {messageLog.map((msg) => (
-            <div key={msg.timestamp}>
+            <div key={msg.timestamp} style={{ width: '100%' }}>
               <div
                 className={
                   msg.sender !== 'Peggy'
@@ -178,6 +198,13 @@ export const ChatCard = ({ activeProjectData }) => {
               >
                 {`${getDate(msg.timestamp)} ${msg.sender}`}
                 <div
+                  onMouseEnter={() =>
+                    msg.sender === userMetadata.email &&
+                    setHoveredId(msg.timestamp)
+                  }
+                  onMouseLeave={() =>
+                    msg.sender === userMetadata.email && setHoveredId(null)
+                  }
                   className={
                     msg.sender !== 'Peggy'
                       ? 'message-inner-right'
@@ -193,21 +220,65 @@ export const ChatCard = ({ activeProjectData }) => {
                   >
                     <p className="message-text">{msg.text}</p>
                   </div>
+                  {msg.timestamp === hoveredId && (
+                    <div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setShowPopup(true)
+                        }}
+                        style={{ background: 'transparent', border: 'none' }}
+                      >
+                        <img
+                          alt="menu"
+                          style={{ height: '30px', width: 'auto' }}
+                          src="/menu.png"
+                        />
+                      </button>
+
+                      {showPopup && (
+                        <div
+                          ref={popupRef}
+                          style={{
+                            position: 'absolute',
+                            right: 0,
+                            backgroundColor: 'white',
+                            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+                            borderRadius: '8px',
+                            padding: '8px',
+                          }}
+                        >
+                          <button
+                            style={{
+                              border: 'none',
+                              padding: '8px',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(msg.text)
+                              setShowPopup(false)
+                            }}
+                          >
+                            Copy Text
+                          </button>
+                          <button
+                            style={{
+                              border: 'none',
+                              padding: '8px',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                              deleteMessage(msg)
+                              setShowPopup(false)
+                            }}
+                          >
+                            Delete Message
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {userMetadata?.email == msg.sender && (
-                  <button
-                    onClick={() => deleteMessage(msg)}
-                    style={{
-                      backgroundColor: 'transparent',
-                      border: 'none',
-                      color: 'gray',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                    }}
-                  >
-                    X
-                  </button>
-                )}
               </div>
             </div>
           ))}

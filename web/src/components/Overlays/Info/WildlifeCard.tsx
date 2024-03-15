@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
-export const WildlifeCard = ({ activeProjectData }) => {
+export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
 
   const projectId = activeProjectData?.project?.id
@@ -23,7 +23,7 @@ export const WildlifeCard = ({ activeProjectData }) => {
   const videoEndpoints = videos?.map((video) => video.awsCID || '')
 
   return (
-    <InfoBox>
+    <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
         <h2>Photos</h2>
         <div style={{ width: '100%', height: '12px' }} />
@@ -32,9 +32,16 @@ export const WildlifeCard = ({ activeProjectData }) => {
           setToggle={setToggle}
           options={['Photos', 'Videos']}
         />
-        <div style={{ height: '24px', width: '100%' }} />
+        <div
+          style={{
+            height: '24px',
+            width: '100%',
+            display: 'flex',
+            flexWrap: 'wrap',
+          }}
+        />
         {toggle == 'Photos' && (
-          <>
+          <div style={{ flex: '1 1 50%' }}>
             {photoEndpoints?.map((photo) => (
               <PhotoCard key={photo} photoEndpoint={photo} />
             ))}
@@ -53,10 +60,10 @@ export const WildlifeCard = ({ activeProjectData }) => {
                 .
               </p>
             )}
-          </>
+          </div>
         )}
         {toggle == 'Videos' && (
-          <>
+          <div style={{ flex: '1 1 50%' }}>
             {videoEndpoints?.map((video) => (
               <VideoCard key={video} videoEndpoint={video} />
             ))}
@@ -75,7 +82,7 @@ export const WildlifeCard = ({ activeProjectData }) => {
                 .
               </p>
             )}
-          </>
+          </div>
         )}
       </div>
     </InfoBox>
@@ -89,10 +96,9 @@ const PhotoCard = ({ photoEndpoint }) => {
         alt="Wildlife camera still"
         src={`${process.env.AWS_STORAGE}/${photoEndpoint}`}
         style={{
-          width: '100%',
           height: '280px',
           objectFit: 'cover',
-          paddingTop: '20px',
+          padding: '20px',
         }}
       />
     </>
@@ -105,7 +111,6 @@ const VideoCard = ({ videoEndpoint }) => {
       <video
         src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}
         style={{
-          width: '100%',
           height: '280px',
           objectFit: 'cover',
           paddingTop: '20px',

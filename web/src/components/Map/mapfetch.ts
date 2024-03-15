@@ -75,6 +75,10 @@ export const fetchProjectInfo = async (projectId) => {
               fundsReceived
               profileUrl
             }
+            Wallet {
+              CeloAccounts
+              SOLAccounts
+            }
           }
         }
       `,
@@ -97,6 +101,22 @@ export const fetchProjectPolygon = async (
       setActiveProjectPolygon(result)
     })
   return response
+}
+
+export const fetchAllSiteData = async (endpoints, setAllSiteData) => {
+  const fetchPromises = endpoints.map((url) =>
+    fetch(`${process.env.AWS_STORAGE}/${url}`).then((res) => res.json())
+  )
+
+  Promise.all(fetchPromises)
+    .then((results) => {
+      const features = results.flatMap((result) => result.features)
+      setAllSiteData({
+        type: 'FeatureCollection',
+        features,
+      })
+    })
+    .catch((error) => console.error('Error fetching site data:', error))
 }
 
 export const fetchTreeShapefile = async (

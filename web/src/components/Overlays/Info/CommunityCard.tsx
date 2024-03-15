@@ -5,7 +5,7 @@ import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 import { PaymentCard } from './PaymentsCard'
-export const CommunityCard = ({ activeProjectData }) => {
+export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
   const [toggle, setToggle] = useState<'Members' | 'Payments'>('Members')
 
   if (
@@ -14,7 +14,7 @@ export const CommunityCard = ({ activeProjectData }) => {
     !activeProjectData?.project?.CommunityMember
   ) {
     return (
-      <InfoBox>
+      <InfoBox maximize={maximize} mediaSize={mediaSize}>
         <ThemedSkeleton height={250} />
         <div style={{ margin: '8px 24px' }}>
           <h1>
@@ -51,7 +51,7 @@ export const CommunityCard = ({ activeProjectData }) => {
   const memberOrMembers = communityMembersCount == 1 ? 'member' : 'members'
 
   return (
-    <InfoBox>
+    <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '24px' }}>
         <h1 style={{ marginBottom: '8px' }}>Community</h1>
         <ToggleButton

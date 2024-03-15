@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { breakpoints } from 'src/constants'
+
 // Creates a toggle where the options variable is the
 // first option on the left, and the right option on the right
 
@@ -14,6 +16,7 @@ export const ToggleButton = ({
   active: L | R
   setToggle: (toggle: L | R) => void
   options: [L, R]
+  mediaSize: number
 }) => {
   const [firstOption, secondOption] = options
   return (
@@ -51,4 +54,10 @@ export const HalfButton = styled.button<{ active: boolean }>`
     background-color: ${(props) =>
       props.active ? '#67962A' : 'rgba(103, 150, 42, 0.15)'};
   }
+
+  @media (max-width: ${breakpoints.xl}px) {
+    width: 120px;
+
+  @media (max-width: ${breakpoints.l}px) {
+    width: 110px;
 `

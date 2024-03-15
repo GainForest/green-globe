@@ -2,7 +2,7 @@ import { breakpoints } from 'src/constants'
 
 import { UnstyledButton } from './UnstyledButton'
 
-export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
+export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
   const height =
     mediaSize >= breakpoints.xl
       ? '36px'
@@ -60,22 +60,22 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
 
   const left =
     mediaSize >= breakpoints.xl
-      ? 320
+      ? 280
       : mediaSize > breakpoints.l
-      ? 270
-      : mediaSize > breakpoints.m
       ? 230
+      : mediaSize > breakpoints.m
+      ? 190
       : mediaSize > breakpoints.s
       ? null
       : null
 
   const maxedLeft =
     mediaSize >= breakpoints.xl
-      ? 700
-      : mediaSize > breakpoints.l
       ? 660
+      : mediaSize > breakpoints.l
+      ? 620
       : mediaSize > breakpoints.m
-      ? 560
+      ? 520
       : mediaSize > breakpoints.s
       ? null
       : null
@@ -88,8 +88,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
       : mediaSize > breakpoints.m
       ? null
       : mediaSize > breakpoints.s
-      ? '16px'
-      : '16px'
+      ? '56px'
+      : '52px'
 
   const maxedRight =
     mediaSize >= breakpoints.xl
@@ -99,8 +99,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
       : mediaSize > breakpoints.m
       ? null
       : mediaSize > breakpoints.s
-      ? '16px'
-      : '16px'
+      ? '56px'
+      : '56px'
 
   const maxedTop =
     mediaSize >= breakpoints.xl
@@ -118,8 +118,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
       style={{
         zIndex: 3,
         textAlign: 'center',
-        right: maximize ? maxedRight : right,
         left: maximize ? maxedLeft : left,
+        right: maximize ? maxedRight : right,
         bottom: maximize ? null : bottom,
         top: maximize ? maxedTop : null,
         height: height,
@@ -135,7 +135,11 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
         }}
         className="material-icons-round"
       >
-        close
+        <img
+          alt="maximize"
+          style={{ width: '80%', height: 'auto', paddingBottom: '4px' }}
+          src="/maximize.png"
+        />
       </div>
     </UnstyledButton>
   )

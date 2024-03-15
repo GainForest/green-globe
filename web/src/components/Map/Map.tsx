@@ -11,12 +11,14 @@ import { navigate } from '@redwoodjs/router'
 import { initializeMapbox } from 'src/mapbox.config'
 import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
+import { setProjectId } from 'src/reducers/projectsReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
 import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
 import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
+import Button from './components/Button'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
@@ -26,6 +28,7 @@ import {
   fetchTreeShapefile,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
+  fetchAllSiteData,
   fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
@@ -33,27 +36,28 @@ import { spinGlobe } from './maprotate'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
-  addTreesPlantedSourceAndLayers,
   getTreeInformation,
   toggleTreesPlantedLayer,
 } from './maputils'
-import { setProjectId } from 'src/reducers/projectsReducer'
 
-export const Map = ({ initialOverlay }) => {
+export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
+  const [offInitialOverlay, setOffInitialOverlay] = useState<boolean>(false)
   const [map, setMap] = useState<mapboxgl.Map>()
   const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
-  const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The feature that was clicked on
+  const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
+  const [allSitePolygons, setAllSitePolygons] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
+  const [maximize, setMaximize] = useState<boolean>(false)
   const [treeData, setTreeData] = useState({})
   const numHexagons = useRef(0)
 
@@ -63,23 +67,36 @@ export const Map = ({ initialOverlay }) => {
     fetchHexagons(setHexagons)
   }, [])
 
+  useEffect(() => {
+    if (urlProjectId && !activeProjectId) {
+      dispatch(setProjectId(urlProjectId))
+    }
+  }, [urlProjectId, activeProjectId])
+
+  useEffect(() => {
+    if (initialOverlay && !offInitialOverlay && !infoOverlay) {
+      dispatch(setInfoOverlay(initialOverlay))
+      setOffInitialOverlay(true)
+    }
+  }, [initialOverlay, infoOverlay, offInitialOverlay])
+
   // Initialize Map
   useEffect(() => {
     if (gainforestCenterpoints) {
-      initializeMapbox('map-container', setMap)
+      initializeMapbox('map-container', setMap, mediaSize)
     }
   }, [gainforestCenterpoints])
 
   // Set initial layers on load
   useEffect(() => {
     if (map && gainforestCenterpoints && hexagons) {
-      map.on('load', () => {
+      const onLoad = () => {
         map.setFog({
-          color: '#000000', // Lower atmosphere
-          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
-          'space-color': 'rgb(11, 11, 25)', // Background color
-          'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
+          color: '#000000',
+          'high-color': 'rgb(36, 92, 223)',
+          'horizon-blend': 0.02,
+          'space-color': 'rgb(11, 11, 25)',
+          'star-intensity': 0.05,
         })
         addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
@@ -91,17 +108,20 @@ export const Map = ({ initialOverlay }) => {
         )
 
         setMarkers([...gainForestMarkers])
-      })
-      map.on('styledata', () => {
+      }
+
+      const onStyleData = () => {
         map.setFog({
-          color: '#000000', // Lower atmosphere
-          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
-          'space-color': 'rgb(11, 11, 25)', // Background color
-          'star-intensity': 0.05, // Background star brightness (default 0.35 at low zoooms )
+          color: '#000000',
+          'high-color': 'rgb(36, 92, 223)',
+          'horizon-blend': 0.02,
+          'space-color': 'rgb(11, 11, 25)',
+          'star-intensity': 0.05,
         })
         addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
-      })
+      }
+      map.on('load', onLoad)
+      map.on('styledata', onStyleData)
     }
   }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
 
@@ -111,18 +131,40 @@ export const Map = ({ initialOverlay }) => {
       // Start the spin
       let isGlobeSpinning = true
       spinGlobe(map, isGlobeSpinning)
+
       // Spin again once the animation is complete
-      map.on('moveend', () => {
+      const onMoveEnd = () => {
         spinGlobe(map, isGlobeSpinning)
-      })
-      map.on('mousedown', () => {
+      }
+      map.on('moveend', onMoveEnd)
+
+      const onMouseDown = () => {
         isGlobeSpinning = false
-      })
-      map.on('touchstart', () => {
+      }
+      map.on('mousedown', onMouseDown)
+
+      const onTouchStart = () => {
         isGlobeSpinning = false
-      })
+      }
+      map.on('touchstart', onTouchStart)
+
+      return () => {
+        if (map) {
+          map.off('moveend', onMoveEnd)
+          map.off('mousedown', onMouseDown)
+          map.off('touchstart', onTouchStart)
+        }
+      }
     }
   }, [map])
+
+  useEffect(() => {
+    if (map && allSitePolygons) {
+      map.on('styledata', () => {
+        map.getSource('allSites')?.setData(allSitePolygons)
+      })
+    }
+  }, [map, allSitePolygons])
 
   // Fetch project data to display on the overlay
   // Fetch default project site
@@ -138,9 +180,13 @@ export const Map = ({ initialOverlay }) => {
         const projectMosaic = result?.project?.assets?.filter(
           (d) => d?.classification == 'Drone Mosaic'
         )
+        const endpoints = result?.project?.assets
+          ?.filter((d) => d?.classification == 'Shapefiles')
+          .map((d) => d?.awsCID)
         setActiveProjectData(result)
         setActiveProjectMosaic(projectMosaic)
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
+        await fetchAllSiteData(endpoints, setAllSitePolygons)
       }
       if (
         activeProjectId ==
@@ -170,19 +216,15 @@ export const Map = ({ initialOverlay }) => {
     }
   }, [initialOverlay, dispatch])
 
-  // If the active project changes
-  // Display project boundaries, the overlay, and the trees planted
-  // Re-draw on style change.
+  // If the active project change, zoom in to the default project site and change
+  // its color
   useEffect(() => {
     if (map && activeProjectPolygon) {
-      // TODO: Take into account all of the shapefiles the project has
-      map.getSource('project')?.setData(activeProjectPolygon)
-      !infoOverlay && dispatch(setInfoOverlay(1))
-      toggleTreesPlantedLayer(map, 'visible')
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
-        padding: { top: 40, bottom: 40, left: 420, right: 40 },
+        padding: { top: 40, bottom: 40, left: 40, right: 40 },
       })
+      map.getSource('highlightedSite')?.setData(activeProjectPolygon)
     }
   }, [map, activeProjectPolygon])
 
@@ -203,18 +245,19 @@ export const Map = ({ initialOverlay }) => {
   }, [activeProjectData])
 
   // Display tree data
-  // Add trees planted source and layers on every style change
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
-      // Needed on initial fetch
-      addTreesPlantedSourceAndLayers(map, activeProjectTreesPlanted)
+      map.on('styledata', () => {
+        map.getSource('trees')?.setData(activeProjectTreesPlanted)
+      })
     }
   }, [map, activeProjectTreesPlanted])
 
   // Hexagon onclick
   useEffect(() => {
     if (map) {
-      map.on('click', 'hexagonHoverFill', (e) => {
+      const onClick = (e) => {
+        console.log(e)
         const { lat, lng } = e.lngLat
         dispatch(setClickedCoordinates({ lat, lon: lng }))
         dispatch(setInfoOverlay(6))
@@ -235,24 +278,26 @@ export const Map = ({ initialOverlay }) => {
           )
           numHexagons.current = numHexagons.current + 1
         }
-      })
+      }
+
+      map.on('click', 'hexagonHoverFill', onClick)
+
+      return () => {
+        if (map) {
+          map.off('click', 'hexagonHoverFill', onClick)
+        }
+      }
     }
   }, [map])
 
-  // Remove layers when you exit the display overlay
+  // Set hovered tree ID on mouse move
   useEffect(() => {
-    if (map && map.getLayer('unclusteredTrees')) {
-      if (!infoOverlay) {
-        toggleTreesPlantedLayer(map, 'none')
-      }
-    }
-    let hoveredTreeId = null
     if (map) {
-      map.on('click', 'projectFill', () => {
+      let hoveredTreeId = null
+      const onClickProjectFill = () => {
         toggleTreesPlantedLayer(map, 'visible')
-      })
-      // Remove the on mouse move once you get out of the unclustered trees
-      map.on('mousemove', 'unclusteredTrees', (e) => {
+      }
+      const onMouseMoveUnclusteredTrees = (e) => {
         if (e.features.length > 0) {
           const treeInformation = getTreeInformation(e, activeProjectId)
           setTreeData(treeInformation)
@@ -268,15 +313,22 @@ export const Map = ({ initialOverlay }) => {
             { hover: true }
           )
         }
-      })
+      }
+      map.on('click', 'projectFill', onClickProjectFill)
+      map.on('mousemove', 'unclusteredTrees', onMouseMoveUnclusteredTrees)
+      return () => {
+        if (map) {
+          map.off('click', 'projectFill', onClickProjectFill)
+          map.off('mousemove', 'unclusteredTrees', onMouseMoveUnclusteredTrees)
+        }
+      }
     }
-    // TODO: separate these out
   }, [map, activeProjectId, infoOverlay])
 
   useEffect(() => {
     if (map) {
       let hoveredHexagonId = null
-      map.on('mousemove', 'hexagonHoverFill', (e) => {
+      const onMouseMoveHexagonHoverFill = (e) => {
         if (e.features.length > 0) {
           if (hoveredHexagonId !== null) {
             map.setFeatureState(
@@ -290,9 +342,8 @@ export const Map = ({ initialOverlay }) => {
             { hover: true }
           )
         }
-      })
-
-      map.on('mouseleave', 'hexagonHoverFill', () => {
+      }
+      const onMouseLeaveHexagonHoverFill = () => {
         if (hoveredHexagonId !== null) {
           map.setFeatureState(
             { source: 'hexagons', id: hoveredHexagonId },
@@ -300,7 +351,19 @@ export const Map = ({ initialOverlay }) => {
           )
           hoveredHexagonId = null
         }
-      })
+      }
+      map.on('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
+      map.on('mouseleave', 'hexagonHoverFill', onMouseLeaveHexagonHoverFill)
+      return () => {
+        if (map) {
+          map.off('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
+          map.off(
+            'mouseleave',
+            'hexagonHoverFill',
+            onMouseLeaveHexagonHoverFill
+          )
+        }
+      }
     }
   }, [map])
 
@@ -316,23 +379,39 @@ export const Map = ({ initialOverlay }) => {
         <SearchOverlay
           map={map}
           allCenterpoints={gainforestCenterpoints}
+          mediaSize={mediaSize}
         />
       )}
       {/* <BackToGlobe map={map} /> */}
 
       {Object.values(treeData)?.length > 0 && (
-        <TreeInfoBox treeData={treeData} setTreeData={setTreeData} />
+        <TreeInfoBox
+          treeData={treeData}
+          setTreeData={setTreeData}
+          mediaSize={mediaSize}
+        />
       )}
       {infoOverlay && (
         <>
           <UrlUpdater />
           <InfoOverlay
-            numHexagons={numHexagons}
+            // numHexagons={numHexagons}
             activeProjectData={activeProjectData}
             activeProjectPolygon={activeProjectPolygon}
             setActiveProjectPolygon={setActiveProjectPolygon}
+            mediaSize={mediaSize}
+            maximize={maximize}
+            setMaximize={setMaximize}
           />
         </>
+      )}
+      {activeProjectPolygon && !infoOverlay && (
+        <Button
+          style={{ position: 'absolute', bottom: '5%', left: '3%' }}
+          onClick={() => dispatch(setInfoOverlay(1))}
+        >
+          Project Info
+        </Button>
       )}
       {/* <ProjectSeriesPickerOverlay
         map={map}
@@ -344,10 +423,13 @@ export const Map = ({ initialOverlay }) => {
       /> */}
       <LayerPickerOverlay
         map={map}
-        activeProjectPolygon={activeProjectPolygon}
         activeProjectMosaic={activeProjectMosaic}
+        activeProjectData={activeProjectData}
+        activeProjectPolygon={activeProjectPolygon}
+        mediaSize={mediaSize}
+        maximize={maximize}
       />
-      <TimeSlider map={map} />
+      <TimeSlider map={map} mediaSize={mediaSize} />
     </>
   )
 }

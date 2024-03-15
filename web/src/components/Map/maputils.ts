@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import mapboxgl from 'mapbox-gl'
 
 import {
+  allSitesFillLayer,
+  allSitesOutlineLayer,
   clusteredTreesCountTextLayer,
   clusteredTreesLayer,
   generatePlanetLayer,
@@ -10,12 +12,11 @@ import {
   hexagonHoverFillLayer,
   hexagonOutlineLayer,
   hexagonsSource,
+  highlightedSiteOutlineLayer,
   landCoverLayer,
   landCoverSource,
   potentialTreeCoverLayer,
   potentialTreeCoverSource,
-  projectFillLayer,
-  projectOutlineLayer,
   treeCoverLayer,
   treeCoverSource,
   treesSource,
@@ -41,11 +42,13 @@ export const addAllSourcesAndLayers = (
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
-  addProjectPolygonsSourceAndLayer(map)
+  addAllSitesSourceAndLayer(map)
+  addHighlightedSiteSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
   addOrthomosaicSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
+  addTreesPlantedSourceAndLayers(map)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
@@ -280,9 +283,10 @@ export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
     }
   })
 }
-export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('project')) {
-    map.addSource('project', {
+
+export const addAllSitesSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('allSites')) {
+    map.addSource('allSites', {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
@@ -295,11 +299,34 @@ export const addProjectPolygonsSourceAndLayer = (map: mapboxgl.Map) => {
       },
     })
   }
-  if (map.getSource('project') && !map.getLayer('projectOutline')) {
-    map.addLayer(projectOutlineLayer('#00FF00'))
+  if (map.getSource('allSites') && !map.getLayer('allSitesOutline')) {
+    map.addLayer(allSitesOutlineLayer('#00FF00'))
   }
-  if (map.getSource('project') && !map.getLayer('projectFill')) {
-    map.addLayer(projectFillLayer('#00FF00'))
+  if (map.getSource('allSites') && !map.getLayer('allSitesFill')) {
+    map.addLayer(allSitesFillLayer('#00FF00'))
+  }
+}
+
+export const addHighlightedSiteSourceAndLayer = (map: mapboxgl.Map) => {
+  if (!map.getSource('highlightedSite')) {
+    map.addSource('highlightedSite', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: null,
+          },
+        ],
+      },
+    })
+  }
+  if (
+    map.getSource('highlightedSite') &&
+    !map.getLayer('highlightedSiteOutline')
+  ) {
+    map.addLayer(highlightedSiteOutlineLayer('#FFEA00'))
   }
 }
 
@@ -318,14 +345,20 @@ export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
   }
 }
 
-export const addTreesPlantedSourceAndLayers = (
-  map: mapboxgl.Map,
-  treesGeoJson
-) => {
+export const addTreesPlantedSourceAndLayers = (map: mapboxgl.Map) => {
   if (!map.getSource('trees')) {
-    map.addSource('trees', treesSource(treesGeoJson))
-  } else {
-    map.getSource('trees').setData(treesGeoJson)
+    map.addSource(
+      'trees',
+      treesSource({
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: null,
+          },
+        ],
+      })
+    )
   }
   if (!map.getLayer('clusteredTrees')) {
     map.addLayer(clusteredTreesLayer)

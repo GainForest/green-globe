@@ -27,10 +27,29 @@ export const InfoOverlay = ({
   setMaximize,
 }) => {
   const dispatch = useDispatch()
+  const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
+  const [overlay, setOverlay] = useState<boolean>(false)
+  const [endpoint, setEndpoint] = useState<string>('')
+
+  const handleClick = (source) => {
+    if (overlay) {
+      setOverlay(false)
+    } else {
+      setEndpoint(source)
+      setOverlay(true)
+    }
+  }
   return (
     <>
+      {overlay && (
+        <ImageOverlay
+          toggle={toggle}
+          endpoint={endpoint}
+          handleClick={handleClick}
+        />
+      )}
       <MaximizeButton
         mediaSize={mediaSize}
         maximize={maximize}
@@ -112,6 +131,9 @@ export const InfoOverlay = ({
           maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
+          handleClick={handleClick}
+          toggle={toggle}
+          setToggle={setToggle}
         />
       )}
       {infoOverlay == 4 && (
@@ -136,5 +158,24 @@ export const InfoOverlay = ({
         />
       )}
     </>
+  )
+}
+
+export const ImageOverlay = ({ toggle, endpoint, handleClick }) => {
+  return (
+    <div className="overlay" onClick={handleClick} style={{ zIndex: 4 }}>
+      {toggle == 'Photos' ? (
+        <img
+          src={`${process.env.AWS_STORAGE}/${endpoint}`}
+          alt="Taken by community members"
+          className="full-size-image"
+        />
+      ) : (
+        <video
+          src={`${process.env.AWS_STORAGE}/${endpoint}`}
+          className="full-size-image"
+        />
+      )}
+    </div>
   )
 }

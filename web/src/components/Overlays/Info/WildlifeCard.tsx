@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useState } from 'react'
-
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
-export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
-  const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
-  const [overlay, setOverlay] = useState<boolean>(false)
-  const [endpoint, setEndpoint] = useState<string>('')
-
+export const WildlifeCard = ({
+  activeProjectData,
+  mediaSize,
+  maximize,
+  toggle,
+  setToggle,
+  handleClick,
+}) => {
   const projectId = activeProjectData?.project?.id
   const photos = activeProjectData?.project?.assets?.filter(
     (d) =>
@@ -23,15 +24,6 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
       d.classification.includes('Camera Traps') && d.awsCID.includes('.mp4')
   )
   const videoEndpoints = videos?.map((video) => video.awsCID || '')
-
-  const handleClick = (source) => {
-    if (overlay) {
-      setOverlay(false)
-    } else {
-      setEndpoint(source)
-      setOverlay(true)
-    }
-  }
 
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
@@ -103,13 +95,6 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
             )}
           </div>
         )}
-        {overlay && (
-          <ImageOverlay
-            toggle={toggle}
-            endpoint={endpoint}
-            handleClick={handleClick}
-          />
-        )}
       </div>
     </InfoBox>
   )
@@ -152,26 +137,5 @@ const VideoCard = ({ videoEndpoint, handleClick }) => {
         controls
       />
     </>
-  )
-}
-
-const ImageOverlay = ({ toggle, endpoint, handleClick }) => {
-  return (
-    <div className="overlay" onClick={handleClick}>
-      {toggle == 'Photos' ? (
-        <img
-          src={`${process.env.AWS_STORAGE}/${endpoint}`}
-          alt="Taken by community members"
-          className="full-size-image"
-          style={{ zIndex: 2 }}
-        />
-      ) : (
-        <video
-          src={`${process.env.AWS_STORAGE}/${endpoint}`}
-          className="full-size-image"
-          style={{ zIndex: 2 }}
-        />
-      )}
-    </div>
   )
 }

@@ -73,13 +73,6 @@ export const ProjectCard = ({
           setActiveShapefile={setActiveProjectPolygon}
         />
         <Description activeProjectData={activeProjectData} />
-        <a
-          href={`https://www.data.gainforest.app/overview/${projectId}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Button>Learn more</Button>
-        </a>
       </TextContainer>
     </InfoBox>
   )

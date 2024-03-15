@@ -45,20 +45,8 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
             {photoEndpoints?.map((photo) => (
               <PhotoCard key={photo} photoEndpoint={photo} />
             ))}
-            {photoEndpoints?.length === 0 ? (
+            {photoEndpoints?.length === 0 && (
               <>This organization has not uploaded any photos.</>
-            ) : (
-              <p>
-                For more, visit the{' '}
-                <a
-                  href={`${process.env.GAINFOREST_ENDPOINT}/data/${projectId}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  transparency dashboard
-                </a>
-                .
-              </p>
             )}
           </div>
         )}
@@ -67,20 +55,8 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
             {videoEndpoints?.map((video) => (
               <VideoCard key={video} videoEndpoint={video} />
             ))}
-            {videoEndpoints?.length === 0 ? (
+            {videoEndpoints?.length === 0 && (
               <>This organization has not uploaded any videos.</>
-            ) : (
-              <p>
-                For more, visit the{' '}
-                <a
-                  href={`${process.env.GAINFOREST_ENDPOINT}/data/${projectId}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  transparency dashboard
-                </a>
-                .
-              </p>
             )}
           </div>
         )}

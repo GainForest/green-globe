@@ -1,13 +1,18 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useState } from 'react'
+import { breakpoints } from 'src/constants'
 
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
-export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
-  const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
-
+export const WildlifeCard = ({
+  activeProjectData,
+  mediaSize,
+  maximize,
+  toggle,
+  setToggle,
+  handleClick,
+}) => {
   const projectId = activeProjectData?.project?.id
   const photos = activeProjectData?.project?.assets?.filter(
     (d) =>
@@ -43,7 +48,13 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
         {toggle == 'Photos' && (
           <div style={{ flex: '1 1 50%' }}>
             {photoEndpoints?.map((photo) => (
-              <PhotoCard key={photo} photoEndpoint={photo} />
+              <PhotoCard
+                key={photo}
+                photoEndpoint={photo}
+                handleClick={handleClick}
+                mediaSize={mediaSize}
+                maximize={maximize}
+              />
             ))}
             {photoEndpoints?.length === 0 && (
               <>This organization has not uploaded any photos.</>
@@ -53,7 +64,13 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
         {toggle == 'Videos' && (
           <div style={{ flex: '1 1 50%' }}>
             {videoEndpoints?.map((video) => (
-              <VideoCard key={video} videoEndpoint={video} />
+              <VideoCard
+                key={video}
+                videoEndpoint={video}
+                handleClick={handleClick}
+                mediaSize={mediaSize}
+                maximize={maximize}
+              />
             ))}
             {videoEndpoints?.length === 0 && (
               <>This organization has not uploaded any videos.</>
@@ -65,34 +82,90 @@ export const WildlifeCard = ({ activeProjectData, mediaSize, maximize }) => {
   )
 }
 
-const PhotoCard = ({ photoEndpoint }) => {
+const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   return (
     <>
-      <img
-        alt="Wildlife camera still"
-        src={`${process.env.AWS_STORAGE}/${photoEndpoint}`}
+      <button
         style={{
-          height: '280px',
-          objectFit: 'cover',
-          padding: '20px',
+          paddingBottom: '20px',
+          border: 0,
+          background: 'transparent',
+          cursor: 'pointer',
         }}
-      />
+        onClick={() => handleClick(photoEndpoint)}
+      >
+        <img
+          alt="Wildlife camera still"
+          src={`${process.env.AWS_STORAGE}/${photoEndpoint}`}
+          style={{
+            maxWidth: maximize
+              ? mediaSize >= breakpoints.xl
+                ? '650px'
+                : mediaSize >= breakpoints.l
+                ? '600px'
+                : mediaSize >= breakpoints.m
+                ? '500px'
+                : mediaSize >= breakpoints.s
+                ? '600px'
+                : '300px'
+              : mediaSize >= breakpoints.xl
+              ? '300px'
+              : mediaSize >= breakpoints.l
+              ? '260px'
+              : mediaSize >= breakpoints.m
+              ? '225px'
+              : mediaSize >= breakpoints.s
+              ? '600px'
+              : '300px',
+            objectFit: 'cover',
+            padding: 0,
+          }}
+        />
+      </button>
     </>
   )
 }
 
-const VideoCard = ({ videoEndpoint }) => {
+const VideoCard = ({ videoEndpoint, handleClick, mediaSize, maximize }) => {
   return (
     <>
-      <video
-        src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}
+      <button
         style={{
-          height: '280px',
-          objectFit: 'cover',
-          paddingTop: '20px',
+          paddingBottom: '20px',
+          border: 0,
+          background: 'transparent',
+          cursor: 'pointer',
         }}
-        controls
-      />
+        onClick={() => handleClick(videoEndpoint)}
+      >
+        <video
+          src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}
+          style={{
+            maxWidth: maximize
+              ? mediaSize >= breakpoints.xl
+                ? '650px'
+                : mediaSize >= breakpoints.l
+                ? '600px'
+                : mediaSize >= breakpoints.m
+                ? '500px'
+                : mediaSize >= breakpoints.s
+                ? '600px'
+                : '300px'
+              : mediaSize >= breakpoints.xl
+              ? '300px'
+              : mediaSize >= breakpoints.l
+              ? '260px'
+              : mediaSize >= breakpoints.m
+              ? '225px'
+              : mediaSize >= breakpoints.s
+              ? '600px'
+              : '300px',
+            objectFit: 'cover',
+            padding: 0,
+          }}
+          controls
+        />
+      </button>
     </>
   )
 }

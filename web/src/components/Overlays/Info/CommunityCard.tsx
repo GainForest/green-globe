@@ -39,15 +39,11 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
     ? totalFundsReceived.toFixed(2)
     : 0
 
-  const topFiveCommunityMembers = [...project.CommunityMember]
-    .sort((a, b) => b.priority - a.priority)
-    .splice(0, 5)
+  const communityMembers = [...project.CommunityMember].sort(
+    (a, b) => b.priority - a.priority
+  )
 
   const communityMembersCount = project.CommunityMember.length
-  const moreCommunityNumbersCount =
-    project.CommunityMember.length - 5 > 0
-      ? project.CommunityMember.length - 5
-      : 0
   const memberOrMembers = communityMembersCount == 1 ? 'member' : 'members'
 
   return (
@@ -72,7 +68,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
                 {memberOrMembers} from the local communities are registered to
                 receive financial benefits from this project.
               </p>
-              {topFiveCommunityMembers.map((d) => {
+              {communityMembers.map((d) => {
                 let fullName
                 if (d.firstName && d.lastName) {
                   fullName = `${d.firstName} ${d.lastName}`
@@ -119,25 +115,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
                   </div>
                 )
               })}
-              {moreCommunityNumbersCount > 0 && (
-                <div style={{ textAlign: 'center' }}>
-                  <button
-                    style={{
-                      border: 'none',
-                      borderRadius: '0.5em',
-                      backgroundColor: '#67962A',
-                      cursor: 'pointer',
-                      textAlign: 'center',
-                      color: '#ffffff',
-                      height: '40px',
-                      width: '240px',
-                      marginTop: '16px',
-                    }}
-                  >
-                    View {moreCommunityNumbersCount} more community members
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         ) : (

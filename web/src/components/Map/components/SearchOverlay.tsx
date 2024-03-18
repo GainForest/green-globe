@@ -32,7 +32,15 @@ export const SearchOverlay = ({ map, allCenterpoints, mediaSize }) => {
         setShowSearchBar(false)
       }
     }
-  }, [allProjects, searchInput])
+  }, [allProjects, searchInput, mediaSize])
+
+  useEffect(() => {
+    if (mediaSize < breakpoints.m) {
+      setShowSearchBar(false)
+    } else {
+      setShowSearchBar(true)
+    }
+  }, [mediaSize])
 
   useEffect(() => {
     if (map) {
@@ -64,22 +72,18 @@ export const SearchOverlay = ({ map, allCenterpoints, mediaSize }) => {
     <>
       {mediaSize < breakpoints.m && (
         <button
-          style={{
-            width: '20px',
-            height: '20px',
-            position: 'absolute',
-            left: '125px',
-            top: '17px',
-            backgroundColor: 'transparent',
-            border: 'none',
-            padding: '0',
-          }}
+          className="search-button"
           onClick={() => {
             setShowSearchBar((showSearchBar) => !showSearchBar)
           }}
         >
           <img
-            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+            style={{
+              width: '100%',
+              height: 'auto',
+              objectFit: 'cover',
+              cursor: 'pointer',
+            }}
             alt="search"
             src={'/search.png'}
           />

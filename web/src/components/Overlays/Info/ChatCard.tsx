@@ -251,12 +251,7 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
                           }}
                         >
                           <button
-                            style={{
-                              background: 'white',
-                              border: 'none',
-                              padding: '8px',
-                              cursor: 'pointer',
-                            }}
+                            className="chat-menu-button"
                             onClick={() => {
                               navigator.clipboard.writeText(msg.text)
                               setShowPopup(false)
@@ -265,12 +260,7 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
                             Copy Text
                           </button>
                           <button
-                            style={{
-                              background: 'white',
-                              border: 'none',
-                              padding: '8px',
-                              cursor: 'pointer',
-                            }}
+                            className="chat-menu-button"
                             onClick={() => {
                               deleteMessage(msg)
                               setShowPopup(false)

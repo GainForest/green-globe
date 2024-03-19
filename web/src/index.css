@@ -191,23 +191,38 @@ margin-top: 4px;
 }
 
 
-  .tree-info, .tree-photo {
-    width: 180px;
-  }
-  .tree-info {
-    height: 70px;
-    padding: 8px 16px;
-  }
-  .tree-photo {
-    max-height: 320px;
-  }
-  .tree-key {
-    font-size: 8px;
-    width: 24px;
-  }
-  .tree-val {
-    font-size: 9px;
-  }
+.tree-info, .tree-photo {
+  width: 180px;
+}
+.tree-info {
+  height: 70px;
+  padding: 8px 16px;
+}
+.tree-photo {
+  max-height: 320px;
+}
+.tree-key {
+  font-size: 8px;
+  width: 24px;
+}
+.tree-val {
+  font-size: 9px;
+}
+
+.chat-menu-button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  text-align: left;
+  background-color: white;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.chat-menu-button:hover {
+  background-color: #cccccc;
+}
 
 
 @media only screen and (min-width: 480px) {

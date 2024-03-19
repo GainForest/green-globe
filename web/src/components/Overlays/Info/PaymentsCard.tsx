@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 
+import { InfoTag } from './BiodiversityCard'
 import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
@@ -90,7 +91,7 @@ export const PaymentCard = ({ activeProjectData }) => {
         to: transaction.to,
         date: getDate(transaction.timeStamp),
         amount: transaction.value / 1e18,
-        type: 'celo',
+        type: 'Celo',
         hash: transaction.hash,
       }))
       if (transactions.length > 0) {
@@ -142,7 +143,7 @@ export const PaymentCard = ({ activeProjectData }) => {
         to: transaction.receiver.address,
         date: getDate(transaction.date.date),
         amount: transaction.amount,
-        type: 'solana',
+        type: 'Solana',
         hash: transaction.transaction.signature,
       }))
       if (transactions.length > 0) {
@@ -165,6 +166,12 @@ export const PaymentCard = ({ activeProjectData }) => {
       dateObj = new Date(timeStamp * 1000)
     }
     return dateObj.toLocaleDateString('en-GB', options)
+  }
+
+  const tagColors = {
+    Solana: 'yellow',
+    Celo: 'purple',
+    ETH: 'black',
   }
 
   if (
@@ -230,6 +237,9 @@ export const PaymentCard = ({ activeProjectData }) => {
                       </a>
                     </p>
                     <p style={{ color: '#67962A' }}>${payment.amount}</p>
+                    <InfoTag style={{ color: tagColors[payment.type] }}>
+                      {payment.type}
+                    </InfoTag>
                   </div>
                 </div>
               </div>

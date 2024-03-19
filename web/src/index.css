@@ -190,6 +190,38 @@ margin-top: 4px;
   color: #808080;
 }
 
+.community-photo {
+  position: relative;
+  display: inline-block;
+}
+
+.community-photo img {
+  display: block;
+  width: 100%;
+  transition: filter 0.3s ease;
+}
+
+.community-photo::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    #4a4a4a 0%,
+    transparent 25%
+  );
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.community-photo:hover::after {
+  opacity: 1;
+}
+
 
 .tree-info, .tree-photo {
   width: 180px;

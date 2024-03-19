@@ -38,12 +38,11 @@ const Navbar = ({ isAuthenticated, style }) => {
           height: '100%',
         }}
       >
-        <DonateButton />
+        <DonateButton isLoggedIn={isAuthenticated} />
       </div>
       {isAuthenticated && (
         <div
           style={{
-            width: '50%',
             display: 'flex',
             gap: '12px',
             justifyContent: 'flex-end',

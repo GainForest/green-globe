@@ -53,6 +53,21 @@ const getDate = (input) => {
   return dateObj.toLocaleString('en-GB', options)
 }
 
+const useOutsideClick = (ref, callback) => {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref, callback])
+}
+
 export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
   const [messageLog, setMessageLog] = useState([])
   const { isAuthenticated, userMetadata, signUp } = useAuth()
@@ -61,6 +76,8 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
     sender: userMetadata?.email,
     timestamp: null,
   })
+  const [hoveredId, setHoveredId] = useState<string>('')
+  const [showPopup, setShowPopup] = useState(false)
 
   const messagesEndRef = useRef(null)
 
@@ -68,9 +85,18 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
     messagesEndRef.current?.scrollIntoView()
   }, [messageLog])
 
+  const popupRef = useRef(null)
+  useOutsideClick(popupRef, () => setShowPopup(false))
+
   const SAVE_TO_REDIS_MUTATION = gql`
     mutation saveToRedis($key: String!, $value: String!) {
       saveToRedis(key: $key, value: $value)
+    }
+  `
+
+  const DELETE_FROM_REDIS_MUTATION = gql`
+    mutation deleteFromRedis($key: String!) {
+      deleteFromRedis(key: $key)
     }
   `
 
@@ -83,11 +109,20 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
       }
     }
   `
-
+  const [deleteChat] = useMutation(DELETE_FROM_REDIS_MUTATION)
   const [logChat] = useMutation(SAVE_TO_REDIS_MUTATION)
   const getChat = useQuery(GET_FROM_REDIS_QUERY, {
     variables: { key: activeProjectData?.project?.id },
   })
+
+  const deleteMessage = (message) => {
+    const id = activeProjectData.project.id
+    const key = `${id}:${message.timestamp}:${userMetadata.email}`
+    deleteChat({ variables: { key: key } })
+    setMessageLog((messageLog) =>
+      messageLog.filter((msg) => msg.timestamp !== message.timestamp)
+    )
+  }
 
   const writeToRedis = (e) => {
     e.preventDefault()
@@ -97,6 +132,7 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
       const id = activeProjectData.project.id
       const now = Date.now()
       const key = `${id}:${now}:${userMetadata.email}`
+      console.log(key)
       logChat({ variables: { key: key, value: message.text } })
     }
   }
@@ -152,7 +188,7 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
           }}
         >
           {messageLog.map((msg) => (
-            <div key={msg.timestamp}>
+            <div key={msg.timestamp} style={{ width: '100%' }}>
               <div
                 className={
                   msg.sender !== 'Peggy'
@@ -162,6 +198,11 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
               >
                 {`${getDate(msg.timestamp)} ${msg.sender}`}
                 <div
+                  onMouseEnter={() => setHoveredId(msg.timestamp)}
+                  onMouseLeave={() => {
+                    setHoveredId(null)
+                    setShowPopup(false)
+                  }}
                   className={
                     msg.sender !== 'Peggy'
                       ? 'message-inner-right'
@@ -177,6 +218,60 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
                   >
                     <p className="message-text">{msg.text}</p>
                   </div>
+                  {msg.timestamp === hoveredId && (
+                    <div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setShowPopup((showPopup) => !showPopup)
+                        }}
+                        style={{ background: 'transparent', border: 'none' }}
+                      >
+                        <img
+                          alt="menu"
+                          style={{
+                            paddingTop: '10px',
+                            height: '40px',
+                            width: 'auto',
+                          }}
+                          src="/menu.png"
+                        />
+                      </button>
+
+                      {showPopup && (
+                        <div
+                          ref={popupRef}
+                          style={{
+                            position: 'absolute',
+                            right: 0,
+                            backgroundColor: 'white',
+                            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+                            borderRadius: '8px',
+                            padding: '8px',
+                          }}
+                        >
+                          <button
+                            className="chat-menu-button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(msg.text)
+                              setShowPopup(false)
+                            }}
+                          >
+                            Copy Text
+                          </button>
+                          <button
+                            className="chat-menu-button"
+                            onClick={() => {
+                              deleteMessage(msg)
+                              setShowPopup(false)
+                            }}
+                          >
+                            Delete Message
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

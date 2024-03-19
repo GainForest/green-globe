@@ -11,6 +11,17 @@ export const saveToRedis = async ({ key, value }) => {
   }
 }
 
+export const deleteFromRedis = async ({ key }) => {
+  await connectRedis()
+  try {
+    await redisClient.del(key)
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
 export const getFromRedis = async (input) => {
   await connectRedis()
   let cursor = 0

@@ -84,13 +84,14 @@ export const WildlifeCard = ({
 
 const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   return (
-    <>
+    <div className="community-photo">
       <button
         style={{
-          paddingBottom: '20px',
+          padding: '0 0 20px 0',
           border: 0,
           background: 'transparent',
           cursor: 'pointer',
+          width: '100%',
         }}
         onClick={() => handleClick(photoEndpoint)}
       >
@@ -122,19 +123,20 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
           }}
         />
       </button>
-    </>
+    </div>
   )
 }
 
 const VideoCard = ({ videoEndpoint, handleClick, mediaSize, maximize }) => {
   return (
-    <>
+    <div className="community-photo">
       <button
         style={{
-          paddingBottom: '20px',
+          padding: '0 0 20px 0',
           border: 0,
           background: 'transparent',
           cursor: 'pointer',
+          width: '100%',
         }}
         onClick={() => handleClick(videoEndpoint)}
       >
@@ -166,6 +168,6 @@ const VideoCard = ({ videoEndpoint, handleClick, mediaSize, maximize }) => {
           controls
         />
       </button>
-    </>
+    </div>
   )
 }

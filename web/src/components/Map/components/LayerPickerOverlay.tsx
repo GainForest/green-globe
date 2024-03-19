@@ -27,7 +27,7 @@ export const LayerPickerOverlay = ({
 }) => {
   const { theme } = useThemeUI()
   const [expandLayers, setExpandLayers] = useState(false)
-  const [satellite, setSatellite] = useState(false)
+  const [satellite, setSatellite] = useState(true)
   const [landCover, setLandCover] = useState(false)
   const [orthomosaic, setOrthoMosaic] = useState(false)
   const [treeCover, setTreeCover] = useState(false)
@@ -284,7 +284,8 @@ const SatelliteLayerBox = ({
 }) => {
   const dispatch = useDispatch()
 
-  return countryCodes.includes(activeProjectData?.project?.country) ? (
+  return !activeProjectData?.project?.country ||
+    countryCodes.includes(activeProjectData?.project?.country) ? (
     <div
       style={{
         display: 'flex',

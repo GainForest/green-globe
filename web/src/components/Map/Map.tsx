@@ -122,6 +122,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
+      return () => {
+        map.off('load', onLoad)
+        map.off('styledata', onStyleData)
+      }
     }
   }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
 
@@ -247,9 +251,14 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // Display tree data
   useEffect(() => {
     if (map && activeProjectTreesPlanted) {
-      map.on('styledata', () => {
+      const updateData = () => {
         map.getSource('trees')?.setData(activeProjectTreesPlanted)
-      })
+      }
+      map.on('styledata', updateData)
+
+      return () => {
+        map.off('styledata', updateData)
+      }
     }
   }, [map, activeProjectTreesPlanted])
 

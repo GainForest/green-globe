@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Button from '../Map/components/Button'
 import { DonateOverlay } from '../Overlays/SubscribeOverlay'
 
-const DonateButton = () => {
+const DonateButton = ({ isLoggedIn }) => {
   const [displayDonateOverlay, setDisplayDonateOverlay] =
     useState<boolean>(false)
 
@@ -11,6 +11,8 @@ const DonateButton = () => {
     <>
       <Button
         style={{
+          position: 'absolute',
+          right: isLoggedIn ? '200px' : '10px',
           height: '32px',
           borderRadius: '4px',
           cursor: 'pointer',

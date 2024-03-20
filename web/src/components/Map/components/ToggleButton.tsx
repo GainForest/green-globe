@@ -57,7 +57,4 @@ export const HalfButton = styled.button<{ active: boolean }>`
 
   @media (max-width: ${breakpoints.xl}px) {
     width: 120px;
-
-  @media (max-width: ${breakpoints.l}px) {
-    width: 110px;
 `

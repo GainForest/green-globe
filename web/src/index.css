@@ -267,18 +267,23 @@ margin-top: 4px;
   justify-content: center;
   align-items: center;
 }
-  .search-button {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    left: 125px;
-    top: 17px;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-  }
 
-  .search-button:hover {
+.overlay video {
+  max-height: 80%;
+}
+
+.search-button {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 125px;
+  top: 17px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.search-button:hover {
 filter: brightness(50%)
   }
 

@@ -6,10 +6,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
   const height =
     mediaSize >= breakpoints.xl
       ? '36px'
-      : mediaSize > breakpoints.l
-      ? '34px'
       : mediaSize > breakpoints.m
-      ? '32px'
+      ? '34px'
       : mediaSize > breakpoints.s
       ? '30px'
       : '28px'
@@ -17,10 +15,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
   const width =
     mediaSize >= breakpoints.xl
       ? '36px'
-      : mediaSize > breakpoints.l
-      ? '34px'
       : mediaSize > breakpoints.m
-      ? '32px'
+      ? '34px'
       : mediaSize > breakpoints.s
       ? '30px'
       : '28px'
@@ -30,8 +26,6 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
       ? '16px'
       : mediaSize < breakpoints.m
       ? '18px'
-      : mediaSize < breakpoints.l
-      ? '20px'
       : mediaSize < breakpoints.xl
       ? '22px'
       : '24px'
@@ -41,8 +35,6 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
       ? '30px'
       : mediaSize < breakpoints.m
       ? '32px'
-      : mediaSize < breakpoints.l
-      ? '34px'
       : mediaSize < breakpoints.xl
       ? '36px'
       : '38px'
@@ -50,10 +42,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
   const bottom =
     mediaSize >= breakpoints.xl
       ? 546
-      : mediaSize > breakpoints.l
-      ? 476
       : mediaSize > breakpoints.m
-      ? 396
+      ? 476
       : mediaSize > breakpoints.s
       ? 316
       : 280
@@ -61,10 +51,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
   const left =
     mediaSize >= breakpoints.xl
       ? 320
-      : mediaSize > breakpoints.l
-      ? 270
       : mediaSize > breakpoints.m
-      ? 230
+      ? 270
       : mediaSize > breakpoints.s
       ? null
       : null
@@ -72,18 +60,14 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
   const maxedLeft =
     mediaSize >= breakpoints.xl
       ? 700
-      : mediaSize > breakpoints.l
-      ? 660
       : mediaSize > breakpoints.m
-      ? 560
+      ? 660
       : mediaSize > breakpoints.s
       ? null
       : null
 
   const right =
     mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.l
       ? null
       : mediaSize > breakpoints.m
       ? null
@@ -94,8 +78,6 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
   const maxedRight =
     mediaSize >= breakpoints.xl
       ? null
-      : mediaSize > breakpoints.l
-      ? null
       : mediaSize > breakpoints.m
       ? null
       : mediaSize > breakpoints.s
@@ -105,10 +87,8 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
   const maxedTop =
     mediaSize >= breakpoints.xl
       ? 64
-      : mediaSize > breakpoints.l
-      ? 80
       : mediaSize > breakpoints.m
-      ? 70
+      ? 80
       : mediaSize > breakpoints.s
       ? 100
       : 100

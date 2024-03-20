@@ -18,18 +18,14 @@ export const InfoBox = ({
   const height =
     mediaSize >= breakpoints.xl
       ? '560px'
-      : mediaSize > breakpoints.l
-      ? '480px'
       : mediaSize > breakpoints.m
-      ? '400px'
+      ? '480px'
       : mediaSize > breakpoints.s
       ? '320px'
       : '280px'
 
   const maxedHeight =
     mediaSize >= breakpoints.xl
-      ? '90vh'
-      : mediaSize > breakpoints.l
       ? '90vh'
       : mediaSize > breakpoints.m
       ? '90vh'
@@ -40,10 +36,8 @@ export const InfoBox = ({
   const width =
     mediaSize >= breakpoints.xl
       ? '360px'
-      : mediaSize > breakpoints.l
-      ? '310px'
       : mediaSize > breakpoints.m
-      ? '270px'
+      ? '310px'
       : mediaSize > breakpoints.s
       ? '98vw'
       : '98vw'
@@ -51,10 +45,8 @@ export const InfoBox = ({
   const maxedWidth =
     mediaSize >= breakpoints.xl
       ? '700px'
-      : mediaSize > breakpoints.l
-      ? '660px'
       : mediaSize > breakpoints.m
-      ? '560px'
+      ? '660px'
       : mediaSize > breakpoints.s
       ? '98vw'
       : '98vw'

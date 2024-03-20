@@ -32,8 +32,6 @@ export const InfoOverlayButton = ({
               ? '20px'
               : mediaSize < breakpoints.m
               ? '21px'
-              : mediaSize < breakpoints.l
-              ? '22px'
               : mediaSize < breakpoints.xl
               ? '23px'
               : '24px',
@@ -44,8 +42,6 @@ export const InfoOverlayButton = ({
               ? '26px'
               : mediaSize < breakpoints.m
               ? '34px'
-              : mediaSize < breakpoints.l
-              ? '40px'
               : mediaSize < breakpoints.xl
               ? '42px'
               : '44px',
@@ -112,13 +108,6 @@ const StyledButton = styled.button<{
       width: 42px;
       bottom: 530px;
       left: ${position * 52 - 42}px;
-    }
-
-    @media (max-width: ${breakpoints.l}px) {
-      height: 36px;
-      width: 36px;
-      bottom: 450px;
-      left: ${position * 44 - 36}px;
     }
 
     @media (max-width: ${breakpoints.m}px) {

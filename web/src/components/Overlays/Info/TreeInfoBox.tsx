@@ -96,20 +96,16 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
                     top:
                       mediaSize >= breakpoints.xl
                         ? 640
-                        : mediaSize > breakpoints.l
-                        ? 610
                         : mediaSize > breakpoints.m
-                        ? 560
+                        ? 610
                         : mediaSize > breakpoints.s
                         ? 540
                         : 470,
                     right:
                       mediaSize >= breakpoints.xl
                         ? 160
-                        : mediaSize > breakpoints.l
-                        ? 150
                         : mediaSize > breakpoints.m
-                        ? 135
+                        ? 150
                         : mediaSize > breakpoints.s
                         ? 125
                         : 100,
@@ -135,20 +131,16 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
                     top:
                       mediaSize >= breakpoints.xl
                         ? 640
-                        : mediaSize > breakpoints.l
-                        ? 610
                         : mediaSize > breakpoints.m
-                        ? 560
+                        ? 610
                         : mediaSize > breakpoints.s
                         ? 540
                         : 470,
                     right:
                       mediaSize >= breakpoints.xl
                         ? 120
-                        : mediaSize > breakpoints.l
-                        ? 110
                         : mediaSize > breakpoints.m
-                        ? 95
+                        ? 110
                         : mediaSize > breakpoints.s
                         ? 85
                         : 70,

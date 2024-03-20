@@ -102,19 +102,15 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
             maxWidth: maximize
               ? mediaSize >= breakpoints.xl
                 ? '650px'
-                : mediaSize >= breakpoints.l
-                ? '600px'
                 : mediaSize >= breakpoints.m
-                ? '500px'
+                ? '600px'
                 : mediaSize >= breakpoints.s
                 ? '600px'
                 : '300px'
               : mediaSize >= breakpoints.xl
               ? '300px'
-              : mediaSize >= breakpoints.l
-              ? '260px'
               : mediaSize >= breakpoints.m
-              ? '225px'
+              ? '260px'
               : mediaSize >= breakpoints.s
               ? '600px'
               : '300px',
@@ -146,19 +142,15 @@ const VideoCard = ({ videoEndpoint, handleClick, mediaSize, maximize }) => {
             maxWidth: maximize
               ? mediaSize >= breakpoints.xl
                 ? '650px'
-                : mediaSize >= breakpoints.l
-                ? '600px'
                 : mediaSize >= breakpoints.m
-                ? '500px'
+                ? '600px'
                 : mediaSize >= breakpoints.s
                 ? '600px'
                 : '300px'
               : mediaSize >= breakpoints.xl
               ? '300px'
-              : mediaSize >= breakpoints.l
-              ? '260px'
               : mediaSize >= breakpoints.m
-              ? '225px'
+              ? '260px'
               : mediaSize >= breakpoints.s
               ? '600px'
               : '300px',

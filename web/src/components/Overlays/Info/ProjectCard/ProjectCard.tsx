@@ -48,10 +48,8 @@ export const ProjectCard = ({
             fontSize:
               mediaSize >= breakpoints.xl
                 ? 24
-                : mediaSize > breakpoints.l
-                ? 22
                 : mediaSize > breakpoints.m
-                ? 20
+                ? 22
                 : mediaSize > breakpoints.s
                 ? 18
                 : 16,

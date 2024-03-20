@@ -3,41 +3,11 @@ import { breakpoints } from 'src/constants'
 import { UnstyledButton } from './UnstyledButton'
 
 export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
-  const height =
-    mediaSize >= breakpoints.xl
-      ? '36px'
-      : mediaSize > breakpoints.m
-      ? '34px'
-      : mediaSize > breakpoints.s
-      ? '30px'
-      : '28px'
+  const height = '2.5em'
 
-  const width =
-    mediaSize >= breakpoints.xl
-      ? '36px'
-      : mediaSize > breakpoints.m
-      ? '34px'
-      : mediaSize > breakpoints.s
-      ? '30px'
-      : '28px'
+  const width = '2.5em'
 
-  const fontSize =
-    mediaSize < breakpoints.s
-      ? '16px'
-      : mediaSize < breakpoints.m
-      ? '18px'
-      : mediaSize < breakpoints.xl
-      ? '22px'
-      : '24px'
-
-  const lineHeight =
-    mediaSize < breakpoints.s
-      ? '30px'
-      : mediaSize < breakpoints.m
-      ? '32px'
-      : mediaSize < breakpoints.xl
-      ? '36px'
-      : '38px'
+  const lineHeight = '1.5em'
 
   const bottom =
     mediaSize >= breakpoints.xl
@@ -110,7 +80,6 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
     >
       <div
         style={{
-          fontSize: fontSize,
           lineHeight: lineHeight,
         }}
         className="material-icons-round"

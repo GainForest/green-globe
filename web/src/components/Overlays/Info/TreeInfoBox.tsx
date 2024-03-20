@@ -52,26 +52,27 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
+              width: '100%',
             }}
           >
-            <div style={{ margin: '0 4px', flexDirection: 'column' }}>
+            <div style={{ margin: '0 4px', flexDirection: 'column', flex: 1 }}>
               <p className="tree-key">Species</p>
               <p className="tree-val">{treeData.treeName}</p>
             </div>
-            <div style={{ margin: '0 4px', flexDirection: 'column' }}>
+            <div style={{ margin: '0 4px', flexDirection: 'column', flex: 1 }}>
               <p className="tree-key">Height</p>
               <p className="tree-val">{treeData.treeHeight}</p>
             </div>
-            <div style={{ margin: '0 4px', flexDirection: 'column' }}>
+            <div style={{ margin: '0 4px', flexDirection: 'column', flex: 1 }}>
               <p className="tree-key">Width</p>
               <p className="tree-val">{treeData.treeDBH}</p>
             </div>
-            <div style={{ margin: '0 4px', flexDirection: 'column' }}>
+            <div style={{ margin: '0 4px', flexDirection: 'column', flex: 1 }}>
               <p className="tree-key">Date Measured</p>
               <p className="tree-val">{treeData.dateOfMeasurement}</p>
             </div>
             <CloseButton
-              style={null}
+              style={{ position: 'absolute', right: '0', top: '0' }}
               fontSize="22px"
               onClick={() => {
                 setTreeData({})
@@ -100,7 +101,7 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
                         ? 610
                         : mediaSize > breakpoints.s
                         ? 540
-                        : 470,
+                        : 460,
                     right:
                       mediaSize >= breakpoints.xl
                         ? 160

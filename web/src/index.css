@@ -183,7 +183,7 @@ margin-top: 4px;
 
 .tree-photo {
   border-radius: 0px 0px 8px 8px;
-  top: 230px;
+  top: 225px;
 }
 
 .tree-key {
@@ -227,8 +227,8 @@ margin-top: 4px;
   width: 180px;
 }
 .tree-info {
-  height: 70px;
-  padding: 8px 16px;
+  height: 65px;
+  padding: 8px 0px;
 }
 .tree-photo {
   max-height: 320px;
@@ -302,7 +302,7 @@ filter: brightness(50%)
     height: 80px;
   }
   .tree-photo {
-    top: 240px;
+    top: 220px;
     max-height: 350px;
   }
   .tree-key {

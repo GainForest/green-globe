@@ -171,10 +171,7 @@ export const ImageOverlay = ({ toggle, endpoint, handleClick }) => {
           style={{ maxWidth: '90%' }}
         />
       ) : (
-        <video
-          src={`${process.env.AWS_STORAGE}/${endpoint}`}
-          className="full-size-image"
-        />
+        <video src={`${process.env.AWS_STORAGE}/${endpoint}`} autoPlay />
       )}
     </div>
   )

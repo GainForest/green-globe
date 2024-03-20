@@ -13,7 +13,6 @@ export const WildlifeCard = ({
   setToggle,
   handleClick,
 }) => {
-  const projectId = activeProjectData?.project?.id
   const photos = activeProjectData?.project?.assets?.filter(
     (d) =>
       (d.classification.includes('Camera Traps') ||
@@ -36,6 +35,7 @@ export const WildlifeCard = ({
           active={toggle}
           setToggle={setToggle}
           options={['Photos', 'Videos']}
+          mediaSize={mediaSize}
         />
         <div
           style={{

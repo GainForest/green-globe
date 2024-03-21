@@ -287,6 +287,17 @@ margin-top: 4px;
 filter: brightness(50%)
   }
 
+.tooltip:after {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: gray transparent transparent transparent;
+}
+
 @media only screen and (min-width: 480px) {
   .tree-info, .tree-photo {
     width: 230px;

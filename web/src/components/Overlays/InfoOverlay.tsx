@@ -30,20 +30,20 @@ export const InfoOverlay = ({
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
-  const [overlay, setOverlay] = useState<boolean>(false)
+  const [fullScreenOverlay, setFullScreenOverlay] = useState<boolean>(false)
   const [endpoint, setEndpoint] = useState<string>('')
 
   const handleClick = (source) => {
-    if (overlay) {
-      setOverlay(false)
+    if (fullScreenOverlay) {
+      setFullScreenOverlay(false)
     } else {
       setEndpoint(source)
-      setOverlay(true)
+      setFullScreenOverlay(true)
     }
   }
   return (
     <>
-      {overlay && (
+      {fullScreenOverlay && (
         <ImageOverlay
           toggle={toggle}
           endpoint={endpoint}
@@ -59,7 +59,7 @@ export const InfoOverlay = ({
       <ExitButton
         mediaSize={mediaSize}
         maximize={maximize}
-        onClick={() => dispatch(hideInfoOverlay())}
+        onClick={() => dispatch(setInfoOverlay(null))}
         style={null}
       />
       <InfoOverlayButton

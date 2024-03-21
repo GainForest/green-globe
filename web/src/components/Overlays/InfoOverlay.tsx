@@ -59,7 +59,7 @@ export const InfoOverlay = ({
       <ExitButton
         mediaSize={mediaSize}
         maximize={maximize}
-        onClick={() => dispatch(hideInfoOverlay())}
+        onClick={() => dispatch(setInfoOverlay(null))}
         style={null}
       />
       <InfoOverlayButton

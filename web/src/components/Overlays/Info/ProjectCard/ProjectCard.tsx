@@ -3,7 +3,6 @@ import { useThemeUI } from 'theme-ui'
 import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-import Button from '../../../Map/components/Button'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoBox } from '../InfoBox'
 
@@ -36,8 +35,6 @@ export const ProjectCard = ({
       </InfoBox>
     )
   }
-
-  const projectId = activeProjectData?.project?.id
 
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
@@ -76,7 +73,7 @@ export const ProjectCard = ({
   )
 }
 
-const ProjectSplash = ({ activeProjectData }) => {
+export const ProjectSplash = ({ activeProjectData }) => {
   const splash = activeProjectData?.project?.assets?.filter((d) =>
     d.classification?.includes('Splash')
   )[0]?.awsCID
@@ -127,7 +124,7 @@ ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
   )
 }
 
-const Description = ({ activeProjectData }) => (
+export const Description = ({ activeProjectData }) => (
   <>
     <h3>Description</h3>
     <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>

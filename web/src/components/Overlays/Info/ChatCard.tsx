@@ -284,12 +284,13 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
             position: 'relative',
             alignSelf: 'center',
             width: '100%',
-            height: '2%',
+            height: '0',
           }}
         >
           {isAuthenticated ? (
             <form onSubmit={writeToRedis}>
               <InputBox
+                style={{ width: '95%', marginLeft: '0' }}
                 value={message.text}
                 onChange={(e) =>
                   setMessage({

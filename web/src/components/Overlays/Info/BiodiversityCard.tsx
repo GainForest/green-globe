@@ -213,7 +213,9 @@ export const BiodiversityCard = ({
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
-        <h1 style={{ wordWrap: 'normal' }}>Biodiversity Predictions</h1>
+        <h1 style={{ wordWrap: 'normal', width: '80%' }}>
+          Biodiversity Predictions
+        </h1>
         <ToggleButton
           active={toggle}
           setToggle={setToggle}

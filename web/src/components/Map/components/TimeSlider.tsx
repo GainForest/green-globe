@@ -72,7 +72,7 @@ export const TimeSlider = ({ map, mediaSize }) => {
             }}
             className="tooltip"
           >
-            <p style={{ color: 'white', padding: '0 4px', lineHeight: '5px' }}>
+            <p style={{ color: 'white', padding: '0 8px', lineHeight: '5px' }}>
               Drag to adjust
             </p>
           </div>
@@ -85,7 +85,7 @@ export const TimeSlider = ({ map, mediaSize }) => {
             boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
             width: mediaSize < breakpoints.m ? '96vw' : '500px',
             height: '40px',
-            padding: '2px 4px 0 0',
+            padding: '2px 8px 0 4px',
             marginBottom: '0',
             bottom: mediaSize < breakpoints.m ? 0 : 28,
             left: mediaSize < breakpoints.m ? 8 : mediaSize / 3,

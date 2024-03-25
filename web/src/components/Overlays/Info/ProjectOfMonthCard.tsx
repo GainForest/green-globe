@@ -4,11 +4,13 @@ import { useThemeUI } from 'theme-ui'
 
 import { Link } from '@redwoodjs/router'
 
+import { ExitButton } from 'src/components/Map/components/ExitButton'
 import { fetchProjectInfo } from 'src/components/Map/mapfetch'
 
 import { ProjectSplash } from './ProjectCard/ProjectCard'
 export const ProjectOfMonthCard = ({ mediaSize }) => {
   const [projectData, setProjectData] = useState()
+  const [isVisible, setIsVisible] = useState(true)
 
   const { theme } = useThemeUI()
 
@@ -57,7 +59,7 @@ export const ProjectOfMonthCard = ({ mediaSize }) => {
     }
   }
 
-  if (projectData)
+  if (projectData && isVisible)
     return (
       <div
         style={{
@@ -76,6 +78,12 @@ export const ProjectOfMonthCard = ({ mediaSize }) => {
           alignItems: 'center',
         }}
       >
+        <ExitButton
+          onClick={() => setIsVisible(false)}
+          style={{ top: '10px', left: '260px' }}
+          mediaSize={mediaSize}
+          maximize={false}
+        />
         <h3>Project of the month</h3>
         <h1>{projectData.project.name}</h1>
         <ProjectSplash activeProjectData={projectData} />

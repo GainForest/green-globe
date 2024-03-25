@@ -14,6 +14,7 @@ import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { setProjectId } from 'src/reducers/projectsReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
+import { ProjectOfMonthCard } from '../Overlays/Info/ProjectOfMonthCard'
 import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
 import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
@@ -384,7 +385,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         />
       )}
       {/* <BackToGlobe map={map} /> */}
-
+      {!activeProjectData && <ProjectOfMonthCard mediaSize={mediaSize} />}
       {Object.values(treeData)?.length > 0 && (
         <TreeInfoBox
           treeData={treeData}

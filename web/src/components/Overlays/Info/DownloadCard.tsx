@@ -6,7 +6,7 @@ export const DownloadCard = ({ activeProjectData, mediaSize, maximize }) => {
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '8px 24px' }}>
-        <h2>Forestbench</h2>
+        <h1>Forestbench</h1>
         {activeProjectData?.project?.dataDownloadInfo}
         <p></p>
         {activeProjectData?.project?.dataDownloadUrl ? (

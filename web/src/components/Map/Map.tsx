@@ -19,6 +19,7 @@ import { InfoOverlay } from '../Overlays/InfoOverlay'
 import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
 import Button from './components/Button'
+import { LandCoverLegend } from './components/LandCoverLegend'
 import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
@@ -58,6 +59,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const [maximize, setMaximize] = useState<boolean>(false)
   const [treeData, setTreeData] = useState({})
+  const [landCover, setLandCover] = useState(false)
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -422,6 +424,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         projectPolygons={gainforestCenterpoints}
         setMarkers={setMarkers}
       /> */}
+      {landCover && <LandCoverLegend mediaSize={mediaSize} />}
       <LayerPickerOverlay
         map={map}
         activeProjectMosaic={activeProjectMosaic}
@@ -429,6 +432,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         activeProjectPolygon={activeProjectPolygon}
         mediaSize={mediaSize}
         maximize={maximize}
+        landCover={landCover}
+        setLandCover={setLandCover}
       />
       <TimeSlider map={map} mediaSize={mediaSize} />
     </>

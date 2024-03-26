@@ -22,13 +22,14 @@ export const LayerPickerOverlay = ({
   activeProjectPolygon,
   activeProjectData,
   activeProjectMosaic,
+  landCover,
+  setLandCover,
   mediaSize,
   maximize,
 }) => {
   const { theme } = useThemeUI()
   const [expandLayers, setExpandLayers] = useState(false)
   const [satellite, setSatellite] = useState(false)
-  const [landCover, setLandCover] = useState(false)
   const [orthomosaic, setOrthoMosaic] = useState(false)
   const [treeCover, setTreeCover] = useState(false)
 

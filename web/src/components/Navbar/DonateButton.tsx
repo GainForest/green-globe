@@ -1,9 +1,11 @@
 import { useState } from 'react'
 
+import { breakpoints } from 'src/constants'
+
 import Button from '../Map/components/Button'
 import { DonateOverlay } from '../Overlays/SubscribeOverlay'
 
-const DonateButton = ({ isLoggedIn }) => {
+const DonateButton = ({ isLoggedIn, mediaSize }) => {
   const [displayDonateOverlay, setDisplayDonateOverlay] =
     useState<boolean>(false)
 
@@ -12,7 +14,11 @@ const DonateButton = ({ isLoggedIn }) => {
       <Button
         style={{
           position: 'absolute',
-          right: isLoggedIn ? '200px' : '10px',
+          right: !isLoggedIn
+            ? '60px'
+            : mediaSize < breakpoints.m
+            ? '100px'
+            : '240px',
           height: '32px',
           borderRadius: '4px',
           cursor: 'pointer',

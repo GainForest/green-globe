@@ -287,6 +287,15 @@ margin-top: 4px;
 filter: brightness(50%)
   }
 
+.logo {
+  text-decoration: none;
+  color: white;
+}
+
+.logo:hover {
+  color: gray;
+}
+
 .tooltip:after {
   content: " ";
   position: absolute;

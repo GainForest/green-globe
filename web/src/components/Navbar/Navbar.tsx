@@ -2,12 +2,13 @@ import { useDispatch } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
 import { useAuth } from 'src/auth'
+import { breakpoints } from 'src/constants'
 import { showProfile } from 'src/reducers/overlaysReducer'
 
 import DonateButton from './DonateButton'
 import ProfileButton from './ProfileButton'
 
-const Navbar = ({ isAuthenticated, style }) => {
+const Navbar = ({ isAuthenticated, style, mediaSize }) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
   const location = window.location.origin
@@ -27,7 +28,9 @@ const Navbar = ({ isAuthenticated, style }) => {
       }}
     >
       <div style={{ width: '88px', textAlign: 'center' }}>
-        <h3>{logo}</h3>
+        <a className="logo" href="https://gainforest.earth/">
+          <h3>{logo}</h3>
+        </a>
       </div>
 
       <div
@@ -38,7 +41,7 @@ const Navbar = ({ isAuthenticated, style }) => {
           height: '100%',
         }}
       >
-        <DonateButton isLoggedIn={isAuthenticated} />
+        <DonateButton mediaSize={mediaSize} isLoggedIn={isAuthenticated} />
       </div>
       {isAuthenticated && (
         <div
@@ -61,11 +64,18 @@ const Navbar = ({ isAuthenticated, style }) => {
           >
             Log Out
           </button>
-          <ProfileButton
-            onClick={() => dispatch(showProfile())}
-          ></ProfileButton>
+          {mediaSize >= breakpoints.m && (
+            <ProfileButton
+              onClick={() => dispatch(showProfile())}
+            ></ProfileButton>
+          )}
         </div>
       )}
+      <img
+        style={{ position: 'absolute', right: 5, height: '2em' }}
+        src={'/gainforestIcon.svg'}
+        alt="gainforest logo"
+      />
     </div>
   )
 }

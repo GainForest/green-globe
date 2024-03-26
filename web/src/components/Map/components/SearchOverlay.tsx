@@ -140,7 +140,7 @@ export const SearchOverlay = ({
           theme={theme}
         />
       )}
-      {showListOfProjects && (
+      {showListOfProjects && splicedProjects.length > 0 && (
         <>
           <OptionsContainer theme={theme}>
             {splicedProjects.map((d, i) => (

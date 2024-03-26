@@ -30,24 +30,32 @@ export const InfoOverlay = ({
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   // Position of the buttons go from left to right
-  const [overlay, setOverlay] = useState<boolean>(false)
+  const [fullScreenOverlay, setFullScreenOverlay] = useState<boolean>(false)
   const [endpoint, setEndpoint] = useState<string>('')
+  const [fileType, setFileType] = useState<string | null>(null)
 
-  const handleClick = (source) => {
-    if (overlay) {
-      setOverlay(false)
+  const handleClick = (source, type: string | null) => {
+    // optional "type" param if fullScreenOverlay is used outside of WildlifeCard.tsx
+    if (type) {
+      setFileType(type)
+    } else {
+      setFileType(null)
+    }
+    if (fullScreenOverlay) {
+      setFullScreenOverlay(false)
     } else {
       setEndpoint(source)
-      setOverlay(true)
+      setFullScreenOverlay(true)
     }
   }
   return (
     <>
-      {overlay && (
+      {fullScreenOverlay && (
         <ImageOverlay
           toggle={toggle}
           endpoint={endpoint}
           handleClick={handleClick}
+          fileType={fileType}
         />
       )}
       <MaximizeButton
@@ -59,7 +67,7 @@ export const InfoOverlay = ({
       <ExitButton
         mediaSize={mediaSize}
         maximize={maximize}
-        onClick={() => dispatch(hideInfoOverlay())}
+        onClick={() => dispatch(setInfoOverlay(null))}
         style={null}
       />
       <InfoOverlayButton
@@ -117,6 +125,7 @@ export const InfoOverlay = ({
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
+          handleClick={handleClick}
         />
       )}
       {infoOverlay == 2 && (
@@ -161,10 +170,10 @@ export const InfoOverlay = ({
   )
 }
 
-export const ImageOverlay = ({ toggle, endpoint, handleClick }) => {
+export const ImageOverlay = ({ toggle, endpoint, handleClick, fileType }) => {
   return (
     <div className="overlay" onClick={handleClick} style={{ zIndex: 4 }}>
-      {toggle == 'Photos' ? (
+      {fileType !== 'video' && toggle == 'Photos' ? (
         <img
           src={`${process.env.AWS_STORAGE}/${endpoint}`}
           alt="Taken by community members"

@@ -29,7 +29,7 @@ export const WildlifeCard = ({
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
-        <h2>Photos</h2>
+        <h1>Media</h1>
         <div style={{ width: '100%', height: '12px' }} />
         <ToggleButton
           active={toggle}
@@ -123,7 +123,12 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   )
 }
 
-const VideoCard = ({ videoEndpoint, handleClick, mediaSize, maximize }) => {
+export const VideoCard = ({
+  videoEndpoint,
+  handleClick,
+  mediaSize,
+  maximize,
+}) => {
   return (
     <div className="community-photo">
       <button

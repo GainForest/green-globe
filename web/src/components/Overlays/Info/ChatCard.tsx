@@ -173,10 +173,10 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
           display: 'flex',
           flexDirection: 'column',
           height: '90%',
-          margin: '16px 0 16px 24px',
+          margin: '0 0 16px 24px',
         }}
       >
-        <h2>Chat</h2>
+        <h1>Chat</h1>
 
         {/* Message Container */}
         <div
@@ -284,12 +284,13 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
             position: 'relative',
             alignSelf: 'center',
             width: '100%',
-            height: '2%',
+            height: '0',
           }}
         >
           {isAuthenticated ? (
             <form onSubmit={writeToRedis}>
               <InputBox
+                style={{ width: '95%', marginLeft: '0' }}
                 value={message.text}
                 onChange={(e) =>
                   setMessage({

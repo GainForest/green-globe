@@ -24,6 +24,16 @@ export const SearchOverlay = ({
   const [showSearchBar, setShowSearchBar] = useState<boolean>(
     mediaSize < breakpoints.m ? false : true
   )
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [splicedProjects, setSplicedProjects] = useState<
+    Array<{ name: string; country: string }>
+  >([])
+
+  useEffect(() => {
+    if (filteredProjects) {
+      setSplicedProjects(filteredProjects.splice(0, 4))
+    }
+  }, [filteredProjects])
 
   useEffect(() => {
     if (!allProjects || !allProjects.length) {
@@ -96,6 +106,25 @@ export const SearchOverlay = ({
       )}
       {showSearchBar && (
         <SearchInputBox
+          onKeyDown={(e) => {
+            const maxIndex = splicedProjects.length - 1
+            if (e.key === 'ArrowDown') {
+              e.preventDefault()
+              setSelectedIndex((prevIndex) =>
+                prevIndex < maxIndex ? prevIndex + 1 : prevIndex
+              )
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault()
+              setSelectedIndex((prevIndex) =>
+                prevIndex > 0 ? prevIndex - 1 : 0
+              )
+            } else if (e.key === 'Enter' && selectedIndex >= 0) {
+              const selectedProject = splicedProjects[selectedIndex]
+              setSearchInput(selectedProject.name)
+              setShowListOfProjects(false)
+              setSelectedIndex(-1)
+            }
+          }}
           style={{
             borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
           }}
@@ -114,7 +143,7 @@ export const SearchOverlay = ({
       {showListOfProjects && (
         <>
           <OptionsContainer theme={theme}>
-            {filteredProjects?.splice(0, 4).map((d, i) => (
+            {splicedProjects.map((d, i) => (
               <Option
                 key={i}
                 position={i}
@@ -123,6 +152,16 @@ export const SearchOverlay = ({
                   setShowListOfProjects(false)
                 }}
                 theme={theme}
+                style={{
+                  backgroundColor:
+                    selectedIndex === i
+                      ? theme.colors.secondaryBackground
+                      : theme.colors.background,
+                  color:
+                    selectedIndex === i
+                      ? theme.colors.textHighlight
+                      : theme.colors.text,
+                }}
               >
                 {d?.name}{' '}
                 <CountrySubtitle>

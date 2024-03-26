@@ -123,7 +123,12 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   )
 }
 
-const VideoCard = ({ videoEndpoint, handleClick, mediaSize, maximize }) => {
+export const VideoCard = ({
+  videoEndpoint,
+  handleClick,
+  mediaSize,
+  maximize,
+}) => {
   return (
     <div className="community-photo">
       <button

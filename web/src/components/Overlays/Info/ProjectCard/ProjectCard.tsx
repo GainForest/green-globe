@@ -1,11 +1,13 @@
+import { useEffect, useState } from 'react'
+
 import { useThemeUI } from 'theme-ui'
 
 import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-import Button from '../../../Map/components/Button'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoBox } from '../InfoBox'
+import { VideoCard } from '../WildlifeCard'
 
 import { ProjectSiteButtons } from './ProjectSiteButtons'
 
@@ -15,8 +17,22 @@ export const ProjectCard = ({
   setActiveProjectPolygon,
   mediaSize,
   maximize,
+  handleClick,
 }) => {
+  const [promoVideo, setPromoVideo] = useState('')
+
   const { theme } = useThemeUI()
+
+  useEffect(() => {
+    const video = activeProjectData?.project?.assets?.find(
+      (d) => d.classification == 'Promotional Video'
+    )
+    if (video) {
+      setPromoVideo(video.awsCID)
+    } else {
+      setPromoVideo('')
+    }
+  }, [activeProjectData])
 
   if (!activeProjectData) {
     return (
@@ -37,8 +53,6 @@ export const ProjectCard = ({
     )
   }
 
-  const projectId = activeProjectData?.project?.id
-
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <ProjectSplash activeProjectData={activeProjectData} />
@@ -58,13 +72,14 @@ export const ProjectCard = ({
           {activeProjectData?.project?.name || ''}
         </h1>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
-        {/* {activeProjectData?.project?.stripeUrl && (
-          <a href={activeProjectData?.project?.stripeUrl}>
-            <Button style={{ backgroundColor: '#ffa400', width: '200px' }}>
-              Boost this project
-            </Button>
-          </a>
-        )} */}
+        {promoVideo && (
+          <VideoCard
+            mediaSize={mediaSize}
+            videoEndpoint={promoVideo}
+            maximize={maximize}
+            handleClick={() => handleClick(promoVideo, 'video')}
+          />
+        )}
         <ProjectSiteButtons
           assets={activeProjectData?.project?.assets}
           activeShapefile={activeProjectPolygon}

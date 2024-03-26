@@ -60,6 +60,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [maximize, setMaximize] = useState<boolean>(false)
   const [treeData, setTreeData] = useState({})
   const [landCover, setLandCover] = useState(false)
+  const [searchInput, setSearchInput] = useState<string>()
   const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -238,6 +239,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
         }
         fetchData().catch(console.error)
+        setSearchInput(projectName)
       }
     }
   }, [activeProjectData])
@@ -383,6 +385,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           map={map}
           allCenterpoints={gainforestCenterpoints}
           mediaSize={mediaSize}
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
         />
       )}
       {/* <BackToGlobe map={map} /> */}

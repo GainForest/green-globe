@@ -8,14 +8,19 @@ import { breakpoints } from 'src/constants'
 import { setProjectId } from 'src/reducers/projectsReducer'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
-export const SearchOverlay = ({ map, allCenterpoints, mediaSize }) => {
+export const SearchOverlay = ({
+  map,
+  allCenterpoints,
+  mediaSize,
+  searchInput,
+  setSearchInput,
+}) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
   const allProjects = allCenterpoints?.features?.map((d) => d.properties)
   const [filteredProjects, setFilteredProjects] =
     useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
-  const [searchInput, setSearchInput] = useState<string>()
   const [showSearchBar, setShowSearchBar] = useState<boolean>(
     mediaSize < breakpoints.m ? false : true
   )
@@ -95,8 +100,9 @@ export const SearchOverlay = ({ map, allCenterpoints, mediaSize }) => {
             borderRadius: showListOfProjects ? '8px 8px 0 0' : '8px',
           }}
           placeholder={'Search for projects or country'}
-          onClick={() => {
+          onClick={(e) => {
             setShowListOfProjects(!showListOfProjects)
+            e.target.select()
           }}
           onChange={(e) => {
             setSearchInput(e.target.value)

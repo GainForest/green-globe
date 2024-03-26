@@ -85,6 +85,7 @@ export const WildlifeCard = ({
 const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   return (
     <div className="community-photo">
+      <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
       <button
         style={{
           padding: '0 0 20px 0',
@@ -131,6 +132,7 @@ export const VideoCard = ({
 }) => {
   return (
     <div className="community-photo">
+      <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
       <button
         style={{
           padding: '0 0 20px 0',

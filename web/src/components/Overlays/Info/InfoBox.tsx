@@ -73,6 +73,7 @@ export const InfoBox = ({
         color: theme.colors.text as string,
         borderRadius: '0.5em',
         overflowY: 'auto',
+        paddingBottom: '8px',
         ...style,
       }}
     >

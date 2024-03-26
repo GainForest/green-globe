@@ -29,7 +29,7 @@ export const LayerPickerOverlay = ({
 }) => {
   const { theme } = useThemeUI()
   const [expandLayers, setExpandLayers] = useState(false)
-  const [satellite, setSatellite] = useState(true)
+  const [satellite, setSatellite] = useState(false)
   const [orthomosaic, setOrthoMosaic] = useState(false)
   const [treeCover, setTreeCover] = useState(false)
 

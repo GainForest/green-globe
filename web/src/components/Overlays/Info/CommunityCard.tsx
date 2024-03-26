@@ -48,7 +48,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
 
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
-      <div style={{ margin: '24px' }}>
+      <div style={{ margin: '16px 24px' }}>
         <h1 style={{ marginBottom: '8px' }}>Community</h1>
         <ToggleButton
           active={toggle}

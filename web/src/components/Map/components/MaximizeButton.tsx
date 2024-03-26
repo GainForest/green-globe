@@ -7,7 +7,7 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
     mediaSize >= breakpoints.xl
       ? '36px'
       : mediaSize > breakpoints.m
-      ? '32px'
+      ? '34px'
       : mediaSize > breakpoints.s
       ? '30px'
       : '28px'
@@ -16,7 +16,7 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
     mediaSize >= breakpoints.xl
       ? '36px'
       : mediaSize > breakpoints.m
-      ? '32px'
+      ? '34px'
       : mediaSize > breakpoints.s
       ? '30px'
       : '28px'

@@ -46,7 +46,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const activeProjectId = useSelector((state: State) => state.project.id)
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-  const [offInitialOverlay, setOffInitialOverlay] = useState<boolean>(false)
   const [map, setMap] = useState<mapboxgl.Map>()
   const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
@@ -74,13 +73,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       dispatch(setProjectId(urlProjectId))
     }
   }, [urlProjectId, activeProjectId])
-
-  useEffect(() => {
-    if (initialOverlay && !offInitialOverlay && !infoOverlay) {
-      dispatch(setInfoOverlay(initialOverlay))
-      setOffInitialOverlay(true)
-    }
-  }, [initialOverlay, infoOverlay, offInitialOverlay])
 
   // Initialize Map
   useEffect(() => {

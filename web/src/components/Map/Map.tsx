@@ -219,7 +219,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // its color
   useEffect(() => {
     if (map && activeProjectPolygon) {
-      setSearchInput(activeProjectData?.project?.name)
+      if (activeProjectData) {
+        setSearchInput(activeProjectData?.project?.name)
+      }
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
         padding: { top: 40, bottom: 40, left: 40, right: 40 },
@@ -246,7 +248,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // Display tree data
   useEffect(() => {
     if (map) {
-      // console.log(activeProjectTreesPlanted)
       if (activeProjectTreesPlanted) {
         const updateData = () => {
           map.getSource('trees')?.setData(activeProjectTreesPlanted)

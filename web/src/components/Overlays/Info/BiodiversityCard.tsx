@@ -213,7 +213,9 @@ export const BiodiversityCard = ({
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
-        <h1 style={{ wordWrap: 'normal', width: '80%' }}>Biodiversity</h1>
+        <h1 style={{ wordWrap: 'normal', width: '80%', marginBottom: '8px' }}>
+          Biodiversity
+        </h1>
         <ToggleButton
           active={toggle}
           setToggle={setToggle}
@@ -294,10 +296,22 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {measuredData.map((group) => (
             <div style={{ flex: '1 1 50%' }} key={group.title}>
-              <p>
-                {' '}
-                Total {group.title.toLowerCase()}: {group.total}
-              </p>
+              <div
+                style={{
+                  border: '1px solid #2f3030',
+                  height: '80px',
+                  width: '160px',
+                  margin: '16px 0px',
+                  borderRadius: '10px',
+                }}
+              >
+                <h4 style={{ margin: '16px' }}>
+                  Total {group.title.toLowerCase()}
+                </h4>
+                <h2 style={{ float: 'right', margin: '0 16px' }}>
+                  {group.total}
+                </h2>
+              </div>
               <h3>{group.title}</h3>
               {group.species.map((species) => (
                 <div key={species.name}>

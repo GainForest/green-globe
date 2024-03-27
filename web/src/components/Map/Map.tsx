@@ -219,7 +219,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // its color
   useEffect(() => {
     if (map && activeProjectPolygon) {
-      setSearchInput(activeProjectData?.project?.name)
+      if (activeProjectData) {
+        setSearchInput(activeProjectData?.project?.name)
+      }
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
         padding: { top: 40, bottom: 40, left: 40, right: 40 },
@@ -245,14 +247,21 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Display tree data
   useEffect(() => {
-    if (map && activeProjectTreesPlanted) {
-      const updateData = () => {
-        map.getSource('trees')?.setData(activeProjectTreesPlanted)
-      }
-      map.on('styledata', updateData)
+    if (map) {
+      if (activeProjectTreesPlanted) {
+        const updateData = () => {
+          map.getSource('trees')?.setData(activeProjectTreesPlanted)
+        }
+        map.on('styledata', updateData)
 
-      return () => {
-        map.off('styledata', updateData)
+        return () => {
+          map.off('styledata', updateData)
+        }
+      } else {
+        map.getSource('trees')?.setData({
+          type: 'FeatureCollection',
+          features: [],
+        })
       }
     }
   }, [map, activeProjectTreesPlanted])

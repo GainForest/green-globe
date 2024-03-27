@@ -219,6 +219,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // its color
   useEffect(() => {
     if (map && activeProjectPolygon) {
+      setSearchInput(activeProjectData?.project?.name)
       const boundingBox = bbox(activeProjectPolygon)
       map.fitBounds(boundingBox, {
         padding: { top: 40, bottom: 40, left: 40, right: 40 },
@@ -231,15 +232,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (activeProjectData) {
       const projectName = activeProjectData?.project?.name
-        .toLowerCase()
-        .replaceAll(' ', '-')
-      if (projectName) {
-        const treesEndpoint = `shapefiles/${projectName}-all-tree-plantings.geojson`
+      const dashedProjectName = projectName.toLowerCase().replaceAll(' ', '-')
+      if (dashedProjectName) {
+        const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
         const fetchData = async () => {
           await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
         }
         fetchData().catch(console.error)
-        setSearchInput(projectName)
       }
     }
   }, [activeProjectData])

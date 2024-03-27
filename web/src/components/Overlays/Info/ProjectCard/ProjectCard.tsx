@@ -55,7 +55,11 @@ export const ProjectCard = ({
 
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
-      <ProjectSplash activeProjectData={activeProjectData} />
+      <ProjectSplash
+        activeProjectData={activeProjectData}
+        promoVideo={promoVideo}
+        handleClick={handleClick}
+      />
       <TextContainer>
         <h1
           style={{
@@ -72,14 +76,6 @@ export const ProjectCard = ({
           {activeProjectData?.project?.name || ''}
         </h1>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
-        {promoVideo && (
-          <VideoCard
-            mediaSize={mediaSize}
-            videoEndpoint={promoVideo}
-            maximize={maximize}
-            handleClick={() => handleClick(promoVideo, 'video')}
-          />
-        )}
         <ProjectSiteButtons
           assets={activeProjectData?.project?.assets}
           activeShapefile={activeProjectPolygon}
@@ -91,24 +87,55 @@ export const ProjectCard = ({
   )
 }
 
-const ProjectSplash = ({ activeProjectData }) => {
+const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
   const splash = activeProjectData?.project?.assets?.filter((d) =>
     d.classification?.includes('Splash')
   )[0]?.awsCID
 
   if (splash) {
     return (
-      <img
-        style={{
-          width: '100%',
-          height: '250px',
-          objectFit: 'cover',
-          borderTopLeftRadius: '8px',
-          borderTopRightRadius: '8px',
-        }}
-        src={`${process.env.AWS_STORAGE}/${splash}`}
-        alt="Project Splash"
-      />
+      <div
+        className={promoVideo && 'community-photo'}
+        style={{ width: '100%', height: '250px' }}
+      >
+        <button
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+            width: '100%',
+            height: '250px',
+          }}
+          onClick={() => promoVideo && handleClick(promoVideo, 'video')}
+        >
+          <img
+            style={{
+              width: '100%',
+              height: '250px',
+              objectFit: 'cover',
+              borderTopLeftRadius: '8px',
+              borderTopRightRadius: '8px',
+            }}
+            src={`${process.env.AWS_STORAGE}/${splash}`}
+            alt="Project Splash"
+          />
+          {promoVideo && (
+            <img
+              style={{
+                width: '36px',
+                height: '36px',
+                position: 'absolute',
+                left: '16px',
+                top: '208px',
+                opacity: '75%',
+              }}
+              src={'/play-icon.svg'}
+              alt="play"
+            />
+          )}
+        </button>
+      </div>
     )
   } else {
     return <ThemedSkeleton height={250} />

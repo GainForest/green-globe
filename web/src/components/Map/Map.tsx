@@ -245,14 +245,22 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Display tree data
   useEffect(() => {
-    if (map && activeProjectTreesPlanted) {
-      const updateData = () => {
-        map.getSource('trees')?.setData(activeProjectTreesPlanted)
-      }
-      map.on('styledata', updateData)
+    if (map) {
+      // console.log(activeProjectTreesPlanted)
+      if (activeProjectTreesPlanted) {
+        const updateData = () => {
+          map.getSource('trees')?.setData(activeProjectTreesPlanted)
+        }
+        map.on('styledata', updateData)
 
-      return () => {
-        map.off('styledata', updateData)
+        return () => {
+          map.off('styledata', updateData)
+        }
+      } else {
+        map.getSource('trees')?.setData({
+          type: 'FeatureCollection',
+          features: [],
+        })
       }
     }
   }, [map, activeProjectTreesPlanted])

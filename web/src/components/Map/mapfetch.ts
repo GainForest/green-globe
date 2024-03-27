@@ -123,15 +123,17 @@ export const fetchTreeShapefile = async (
   endpoint: string,
   setActiveProjectTreesPlanted
 ) => {
-  const response = fetch(`${process.env.AWS_STORAGE}/${endpoint}`)
-    .then((res) => res.json())
-    .then((result) => {
-      const indexedFeatures = result.features.map((feature, index) => ({
-        ...feature,
-        id: index,
-      }))
-      result.features = indexedFeatures
-      setActiveProjectTreesPlanted(result)
-    })
-  return response
+  const response = await fetch(`${process.env.AWS_STORAGE}/${endpoint}`)
+  if (response.ok) {
+    const result = await response.json()
+    const indexedFeatures = result.features.map((feature, index) => ({
+      ...feature,
+      id: index,
+    }))
+    result.features = indexedFeatures
+    setActiveProjectTreesPlanted(result)
+    return response
+  } else {
+    setActiveProjectTreesPlanted(null)
+  }
 }

@@ -199,14 +199,12 @@ export const PaymentCard = ({ activeProjectData }) => {
   if (loading) {
     return (
       <div style={{ margin: '24px' }}>
-        <h1>Community Payments</h1>
         <p style={{ marginTop: '32px' }}>loading...</p>
       </div>
     )
   }
   return (
     <div style={{ margin: '24px' }}>
-      <h1>Community Payments</h1>
       <div>
         {paymentData.length > 0 ? (
           paymentData.map((payment) => {

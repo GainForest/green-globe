@@ -36,20 +36,6 @@ export const SearchOverlay = ({
   }, [filteredProjects])
 
   useEffect(() => {
-    if (!allProjects || !allProjects.length) {
-      return
-    }
-    const found = allProjects.find((d) => d?.name == searchInput)
-    if (found) {
-      dispatch(setProjectId(found?.projectId))
-      setSearchInput('')
-      if (mediaSize < breakpoints.m) {
-        setShowSearchBar(false)
-      }
-    }
-  }, [allProjects, searchInput, mediaSize])
-
-  useEffect(() => {
     if (mediaSize < breakpoints.m) {
       setShowSearchBar(false)
     } else {
@@ -82,6 +68,18 @@ export const SearchOverlay = ({
       setFilteredProjects(allProjects)
     }
   }, [searchInput, setFilteredProjects])
+
+  const handleClick = (target: string) => {
+    setSearchInput(target)
+    const found = allProjects.find((d) => d?.name == target)
+    if (found) {
+      dispatch(setProjectId(found?.projectId))
+      if (mediaSize < breakpoints.m) {
+        setShowSearchBar(false)
+      }
+      setShowListOfProjects(false)
+    }
+  }
 
   return (
     <>
@@ -120,8 +118,7 @@ export const SearchOverlay = ({
               )
             } else if (e.key === 'Enter' && selectedIndex >= 0) {
               const selectedProject = splicedProjects[selectedIndex]
-              setSearchInput(selectedProject.name)
-              setShowListOfProjects(false)
+              handleClick(selectedProject.name)
               setSelectedIndex(-1)
             }
           }}
@@ -148,7 +145,7 @@ export const SearchOverlay = ({
                 key={i}
                 position={i}
                 onClick={() => {
-                  setSearchInput(d.name)
+                  handleClick(d.name)
                   setShowListOfProjects(false)
                 }}
                 theme={theme}

@@ -123,14 +123,14 @@ const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
           {promoVideo && (
             <img
               style={{
-                width: '36px',
-                height: '36px',
+                width: '24px',
+                height: '24px',
                 position: 'absolute',
                 left: '16px',
                 top: '208px',
                 opacity: '75%',
               }}
-              src={'/play-icon.svg'}
+              src={'/play.png'}
               alt="play"
             />
           )}

@@ -176,9 +176,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         const projectPolygonCID = result?.project?.assets
           ?.filter((d) => d?.classification == 'Shapefiles')
           .filter((d) => d?.shapefile?.default == true)?.[0]?.awsCID
-        const projectMosaic = result?.project?.assets?.filter(
-          (d) => d?.classification == 'Drone Mosaic'
-        )
+        const projectMosaic = result?.project?.assets
+          ?.filter((d) => d.classification == 'Drone Orthomosaic Endpoint')
+          .map((d) => d?.endpoint)
         const endpoints = result?.project?.assets
           ?.filter((d) => d?.classification == 'Shapefiles')
           .map((d) => d?.awsCID)
@@ -244,6 +244,22 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
     }
   }, [activeProjectData])
+
+  useEffect(() => {
+    if (map && activeProjectMosaic) {
+      map.addSource('orthomosaic', {
+        type: 'raster',
+        url: activeProjectMosaic,
+      })
+      if (!map.getLayer('orthomosaic')) {
+        map.addLayer({
+          id: 'orthomosaic',
+          source: 'orthomosaic',
+          type: 'raster',
+        })
+      }
+    }
+  }, [map, activeProjectMosaic])
 
   // Display tree data
   useEffect(() => {

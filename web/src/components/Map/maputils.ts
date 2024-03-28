@@ -46,7 +46,6 @@ export const addAllSourcesAndLayers = (
   addHighlightedSiteSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
   addHexagonsSourceAndLayers(map, hexagons)
-  addOrthomosaicSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addTreesPlantedSourceAndLayers(map)
 }
@@ -61,22 +60,6 @@ export const addHiveSourceAndLayers = (
   if (hiveLocations) {
     const newMarkers = addMarkers(map, hiveLocations, 'hive')
     setMarkers((markers) => [...markers, ...newMarkers])
-  }
-}
-
-export const addOrthomosaicSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('orthomosaic')) {
-    map.addSource('orthomosaic', {
-      type: 'raster',
-      url: 'mapbox://dwddao.0muxuhbk',
-    })
-  }
-  if (!map.getLayer('orthomosaic')) {
-    map.addLayer({
-      id: 'orthomosaic',
-      source: 'orthomosaic',
-      type: 'raster',
-    })
   }
 }
 

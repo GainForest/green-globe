@@ -191,7 +191,7 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
             <div key={msg.timestamp} style={{ width: '100%' }}>
               <div
                 className={
-                  msg.sender !== 'Peggy'
+                  msg.sender == userMetadata?.email
                     ? 'message-outer-right'
                     : 'message-outer-left'
                 }
@@ -204,14 +204,14 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
                     setShowPopup(false)
                   }}
                   className={
-                    msg.sender !== 'Peggy'
+                    msg.sender == userMetadata?.email
                       ? 'message-inner-right'
                       : 'message-inner-left'
                   }
                 >
                   <div
                     className={
-                      msg.sender !== 'Peggy'
+                      msg.sender == userMetadata?.email
                         ? 'message-bubble-right'
                         : 'message-bubble-left'
                     }

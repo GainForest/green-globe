@@ -176,9 +176,11 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         const projectPolygonCID = result?.project?.assets
           ?.filter((d) => d?.classification == 'Shapefiles')
           .filter((d) => d?.shapefile?.default == true)?.[0]?.awsCID
-        const projectMosaic = result?.project?.assets
-          ?.filter((d) => d.classification == 'Drone Orthomosaic Endpoint')
-          .map((d) => d?.endpoint)
+        const projectMosaic = result?.project?.assets?.find(
+          (d) => d.classification == 'Drone Mosaic'
+        )?.awsCID
+        // console.log(projectMosaic)
+        console.log(result?.project?.assets)
         const endpoints = result?.project?.assets
           ?.filter((d) => d?.classification == 'Shapefiles')
           .map((d) => d?.awsCID)

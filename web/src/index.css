@@ -333,6 +333,35 @@ filter: brightness(50%)
   border-color: gray transparent transparent transparent;
 }
 
+.info-box {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: hidden;
+}
+
+.info-box::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.info-box::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.info-box::-webkit-scrollbar-thumb {
+  background-color: #393a3d;
+  border-radius: 5px;
+}
+
+.info-box:hover,
+.info-box:active,
+.info-box:focus {
+  overflow-y: scroll;
+  scrollbar-width: auto;
+}
+
+
+
 @media only screen and (min-width: 480px) {
   .tree-info, .tree-photo {
     width: 230px;

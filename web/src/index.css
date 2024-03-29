@@ -148,11 +148,19 @@ margin-top: 4px;
   display: inline-block;
   max-width: calc(100% - 67px);
   overflow-wrap: break-word;
-  background-color: #67962A;
   padding: 6px 10px;
   border-radius: 10px;
-  border-bottom-right-radius: 0;
   margin-top: 4px;
+}
+
+.message-bubble-left {
+  border-bottom-left-radius: 0;
+  background-color: #8c8b8b;
+}
+
+.message-bubble-right {
+  border-bottom-right-radius: 0;
+  background-color: #67962A;
 }
 
 .message-text {

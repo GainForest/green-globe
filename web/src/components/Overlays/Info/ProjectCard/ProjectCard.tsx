@@ -65,8 +65,6 @@ export const ProjectCard = ({
         <div
           style={{
             display: 'flex',
-            // flexDirection: mediaSize < breakpoints.m ? 'column' : 'row',
-            // alignItems: mediaSize < breakpoints.m ? 'center' : null,
           }}
         >
           <ProjectLogo project={activeProjectData?.project} theme={theme} />

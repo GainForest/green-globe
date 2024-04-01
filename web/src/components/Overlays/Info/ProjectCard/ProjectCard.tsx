@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
 import { breakpoints } from 'src/constants'
@@ -7,7 +8,7 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoBox } from '../InfoBox'
-import { VideoCard } from '../WildlifeCard'
+// import { VideoCard } from '../WildlifeCard'
 
 import { ProjectSiteButtons } from './ProjectSiteButtons'
 
@@ -61,20 +62,28 @@ export const ProjectCard = ({
         handleClick={handleClick}
       />
       <TextContainer>
-        <h1
+        <div
           style={{
-            fontSize:
-              mediaSize >= breakpoints.xl
-                ? 24
-                : mediaSize > breakpoints.m
-                ? 22
-                : mediaSize > breakpoints.s
-                ? 18
-                : 16,
+            display: 'flex',
           }}
         >
-          {activeProjectData?.project?.name || ''}
-        </h1>
+          <ProjectLogo project={activeProjectData?.project} theme={theme} />
+          <h1
+            style={{
+              marginTop: '32px',
+              fontSize:
+                mediaSize >= breakpoints.xl
+                  ? 24
+                  : mediaSize > breakpoints.m
+                  ? 22
+                  : mediaSize > breakpoints.s
+                  ? 18
+                  : 16,
+            }}
+          >
+            {activeProjectData?.project?.name || ''}
+          </h1>
+        </div>
         <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
         <ProjectSiteButtons
           assets={activeProjectData?.project?.assets}
@@ -177,3 +186,48 @@ const Description = ({ activeProjectData }) => (
     </p>
   </>
 )
+
+const ProjectLogo = ({ theme, project }) => {
+  const [logoAspectRatio, setLogoAspectRatio] = useState(1)
+  const logo =
+    project?.assets?.find((d) => d.classification == 'Logo')?.awsCID ||
+    undefined
+  useEffect(() => {
+    if (logo) {
+      const img = new Image()
+      img.src = `${process.env.AWS_STORAGE}/${logo}`
+      img.onload = function () {
+        setLogoAspectRatio(this.width / this.height)
+      }
+    }
+  }, [logo])
+
+  const isLogoCircular = Math.abs(logoAspectRatio - 1) < 0.1
+
+  return logo ? (
+    <LogoContainer theme={theme} isCircular={isLogoCircular}>
+      <Logo src={`${process.env.AWS_STORAGE}/${logo}`} alt={'Logo'} />
+    </LogoContainer>
+  ) : null
+}
+
+const LogoContainer = styled.div<{ theme }>`
+  height: 80px;
+  width: 80px;
+  margin-top: 16px;
+  margin-right: 24px;
+  background-color: ${(props) => props.theme.colors.hinted};
+  border-radius: ${(props) => (props.isCircular ? '50%' : '0')};
+`
+
+const Logo = styled.img`
+  min-height: 80px;
+  min-width: 80px;
+  height: 80px;
+  width: 80px;
+
+  @media (max-width: ${breakpoints.m}px) {
+    height: 60px;
+    width: 60px;
+  }
+`

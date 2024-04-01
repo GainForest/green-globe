@@ -15,19 +15,10 @@ export const InfoBox = ({
 }) => {
   const { theme } = useThemeUI()
 
-  const height =
-    mediaSize >= breakpoints.xl
-      ? '560px'
-      : mediaSize > breakpoints.m
-      ? '480px'
-      : mediaSize > breakpoints.s
-      ? '320px'
-      : '280px'
+  const height = '60vh'
 
   const maxedHeight =
-    mediaSize >= breakpoints.xl
-      ? '90vh'
-      : mediaSize > breakpoints.m
+    mediaSize > breakpoints.m
       ? '90vh'
       : mediaSize > breakpoints.s
       ? '85vh'
@@ -38,8 +29,6 @@ export const InfoBox = ({
       ? '360px'
       : mediaSize > breakpoints.m
       ? '310px'
-      : mediaSize > breakpoints.s
-      ? '98vw'
       : '98vw'
 
   const maxedWidth =
@@ -47,8 +36,6 @@ export const InfoBox = ({
       ? '700px'
       : mediaSize > breakpoints.m
       ? '660px'
-      : mediaSize > breakpoints.s
-      ? '98vw'
       : '98vw'
 
   return (

@@ -100,27 +100,27 @@ const StyledButton = styled.button<{
     // Styles when maximize is false
     height: 44px;
     width: 44px;
-    bottom: 610px;
+    bottom: calc(60vh + 44px);
     left: ${position * 52 - 44}px;
 
     @media (max-width: ${breakpoints.xl}px) {
       height: 42px;
       width: 42px;
-      bottom: 530px;
+      bottom: calc(60vh + 42px);
       left: ${position * 52 - 42}px;
     }
 
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
       width: 28px;
-      bottom: 365px;
+      bottom: calc(60vh + 40px);
       left: ${position * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
       height: 24px;
       width: 24px;
-      bottom: 320px;
+      bottom: calc(60vh + 40px);
       left: ${position * 28 - 24 + 5}px;
     }
   `}

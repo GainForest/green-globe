@@ -36,9 +36,9 @@ export const PaymentCard = ({ activeProjectData }) => {
       .then((result) => {
         console.log(result)
         setPaymentData(
-          result?.data?.transactionsByProject?.sort(
-            (a, b) => a.timestamp - b.timestamp
-          )
+          result?.data?.transactionsByProject
+            ?.sort((a, b) => a.timestamp - b.timestamp)
+            .filter((payment) => payment.amount >= 0.01)
         )
         setLoading(false)
       })

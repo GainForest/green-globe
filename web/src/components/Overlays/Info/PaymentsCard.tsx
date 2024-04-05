@@ -18,7 +18,7 @@ export const PaymentCard = ({ activeProjectData }) => {
       body: JSON.stringify({
         query: `
         query {
-          transactionsByProject(id:"${activeProjectData.project.id}") {
+          transactionsByProjectId(id:"${activeProjectData.project.id}") {
             id
             amount
             to
@@ -36,7 +36,7 @@ export const PaymentCard = ({ activeProjectData }) => {
       .then((result) => {
         console.log(result)
         setPaymentData(
-          result?.data?.transactionsByProject
+          result?.data?.transactionsByProjectId
             ?.sort((a, b) => a.timestamp - b.timestamp)
             .filter((payment) => payment.amount >= 0.01)
         )

@@ -96,7 +96,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
                           src={profileSrc}
                           width={100}
                           height={100}
-                          style={{ borderRadius: 50 }}
+                          style={{ borderRadius: 50, objectFit: 'cover' }}
                         />
                       </div>
                       <div style={{ marginLeft: '16px' }}>

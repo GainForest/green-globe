@@ -55,8 +55,8 @@ export const PaymentCard = ({ activeProjectData }) => {
   }
 
   const tagColors = {
-    Solana: 'purple',
-    Celo: 'yellow',
+    Solana: '#9945FF',
+    Celo: '#FCFF52',
     ETH: 'black',
   }
 

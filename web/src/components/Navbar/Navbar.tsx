@@ -73,7 +73,7 @@ const Navbar = ({ isAuthenticated, style, mediaSize }) => {
       )}
       <img
         style={{ position: 'absolute', right: 5, height: '2em' }}
-        src={'/gainforestIcon.svg'}
+        src={'/gainforestIcon.png'}
         alt="gainforest logo"
       />
     </div>

@@ -27,7 +27,12 @@ const Navbar = ({ isAuthenticated, style, mediaSize }) => {
         ...style,
       }}
     >
-      <div style={{ width: '88px', textAlign: 'center' }}>
+      <img
+        style={{ position: 'absolute', left: 5, height: '1.8em' }}
+        src={'/gainforestIcon.png'}
+        alt="gainforest logo"
+      />
+      <div style={{ width: '88px', paddingLeft: '20px', textAlign: 'center' }}>
         <a className="logo" href="https://gainforest.earth/">
           <h3>{logo}</h3>
         </a>
@@ -71,11 +76,6 @@ const Navbar = ({ isAuthenticated, style, mediaSize }) => {
           )}
         </div>
       )}
-      <img
-        style={{ position: 'absolute', right: 5, height: '2em' }}
-        src={'/gainforestIcon.svg'}
-        alt="gainforest logo"
-      />
     </div>
   )
 }

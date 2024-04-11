@@ -15,10 +15,10 @@ const DonateButton = ({ isLoggedIn, mediaSize }) => {
         style={{
           position: 'absolute',
           right: !isLoggedIn
-            ? '60px'
+            ? '20px'
             : mediaSize < breakpoints.m
             ? '100px'
-            : '240px',
+            : '180px',
           height: '32px',
           borderRadius: '4px',
           cursor: 'pointer',

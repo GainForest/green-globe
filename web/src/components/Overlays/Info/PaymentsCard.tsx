@@ -7,6 +7,7 @@ import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [showFiatMessage, setShowFiatMessage] = useState(false)
 
   useEffect(() => {
     setLoading(true)
@@ -34,12 +35,25 @@ export const PaymentCard = ({ activeProjectData }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result)
         setPaymentData(
           result?.data?.transactionsByProjectId
-            ?.sort((a, b) => a.timestamp - b.timestamp)
+            ?.sort(
+              (a, b) =>
+                new Date(b.timestamp).getTime() -
+                new Date(a.timestamp).getTime()
+            )
             .filter((payment) => payment.amount >= 0.01)
         )
+        console.log(typeof result.data)
+        if (
+          result?.data?.transactionsByProjectId?.some((payment) =>
+            payment.blockchain.startsWith('Fiat')
+          )
+        ) {
+          {
+            setShowFiatMessage(true)
+          }
+        }
         setLoading(false)
       })
   }, [activeProjectData])
@@ -92,6 +106,11 @@ export const PaymentCard = ({ activeProjectData }) => {
   return (
     <div style={{ margin: '24px' }}>
       <div>
+        {showFiatMessage && (
+          <p style={{ color: '#808080' }}>
+            Fiat currencies are displayed in USD
+          </p>
+        )}
         {paymentData.length > 0 ? (
           paymentData.map((payment) => {
             return (

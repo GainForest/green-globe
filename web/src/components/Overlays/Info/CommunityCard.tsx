@@ -11,7 +11,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
   if (
     !activeProjectData ||
     !activeProjectData?.project ||
-    !activeProjectData?.project?.CommunityMember
+    !activeProjectData?.project?.communityMembers
   ) {
     return (
       <InfoBox maximize={maximize} mediaSize={mediaSize}>
@@ -31,7 +31,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
     )
   }
   const { project } = activeProjectData
-  const totalFundsReceived = project.CommunityMember.reduce(
+  const totalFundsReceived = project.communityMembers.reduce(
     (acc, d) => acc + d.fundsReceived || 0,
     0
   )
@@ -39,11 +39,11 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
     ? totalFundsReceived.toFixed(2)
     : 0
 
-  const communityMembers = [...project.CommunityMember].sort(
+  const communityMembers = [...project.communityMembers].sort(
     (a, b) => b.priority - a.priority
   )
 
-  const communityMembersCount = project.CommunityMember.length
+  const communityMembersCount = project.communityMembers.length
   const memberOrMembers = communityMembersCount == 1 ? 'member' : 'members'
 
   return (

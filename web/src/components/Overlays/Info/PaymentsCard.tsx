@@ -63,7 +63,7 @@ export const PaymentCard = ({ activeProjectData }) => {
   if (
     !activeProjectData ||
     !activeProjectData?.project ||
-    !activeProjectData?.project?.CommunityMember
+    !activeProjectData?.project?.communityMembers
   ) {
     return (
       <InfoBox>

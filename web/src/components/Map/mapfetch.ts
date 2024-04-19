@@ -61,7 +61,7 @@ export const fetchProjectInfo = async (projectId) => {
                 shortName
               }
             }
-            CommunityMember {
+            communityMembers {
               id
               firstName
               lastName

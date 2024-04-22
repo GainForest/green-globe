@@ -129,7 +129,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                           overflowWrap: 'break-word',
                         }}
                         href={
-                          payment.blockchain === 'celo'
+                          payment.blockchain.toLowerCase() === 'celo'
                             ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
                             : `https://explorer.solana.com/tx/${payment.hash}`
                         }

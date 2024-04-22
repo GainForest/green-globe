@@ -120,26 +120,34 @@ export const PaymentCard = ({ activeProjectData }) => {
                     <h3> {getDate(payment.timestamp)}</h3>
                     <p>
                       To:{' '}
-                      <a
-                        style={{
-                          margin: 0,
-                          color: '#808080',
-                          wordWrap: 'break-word',
-                          wordBreak: 'break-all',
-                          overflowWrap: 'break-word',
-                        }}
-                        href={
-                          payment.blockchain.toLowerCase() === 'celo'
-                            ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
-                            : `https://explorer.solana.com/tx/${payment.hash}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {payment.firstName
-                          ? `${payment.firstName} ${payment.lastName}`
-                          : payment.to}
-                      </a>
+                      {payment.blockchain.startsWith('Fiat') ? (
+                        payment.firstName ? (
+                          `${payment.firstName} ${payment.lastName}`
+                        ) : (
+                          payment.to
+                        )
+                      ) : (
+                        <a
+                          style={{
+                            margin: 0,
+                            color: '#808080',
+                            wordWrap: 'break-word',
+                            wordBreak: 'break-all',
+                            overflowWrap: 'break-word',
+                          }}
+                          href={
+                            payment.blockchain.toLowerCase() === 'celo'
+                              ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
+                              : `https://explorer.solana.com/tx/${payment.hash}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {payment.firstName
+                            ? `${payment.firstName} ${payment.lastName}`
+                            : payment.to}
+                        </a>
+                      )}
                     </p>
                     <p style={{ color: '#67962A' }}>${payment.amount}</p>
                     <InfoTag style={{ color: tagColors[payment.blockchain] }}>

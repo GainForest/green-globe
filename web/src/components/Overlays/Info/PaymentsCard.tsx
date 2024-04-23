@@ -10,14 +10,17 @@ export const PaymentCard = ({ activeProjectData }) => {
   const [showFiatMessage, setShowFiatMessage] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
-    fetch(`${process.env.GAINFOREST_ENDPOINT}/api/graphql`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `
+    const fetchData = async () => {
+      const fetchCryptoPayments = async () => {
+        const res = await fetch(
+          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `
         query {
           transactionsByProjectId(id:"${activeProjectData.project.id}") {
             id
@@ -32,32 +35,73 @@ export const PaymentCard = ({ activeProjectData }) => {
           }
         }
       `,
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result.data.transactionsByProjectId)
-        setPaymentData(
-          result?.data?.transactionsByProjectId
-            ?.sort(
-              (a, b) =>
-                new Date(b.timestamp).getTime() -
-                new Date(a.timestamp).getTime()
-            )
-            .filter((payment) => payment.amount >= 0.01)
+            }),
+          }
         )
-        console.log(typeof result.data)
-        if (
-          result?.data?.transactionsByProjectId?.some((payment) =>
-            payment.blockchain.startsWith('Fiat')
-          )
-        ) {
+        const result = await res.json()
+        return result.data.transactionsByProjectId.map((payment) => {
+          return {
+            ...payment,
+            currency: payment.blockchain,
+          }
+        })
+      }
+
+      const fetchFiatPayments = async () => {
+        const res = await fetch(
+          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
           {
-            setShowFiatMessage(true)
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `
+        query {
+          fiatTransactionsByProjectId(id:"${activeProjectData.project.id}") {
+            amountInUsd
+            timestamp
+            currency
+            originalAmount
+            firstName
+            lastName
+            profileUrl
           }
         }
-        setLoading(false)
-      })
+      `,
+            }),
+          }
+        )
+        const result = await res.json()
+        return result.data.fiatTransactionsByProjectId.map((payment) => {
+          return {
+            ...payment,
+            amount: payment.amountInUsd,
+            currency: `Fiat (${payment.currency})`,
+          }
+        })
+      }
+
+      setLoading(true)
+
+      const cryptoPayments = await fetchCryptoPayments()
+      const fiatPayments = await fetchFiatPayments()
+      if (fiatPayments.length > 0) {
+        setShowFiatMessage(true)
+      }
+      const allPayments = [...cryptoPayments, ...fiatPayments]
+      setPaymentData(
+        allPayments
+          ?.sort(
+            (a, b) =>
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+          )
+          .filter((payment) => payment.amount >= 0.01)
+      )
+
+      setLoading(false)
+    }
+    fetchData()
   }, [activeProjectData])
 
   const getDate = (timeStamp) => {
@@ -146,7 +190,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                     <h3> {getDate(payment.timestamp)}</h3>
                     <p>
                       To:{' '}
-                      {payment.blockchain.startsWith('Fiat') ? (
+                      {payment.currency.startsWith('Fiat') ? (
                         payment.firstName ? (
                           `${payment.firstName} ${payment.lastName}`
                         ) : (
@@ -162,7 +206,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                             overflowWrap: 'break-word',
                           }}
                           href={
-                            payment.blockchain.toLowerCase() === 'celo'
+                            payment.currency.toLowerCase() === 'celo'
                               ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
                               : `https://explorer.solana.com/tx/${payment.hash}`
                           }
@@ -176,8 +220,8 @@ export const PaymentCard = ({ activeProjectData }) => {
                       )}
                     </p>
                     <p style={{ color: '#67962A' }}>${payment.amount}</p>
-                    <InfoTag style={{ color: tagColors[payment.blockchain] }}>
-                      {payment.blockchain}
+                    <InfoTag style={{ color: tagColors[payment.currency] }}>
+                      {payment.currency}
                     </InfoTag>
                   </div>
                 </div>

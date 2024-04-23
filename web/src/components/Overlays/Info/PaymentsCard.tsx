@@ -28,6 +28,7 @@ export const PaymentCard = ({ activeProjectData }) => {
             timestamp
             firstName
             lastName
+            profileUrl
           }
         }
       `,
@@ -35,6 +36,7 @@ export const PaymentCard = ({ activeProjectData }) => {
     })
       .then((res) => res.json())
       .then((result) => {
+        console.log(result.data.transactionsByProjectId)
         setPaymentData(
           result?.data?.transactionsByProjectId
             ?.sort(
@@ -104,7 +106,7 @@ export const PaymentCard = ({ activeProjectData }) => {
     )
   }
   return (
-    <div style={{ margin: '24px' }}>
+    <div>
       <div>
         {showFiatMessage && (
           <p style={{ color: '#808080' }}>
@@ -113,33 +115,65 @@ export const PaymentCard = ({ activeProjectData }) => {
         )}
         {paymentData.length > 0 ? (
           paymentData.map((payment) => {
+            let fullName
+            if (payment.firstName && payment.lastName) {
+              fullName = `${payment.firstName} ${payment.lastName}`
+            } else if (payment.firstName && !payment.lastName) {
+              fullName = `${payment.firstName}`
+            } else if (!payment.firstName && payment.lastName) {
+              fullName = `${payment.lastName}`
+            } else {
+              fullName = ''
+            }
+            const profileSrc =
+              payment.profileUrl ||
+              `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
+                .toLowerCase()
+                .replace(' ', '-')}.svg`
             return (
               <div style={{ marginTop: '32px' }} key={payment.hash}>
                 <div style={{ display: 'flex' }}>
+                  <div>
+                    <img
+                      alt={`${payment.name}-profile`}
+                      src={profileSrc}
+                      width={100}
+                      height={100}
+                      style={{ borderRadius: 50, objectFit: 'cover' }}
+                    />
+                  </div>
                   <div style={{ marginLeft: '16px' }}>
                     <h3> {getDate(payment.timestamp)}</h3>
                     <p>
                       To:{' '}
-                      <a
-                        style={{
-                          margin: 0,
-                          color: '#808080',
-                          wordWrap: 'break-word',
-                          wordBreak: 'break-all',
-                          overflowWrap: 'break-word',
-                        }}
-                        href={
-                          payment.blockchain.toLowerCase() === 'celo'
-                            ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
-                            : `https://explorer.solana.com/tx/${payment.hash}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {payment.firstName
-                          ? `${payment.firstName} ${payment.lastName}`
-                          : payment.to}
-                      </a>
+                      {payment.blockchain.startsWith('Fiat') ? (
+                        payment.firstName ? (
+                          `${payment.firstName} ${payment.lastName}`
+                        ) : (
+                          payment.to
+                        )
+                      ) : (
+                        <a
+                          style={{
+                            margin: 0,
+                            color: '#808080',
+                            wordWrap: 'break-word',
+                            wordBreak: 'break-all',
+                            overflowWrap: 'break-word',
+                          }}
+                          href={
+                            payment.blockchain.toLowerCase() === 'celo'
+                              ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
+                              : `https://explorer.solana.com/tx/${payment.hash}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {payment.firstName
+                            ? `${payment.firstName} ${payment.lastName}`
+                            : payment.to}
+                        </a>
+                      )}
                     </p>
                     <p style={{ color: '#67962A' }}>${payment.amount}</p>
                     <InfoTag style={{ color: tagColors[payment.blockchain] }}>

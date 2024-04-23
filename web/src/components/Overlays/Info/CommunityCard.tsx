@@ -39,9 +39,11 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
     ? totalFundsReceived.toFixed(2)
     : 0
 
-  const communityMembers = [...project.communityMembers].sort(
-    (a, b) => b.priority - a.priority
-  )
+  const communityMembers = [...project.communityMembers].sort((a, b) => {
+    if (a.priority === null) return 1
+    if (b.priority === null) return -1
+    return a.priority - b.priority
+  })
 
   const communityMembersCount = project.communityMembers.length
   const memberOrMembers = communityMembersCount == 1 ? 'member' : 'members'

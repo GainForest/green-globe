@@ -23,7 +23,7 @@ export const BiodiversityCard = ({
     const { project } = activeProjectData
     if (project) {
       fetch(
-        `https://api.mol.org/1.x/spatial/species/list?lang=en&lat=${project.lat}&lng=${project.lon}&radius=150000`
+        `${process.env.AWS_STORAGE}/mol/${project.id}.json`
       )
         .then((response) => response.json())
         .then((json) => {

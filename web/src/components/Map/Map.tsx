@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { navigate } from '@redwoodjs/router'
 
 import { initializeMapbox } from 'src/mapbox.config'
-import { setClickedCoordinates } from 'src/reducers/displayReducer'
+// import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { setProjectId } from 'src/reducers/projectsReducer'
 
@@ -30,7 +30,7 @@ import {
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
   fetchAllSiteData,
-  fetchHexagons,
+  // fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
@@ -50,7 +50,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
-  const [hexagons, setHexagons] = useState()
+  // const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
   const [allSitePolygons, setAllSitePolygons] = useState()
@@ -61,12 +61,12 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [treeData, setTreeData] = useState({})
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
-  const numHexagons = useRef(0)
+  // const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
-    fetchHexagons(setHexagons)
+    // fetchHexagons(setHexagons)
   }, [])
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Set initial layers on load
   useEffect(() => {
-    if (map && gainforestCenterpoints && hexagons) {
+    if (map && gainforestCenterpoints) {
       const onLoad = () => {
         map.setFog({
           color: '#000000',
@@ -93,7 +93,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'space-color': 'rgb(11, 11, 25)',
           'star-intensity': 0.05,
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -113,7 +113,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'space-color': 'rgb(11, 11, 25)',
           'star-intensity': 0.05,
         })
-        addAllSourcesAndLayers(map, hexagons, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
@@ -122,7 +122,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints, hexagons, dispatch, hiveLocations])
+  }, [map, gainforestCenterpoints, dispatch, hiveLocations])
 
   // Rotate the globe
   useEffect(() => {
@@ -173,19 +173,20 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       setTreeData({})
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
-        const projectPolygonCID = result?.project?.assets
-          ?.filter((d) => d?.classification == 'Shapefiles')
-          .filter((d) => d?.shapefile?.default == true)?.[0]?.awsCID
+        setActiveProjectData(result)
+        const shapefiles = result?.project?.assets?.filter(
+          (d) => d?.classification == 'Shapefiles'
+        )
+        const projectPolygonCID = shapefiles.filter(
+          (d) => d?.shapefile?.default == true
+        )?.[0]?.awsCID
+        await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
+        const endpoints = shapefiles.map((d) => d?.awsCID)
+        await fetchAllSiteData(endpoints, setAllSitePolygons)
         const projectMosaic = result?.project?.assets?.find(
           (d) => d.classification == 'Drone Mosaic'
         )?.awsCID
-        const endpoints = result?.project?.assets
-          ?.filter((d) => d?.classification == 'Shapefiles')
-          .map((d) => d?.awsCID)
-        setActiveProjectData(result)
         setActiveProjectMosaic(projectMosaic)
-        await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
-        await fetchAllSiteData(endpoints, setAllSitePolygons)
       }
       if (
         activeProjectId ==
@@ -283,41 +284,41 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [map, activeProjectTreesPlanted])
 
   // Hexagon onclick
-  useEffect(() => {
-    if (map) {
-      const onClick = (e) => {
-        console.log(e)
-        const { lat, lng } = e.lngLat
-        dispatch(setClickedCoordinates({ lat, lon: lng }))
-        dispatch(setInfoOverlay(6))
-        const hoveredHexagonId = e.features[0]?.id
-        if (
-          map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
-            ?.clicked
-        ) {
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { clicked: false }
-          )
-          numHexagons.current = numHexagons.current - 1
-        } else {
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { clicked: true }
-          )
-          numHexagons.current = numHexagons.current + 1
-        }
-      }
+  // useEffect(() => {
+  //   if (map) {
+  //     const onClick = (e) => {
+  //       console.log(e)
+  //       const { lat, lng } = e.lngLat
+  //       dispatch(setClickedCoordinates({ lat, lon: lng }))
+  //       dispatch(setInfoOverlay(6))
+  //       const hoveredHexagonId = e.features[0]?.id
+  //       if (
+  //         map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
+  //           ?.clicked
+  //       ) {
+  //         map.setFeatureState(
+  //           { source: 'hexagons', id: hoveredHexagonId },
+  //           { clicked: false }
+  //         )
+  //         numHexagons.current = numHexagons.current - 1
+  //       } else {
+  //         map.setFeatureState(
+  //           { source: 'hexagons', id: hoveredHexagonId },
+  //           { clicked: true }
+  //         )
+  //         numHexagons.current = numHexagons.current + 1
+  //       }
+  //     }
 
-      map.on('click', 'hexagonHoverFill', onClick)
+  //     map.on('click', 'hexagonHoverFill', onClick)
 
-      return () => {
-        if (map) {
-          map.off('click', 'hexagonHoverFill', onClick)
-        }
-      }
-    }
-  }, [map])
+  //     return () => {
+  //       if (map) {
+  //         map.off('click', 'hexagonHoverFill', onClick)
+  //       }
+  //     }
+  //   }
+  // }, [map])
 
   // Set hovered tree ID on mouse move
   useEffect(() => {
@@ -354,47 +355,47 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, activeProjectId, infoOverlay])
 
-  useEffect(() => {
-    if (map) {
-      let hoveredHexagonId = null
-      const onMouseMoveHexagonHoverFill = (e) => {
-        if (e.features.length > 0) {
-          if (hoveredHexagonId !== null) {
-            map.setFeatureState(
-              { source: 'hexagons', id: hoveredHexagonId },
-              { hover: false }
-            )
-          }
-          hoveredHexagonId = e.features[0]?.id
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { hover: true }
-          )
-        }
-      }
-      const onMouseLeaveHexagonHoverFill = () => {
-        if (hoveredHexagonId !== null) {
-          map.setFeatureState(
-            { source: 'hexagons', id: hoveredHexagonId },
-            { hover: false }
-          )
-          hoveredHexagonId = null
-        }
-      }
-      map.on('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
-      map.on('mouseleave', 'hexagonHoverFill', onMouseLeaveHexagonHoverFill)
-      return () => {
-        if (map) {
-          map.off('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
-          map.off(
-            'mouseleave',
-            'hexagonHoverFill',
-            onMouseLeaveHexagonHoverFill
-          )
-        }
-      }
-    }
-  }, [map])
+  // useEffect(() => {
+  //   if (map) {
+  //     let hoveredHexagonId = null
+  //     const onMouseMoveHexagonHoverFill = (e) => {
+  //       if (e.features.length > 0) {
+  //         if (hoveredHexagonId !== null) {
+  //           map.setFeatureState(
+  //             { source: 'hexagons', id: hoveredHexagonId },
+  //             { hover: false }
+  //           )
+  //         }
+  //         hoveredHexagonId = e.features[0]?.id
+  //         map.setFeatureState(
+  //           { source: 'hexagons', id: hoveredHexagonId },
+  //           { hover: true }
+  //         )
+  //       }
+  //     }
+  //     const onMouseLeaveHexagonHoverFill = () => {
+  //       if (hoveredHexagonId !== null) {
+  //         map.setFeatureState(
+  //           { source: 'hexagons', id: hoveredHexagonId },
+  //           { hover: false }
+  //         )
+  //         hoveredHexagonId = null
+  //       }
+  //     }
+  //     map.on('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
+  //     map.on('mouseleave', 'hexagonHoverFill', onMouseLeaveHexagonHoverFill)
+  //     return () => {
+  //       if (map) {
+  //         map.off('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
+  //         map.off(
+  //           'mouseleave',
+  //           'hexagonHoverFill',
+  //           onMouseLeaveHexagonHoverFill
+  //         )
+  //       }
+  //     }
+  //   }
+  // }, [map])
 
   return (
     <>

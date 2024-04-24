@@ -7853,6 +7853,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@upstash/redis@npm:1.25.1":
+  version: 1.25.1
+  resolution: "@upstash/redis@npm:1.25.1"
+  dependencies:
+    crypto-js: ^4.2.0
+  checksum: f065bad9963cd9541a64d1b3651739098df08ee211ae7e738c496a45a04358509d4b19f478867beb72755bab796b3fc247536bf29beb5baf9c29acf152070f32
+  languageName: node
+  linkType: hard
+
+"@vercel/kv@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@vercel/kv@npm:1.0.1"
+  dependencies:
+    "@upstash/redis": 1.25.1
+  checksum: a699cad9c49062f54e11a8901503788f847b3cdc188fa55b262d3dc0d031a39027898d70243d9270bcf1a0d68e6c7bc5222717552f717e13a6f31d399b858cf1
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.11.1":
   version: 1.11.1
   resolution: "@webassemblyjs/ast@npm:1.11.1"
@@ -11771,6 +11789,13 @@ __metadata:
   version: 4.1.1
   resolution: "crypto-js@npm:4.1.1"
   checksum: 50cc66a35f2738171d9a6d80c85ba7d00cb6440b756db035ba9ccd03032c0a803029a62969ecd4c844106c980af87687c64b204dd967989379c4f354fb482d37
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: 8fbdf9d56f47aea0794ab87b0eb9833baf80b01a7c5c1b0edc7faf25f662fb69ab18dc2199e2afcac54670ff0cd9607a9045a3f7a80336cccd18d77a55b9fdf0
   languageName: node
   linkType: hard
 
@@ -22761,6 +22786,7 @@ __metadata:
     "@redwoodjs/core": 4.3.1
     "@turf/bbox": ^6.5.0
     "@turf/center": ^6.5.0
+    "@vercel/kv": ^1.0.1
     "@what3words/react-components": ^4.1.2
     chromatic: ^6.17.2
     dayjs: ^1.11.7

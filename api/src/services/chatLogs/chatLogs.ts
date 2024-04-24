@@ -1,7 +1,6 @@
-import { redisClient, connectRedis } from 'src/lib/chatLogs'
+import { redisClient } from 'src/lib/chatLogs'
 
 export const saveToRedis = async ({ key, value }) => {
-  await connectRedis()
   try {
     const response = await redisClient.set(key, value)
     return response
@@ -12,7 +11,6 @@ export const saveToRedis = async ({ key, value }) => {
 }
 
 export const deleteFromRedis = async ({ key }) => {
-  await connectRedis()
   try {
     await redisClient.del(key)
     return true
@@ -23,7 +21,6 @@ export const deleteFromRedis = async ({ key }) => {
 }
 
 export const getFromRedis = async (input) => {
-  await connectRedis()
   let cursor = 0
   const keys = []
   const pattern = `${input.key}:*`
@@ -31,11 +28,11 @@ export const getFromRedis = async (input) => {
   try {
     do {
       const reply = await redisClient.scan(cursor, {
-        MATCH: pattern,
-        COUNT: 100,
+        match: pattern,
+        count: 100,
       })
-      cursor = reply.cursor
-      keys.push(...reply.keys)
+      cursor = reply[0]
+      keys.push(...reply[1])
     } while (cursor !== 0)
 
     const messages = await Promise.all(

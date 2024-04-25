@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -34,6 +34,7 @@ import {
   fetchHiveLocations,
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
+import { getSpeciesName } from './maptreeutils'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
@@ -61,7 +62,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [treeData, setTreeData] = useState({})
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
-  const [selectedSpecies, setSelectedSpecies] = useState(null)
+  const [selectedSpecies, setSelectedSpecies] = useState('')
   // const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -172,6 +173,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
       setTreeData({})
+      setSelectedSpecies('')
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
         setActiveProjectData(result)
@@ -267,13 +269,19 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (map) {
       if (activeProjectTreesPlanted) {
-        const updateData = () => {
-          map.getSource('trees')?.setData(activeProjectTreesPlanted)
-        }
-        map.on('styledata', updateData)
-
-        return () => {
-          map.off('styledata', updateData)
+        const normalizedData = { ...activeProjectTreesPlanted }
+        normalizedData.features = normalizedData.features.map((feature) => {
+          feature.properties.species = getSpeciesName(feature.properties).trim()
+          return feature
+        })
+        if (activeProjectTreesPlanted !== normalizedData) {
+          const updateData = () => {
+            map.getSource('trees')?.setData(normalizedData)
+          }
+          map.on('styledata', updateData)
+          return () => {
+            map.off('styledata', updateData)
+          }
         }
       } else {
         map.getSource('trees')?.setData({
@@ -286,18 +294,19 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   useEffect(() => {
     if (map && map.isStyleLoaded()) {
+      console.log(map.queryRenderedFeatures({ layers: ['unclusteredTrees'] }))
       let colorExpression
       let radiusExpression
       if (selectedSpecies) {
         colorExpression = [
           'case',
-          ['==', ['get', 'Plant_Name'], selectedSpecies?.toLowerCase()],
+          ['==', ['get', 'species'], selectedSpecies],
           'green',
           'gray',
         ]
         radiusExpression = [
           'case',
-          ['==', ['get', 'Plant_Name'], selectedSpecies?.toLowerCase()],
+          ['==', ['get', 'species'], selectedSpecies],
           6,
           3,
         ]

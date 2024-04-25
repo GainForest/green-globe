@@ -11,6 +11,8 @@ export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,
   maximize,
+  selectedSpecies,
+  setSelectedSpecies,
 }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
@@ -22,9 +24,7 @@ export const BiodiversityCard = ({
     }
     const { project } = activeProjectData
     if (project) {
-      fetch(
-        `${process.env.AWS_STORAGE}/mol/${project.id}.json`
-      )
+      fetch(`${process.env.AWS_STORAGE}/mol/${project.id}.json`)
         .then((response) => response.json())
         .then((json) => {
           const biodiversity = json.map((b) => {
@@ -210,6 +210,14 @@ export const BiodiversityCard = ({
     })
   }
 
+  const handleSpeciesClick = (species) => {
+    if (selectedSpecies === species) {
+      setSelectedSpecies(null)
+    } else {
+      setSelectedSpecies(species)
+    }
+  }
+
   return (
     <InfoBox maximize={maximize} mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
@@ -252,6 +260,7 @@ export const BiodiversityCard = ({
           <MeasuredDataGrid
             measuredData={measuredData}
             biodiversity={biodiversity}
+            handleSpeciesClick={handleSpeciesClick}
           />
         )}
       </div>
@@ -287,7 +296,11 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
   }
 }
 
-const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
+const MeasuredDataGrid = ({
+  measuredData,
+  biodiversity,
+  handleSpeciesClick,
+}) => {
   // if data hasn't loaded yet, return skeleton
   if (biodiversity.length > 0) {
     // if data is loaded but no measured data, return "no data" message
@@ -315,7 +328,10 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
               <h3>{group.title}</h3>
               {group.species.map((species) => (
                 <div key={species.name}>
-                  <MeasuredDataPhoto {...species} />
+                  <MeasuredDataPhoto
+                    {...species}
+                    handleSpeciesClick={handleSpeciesClick}
+                  />
                 </div>
               ))}
             </div>
@@ -379,24 +395,28 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
   )
 }
 
-interface MeasuredSpecies {
+interface DataAndHandler {
   imageUrl: string
   name: string
   shortest: number
   tallest: number
   average: number
   count: number
+  handleSpeciesClick: (name: string) => void
 }
 
-const MeasuredDataPhoto = (species: MeasuredSpecies) => {
-  const src = species.imageUrl
-    ? species.imageUrl
+const MeasuredDataPhoto = (props: DataAndHandler) => {
+  const src = props.imageUrl
+    ? props.imageUrl
     : `https://mol.org/static/img/groups/taxa_plants.png`
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div
+      onClick={() => props.handleSpeciesClick(props.name)}
+      style={{ display: 'flex' }}
+    >
       <img
-        alt={species.name}
+        alt={props.name}
         src={src}
         style={{
           objectFit: 'cover',
@@ -407,24 +427,24 @@ const MeasuredDataPhoto = (species: MeasuredSpecies) => {
         }}
       />
       <div style={{ margin: '12px 0 0 24px' }}>
-        <p style={{ fontSize: '1rem', marginBottom: '0px' }}>{species.name}</p>
+        <p style={{ fontSize: '1rem', marginBottom: '0px' }}>{props.name}</p>
         <i style={{ fontSize: '0.75rem', display: 'block' }}>
-          Count: {species.count}
+          Count: {props.count}
         </i>
-        {typeof species.tallest === 'number' && !isNaN(species.tallest) && (
+        {typeof props.tallest === 'number' && !isNaN(props.tallest) && (
           <div>
             <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Tallest: {species.tallest} m
+              Tallest: {props.tallest} m
             </i>
             <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Shortest: {species.shortest} m
+              Shortest: {props.shortest} m
             </i>
             <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Average: {species.average} m
+              Average: {props.average} m
             </i>
           </div>
         )}
-        {/* <RedlistStatus redlist={species.redlist} /> */}
+        {/* <RedlistStatus redlist={props.redlist} /> */}
       </div>
     </div>
   )

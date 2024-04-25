@@ -61,6 +61,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [treeData, setTreeData] = useState({})
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
+  const [selectedSpecies, setSelectedSpecies] = useState(null)
   // const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -434,6 +435,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
             mediaSize={mediaSize}
             maximize={maximize}
             setMaximize={setMaximize}
+            selectedSpecies={selectedSpecies}
+            setSelectedSpecies={setSelectedSpecies}
           />
         </>
       )}

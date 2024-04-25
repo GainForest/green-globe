@@ -328,6 +328,11 @@ const MeasuredDataGrid = ({
                 </h2>
               </div>
               <h3>{group.title}</h3>
+              {group.title === 'Trees' && (
+                <p style={{ marginTop: '8px' }}>
+                  Click a species to highlight them on the map
+                </p>
+              )}
               {group.species.map((species) => (
                 <div key={species.name}>
                   <MeasuredDataPhoto
@@ -416,44 +421,74 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
 
   return (
     <div
-      onClick={() => props.handleSpeciesClick(props.name)}
       style={{
         display: 'flex',
         backgroundColor:
           props.name == props.selectedSpecies ? '#383838' : '#22252a',
       }}
     >
-      <img
-        alt={props.name}
-        src={src}
+      <button
         style={{
-          objectFit: 'cover',
-          clipPath:
-            'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
-          height: '120px',
-          width: '120px',
+          display: 'flex',
+          backgroundColor:
+            props.name == props.selectedSpecies ? '#383838' : '#22252a',
+          border: 'none',
+          cursor: 'pointer',
         }}
-      />
-      <div style={{ margin: '12px 0 0 24px' }}>
-        <p style={{ fontSize: '1rem', marginBottom: '0px' }}>{props.name}</p>
-        <i style={{ fontSize: '0.75rem', display: 'block' }}>
-          Count: {props.count}
-        </i>
-        {typeof props.tallest === 'number' && !isNaN(props.tallest) && (
-          <div>
-            <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Tallest: {props.tallest} m
-            </i>
-            <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Shortest: {props.shortest} m
-            </i>
-            <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Average: {props.average} m
-            </i>
-          </div>
-        )}
-        {/* <RedlistStatus redlist={props.redlist} /> */}
-      </div>
+        onClick={() => props.handleSpeciesClick(props.name)}
+      >
+        <img
+          alt={props.name}
+          src={src}
+          style={{
+            objectFit: 'cover',
+            clipPath:
+              'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
+            height: '120px',
+            width: '120px',
+          }}
+        />
+        <div style={{ margin: '12px 0 0 24px' }}>
+          <p style={{ color: 'white', fontSize: '1rem', marginBottom: '0px' }}>
+            {props.name}
+          </p>
+          <i style={{ color: 'white', fontSize: '0.75rem', display: 'block' }}>
+            Count: {props.count}
+          </i>
+          {typeof props.tallest === 'number' && !isNaN(props.tallest) && (
+            <div>
+              <i
+                style={{
+                  color: 'white',
+                  fontSize: '0.75rem',
+                  display: 'block',
+                }}
+              >
+                Tallest: {props.tallest} m
+              </i>
+              <i
+                style={{
+                  color: 'white',
+                  fontSize: '0.75rem',
+                  display: 'block',
+                }}
+              >
+                Shortest: {props.shortest} m
+              </i>
+              <i
+                style={{
+                  color: 'white',
+                  fontSize: '0.75rem',
+                  display: 'block',
+                }}
+              >
+                Average: {props.average} m
+              </i>
+            </div>
+          )}
+          {/* <RedlistStatus redlist={props.redlist} /> */}
+        </div>
+      </button>
     </div>
   )
 }

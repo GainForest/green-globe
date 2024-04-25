@@ -298,8 +298,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         radiusExpression = [
           'case',
           ['==', ['get', 'Plant_Name'], selectedSpecies?.toLowerCase()],
-          8,
-          2,
+          6,
+          3,
         ]
       } else {
         colorExpression = [

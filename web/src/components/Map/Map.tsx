@@ -282,7 +282,47 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         })
       }
     }
-  }, [map, activeProjectTreesPlanted])
+  }, [map, activeProjectTreesPlanted, selectedSpecies])
+
+  useEffect(() => {
+    if (map && map.isStyleLoaded()) {
+      let colorExpression
+      let radiusExpression
+      if (selectedSpecies) {
+        colorExpression = [
+          'case',
+          ['==', ['get', 'Plant_Name'], selectedSpecies?.toLowerCase()],
+          'green',
+          'gray',
+        ]
+        radiusExpression = [
+          'case',
+          ['==', ['get', 'Plant_Name'], selectedSpecies?.toLowerCase()],
+          8,
+          2,
+        ]
+      } else {
+        colorExpression = [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          '#0883fe',
+          '#ff77c1',
+        ]
+        radiusExpression = [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          8,
+          4,
+        ]
+      }
+      map.setPaintProperty('unclusteredTrees', 'circle-color', colorExpression)
+      map.setPaintProperty(
+        'unclusteredTrees',
+        'circle-radius',
+        radiusExpression
+      )
+    }
+  }, [map, selectedSpecies])
 
   // Hexagon onclick
   // useEffect(() => {

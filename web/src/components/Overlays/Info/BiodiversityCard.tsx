@@ -261,6 +261,7 @@ export const BiodiversityCard = ({
             measuredData={measuredData}
             biodiversity={biodiversity}
             handleSpeciesClick={handleSpeciesClick}
+            selectedSpecies={selectedSpecies}
           />
         )}
       </div>
@@ -272,8 +273,8 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
   if (biodiversity.length) {
     return (
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {biodiversity.map((biodiversityGroup) => (
-          <div key={biodiversityGroup.title} style={{ flex: '1 1 50%' }}>
+        {biodiversity.map((biodiversityGroup, idx) => (
+          <div key={biodiversityGroup.title + idx} style={{ flex: '1 1 50%' }}>
             <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.scientificname}>
@@ -300,6 +301,7 @@ const MeasuredDataGrid = ({
   measuredData,
   biodiversity,
   handleSpeciesClick,
+  selectedSpecies,
 }) => {
   // if data hasn't loaded yet, return skeleton
   if (biodiversity.length > 0) {
@@ -307,8 +309,8 @@ const MeasuredDataGrid = ({
     if (measuredData.length > 0) {
       return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {measuredData.map((group) => (
-            <div style={{ flex: '1 1 50%' }} key={group.title}>
+          {measuredData.map((group, idx) => (
+            <div style={{ flex: '1 1 50%' }} key={group.title + idx}>
               <div
                 style={{
                   border: '1px solid #2f3030',
@@ -331,6 +333,7 @@ const MeasuredDataGrid = ({
                   <MeasuredDataPhoto
                     {...species}
                     handleSpeciesClick={handleSpeciesClick}
+                    selectedSpecies={selectedSpecies}
                   />
                 </div>
               ))}
@@ -403,6 +406,7 @@ interface DataAndHandler {
   average: number
   count: number
   handleSpeciesClick: (name: string) => void
+  selectedSpecies: string
 }
 
 const MeasuredDataPhoto = (props: DataAndHandler) => {
@@ -413,7 +417,11 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
   return (
     <div
       onClick={() => props.handleSpeciesClick(props.name)}
-      style={{ display: 'flex' }}
+      style={{
+        display: 'flex',
+        backgroundColor:
+          props.name == props.selectedSpecies ? '#383838' : '#22252a',
+      }}
     >
       <img
         alt={props.name}

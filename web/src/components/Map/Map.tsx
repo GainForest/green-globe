@@ -264,22 +264,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Display tree data
   useEffect(() => {
-    if (map) {
-      if (activeProjectTreesPlanted) {
-        const updateData = () => {
-          map.getSource('trees')?.setData(activeProjectTreesPlanted)
-        }
-        map.on('styledata', updateData)
-
-        return () => {
-          map.off('styledata', updateData)
-        }
-      } else {
-        map.getSource('trees')?.setData({
-          type: 'FeatureCollection',
-          features: [],
-        })
-      }
+    if (!map) return
+    let isMounted = true
+    if (map && activeProjectTreesPlanted && isMounted) {
+      map.getSource('trees').setData(activeProjectTreesPlanted)
+    }
+    return () => {
+      isMounted = false
     }
   }, [map, activeProjectTreesPlanted])
 

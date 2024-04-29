@@ -264,6 +264,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Display tree data
   useEffect(() => {
+    if (!map) return
     let isMounted = true
     if (map && activeProjectTreesPlanted && isMounted) {
       map.getSource('trees').setData(activeProjectTreesPlanted)

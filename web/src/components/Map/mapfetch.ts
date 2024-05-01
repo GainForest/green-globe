@@ -50,6 +50,7 @@ export const fetchProjectInfo = async (projectId) => {
             lat
             lon
             area
+            objective
             assets {
               id
               name

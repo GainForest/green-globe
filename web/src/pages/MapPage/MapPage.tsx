@@ -6,6 +6,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { useAuth } from 'src/auth'
 import Map from 'src/components/Map/Map'
 import Navbar from 'src/components/Navbar/Navbar'
+import Sidebar from 'src/components/Sidebar/Sidebar'
 
 const MapPage = ({ urlProjectId, initialOverlay }) => {
   const { isAuthenticated } = useAuth()
@@ -26,11 +27,20 @@ const MapPage = ({ urlProjectId, initialOverlay }) => {
 
       <div style={{ width: '100vw', height: '100vh' }}>
         <Navbar isAuthenticated={isAuthenticated} mediaSize={mediaSize} />
-        <Map
-          urlProjectId={urlProjectId}
-          initialOverlay={initialOverlay}
-          mediaSize={mediaSize}
-        />
+        <div
+          style={{
+            height: 'calc(100% - 52px)',
+            width: 'calc(100%-52px)',
+            display: 'flex',
+          }}
+        >
+          <Sidebar />
+          <Map
+            urlProjectId={urlProjectId}
+            initialOverlay={initialOverlay}
+            mediaSize={mediaSize}
+          />
+        </div>
       </div>
     </>
   )

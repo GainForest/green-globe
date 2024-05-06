@@ -13,14 +13,18 @@ export const PaymentCard = ({ activeProjectData }) => {
   const fetchCryptoPayments = async () => {
     let celoRecipients = []
     let solanaRecipients = []
-    const nameMap = {}
+    const memberMap = {}
 
-    activeProjectData?.project?.communityMembers.forEach((item) => {
+    activeProjectData?.project?.communityMembers?.forEach((item) => {
       if (item.Wallet && item.Wallet.CeloAccounts) {
         celoRecipients = celoRecipients.concat(
           item.Wallet.CeloAccounts.filter((account) => {
             if (account) {
-              nameMap[account] = [item.firstName, item.lastName]
+              memberMap[account] = {
+                firstName: item.firstName,
+                lastName: item.lastName,
+                profileUrl: item.profileUrl,
+              }
             }
             return account
           })
@@ -30,7 +34,11 @@ export const PaymentCard = ({ activeProjectData }) => {
         solanaRecipients = solanaRecipients.concat(
           item.Wallet.SOLAccounts.filter((account) => {
             if (account) {
-              nameMap[account] = [item.firstName, item.lastName]
+              memberMap[account] = {
+                firstName: item.firstName,
+                lastName: item.lastName,
+                profileUrl: item.profileUrl,
+              }
             }
             return account
           })
@@ -45,24 +53,23 @@ export const PaymentCard = ({ activeProjectData }) => {
     if (solanaRecipients.length > 0) {
       const solanaPayments = await fetchSolanaPayments(
         solanaRecipients,
-        nameMap
+        memberMap
       )
       if (solanaPayments.length > 0) {
         allPayments.push(...solanaPayments)
       }
     }
     if (celoRecipients.length > 0) {
-      const celoPayments = await fetchCeloPayments(celoRecipients, nameMap)
+      const celoPayments = await fetchCeloPayments(celoRecipients, memberMap)
       if (celoPayments.length > 0) {
         allPayments.push(...celoPayments)
       }
     }
-    if (allPayments.length > 0) {
-      return allPayments
-    }
+
+    return allPayments
   }
 
-  const fetchCeloPayments = async (recipients, nameMap) => {
+  const fetchCeloPayments = async (recipients, memberMap) => {
     const payments = []
     for (const address of wallets.Celo) {
       const res = await fetch(
@@ -81,12 +88,12 @@ export const PaymentCard = ({ activeProjectData }) => {
           return recipients.includes(transaction.to)
         }
       })
-      console.log(transactions)
       transactions = transactions.map((transaction) => ({
         to: transaction.to,
         timestamp: transaction.timeStamp,
-        firstName: nameMap[transaction.to][0],
-        lastName: nameMap[transaction.to][1],
+        firstName: memberMap[transaction.to]['firstName'],
+        lastName: memberMap[transaction.to]['lastName'],
+        profileUrl: memberMap[transaction.to]['profileUrl'],
         amount: transaction.value / 1e18,
         currency: 'Celo',
         hash: transaction.hash,
@@ -98,7 +105,7 @@ export const PaymentCard = ({ activeProjectData }) => {
     return payments
   }
 
-  const fetchSolanaPayments = async (recipients, nameMap) => {
+  const fetchSolanaPayments = async (recipients, memberMap) => {
     const payments = []
     for (const address of wallets.Solana) {
       const query = `
@@ -146,8 +153,9 @@ export const PaymentCard = ({ activeProjectData }) => {
       transactions = transactions.map((transaction) => ({
         to: transaction.receiver.address,
         timestamp: transaction.date.date,
-        firstName: nameMap[transaction.to][0],
-        lastName: nameMap[transaction.to][1],
+        firstName: memberMap[transaction.receiver.address]['firstName'],
+        lastName: memberMap[transaction.receiver.address]['lastName'],
+        profileUrl: memberMap[transaction.receiver.address]['profileUrl'],
         amount: transaction.amount,
         currency: 'Solana',
         hash: transaction.transaction.signature,
@@ -197,7 +205,6 @@ export const PaymentCard = ({ activeProjectData }) => {
       }
 
       setLoading(true)
-
       const cryptoPayments = await fetchCryptoPayments()
       const fiatPayments = await fetchFiatPayments()
       if (fiatPayments.length > 0) {
@@ -212,7 +219,6 @@ export const PaymentCard = ({ activeProjectData }) => {
           )
           .filter((payment) => payment.amount >= 0.01)
       )
-
       setLoading(false)
     }
     fetchData()

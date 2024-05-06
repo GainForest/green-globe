@@ -8,45 +8,159 @@ export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
   const [loading, setLoading] = useState(true)
   const [showFiatMessage, setShowFiatMessage] = useState(false)
+  const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
+
+  const fetchCryptoPayments = async () => {
+    let celoRecipients = []
+    let solanaRecipients = []
+    const nameMap = {}
+
+    activeProjectData?.project?.communityMembers.forEach((item) => {
+      if (item.Wallet && item.Wallet.CeloAccounts) {
+        celoRecipients = celoRecipients.concat(
+          item.Wallet.CeloAccounts.filter((account) => {
+            if (account) {
+              nameMap[account] = [item.firstName, item.lastName]
+            }
+            return account
+          })
+        )
+      }
+      if (item.Wallet && item.Wallet.SOLAccounts) {
+        solanaRecipients = solanaRecipients.concat(
+          item.Wallet.SOLAccounts.filter((account) => {
+            if (account) {
+              nameMap[account] = [item.firstName, item.lastName]
+            }
+            return account
+          })
+        )
+      }
+    })
+
+    // test recipients, one from each wallet
+    // const celoRecipients = ['0xe034805f09e26045259bf0d0b8cd41491cada701']
+    // const solanaRecipients = ['5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ']
+    const allPayments = []
+    if (solanaRecipients.length > 0) {
+      const solanaPayments = await fetchSolanaPayments(
+        solanaRecipients,
+        nameMap
+      )
+      if (solanaPayments.length > 0) {
+        allPayments.push(...solanaPayments)
+      }
+    }
+    if (celoRecipients.length > 0) {
+      const celoPayments = await fetchCeloPayments(celoRecipients, nameMap)
+      if (celoPayments.length > 0) {
+        allPayments.push(...celoPayments)
+      }
+    }
+    if (allPayments.length > 0) {
+      return allPayments
+    }
+  }
+
+  const fetchCeloPayments = async (recipients, nameMap) => {
+    const payments = []
+    for (const address of wallets.Celo) {
+      const res = await fetch(
+        `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
+      )
+      const data = await res.json()
+      const seen = new Set()
+      let transactions = data['result'].filter((transaction) => {
+        const isValid =
+          transaction.tokenSymbol === 'cUSD' &&
+          recipients.includes(transaction.to)
+        // current fetch is returning duplicate transactions
+        const isNew = !seen.has(transaction.hash)
+        if (isValid && isNew) {
+          seen.add(transaction.hash)
+          return recipients.includes(transaction.to)
+        }
+      })
+      console.log(transactions)
+      transactions = transactions.map((transaction) => ({
+        to: transaction.to,
+        timestamp: transaction.timeStamp,
+        firstName: nameMap[transaction.to][0],
+        lastName: nameMap[transaction.to][1],
+        amount: transaction.value / 1e18,
+        currency: 'Celo',
+        hash: transaction.hash,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+    return payments
+  }
+
+  const fetchSolanaPayments = async (recipients, nameMap) => {
+    const payments = []
+    for (const address of wallets.Solana) {
+      const query = `
+            query MyQuery {
+              solana {
+                transfers(senderAddress: {is: "${address}"}) {
+                  amount
+                  currency {
+                    name
+                  }
+                  receiver {
+                    address
+                  }
+                  date {
+                    date
+                  }
+                  transaction {
+                    signature
+                  }
+                }
+              }
+            }
+    `
+      let res
+      let result
+      try {
+        res = await fetch('https://graphql.bitquery.io', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY': process.env.BITQUERY_API_KEY,
+          },
+          body: JSON.stringify({ query }),
+        })
+        result = await res.json()
+      } catch (e) {
+        console.error('Error fetching solana payments:', e)
+        return []
+      }
+      let transactions = result.data.solana.transfers.filter(
+        (transaction) =>
+          recipients.includes(transaction.receiver.address) &&
+          transaction.currency.name === 'USDC'
+      )
+      transactions = transactions.map((transaction) => ({
+        to: transaction.receiver.address,
+        timestamp: transaction.date.date,
+        firstName: nameMap[transaction.to][0],
+        lastName: nameMap[transaction.to][1],
+        amount: transaction.amount,
+        currency: 'Solana',
+        hash: transaction.transaction.signature,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+    return payments
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchCryptoPayments = async () => {
-        const res = await fetch(
-          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: `
-        query {
-          transactionsByProjectId(id:"${activeProjectData.project.id}") {
-            id
-            amount
-            to
-            hash
-            blockchain
-            timestamp
-            firstName
-            lastName
-            profileUrl
-          }
-        }
-      `,
-            }),
-          }
-        )
-        const result = await res.json()
-        return result.data.transactionsByProjectId.map((payment) => {
-          return {
-            ...payment,
-            currency: payment.blockchain,
-          }
-        })
-      }
-
       const fetchFiatPayments = async () => {
         const res = await fetch(
           `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
@@ -110,8 +224,25 @@ export const PaymentCard = ({ activeProjectData }) => {
       month: 'long',
       year: 'numeric',
     }
-    const dateObj = new Date(timeStamp)
+
+    const datePattern = /[-\/]/g
+
+    let dateObj
+    if (datePattern.test(timeStamp)) {
+      dateObj = new Date(timeStamp)
+    } else {
+      // Unix timestamp - convert from seconds to milliseconds
+      dateObj = new Date(parseInt(timeStamp) * 1000)
+    }
     return dateObj.toLocaleDateString('en-GB', options)
+  }
+
+  const formatAmount = (amount) => {
+    if (Number.isInteger(amount)) {
+      return amount.toString()
+    } else {
+      return amount.toFixed(2)
+    }
   }
 
   const tagColors = {
@@ -219,7 +350,9 @@ export const PaymentCard = ({ activeProjectData }) => {
                         </a>
                       )}
                     </p>
-                    <p style={{ color: '#67962A' }}>${payment.amount}</p>
+                    <p style={{ color: '#67962A' }}>
+                      ${formatAmount(payment.amount)}
+                    </p>
                     <InfoTag style={{ color: tagColors[payment.currency] }}>
                       {payment.currency}
                     </InfoTag>

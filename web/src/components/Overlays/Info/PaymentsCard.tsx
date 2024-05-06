@@ -10,15 +10,75 @@ export const PaymentCard = ({ activeProjectData }) => {
   const [showFiatMessage, setShowFiatMessage] = useState(false)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchFiatPayments = async () => {
+        const res = await fetch(
+          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `
+        query {
+          fiatTransactionsByProjectId(id:"${activeProjectData.project.id}") {
+            amountInUsd
+            timestamp
+            currency
+            originalAmount
+            firstName
+            lastName
+            profileUrl
+          }
+        }
+      `,
+            }),
+          }
+        )
+        const result = await res.json()
+        return result.data.fiatTransactionsByProjectId.map((payment) => {
+          return {
+            ...payment,
+            amount: payment.amountInUsd,
+            currency: `Fiat (${payment.currency})`,
+          }
+        })
+      }
+
+      setLoading(true)
+      const cryptoPayments = await fetchCryptoPayments()
+      const fiatPayments = await fetchFiatPayments()
+      if (fiatPayments.length > 0) {
+        setShowFiatMessage(true)
+      }
+      const allPayments = [...cryptoPayments, ...fiatPayments]
+      setPaymentData(
+        allPayments
+          ?.sort(
+            (a, b) =>
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+          )
+          .filter((payment) => payment.amount >= 0.01)
+      )
+      setLoading(false)
+    }
+    fetchData()
+  }, [activeProjectData])
+
   const fetchCryptoPayments = async () => {
     let celoRecipients = []
     let solanaRecipients = []
+
     const memberMap = {}
 
+    // Get all the community members' wallet addresses
     activeProjectData?.project?.communityMembers?.forEach((item) => {
       if (item.Wallet && item.Wallet.CeloAccounts) {
         celoRecipients = celoRecipients.concat(
           item.Wallet.CeloAccounts.filter((account) => {
+            // map transaction to member for data display
             if (account) {
               memberMap[account] = {
                 firstName: item.firstName,
@@ -46,10 +106,13 @@ export const PaymentCard = ({ activeProjectData }) => {
       }
     })
 
-    // test recipients, one from each wallet
-    // const celoRecipients = ['0xe034805f09e26045259bf0d0b8cd41491cada701']
-    // const solanaRecipients = ['5xZ2EVVU3ppyoeCq8TraQL3BXWLnSsKgUFY3EjYAaPcZ']
     const allPayments = []
+    if (celoRecipients.length > 0) {
+      const celoPayments = await fetchCeloPayments(celoRecipients, memberMap)
+      if (celoPayments.length > 0) {
+        allPayments.push(...celoPayments)
+      }
+    }
     if (solanaRecipients.length > 0) {
       const solanaPayments = await fetchSolanaPayments(
         solanaRecipients,
@@ -57,12 +120,6 @@ export const PaymentCard = ({ activeProjectData }) => {
       )
       if (solanaPayments.length > 0) {
         allPayments.push(...solanaPayments)
-      }
-    }
-    if (celoRecipients.length > 0) {
-      const celoPayments = await fetchCeloPayments(celoRecipients, memberMap)
-      if (celoPayments.length > 0) {
-        allPayments.push(...celoPayments)
       }
     }
 
@@ -81,7 +138,7 @@ export const PaymentCard = ({ activeProjectData }) => {
         const isValid =
           transaction.tokenSymbol === 'cUSD' &&
           recipients.includes(transaction.to)
-        // current fetch is returning duplicate transactions
+        // fetch returns duplicate transactions, so we filter them out here
         const isNew = !seen.has(transaction.hash)
         if (isValid && isNew) {
           seen.add(transaction.hash)
@@ -167,64 +224,7 @@ export const PaymentCard = ({ activeProjectData }) => {
     return payments
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchFiatPayments = async () => {
-        const res = await fetch(
-          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: `
-        query {
-          fiatTransactionsByProjectId(id:"${activeProjectData.project.id}") {
-            amountInUsd
-            timestamp
-            currency
-            originalAmount
-            firstName
-            lastName
-            profileUrl
-          }
-        }
-      `,
-            }),
-          }
-        )
-        const result = await res.json()
-        return result.data.fiatTransactionsByProjectId.map((payment) => {
-          return {
-            ...payment,
-            amount: payment.amountInUsd,
-            currency: `Fiat (${payment.currency})`,
-          }
-        })
-      }
-
-      setLoading(true)
-      const cryptoPayments = await fetchCryptoPayments()
-      const fiatPayments = await fetchFiatPayments()
-      if (fiatPayments.length > 0) {
-        setShowFiatMessage(true)
-      }
-      const allPayments = [...cryptoPayments, ...fiatPayments]
-      setPaymentData(
-        allPayments
-          ?.sort(
-            (a, b) =>
-              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-          )
-          .filter((payment) => payment.amount >= 0.01)
-      )
-      setLoading(false)
-    }
-    fetchData()
-  }, [activeProjectData])
-
-  const getDate = (timeStamp) => {
+  const formatDate = (timeStamp) => {
     const options = {
       day: 'numeric',
       month: 'long',
@@ -324,7 +324,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                     />
                   </div>
                   <div style={{ marginLeft: '16px' }}>
-                    <h3> {getDate(payment.timestamp)}</h3>
+                    <h3> {formatDate(payment.timestamp)}</h3>
                     <p>
                       To:{' '}
                       {payment.currency.startsWith('Fiat') ? (

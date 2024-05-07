@@ -17,6 +17,7 @@ export const BiodiversityCard = ({
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!activeProjectData) {
@@ -69,6 +70,7 @@ export const BiodiversityCard = ({
             //removes whitespace and underscores
             .split(/[\s_]+/)
             .join('-')}-all-tree-plantings.geojson`
+
           fetch(`${process.env.AWS_STORAGE}/shapefiles/${treePlantings}`)
             .then((response) => response.json())
             .then((json) => {
@@ -170,6 +172,11 @@ export const BiodiversityCard = ({
                 ...measuredData,
                 { title: 'Trees', species: speciesArray, total },
               ])
+              setLoading(false)
+            })
+            .catch((e) => {
+              console.log(e)
+              setLoading(false)
             })
           return setBiodiversity(biodiversity)
         })
@@ -259,7 +266,7 @@ export const BiodiversityCard = ({
         ) : (
           <MeasuredDataGrid
             measuredData={measuredData}
-            biodiversity={biodiversity}
+            loading={loading}
             handleSpeciesClick={handleSpeciesClick}
             selectedSpecies={selectedSpecies}
           />
@@ -299,13 +306,20 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
 
 const MeasuredDataGrid = ({
   measuredData,
-  biodiversity,
   handleSpeciesClick,
   selectedSpecies,
+  loading,
 }) => {
-  // if data hasn't loaded yet, return skeleton
-  if (biodiversity.length > 0) {
-    // if data is loaded but no measured data, return "no data" message
+  if (loading) {
+    return (
+      <>
+        <h3>
+          <ThemedSkeleton width={'120px'} />
+        </h3>
+        <div></div>
+      </>
+    )
+  } else {
     if (measuredData.length > 0) {
       return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -354,15 +368,6 @@ const MeasuredDataGrid = ({
     } else {
       return <p>There is not yet any measured biodiversity for this project.</p>
     }
-  } else {
-    return (
-      <>
-        <h3>
-          <ThemedSkeleton width={'120px'} />
-        </h3>
-        <div></div>
-      </>
-    )
   }
 }
 

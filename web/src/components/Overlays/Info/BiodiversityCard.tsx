@@ -334,7 +334,12 @@ const MeasuredDataGrid = ({
                 </p>
               )}
               {group.species.map((species) => (
-                <div key={species.name}>
+                <div
+                  className={
+                    species.name == selectedSpecies ? null : 'species-button'
+                  }
+                  key={species.name}
+                >
                   <MeasuredDataPhoto
                     {...species}
                     handleSpeciesClick={handleSpeciesClick}
@@ -421,6 +426,7 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
 
   return (
     <div
+      className={props.name == props.selectedSpecies ? null : 'species-button'}
       style={{
         display: 'flex',
         backgroundColor:
@@ -428,6 +434,9 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
       }}
     >
       <button
+        className={
+          props.name == props.selectedSpecies ? null : 'species-button'
+        }
         style={{
           display: 'flex',
           backgroundColor:

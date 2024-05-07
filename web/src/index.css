@@ -360,6 +360,12 @@ filter: brightness(50%)
   scrollbar-width: auto;
 }
 
+.species-button:hover {
+background-color: #2b2b2b !important;
+
+}
+
+
 
 
 @media only screen and (min-width: 480px) {

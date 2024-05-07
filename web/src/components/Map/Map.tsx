@@ -301,7 +301,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         colorExpression = [
           'case',
           ['==', ['get', 'species'], selectedSpecies],
-          'green',
+          '#FF8101',
           'gray',
         ]
         radiusExpression = [

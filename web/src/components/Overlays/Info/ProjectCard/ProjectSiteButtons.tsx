@@ -42,7 +42,7 @@ export const ProjectSiteButtons = ({
   return (
     <>
       {sites.length > 0 && (
-        <>
+        <div>
           <h2>Sites</h2>
           <div
             style={{
@@ -74,7 +74,7 @@ export const ProjectSiteButtons = ({
               )
             })}
           </div>
-        </>
+        </div>
       )}
     </>
   )

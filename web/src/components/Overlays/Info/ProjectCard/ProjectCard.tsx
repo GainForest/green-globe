@@ -7,6 +7,7 @@ import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import ThemedSkeleton from '../../../Map/components/Skeleton'
+import { InfoTag } from '../BiodiversityCard'
 import { InfoBox } from '../InfoBox'
 // import { VideoCard } from '../WildlifeCard'
 
@@ -62,35 +63,18 @@ export const ProjectCard = ({
         handleClick={handleClick}
       />
       <TextContainer>
-        <div
-          style={{
-            display: 'flex',
-          }}
-        >
-          <ProjectLogo project={activeProjectData?.project} theme={theme} />
-          <h1
-            style={{
-              marginTop: '32px',
-              fontSize:
-                mediaSize >= breakpoints.xl
-                  ? 24
-                  : mediaSize > breakpoints.m
-                  ? 22
-                  : mediaSize > breakpoints.s
-                  ? 18
-                  : 16,
-            }}
-          >
-            {activeProjectData?.project?.name || ''}
-          </h1>
-        </div>
-        <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
+        <ProjectNameCountryAndArea
+          activeProjectData={activeProjectData}
+          mediaSize={mediaSize}
+          theme={theme}
+        />
         <ProjectSiteButtons
           assets={activeProjectData?.project?.assets}
           activeShapefile={activeProjectPolygon}
           setActiveShapefile={setActiveProjectPolygon}
         />
         <Description activeProjectData={activeProjectData} />
+        <Objectives activeProjectData={activeProjectData} />
       </TextContainer>
     </InfoBox>
   )
@@ -151,8 +135,32 @@ const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
   }
 }
 
-const TextContainer = ({ children }) => (
-  <div style={{ margin: '0 24px' }}>{children}</div>
+const ProjectNameCountryAndArea = ({ activeProjectData, mediaSize, theme }) => (
+  <div>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
+      <ProjectLogo project={activeProjectData?.project} theme={theme} />
+      <h1
+        style={{
+          marginTop: '32px',
+          fontSize:
+            mediaSize >= breakpoints.xl
+              ? 24
+              : mediaSize > breakpoints.m
+              ? 22
+              : mediaSize > breakpoints.s
+              ? 18
+              : 16,
+        }}
+      >
+        {activeProjectData?.project?.name || ''}
+      </h1>
+    </div>
+    <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
+  </div>
 )
 
 const CountryAndArea = ({ activeProjectData, theme }) => {
@@ -179,13 +187,35 @@ ${countryToEmoji[activeProjectData?.project?.country]?.name}`}
 }
 
 const Description = ({ activeProjectData }) => (
-  <>
+  <div>
     <h3>Description</h3>
     <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>
       {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
     </p>
-  </>
+  </div>
 )
+
+const Objectives = ({ activeProjectData }) => {
+  const objectives = activeProjectData.project?.objective
+    ?.split(',')
+    ?.filter((d) => d) // The filter is to remove empty strings
+  if (objectives?.length) {
+    return (
+      <>
+        <h3>Objective</h3>
+        <ObjectivesContainer style={{ margin: '2px' }}>
+          {objectives.map((d) => (
+            <InfoTag key={`infotag-${d}`} style={{ color: '#ffffff' }}>
+              {d}
+            </InfoTag>
+          ))}
+        </ObjectivesContainer>
+      </>
+    )
+  } else {
+    return null
+  }
+}
 
 const ProjectLogo = ({ theme, project }) => {
   const [logoAspectRatio, setLogoAspectRatio] = useState(1)
@@ -229,5 +259,21 @@ const Logo = styled.img`
   @media (max-width: ${breakpoints.m}px) {
     height: 60px;
     width: 60px;
+  }
+`
+const ObjectivesContainer = styled.div`
+  display: flex;
+  & > * {
+    margin: 8px 0;
+  }
+  & > *:not(:first-child) {
+    margin: 8px;
+  }
+`
+
+const TextContainer = styled.div`
+  margin: 0 24px;
+  & > *:not(:first-child) {
+    margin-top: 20px;
   }
 `

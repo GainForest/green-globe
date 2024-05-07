@@ -430,7 +430,7 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
       style={{
         display: 'flex',
         backgroundColor:
-          props.name == props.selectedSpecies ? '#383838' : '#22252a',
+          props.name == props.selectedSpecies ? '#4a4a4a' : '#22252a',
       }}
     >
       <button
@@ -440,7 +440,7 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
         style={{
           display: 'flex',
           backgroundColor:
-            props.name == props.selectedSpecies ? '#383838' : '#22252a',
+            props.name == props.selectedSpecies ? '#4a4a4a' : '#22252a',
           border: 'none',
           cursor: 'pointer',
         }}

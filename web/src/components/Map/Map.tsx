@@ -265,21 +265,66 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, activeProjectMosaic])
 
-  // Display tree data
   useEffect(() => {
     if (!map) return
-    let isMounted = true
+    const isMounted = true
     if (map && activeProjectTreesPlanted && isMounted) {
-      map.getSource('trees').setData(activeProjectTreesPlanted)
+      const normalizedData = { ...activeProjectTreesPlanted }
+      normalizedData.features = normalizedData.features.map((feature) => {
+        feature.properties.species = getSpeciesName(feature.properties).trim()
+        return feature
+      })
+      if (activeProjectTreesPlanted !== normalizedData) {
+        const updateData = () => {
+          map.getSource('trees')?.setData(normalizedData)
+        }
+        map.on('styledata', updateData)
+        return () => {
+          map.off('styledata', updateData)
+        }
+      }
+    } else {
+      map.getSource('trees')?.setData({
+        type: 'FeatureCollection',
+        features: [],
+      })
     }
+  }, [map, activeProjectTreesPlanted])
+
+  // Display tree data
+  useEffect(() => {
+    if (!map || !activeProjectTreesPlanted) return
+    const normalizedData = {
+      ...activeProjectTreesPlanted,
+      features: activeProjectTreesPlanted.features.map((feature) => ({
+        ...feature,
+        properties: {
+          ...feature.properties,
+          species: getSpeciesName(feature.properties).trim(),
+        },
+      })),
+    }
+
+    const updateData = () => {
+      map.getSource('trees')?.setData(normalizedData)
+    }
+
+    if (map.isStyleLoaded()) {
+      updateData()
+    } else {
+      map.on('style.load', updateData)
+      return () => {
+        map.off('style.load', updateData)
+      }
+    }
+
     return () => {
-      isMounted = false
+      map.off('style.load', updateData)
     }
   }, [map, activeProjectTreesPlanted, selectedSpecies])
 
   useEffect(() => {
     if (map && map.isStyleLoaded()) {
-      console.log(map.queryRenderedFeatures({ layers: ['unclusteredTrees'] }))
       let colorExpression
       let radiusExpression
       if (selectedSpecies) {

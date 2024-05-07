@@ -18,6 +18,7 @@ export const BiodiversityCard = ({
   const [measuredData, setMeasuredData] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
   const [loading, setLoading] = useState(true)
+  const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
 
   useEffect(() => {
     if (!activeProjectData) {
@@ -158,16 +159,18 @@ export const BiodiversityCard = ({
                 total += 1
               })
 
-              const speciesArray = Object.keys(speciesCount).map((species) => ({
-                ...speciesCount[species],
-                average:
-                  // round to two decimals
-                  Math.round(
-                    (speciesCount[species].average /
-                      speciesCount[species].count) *
-                      100
-                  ) / 100,
-              }))
+              const speciesArray = Object.keys(speciesCount)
+                .sort()
+                .map((species) => ({
+                  ...speciesCount[species],
+                  average:
+                    // round to two decimals
+                    Math.round(
+                      (speciesCount[species].average /
+                        speciesCount[species].count) *
+                        100
+                    ) / 100,
+                }))
               setMeasuredData([
                 ...measuredData,
                 { title: 'Trees', species: speciesArray, total },
@@ -182,6 +185,26 @@ export const BiodiversityCard = ({
         })
     }
   }, [activeProjectData])
+
+  useEffect(() => {
+    if (sortBy === 'Name') {
+      setMeasuredData(
+        measuredData.map((group) => ({
+          ...group,
+          species: group.species.sort((a, b) =>
+            a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+          ),
+        }))
+      )
+    } else {
+      setMeasuredData(
+        measuredData.map((group) => ({
+          ...group,
+          species: group.species.sort((a, b) => b.count - a.count),
+        }))
+      )
+    }
+  }, [sortBy])
 
   // checks for typos between instances
   const stringDistance = (a, b) => {
@@ -266,6 +289,8 @@ export const BiodiversityCard = ({
         ) : (
           <MeasuredDataGrid
             measuredData={measuredData}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
             loading={loading}
             handleSpeciesClick={handleSpeciesClick}
             selectedSpecies={selectedSpecies}
@@ -305,10 +330,13 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
 }
 
 const MeasuredDataGrid = ({
+  sortBy,
+  setSortBy,
   measuredData,
   handleSpeciesClick,
   selectedSpecies,
   loading,
+  mediaSize,
 }) => {
   if (loading) {
     return (
@@ -347,6 +375,13 @@ const MeasuredDataGrid = ({
                   Click a species to highlight them on the map
                 </p>
               )}
+              <p>Sort By:</p>
+              <ToggleButton
+                mediaSize={mediaSize}
+                active={sortBy}
+                setToggle={setSortBy}
+                options={['Name', 'Count']}
+              />
               {group.species.map((species) => (
                 <div
                   className={

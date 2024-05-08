@@ -9,13 +9,14 @@
 
 import { Router, Route, Set } from '@redwoodjs/router'
 
-// import { useAuth } from './auth'
+import DefaultLayout from './layouts/DefaultLayout/DefaultLayout'
 
 const Routes = () => {
   return (
     <Router>
       <Route path="/login" page={AuthPage} name="login" />
-      <Set>
+      <Set wrap={DefaultLayout}>
+        <Route path="/insights" page={InsightsPage} name="insights" />
         {/* <Set private unauthenticated="login"> */}
         {/* <Route path="/" page={LandingPage} name="landing" /> */}
         <Route path="/{urlProjectId:String}/{initialOverlay:Int?}" page={MapPage} name="map" />

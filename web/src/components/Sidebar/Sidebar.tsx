@@ -2,9 +2,7 @@ import styled from 'styled-components'
 
 export const Sidebar = () => {
   return (
-    <div
-      style={{ height: '100vh', width: '180px', backgroundColor: '#1E2024' }}
-    >
+    <div style={{ height: '100%', width: '180px', backgroundColor: '#1E2024' }}>
       <span className="material-symbols-outlined">menu</span>
       <SidebarItem>Survey Overview</SidebarItem>
       <SidebarItem>Insights</SidebarItem>

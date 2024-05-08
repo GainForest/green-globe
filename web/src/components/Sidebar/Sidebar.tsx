@@ -6,8 +6,10 @@ export const Sidebar = () => {
       style={{ height: '100vh', width: '180px', backgroundColor: '#1E2024' }}
     >
       <span className="material-symbols-outlined">menu</span>
-      <SidebarItem>Whitepaper</SidebarItem>
-      <SidebarItem>About us</SidebarItem>
+      <SidebarItem>Survey Overview</SidebarItem>
+      <SidebarItem>Insights</SidebarItem>
+      <SidebarItem>Observations</SidebarItem>
+      <SidebarItem>Methodology</SidebarItem>
     </div>
   )
 }

@@ -390,10 +390,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   return (
     <>
-      <div
-        style={{ height: 'calc(100% - 52px)', width: '100%' }}
-        id="map-container"
-      />
+      <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <ProfileOverlay />
       <BasketDetails />
       {gainforestCenterpoints && (

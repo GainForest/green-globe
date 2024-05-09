@@ -291,38 +291,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, activeProjectTreesPlanted])
 
-  // Display tree data
-  useEffect(() => {
-    if (!map || !activeProjectTreesPlanted) return
-    const normalizedData = {
-      ...activeProjectTreesPlanted,
-      features: activeProjectTreesPlanted.features.map((feature) => ({
-        ...feature,
-        properties: {
-          ...feature.properties,
-          species: getSpeciesName(feature.properties).trim(),
-        },
-      })),
-    }
-
-    const updateData = () => {
-      map.getSource('trees')?.setData(normalizedData)
-    }
-
-    if (map.isStyleLoaded()) {
-      updateData()
-    } else {
-      map.on('style.load', updateData)
-      return () => {
-        map.off('style.load', updateData)
-      }
-    }
-
-    return () => {
-      map.off('style.load', updateData)
-    }
-  }, [map, activeProjectTreesPlanted, selectedSpecies])
-
   useEffect(() => {
     if (map && map.isStyleLoaded()) {
       let colorExpression

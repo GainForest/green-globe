@@ -27,13 +27,13 @@ const Navbar = ({ isAuthenticated, style, mediaSize }) => {
         ...style,
       }}
     >
-      <img
-        style={{ position: 'absolute', left: 5, height: '1.8em' }}
-        src={'/gainforestIcon.png'}
-        alt="gainforest logo"
-      />
       <div style={{ width: '88px', paddingLeft: '20px', textAlign: 'center' }}>
         <a className="logo" href="https://gainforest.earth/">
+          <img
+            style={{ position: 'absolute', left: 5, height: '1.8em' }}
+            src={'/gainforestIcon.png'}
+            alt="gainforest logo"
+          />
           <h3>{logo}</h3>
         </a>
       </div>

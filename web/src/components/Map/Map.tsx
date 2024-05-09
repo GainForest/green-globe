@@ -235,7 +235,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (activeProjectData) {
       const projectName = activeProjectData?.project?.name
-      const dashedProjectName = projectName.toLowerCase().replaceAll(' ', '-')
+      const dashedProjectName = projectName?.toLowerCase().replaceAll(' ', '-')
       if (dashedProjectName) {
         const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
         const fetchData = async () => {
@@ -390,7 +390,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   return (
     <>
-      <div style={{ height: '100%', width: '100%' }} id="map-container" />
+      <div
+        style={{ height: '100%', width: 'calc(100% - 180px)' }}
+        id="map-container"
+      />
       <ProfileOverlay />
       <BasketDetails />
       {gainforestCenterpoints && (

@@ -12704,6 +12704,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dompurify@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "dompurify@npm:3.1.2"
+  checksum: 6f072da177ba850c196184d76a277933a19831e59313edd90f094e8884579c8193b21ea105889d89059771f058f4b2e0c14fc5a58f19f7dad2a6756be807d091
+  languageName: node
+  linkType: hard
+
 "domutils@npm:^2.5.2, domutils@npm:^2.8.0":
   version: 2.8.0
   resolution: "domutils@npm:2.8.0"
@@ -25947,6 +25954,7 @@ __metadata:
     "@redwoodjs/forms": 4.3.1
     "@redwoodjs/router": 4.3.1
     "@redwoodjs/web": 4.3.1
+    dompurify: ^3.1.2
     prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2

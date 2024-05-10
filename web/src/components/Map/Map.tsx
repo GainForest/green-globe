@@ -44,7 +44,6 @@ import {
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
-  const sidebarIsActive = useSelector((state: State) => state.sidebar.active)
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -216,12 +215,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       dispatch(setInfoOverlay(overlayValue))
     }
   }, [initialOverlay, dispatch])
-
-  useEffect(() => {
-    if (map) {
-      map.resize()
-    }
-  }, [map, sidebarIsActive])
 
   // If the active project change, zoom in to the default project site and change
   // its color

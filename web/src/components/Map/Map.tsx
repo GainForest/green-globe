@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -390,10 +390,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   return (
     <>
-      <div
-        style={{ height: '100%', width: 'calc(100% - 180px)' }}
-        id="map-container"
-      />
+      <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <ProfileOverlay />
       <BasketDetails />
       {gainforestCenterpoints && (

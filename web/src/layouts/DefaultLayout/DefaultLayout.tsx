@@ -12,6 +12,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   const { isAuthenticated } = useAuth()
 
   const [mediaSize, setMediaSize] = useState(window.innerWidth)
+  const [sidebarIsActive, setSidebarIsActive] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -21,18 +22,29 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const handleMenuClick = () => {
+    setSidebarIsActive((active) => !active)
+  }
+
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '100vw', height: '100vh', overflowX: 'hidden' }}>
       <Navbar isAuthenticated={isAuthenticated} mediaSize={mediaSize} />
       <div
         style={{
           height: 'calc(100vh - 52px)',
-          width: 'calc(100%-52px)',
           display: 'flex',
+          width: '100%',
         }}
       >
-        <Sidebar />
-        {children}
+        <Sidebar active={sidebarIsActive} handleClick={handleMenuClick} />
+        <main
+          style={{
+            flexGrow: 1,
+            height: '100%',
+          }}
+        >
+          {children}
+        </main>
       </div>
     </div>
   )

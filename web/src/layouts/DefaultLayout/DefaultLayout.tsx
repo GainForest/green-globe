@@ -27,7 +27,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   }
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '100vw', height: '100vh', overflowX: 'hidden' }}>
       <Navbar isAuthenticated={isAuthenticated} mediaSize={mediaSize} />
       <div
         style={{
@@ -41,7 +41,6 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
           style={{
             flexGrow: 1,
             height: '100%',
-            overflow: 'hidden',
           }}
         >
           {children}

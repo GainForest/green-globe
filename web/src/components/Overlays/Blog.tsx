@@ -46,7 +46,7 @@ const Blog = () => {
   }
 
   return (
-    <div>
+    <div style={{ overflowX: 'hidden' }}>
       <h1 style={{ margin: '32px 8px' }}>Xprize Blog</h1>
       {posts.map((post, index) => (
         <div
@@ -55,11 +55,11 @@ const Blog = () => {
             backgroundColor: '#3d3d3d',
             padding: '8px',
             maxWidth: '620px',
+            borderRadius: '4px',
           }}
           key={index}
         >
           <div>
-            {/* make h2 post title and p post date across from each other in the div */}
             <h1 style={{ display: 'inline' }}>{post.title}</h1>
             <p style={{ display: 'inline', float: 'right', lineHeight: '4px' }}>
               {post.date}

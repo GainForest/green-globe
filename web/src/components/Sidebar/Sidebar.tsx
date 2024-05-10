@@ -18,6 +18,9 @@ export const Sidebar = () => {
       </Link>
       <SidebarItem>Observations</SidebarItem>
       <SidebarItem>Methodology</SidebarItem>
+      <Link href="/blog">
+        <SidebarItem active={location?.includes('blog')}>Blog</SidebarItem>
+      </Link>
     </div>
   )
 }

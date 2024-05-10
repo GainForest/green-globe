@@ -6,8 +6,9 @@
 //
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
-
 import { Router, Route, Set } from '@redwoodjs/router'
+
+import Blog from 'src/components/Overlays/Blog'
 
 import DefaultLayout from './layouts/DefaultLayout/DefaultLayout'
 
@@ -17,6 +18,7 @@ const Routes = () => {
       <Route path="/login" page={AuthPage} name="login" />
       <Set wrap={DefaultLayout}>
         <Route path="/insights" page={InsightsPage} name="insights" />
+        <Route path="/blog" page={Blog} name="blog" />
         {/* <Set private unauthenticated="login"> */}
         {/* <Route path="/" page={LandingPage} name="landing" /> */}
         <Route path="/{urlProjectId:String}/{initialOverlay:Int?}" page={MapPage} name="map" />

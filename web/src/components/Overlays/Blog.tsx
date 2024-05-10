@@ -6,6 +6,14 @@ const Blog = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp)
+    const year = date.getFullYear()
+    const month = date.toLocaleString('default', { month: 'long' })
+    const day = date.getDate()
+    return `${day} ${month}, ${year}`
+  }
+
   useEffect(() => {
     const getPosts = async () => {
       const response = await fetch(
@@ -13,20 +21,52 @@ const Blog = () => {
       )
       const data = await response.json()
       console.log(data)
-      setPosts(data.posts.map((post) => DOMpurify.sanitize(post.content)))
+      setPosts(
+        data.posts.map((post) => {
+          // DO NOT remove the DOMpurify.sanitize() function. It is used to prevent XSS attacks.
+          const cleanObj = {
+            title: DOMpurify.sanitize(post.title),
+            content: DOMpurify.sanitize(post.content),
+            date: formatDate(post.date),
+          }
+          return cleanObj
+        })
+      )
       setLoading(false)
     }
     getPosts()
   }, [])
 
+  useEffect(() => {
+    console.log(posts)
+  }, [posts])
+
   if (loading) {
     return <h1>Loading...</h1>
   }
+
   return (
     <div>
-      <h1>Blog</h1>
+      <h1 style={{ margin: '32px 8px' }}>Xprize Blog</h1>
       {posts.map((post, index) => (
-        <div key={index} dangerouslySetInnerHTML={{ __html: post }} />
+        <div
+          style={{
+            margin: '16px',
+            backgroundColor: '#3d3d3d',
+            padding: '8px',
+            maxWidth: '620px',
+          }}
+          key={index}
+        >
+          <div>
+            {/* make h2 post title and p post date across from each other in the div */}
+            <h1 style={{ display: 'inline' }}>{post.title}</h1>
+            <p style={{ display: 'inline', float: 'right', lineHeight: '4px' }}>
+              {post.date}
+            </p>
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        </div>
       ))}
     </div>
   )

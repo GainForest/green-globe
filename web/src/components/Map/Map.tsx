@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -44,6 +44,7 @@ import {
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
+  const sidebarIsActive = useSelector((state: State) => state.sidebar.active)
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -215,6 +216,12 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       dispatch(setInfoOverlay(overlayValue))
     }
   }, [initialOverlay, dispatch])
+
+  useEffect(() => {
+    if (map) {
+      map.resize()
+    }
+  }, [map, sidebarIsActive])
 
   // If the active project change, zoom in to the default project site and change
   // its color
@@ -390,10 +397,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   return (
     <>
-      <div
-        style={{ height: '100%', width: 'calc(100% - 180px)' }}
-        id="map-container"
-      />
+      <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <ProfileOverlay />
       <BasketDetails />
       {gainforestCenterpoints && (

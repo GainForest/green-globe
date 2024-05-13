@@ -20,7 +20,6 @@ const Blog = () => {
         'https://public-api.wordpress.com/rest/v1.1/sites/gainforestxprize.wordpress.com/posts/'
       )
       const data = await response.json()
-      console.log(data)
       setPosts(
         data.posts.map((post) => {
           // DO NOT remove the DOMpurify.sanitize() function. It is used to prevent XSS attacks.
@@ -37,37 +36,59 @@ const Blog = () => {
     getPosts()
   }, [])
 
-  useEffect(() => {
-    console.log(posts)
-  }, [posts])
-
   if (loading) {
     return <h1>Loading...</h1>
   }
 
   return (
-    <div style={{ overflowX: 'hidden' }}>
-      <h1 style={{ margin: '32px 8px' }}>Xprize Blog</h1>
-      {posts.map((post, index) => (
-        <div
-          style={{
-            margin: '16px',
-            backgroundColor: '#3d3d3d',
-            padding: '8px',
-            maxWidth: '620px',
-            borderRadius: '4px',
-          }}
-          key={index}
-        >
-          <div>
-            <h1 style={{ display: 'inline' }}>{post.title}</h1>
-            <p style={{ display: 'inline', float: 'right', lineHeight: '4px' }}>
-              {post.date}
-            </p>
+    <div
+      style={{
+        overflowX: 'hidden',
+        backgroundImage: 'url(/blog-bg.png)',
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'top',
+        backgroundAttachment: 'fixed',
+        height: 'calc(100vh - 52px)', // account for Navbar height
+        width: '100vw',
+      }}
+    >
+      <h1 style={{ margin: '32px 8px' }}>Xprize Insights</h1>
+      <div
+        style={{
+          maxHeight: 'calc(100vh - 52px - 64px)', // account for Navbar and h1 height
+          overflowY: 'auto',
+          padding: '0 16px',
+        }}
+      >
+        {posts.map((post, index) => (
+          <div
+            style={{
+              margin: '16px 0',
+              background: 'transparent',
+              padding: '8px',
+              maxWidth: '620px', // max width of blog post on wordpress.com
+              borderRadius: '4px',
+            }}
+            key={index}
+          >
+            <div>
+              <h1 style={{ display: 'inline' }}>{post.title}</h1>
+              <p
+                style={{
+                  display: 'inline',
+                  float: 'right',
+                  lineHeight: '4px',
+                  margin: '0',
+                }}
+              >
+                {post.date}
+              </p>
+            </div>
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }

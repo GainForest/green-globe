@@ -228,6 +228,39 @@ const addLandCoverSourceAndLayer = (map: mapboxgl.Map) => {
   }
 }
 
+export const addNamedSource = (
+  map: mapboxgl.Map,
+  layer: { name: string; endpoint: string }
+) => {
+  if (!map.getSource(layer.name)) {
+    map.addSource(layer.name, {
+      type: 'raster',
+      tiles: [layer.endpoint],
+      tileSize: 256,
+    })
+    if (map.getLayer(layer.name)) {
+      map.addLayer({
+        id: layer.name,
+        type: 'raster',
+        source: layer.name,
+        paint: {
+          'raster-opacity': 1,
+        },
+      })
+    }
+  }
+}
+
+export const removeNamedSource = (
+  map: mapboxgl.Map,
+  layer: { name: string }
+) => {
+  if (map.getSource(layer.name)) {
+    map.removeLayer(layer.name)
+    map.removeSource(layer.name)
+  }
+}
+
 const getPlanetDates = (minDate: dayjs.Dayjs, maxDate: dayjs.Dayjs) => {
   const res = []
   let monthsBetween = maxDate.diff(minDate, 'month')

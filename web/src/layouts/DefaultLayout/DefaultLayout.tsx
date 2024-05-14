@@ -12,7 +12,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   const { isAuthenticated } = useAuth()
 
   const [mediaSize, setMediaSize] = useState(window.innerWidth)
-  const [sidebarIsActive, setSidebarIsActive] = useState(false)
+  const [sidebarIsActive, setSidebarIsActive] = useState(true)
 
   useEffect(() => {
     const handleResize = () => {

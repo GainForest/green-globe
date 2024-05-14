@@ -6,6 +6,7 @@ import { addNamedSource, removeNamedSource } from 'src/components/Map/maputils'
 const XprizeLayerPicker = ({ map }) => {
   const [layers, setLayers] = useState([])
   const [showLayers, setShowLayers] = useState(true)
+  const [visible, setVisible] = useState(false)
 
   const layersData = [
     {
@@ -56,14 +57,16 @@ const XprizeLayerPicker = ({ map }) => {
     )
   }
 
+  const handleShowLayers = () => {
+    setShowLayers((showLayers) => !showLayers)
+    setVisible(true)
+    setTimeout(() => setVisible(false), 100)
+  }
+
   if (!showLayers) {
     return (
       <div>
-        <Maximize
-          onClick={() => {
-            setShowLayers((showLayers) => !showLayers)
-          }}
-        >
+        <Maximize onClick={handleShowLayers}>
           <Icon className="material-icons-round">layers</Icon>
           <Text>Show Layers</Text>
         </Maximize>
@@ -71,13 +74,8 @@ const XprizeLayerPicker = ({ map }) => {
     )
   } else
     return (
-      <Container>
-        <Minimize
-          className="material-icons-round"
-          onClick={() => {
-            setShowLayers((showLayers) => !showLayers)
-          }}
-        >
+      <Container visible={visible}>
+        <Minimize className="material-icons-round" onClick={handleShowLayers}>
           close
         </Minimize>
         {layers.map((layer, index) => (
@@ -104,6 +102,8 @@ const Container = styled.div`
   background-color: #1e202480;
   border-radius: 4px;
   padding: 10px;
+  transition: opacity 0.3s ease;
+  opacity: ${({ visible }) => (visible ? 0 : 1)};
 `
 
 const Maximize = styled.button`
@@ -122,6 +122,7 @@ const Maximize = styled.button`
   transition: width 0.3s ease, background-color 0.3s ease;
   overflow: hidden;
   white-space: nowrap;
+  opacity: ${({ visible }) => (visible ? 0 : 1)};
 
   &:hover {
     width: 176px;

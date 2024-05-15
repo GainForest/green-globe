@@ -471,6 +471,8 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
         display: 'flex',
         backgroundColor:
           props.name == props.selectedSpecies ? '#4a4a4a' : '#22252a',
+        position: 'relative',
+        padding: '10px',
       }}
     >
       <button
@@ -483,6 +485,7 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
             props.name == props.selectedSpecies ? '#4a4a4a' : '#22252a',
           border: 'none',
           cursor: 'pointer',
+          flex: '1',
         }}
         onClick={() => props.handleSpeciesClick(props.name)}
       >
@@ -495,46 +498,44 @@ const MeasuredDataPhoto = (props: DataAndHandler) => {
               'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
             height: '120px',
             width: '120px',
+            minWidth: '120px',
           }}
         />
-        <div style={{ margin: '12px 0 0 24px' }}>
-          <p style={{ color: 'white', fontSize: '1rem', marginBottom: '0px' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            marginLeft: '24px',
+            flex: '1',
+            position: 'relative',
+          }}
+        >
+          <p style={{ color: 'white', fontSize: '1rem', marginBottom: '4px' }}>
             {props.name}
           </p>
-          <i style={{ color: 'white', fontSize: '0.75rem', display: 'block' }}>
-            Count: {props.count}
-          </i>
-          {typeof props.tallest === 'number' && !isNaN(props.tallest) && (
-            <div>
-              <i
-                style={{
-                  color: 'white',
-                  fontSize: '0.75rem',
-                  display: 'block',
-                }}
-              >
-                Tallest: {props.tallest} m
-              </i>
-              <i
-                style={{
-                  color: 'white',
-                  fontSize: '0.75rem',
-                  display: 'block',
-                }}
-              >
-                Shortest: {props.shortest} m
-              </i>
-              <i
-                style={{
-                  color: 'white',
-                  fontSize: '0.75rem',
-                  display: 'block',
-                }}
-              >
-                Average: {props.average} m
-              </i>
-            </div>
-          )}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              color: 'white',
+              fontSize: '0.75rem',
+              position: 'absolute',
+              right: '16px',
+              top: '50%',
+              transform: 'translateY(+50%)',
+              textAlign: 'right',
+            }}
+          >
+            <span>Count: {props.count}</span>
+            {typeof props.tallest === 'number' && !isNaN(props.tallest) && (
+              <>
+                <span>Tallest: {props.tallest} m</span>
+                <span>Shortest: {props.shortest} m</span>
+                <span>Average: {props.average} m</span>
+              </>
+            )}
+          </div>
           {/* <RedlistStatus redlist={props.redlist} /> */}
         </div>
       </button>

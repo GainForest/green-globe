@@ -7,6 +7,7 @@ const Blog = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedPost, setSelectedPost] = useState(null)
+  const [opacity, setOpacity] = useState(0)
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
@@ -22,7 +23,6 @@ const Blog = () => {
         'https://public-api.wordpress.com/rest/v1.1/sites/gainforestxprize.wordpress.com/posts/'
       )
       const data = await response.json()
-      console.log(data.posts.map((post) => post.attachments))
       const cleanPosts = data.posts.map((post) => {
         // DO NOT remove the DOMpurify.sanitize() function. It is used to prevent XSS attacks.
         const cleanObj = {
@@ -40,11 +40,26 @@ const Blog = () => {
     getPosts()
   }, [])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpacity(1)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const handlePostClick = (post) => {
+    setOpacity(0)
+    setTimeout(() => {
+      setSelectedPost(post)
+      setOpacity(1)
+    }, 300)
+  }
+
   return (
     <Container loading={loading}>
       <PostList>
         {posts.map((post, index) => (
-          <PostPreview key={index} onClick={() => setSelectedPost(post)}>
+          <PostPreview key={index} onClick={() => handlePostClick(post)}>
             <img src={post.thumbnail} alt={post.title} />
             <PreviewTitle>{post.title}</PreviewTitle>
           </PostPreview>
@@ -52,7 +67,7 @@ const Blog = () => {
       </PostList>
       <MainContent>
         <LoadingMessage loading={loading}>Loading...</LoadingMessage>
-        <Content loading={loading}>
+        <Content loading={loading} opacity={opacity}>
           <Header>Xprize Insights</Header>
           {selectedPost && (
             <PostContainer>
@@ -99,6 +114,10 @@ const PostPreview = styled.div`
     height: 57px;
     margin-right: 16px;
   }
+  :hover {
+    background: #555;
+    transition: background 0.3s ease;
+  }
 `
 
 const PreviewTitle = styled.div`
@@ -112,7 +131,7 @@ const MainContent = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: +180px 0px;
+  background-position: +220px 0px;
   height: calc(100vh - 52px);
   width: calc(100vw - 200px);
 `
@@ -132,8 +151,8 @@ const Content = styled.div`
   max-height: calc(100vh - 52px - 64px);
   overflow-y: auto;
   padding: 0 16px;
-  opacity: ${(props) => (props.loading ? 0 : 1)};
-  transition: opacity 1s ease;
+  opacity: ${(props) => props.opacity};
+  transition: opacity 0.3s ease;
 `
 
 const Header = styled.h1`

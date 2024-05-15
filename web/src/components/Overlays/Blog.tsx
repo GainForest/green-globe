@@ -36,21 +36,22 @@ const Blog = () => {
     getPosts()
   }, [])
 
-  if (loading) {
-    return <h1>Loading...</h1>
-  }
+  // if (loading) {
+  //   return <h1>Loading...</h1>
+  // }
 
   return (
     <div
       style={{
         overflowX: 'hidden',
         backgroundImage: 'url(/blog-bg.png)',
-        backgroundSize: 'contain',
+        backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'top',
         backgroundAttachment: 'fixed',
-        height: 'calc(100vh - 52px)', // account for Navbar height
-        width: '100vw',
+        height: 'calc(100vh - 52px)',
+        width: '100vw - 180px',
+        opacity: loading ? 0 : 1,
+        transition: 'opacity 1s ease',
       }}
     >
       <h1 style={{ margin: '32px 8px' }}>Xprize Insights</h1>
@@ -59,12 +60,14 @@ const Blog = () => {
           maxHeight: 'calc(100vh - 52px - 64px)', // account for Navbar and h1 height
           overflowY: 'auto',
           padding: '0 16px',
+          opacity: 1,
+          transition: 'opacity 0.5s ease',
         }}
       >
         {posts.map((post, index) => (
           <div
             style={{
-              margin: '16px 0',
+              margin: '40px 0 80px 0',
               background: 'transparent',
               padding: '8px',
               maxWidth: '620px', // max width of blog post on wordpress.com
@@ -73,7 +76,15 @@ const Blog = () => {
             key={index}
           >
             <div>
-              <h1 style={{ display: 'inline' }}>{post.title}</h1>
+              <h1
+                style={{
+                  display: 'inline',
+                  opacity: 1,
+                  transition: 'opacity 0.5s ease',
+                }}
+              >
+                {post.title}
+              </h1>
               <p
                 style={{
                   display: 'inline',

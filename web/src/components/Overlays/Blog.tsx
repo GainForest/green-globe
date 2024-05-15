@@ -6,6 +6,7 @@ import styled from 'styled-components'
 const Blog = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectedPost, setSelectedPost] = useState(null)
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
@@ -21,17 +22,19 @@ const Blog = () => {
         'https://public-api.wordpress.com/rest/v1.1/sites/gainforestxprize.wordpress.com/posts/'
       )
       const data = await response.json()
-      setPosts(
-        data.posts.map((post) => {
-          // DO NOT remove the DOMpurify.sanitize() function. It is used to prevent XSS attacks.
-          const cleanObj = {
-            title: DOMpurify.sanitize(post.title),
-            content: DOMpurify.sanitize(post.content),
-            date: formatDate(post.date),
-          }
-          return cleanObj
-        })
-      )
+      console.log(data.posts.map((post) => post.attachments))
+      const cleanPosts = data.posts.map((post) => {
+        // DO NOT remove the DOMpurify.sanitize() function. It is used to prevent XSS attacks.
+        const cleanObj = {
+          title: DOMpurify.sanitize(post.title),
+          content: DOMpurify.sanitize(post.content),
+          date: formatDate(post.date),
+          thumbnail: post.featured_image || '/biodivx-forest.jpeg',
+        }
+        return cleanObj
+      })
+      setPosts(cleanPosts)
+      setSelectedPost(cleanPosts[0])
       setLoading(false)
     }
     getPosts()
@@ -39,19 +42,29 @@ const Blog = () => {
 
   return (
     <Container loading={loading}>
-      <LoadingMessage loading={loading}>Loading...</LoadingMessage>
-      <Content loading={loading}>
-        <Header>Xprize Insights</Header>
+      <PostList>
         {posts.map((post, index) => (
-          <PostContainer key={index}>
-            <PostHeader>
-              <PostTitle>{post.title}</PostTitle>
-              <PostDate>{post.date}</PostDate>
-            </PostHeader>
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          </PostContainer>
+          <PostPreview key={index} onClick={() => setSelectedPost(post)}>
+            <img src={post.thumbnail} alt={post.title} />
+            <PreviewTitle>{post.title}</PreviewTitle>
+          </PostPreview>
         ))}
-      </Content>
+      </PostList>
+      <MainContent>
+        <LoadingMessage loading={loading}>Loading...</LoadingMessage>
+        <Content loading={loading}>
+          <Header>Xprize Insights</Header>
+          {selectedPost && (
+            <PostContainer>
+              <PostHeader>
+                <PostTitle>{selectedPost.title}</PostTitle>
+                <PostDate>{selectedPost.date}</PostDate>
+              </PostHeader>
+              <div dangerouslySetInnerHTML={{ __html: selectedPost.content }} />
+            </PostContainer>
+          )}
+        </Content>
+      </MainContent>
     </Container>
   )
 }
@@ -59,16 +72,49 @@ const Blog = () => {
 export default Blog
 
 const Container = styled.div`
-  overflow-x: hidden;
-  overflow-y: hidden;
+  display: flex;
+  overflow: hidden;
+  height: calc(100vh - 52px);
+  width: 100vw;
+  transition: opacity 1s ease;
+`
+
+const PostList = styled.div`
+  width: 180px;
+  background: transparent;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+`
+
+const PostPreview = styled.div`
+  padding: 16px;
+  cursor: pointer;
+  display: block;
+  align-items: center;
+  background: #333;
+  border-radius: 4px;
+  margin: 16px;
+  img {
+    width: 114px;
+    height: 57px;
+    margin-right: 16px;
+  }
+`
+
+const PreviewTitle = styled.div`
+  font-size: 16px;
+  color: white;
+`
+
+const MainContent = styled.div`
+  flex: 1;
   background-image: url('/blog-bg.jpeg');
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: +180px 0px;
   height: calc(100vh - 52px);
-  width: calc(100vw - 180px);
-  transition: opacity 1s ease;
+  width: calc(100vw - 200px);
 `
 
 const LoadingMessage = styled.div`
@@ -83,7 +129,7 @@ const LoadingMessage = styled.div`
 `
 
 const Content = styled.div`
-  max-height: calc(100vh - 52px - 64px); /* account for Navbar and h1 height */
+  max-height: calc(100vh - 52px - 64px);
   overflow-y: auto;
   padding: 0 16px;
   opacity: ${(props) => (props.loading ? 0 : 1)};
@@ -98,7 +144,7 @@ const PostContainer = styled.div`
   margin: 40px 0 80px 0;
   background: transparent;
   padding: 8px;
-  max-width: 620px; /* max width of blog post on wordpress.com */
+  max-width: 620px;
   border-radius: 4px;
 `
 

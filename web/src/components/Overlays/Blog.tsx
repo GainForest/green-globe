@@ -89,8 +89,6 @@ export default Blog
 const Container = styled.div`
   display: flex;
   overflow: hidden;
-  height: calc(100vh - 52px);
-  width: 100vw;
   transition: opacity 1s ease;
 `
 
@@ -132,8 +130,6 @@ const MainContent = styled.div`
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: +220px 0px;
-  height: calc(100vh - 52px);
-  width: calc(100vw - 200px);
 `
 
 const LoadingMessage = styled.div`
@@ -148,7 +144,7 @@ const LoadingMessage = styled.div`
 `
 
 const Content = styled.div`
-  max-height: calc(100vh - 52px - 64px);
+  max-height: calc(100vh - 52px);
   overflow-y: auto;
   padding: 0 16px;
   opacity: ${(props) => props.opacity};

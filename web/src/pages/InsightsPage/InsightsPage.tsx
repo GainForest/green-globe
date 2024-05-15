@@ -17,7 +17,7 @@ const instruments = [
 
 const InsightsPage = () => {
   return (
-    <>
+    <div style={{ padding: '0px 30px' }}>
       <MetaTags title="Insights" description="Insights page" />
 
       <h1 style={{ fontSize: '40px' }}>
@@ -29,7 +29,12 @@ const InsightsPage = () => {
           <Instrument name={d.name} url={d.url} />
         ))}
       </div>
-    </>
+      <div>
+        <h1 style={{ fontSize: '32px' }}>
+          Observations from current selection
+        </h1>
+      </div>
+    </div>
   )
 }
 
@@ -43,7 +48,7 @@ const Instrument = ({ name, url }) => (
       padding: '8px',
     }}
   >
-    <h3 style={{ fontSize: '16px' }}>
+    <h3 style={{ fontSize: '16px', margin: '0px 0px 12px 12px' }}>
       <b>{name}</b>
     </h3>
     <div style={{ textAlign: 'center' }}>
@@ -52,7 +57,7 @@ const Instrument = ({ name, url }) => (
           width: '120px',
           height: '80px',
           objectFit: 'cover',
-          backgroundColor: 'white',
+          backgroundColor: 'transparent',
         }}
         src={url}
       />

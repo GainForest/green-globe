@@ -28,13 +28,17 @@ const Blog = () => {
         const cleanObj = {
           title: DOMpurify.sanitize(post.title),
           content: DOMpurify.sanitize(post.content),
+          categories: Object.keys(post.categories),
           date: formatDate(post.date),
           thumbnail: post.featured_image || '/biodivx-forest.jpeg',
         }
         return cleanObj
       })
-      setPosts(cleanPosts)
-      setSelectedPost(cleanPosts[0])
+      const uncategorizedPosts = cleanPosts.filter((d) =>
+        d.categories.includes('Uncategorized')
+      )
+      setPosts(uncategorizedPosts)
+      setSelectedPost(uncategorizedPosts[0])
       setLoading(false)
     }
     getPosts()

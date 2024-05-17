@@ -306,7 +306,7 @@ const SatelliteLayerBox = ({
             setSatellite(true)
             dispatch(setDisplaySatelliteHistory(true))
           } else {
-            map.setStyle(`mapbox://styles/mapbox/satellite-v9`)
+            map.setStyle(`mapbox://styles/mapbox/dark-v11`)
             togglePotentialTreeCoverLayer(map, 'visible')
             setSatellite(false)
             dispatch(setDisplaySatelliteHistory(false))

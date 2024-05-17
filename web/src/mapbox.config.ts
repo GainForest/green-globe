@@ -13,7 +13,7 @@ export const initializeMapbox = (
     const map = new mapboxgl.Map({
       container: containerId,
       projection: 'globe',
-      style: 'mapbox://styles/mapbox/satellite-v9',
+      style: 'mapbox://styles/mapbox/light-v9',
       zoom: 2,
       center: [102, 9],
       bounds,

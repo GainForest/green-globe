@@ -35,8 +35,16 @@ export const Sidebar = ({ active, handleClick }) => {
           <Link href="/map">
             <SidebarItem active={location?.includes('map')}>Map</SidebarItem>
           </Link>
-          <SidebarItem>Observations</SidebarItem>
-          <SidebarItem>Methodology</SidebarItem>
+          <Link href="/observations">
+            <SidebarItem active={location?.includes('observations')}>
+              Observations
+            </SidebarItem>
+          </Link>
+          <Link href="/methodology">
+            <SidebarItem active={location?.includes('methodology')}>
+              Methodology
+            </SidebarItem>
+          </Link>
           <Link href="/blog">
             <SidebarItem active={location?.includes('blog')}>Blog</SidebarItem>
           </Link>

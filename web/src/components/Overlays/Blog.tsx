@@ -115,6 +115,7 @@ const PostPreview = styled.div`
     width: 114px;
     height: 57px;
     margin-right: 16px;
+    object-fit: cover;
   }
   :hover {
     background: #555;

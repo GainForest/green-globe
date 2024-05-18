@@ -19,6 +19,7 @@ const Routes = () => {
       <Set wrap={DefaultLayout}>
         <Route path="/insights" page={InsightsPage} name="insights" />
         <Route path="/blog" page={Blog} name="blog" />
+        <Route path="/methodology" page={MethodologyPage} name="methodology" />
         {/* <Set private unauthenticated="login"> */}
         {/* <Route path="/" page={LandingPage} name="landing" /> */}
         <Route path="/{urlProjectId:String}/{initialOverlay:Int?}" page={MapPage} name="map" />

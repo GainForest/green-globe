@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import DOMpurify from 'dompurify'
 import styled from 'styled-components'
 
-const Blog = () => {
+const MethodologyPage = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedPost, setSelectedPost] = useState(null)
@@ -34,11 +34,11 @@ const Blog = () => {
         }
         return cleanObj
       })
-      const uncategorizedPosts = cleanPosts.filter((d) =>
-        d.categories.includes('Uncategorized')
+      const methodologyPosts = cleanPosts.filter((d) =>
+        d.categories.includes('Methodology')
       )
-      setPosts(uncategorizedPosts)
-      setSelectedPost(uncategorizedPosts[0])
+      setPosts(methodologyPosts)
+      setSelectedPost(methodologyPosts[0])
       setLoading(false)
     }
     getPosts()
@@ -58,6 +58,7 @@ const Blog = () => {
       setOpacity(1)
     }, 300)
   }
+  console.log('selected post', selectedPost)
 
   return (
     <Container loading={loading}>
@@ -88,7 +89,7 @@ const Blog = () => {
   )
 }
 
-export default Blog
+export default MethodologyPage
 
 const Container = styled.div`
   display: flex;
@@ -115,7 +116,6 @@ const PostPreview = styled.div`
     width: 114px;
     height: 57px;
     margin-right: 16px;
-    object-fit: cover;
   }
   :hover {
     background: #555;
@@ -148,6 +148,7 @@ const LoadingMessage = styled.div`
   color: #333;
 `
 
+// What is this opacity for???????????
 const Content = styled.div`
   max-height: calc(100vh - 52px);
   overflow-y: auto;

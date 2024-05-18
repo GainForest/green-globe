@@ -78,7 +78,12 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // Initialize Map
   useEffect(() => {
     if (gainforestCenterpoints) {
-      initializeMapbox('map-container', setMap, mediaSize)
+      initializeMapbox(
+        'map-container',
+        setMap,
+        mediaSize,
+        [-93.518543, -25.006906, -27.073231, 12.038313]
+      )
     }
   }, [gainforestCenterpoints])
 
@@ -101,7 +106,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'gainforest',
           setActiveProjectId
         )
-
         setMarkers([...gainForestMarkers])
       }
 
@@ -124,38 +128,38 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, gainforestCenterpoints, dispatch, hiveLocations])
 
-  // Rotate the globe
-  useEffect(() => {
-    if (map) {
-      // Start the spin
-      let isGlobeSpinning = true
-      spinGlobe(map, isGlobeSpinning)
+  // // Rotate the globe
+  // useEffect(() => {
+  //   if (map) {
+  //     // Start the spin
+  //     let isGlobeSpinning = true
+  //     spinGlobe(map, isGlobeSpinning)
 
-      // Spin again once the animation is complete
-      const onMoveEnd = () => {
-        spinGlobe(map, isGlobeSpinning)
-      }
-      map.on('moveend', onMoveEnd)
+  //     // Spin again once the animation is complete
+  //     const onMoveEnd = () => {
+  //       spinGlobe(map, isGlobeSpinning)
+  //     }
+  //     map.on('moveend', onMoveEnd)
 
-      const onMouseDown = () => {
-        isGlobeSpinning = false
-      }
-      map.on('mousedown', onMouseDown)
+  //     const onMouseDown = () => {
+  //       isGlobeSpinning = false
+  //     }
+  //     map.on('mousedown', onMouseDown)
 
-      const onTouchStart = () => {
-        isGlobeSpinning = false
-      }
-      map.on('touchstart', onTouchStart)
+  //     const onTouchStart = () => {
+  //       isGlobeSpinning = false
+  //     }
+  //     map.on('touchstart', onTouchStart)
 
-      return () => {
-        if (map) {
-          map.off('moveend', onMoveEnd)
-          map.off('mousedown', onMouseDown)
-          map.off('touchstart', onTouchStart)
-        }
-      }
-    }
-  }, [map])
+  //     return () => {
+  //       if (map) {
+  //         map.off('moveend', onMoveEnd)
+  //         map.off('mousedown', onMouseDown)
+  //         map.off('touchstart', onTouchStart)
+  //       }
+  //     }
+  //   }
+  // }, [map])
 
   useEffect(() => {
     if (map && allSitePolygons) {

@@ -8,8 +8,6 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 import { Router, Route, Set } from '@redwoodjs/router'
 
-import Blog from 'src/components/Overlays/Blog'
-
 import DefaultLayout from './layouts/DefaultLayout/DefaultLayout'
 
 const Routes = () => {
@@ -18,7 +16,6 @@ const Routes = () => {
       <Route path="/login" page={AuthPage} name="login" />
       <Set wrap={DefaultLayout}>
         <Route path="/insights" page={InsightsPage} name="insights" />
-        <Route path="/blog" page={Blog} name="blog" />
         <Route path="/survey-overview" page={SurveyOverviewPage} name="surveyOverview" />
         <Route path="/methodology" page={MethodologyPage} name="methodology" />
         {/* <Set private unauthenticated="login"> */}

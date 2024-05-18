@@ -32,26 +32,18 @@ export const Sidebar = ({ active, handleClick }) => {
               Survey Overview
             </SidebarItem>
           </Link>
-          <Link href="/insights">
-            <SidebarItem active={location?.includes('insights')}>
-              Insights
-            </SidebarItem>
-          </Link>
           <Link href="/map">
             <SidebarItem active={location?.includes('map')}>Map</SidebarItem>
           </Link>
-          <Link href="/observations">
-            <SidebarItem active={location?.includes('observations')}>
-              Observations
+          <Link href="/insights">
+            <SidebarItem active={location?.includes('insights')}>
+              Insights
             </SidebarItem>
           </Link>
           <Link href="/methodology">
             <SidebarItem active={location?.includes('methodology')}>
               Methodology
             </SidebarItem>
-          </Link>
-          <Link href="/blog">
-            <SidebarItem active={location?.includes('blog')}>Blog</SidebarItem>
           </Link>
         </>
       )}

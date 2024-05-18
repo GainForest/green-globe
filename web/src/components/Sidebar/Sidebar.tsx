@@ -27,6 +27,11 @@ export const Sidebar = ({ active, handleClick }) => {
       </button>
       {active && (
         <>
+          <Link href="/survey-overview">
+            <SidebarItem active={location?.includes('survey-overview')}>
+              Survey Overview
+            </SidebarItem>
+          </Link>
           <Link href="/insights">
             <SidebarItem active={location?.includes('insights')}>
               Insights

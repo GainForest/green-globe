@@ -19,6 +19,7 @@ const Routes = () => {
       <Set wrap={DefaultLayout}>
         <Route path="/insights" page={InsightsPage} name="insights" />
         <Route path="/blog" page={Blog} name="blog" />
+        <Route path="/survey-overview" page={SurveyOverviewPage} name="surveyOverview" />
         <Route path="/methodology" page={MethodologyPage} name="methodology" />
         {/* <Set private unauthenticated="login"> */}
         {/* <Route path="/" page={LandingPage} name="landing" /> */}

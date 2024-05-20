@@ -173,6 +173,8 @@ const PostHeader = styled.div`
 `
 
 const PostTitle = styled.h1`
+  margin-top: 0;
+  margin-bottom: 12px;
   display: inline;
   opacity: 1;
   transition: opacity 0.5s ease;

@@ -23,7 +23,7 @@ export const initializeMapbox = (
   } else {
     const map = new mapboxgl.Map({
       container: containerId,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: 'mapbox://styles/mapbox/satellite-v9',
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

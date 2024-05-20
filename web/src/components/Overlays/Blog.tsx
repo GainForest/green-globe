@@ -72,7 +72,6 @@ const Blog = () => {
       <MainContent>
         <LoadingMessage loading={loading}>Loading...</LoadingMessage>
         <Content loading={loading} opacity={opacity}>
-          <Header>Xprize Insights</Header>
           {selectedPost && (
             <PostContainer>
               <PostHeader>

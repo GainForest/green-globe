@@ -64,6 +64,9 @@ const Blog = () => {
       <PostList>
         {posts.map((post, index) => (
           <PostPreview key={index} onClick={() => handlePostClick(post)}>
+            <p style={{ fontWeight: 'lighter', fontSize: '12px' }}>
+              {post.categories}
+            </p>
             <img src={post.thumbnail} alt={post.title} />
             <PreviewTitle>{post.title}</PreviewTitle>
           </PostPreview>
@@ -103,7 +106,7 @@ const PostList = styled.div`
 `
 
 const PostPreview = styled.div`
-  padding: 16px;
+  padding: 8px 16px;
   cursor: pointer;
   display: block;
   align-items: center;

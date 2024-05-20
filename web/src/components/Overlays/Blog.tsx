@@ -34,8 +34,8 @@ const Blog = () => {
         }
         return cleanObj
       })
-      const uncategorizedPosts = cleanPosts.filter((d) =>
-        d.categories.includes('Uncategorized')
+      const uncategorizedPosts = cleanPosts.filter(
+        (d) => !d.categories.includes('Methodology')
       )
       setPosts(uncategorizedPosts)
       setSelectedPost(uncategorizedPosts[0])
@@ -74,9 +74,9 @@ const Blog = () => {
         <Content loading={loading} opacity={opacity}>
           {selectedPost && (
             <PostContainer>
+              <p style={{ fontWeight: 'lighter' }}>{selectedPost.categories}</p>
               <PostHeader>
                 <PostTitle>{selectedPost.title}</PostTitle>
-                <PostDate>{selectedPost.date}</PostDate>
               </PostHeader>
               <div dangerouslySetInnerHTML={{ __html: selectedPost.content }} />
             </PostContainer>

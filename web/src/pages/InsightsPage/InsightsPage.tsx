@@ -6,7 +6,6 @@ import styled from 'styled-components'
 const Blog = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedPost, setSelectedPost] = useState(null)
   const [opacity, setOpacity] = useState(0)
   const [displayedPosts, setDisplayedPosts] = useState([])
   const [postIndex, setPostindex] = useState(0)
@@ -59,7 +58,6 @@ const Blog = () => {
     const container = contentRef.current
 
     const handleScroll = () => {
-      // Checking which post is in view and updating selectedPost
       const closestPostIndex = postRefs.current.reduce(
         (closestIndex, el, index) => {
           const box = el.getBoundingClientRect()
@@ -73,7 +71,6 @@ const Blog = () => {
       )
 
       if (closestPostIndex !== postIndex) {
-        setSelectedPost(displayedPosts[closestPostIndex])
         setPostindex(closestPostIndex)
       }
 
@@ -111,7 +108,6 @@ const Blog = () => {
   const handlePostClick = (post, index) => {
     setOpacity(0)
     setTimeout(() => {
-      setSelectedPost(post)
       setOpacity(1)
     }, 300)
     if (index > displayedPosts.length - 1) {

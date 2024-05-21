@@ -6,9 +6,11 @@ import styled from 'styled-components'
 const MethodologyPage = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedPost, setSelectedPost] = useState(null)
   const [opacity, setOpacity] = useState(0)
-  const mainContentRef = useRef(null)
+  const [displayedPosts, setDisplayedPosts] = useState([])
+  const [postIndex, setPostindex] = useState(0)
+  const contentRef = useRef(null)
+  const postRefs = useRef([])
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
@@ -39,45 +41,55 @@ const MethodologyPage = () => {
         d.categories.includes('Methodology')
       )
       setPosts(methodologyPosts)
-      setSelectedPost(methodologyPosts[0])
+      setDisplayedPosts([methodologyPosts[0]])
       setLoading(false)
     }
     getPosts()
   }, [])
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (mainContentRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = mainContentRef.current
-        console.log('Scroll Top:', scrollTop) // Log the current scroll position from the top
-        console.log('Scroll Height:', scrollHeight) // Log the total scrollable height
-        console.log('Client Height:', clientHeight) // Log the visible height of the element
+    const container = contentRef.current
 
-        if (scrollTop + clientHeight >= scrollHeight - 5) {
-          // Threshold check
-          console.log('Reached bottom of the element')
-          const currentIndex = posts.indexOf(selectedPost)
-          if (currentIndex < posts.length - 1) {
-            console.log('Loading next post')
-            setSelectedPost(posts[currentIndex + 1])
-          } else {
-            console.log('No more posts to load')
-          }
+    const handleScroll = () => {
+      const closestPostIndex = postRefs.current.reduce(
+        (closestIndex, el, index) => {
+          const box = el.getBoundingClientRect()
+          const prevBox =
+            postRefs.current[closestIndex]?.getBoundingClientRect()
+          if (!prevBox) return index
+          if (Math.abs(box.top) < Math.abs(prevBox.top)) return index
+          return closestIndex
+        },
+        0
+      )
+
+      if (closestPostIndex !== postIndex) {
+        setPostindex(closestPostIndex)
+      }
+
+      // Check if near the bottom of the container to load more posts
+      if (
+        container.scrollHeight - container.scrollTop <=
+        container.clientHeight * 1.5
+      ) {
+        const currentLength = displayedPosts.length
+        const morePosts = posts.slice(currentLength, currentLength + 5) // Load 5 more posts, adjust as needed
+        if (morePosts.length > 0) {
+          setDisplayedPosts([...displayedPosts, ...morePosts])
         }
       }
     }
 
-    const contentDiv = mainContentRef.current
-    if (contentDiv) {
-      contentDiv.addEventListener('scroll', handleScroll)
-    }
+    container.addEventListener('scroll', handleScroll)
 
     return () => {
-      if (contentDiv) {
-        contentDiv.removeEventListener('scroll', handleScroll)
-      }
+      container.removeEventListener('scroll', handleScroll)
     }
-  }, [selectedPost, posts])
+  }, [displayedPosts, posts, postIndex])
+
+  useEffect(() => {
+    postRefs.current = postRefs.current.slice(0, displayedPosts.length)
+  }, [displayedPosts])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -86,36 +98,54 @@ const MethodologyPage = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  const handlePostClick = (post) => {
+  const handlePostClick = (post, index) => {
     setOpacity(0)
     setTimeout(() => {
-      setSelectedPost(post)
       setOpacity(1)
     }, 300)
+    if (index > displayedPosts.length - 1) {
+      const newPosts = posts.slice(displayedPosts.length, index + 1)
+      setDisplayedPosts([...displayedPosts, ...newPosts])
+    }
+    setPostindex(index)
+    setTimeout(() => {
+      postRefs.current[index]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }, 0)
   }
 
   return (
     <Container loading={loading}>
       <PostList>
         {posts.map((post, index) => (
-          <PostPreview key={index} onClick={() => handlePostClick(post)}>
+          <PostPreview
+            key={index}
+            selected={index == postIndex}
+            onClick={() => handlePostClick(post, index)}
+          >
             <img src={post.thumbnail} alt={post.title} />
             <PreviewTitle>{post.title}</PreviewTitle>
           </PostPreview>
         ))}
       </PostList>
-      <MainContent ref={mainContentRef}>
+      <MainContent>
         <LoadingMessage loading={loading}>Loading...</LoadingMessage>
-        <Content loading={loading} opacity={opacity}>
-          {selectedPost && (
-            <PostContainer>
+        <Content loading={loading} opacity={opacity} ref={contentRef}>
+          {displayedPosts?.map((post, index) => (
+            <PostContainer
+              key={post.title}
+              ref={(el) => (postRefs.current[index] = el)}
+              onClick={() => handlePostClick(post, index)}
+            >
               <PostHeader>
-                <PostTitle>{selectedPost.title}</PostTitle>
-                <PostDate>{selectedPost.date}</PostDate>
+                <PostTitle>{post.title}</PostTitle>
+                <PostDate>{post.date}</PostDate>
               </PostHeader>
-              <div dangerouslySetInnerHTML={{ __html: selectedPost.content }} />
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </PostContainer>
-          )}
+          ))}
         </Content>
       </MainContent>
     </Container>
@@ -163,11 +193,13 @@ const PreviewTitle = styled.div`
 
 const MainContent = styled.div`
   flex: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 52px);
   background-image: url('/blog-bg.jpeg');
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: +220px 0px;
+  background-position: center;
 `
 
 const LoadingMessage = styled.div`

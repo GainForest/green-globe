@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import DOMpurify from 'dompurify'
 import styled from 'styled-components'
@@ -8,6 +8,7 @@ const MethodologyPage = () => {
   const [loading, setLoading] = useState(true)
   const [selectedPost, setSelectedPost] = useState(null)
   const [opacity, setOpacity] = useState(0)
+  const mainContentRef = useRef(null)
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
@@ -45,6 +46,40 @@ const MethodologyPage = () => {
   }, [])
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (mainContentRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = mainContentRef.current
+        console.log('Scroll Top:', scrollTop) // Log the current scroll position from the top
+        console.log('Scroll Height:', scrollHeight) // Log the total scrollable height
+        console.log('Client Height:', clientHeight) // Log the visible height of the element
+
+        if (scrollTop + clientHeight >= scrollHeight - 5) {
+          // Threshold check
+          console.log('Reached bottom of the element')
+          const currentIndex = posts.indexOf(selectedPost)
+          if (currentIndex < posts.length - 1) {
+            console.log('Loading next post')
+            setSelectedPost(posts[currentIndex + 1])
+          } else {
+            console.log('No more posts to load')
+          }
+        }
+      }
+    }
+
+    const contentDiv = mainContentRef.current
+    if (contentDiv) {
+      contentDiv.addEventListener('scroll', handleScroll)
+    }
+
+    return () => {
+      if (contentDiv) {
+        contentDiv.removeEventListener('scroll', handleScroll)
+      }
+    }
+  }, [selectedPost, posts])
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setOpacity(1)
     }, 300)
@@ -58,7 +93,6 @@ const MethodologyPage = () => {
       setOpacity(1)
     }, 300)
   }
-  console.log('selected post', selectedPost)
 
   return (
     <Container loading={loading}>
@@ -70,7 +104,7 @@ const MethodologyPage = () => {
           </PostPreview>
         ))}
       </PostList>
-      <MainContent>
+      <MainContent ref={mainContentRef}>
         <LoadingMessage loading={loading}>Loading...</LoadingMessage>
         <Content loading={loading} opacity={opacity}>
           {selectedPost && (

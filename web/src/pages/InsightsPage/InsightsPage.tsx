@@ -149,13 +149,14 @@ const Blog = () => {
               ref={(el) => (postRefs.current[index] = el)}
               onClick={() => handlePostClick(post, index)}
             >
-              <p style={{ fontWeight: 'lighter' }}>
-                {post.categories.join(', ')}
-              </p>
               <PostHeader>
-                <PostTitle>{post.title}</PostTitle>
+                <p style={{ fontWeight: 'lighter' }}>
+                  {post.categories.join(', ')}
+                </p>
+                <PostDate>{post.date}</PostDate>
               </PostHeader>
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              <PostTitle>{post.title}</PostTitle>
+              <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
             </PostContainer>
           ))}
         </Content>
@@ -170,6 +171,7 @@ const Container = styled.div`
   display: flex;
   overflow: hidden;
   transition: opacity 1s ease;
+  max-height: calc(100vh - 52px);
 `
 
 const PostList = styled.div`
@@ -234,13 +236,9 @@ const Content = styled.div`
   transition: opacity 0.3s ease;
 `
 
-const Header = styled.h1`
-  margin: 32px 8px;
-`
-
 const PostContainer = styled.div`
   margin: 40px 0 80px 0;
-  background: transparent;
+  background-color: rgba(85, 85, 85, 0.5);
   padding: 8px;
   max-width: 620px;
   border-radius: 4px;
@@ -252,16 +250,19 @@ const PostHeader = styled.div`
 `
 
 const PostTitle = styled.h1`
-  margin-top: 0;
-  margin-bottom: 12px;
+  float: left
   display: inline;
-  opacity: 1;
-  transition: opacity 0.5s ease;
 `
 
 const PostDate = styled.p`
   display: inline;
   float: right;
-  line-height: 4px;
-  margin: 0;
+`
+
+const PostContent = styled.div`
+  img {
+    max-width: 620px;
+    width: 100%;
+    object-fit: contain;
+  }
 `

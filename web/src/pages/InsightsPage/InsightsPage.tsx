@@ -56,25 +56,50 @@ const Blog = () => {
   }, [])
 
   useEffect(() => {
-    const contentDiv = contentRef.current
+    const container = contentRef.current
 
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = contentDiv
+      // Checking which post is in view and updating selectedPost
+      const closestPostIndex = postRefs.current.reduce(
+        (closestIndex, el, index) => {
+          const box = el.getBoundingClientRect()
+          const prevBox =
+            postRefs.current[closestIndex]?.getBoundingClientRect()
+          if (!prevBox) return index
+          if (Math.abs(box.top) < Math.abs(prevBox.top)) return index
+          return closestIndex
+        },
+        0
+      )
 
-      if (scrollTop + clientHeight >= scrollHeight - 5) {
-        if (postIndex === posts.length - 1) {
-          return
+      if (closestPostIndex !== postIndex) {
+        setSelectedPost(displayedPosts[closestPostIndex])
+        setPostindex(closestPostIndex)
+      }
+
+      // Check if near the bottom of the container to load more posts
+      if (
+        container.scrollHeight - container.scrollTop <=
+        container.clientHeight * 1.5
+      ) {
+        const currentLength = displayedPosts.length
+        const morePosts = posts.slice(currentLength, currentLength + 5) // Load 5 more posts, adjust as needed
+        if (morePosts.length > 0) {
+          setDisplayedPosts([...displayedPosts, ...morePosts])
         }
-        setDisplayedPosts((displayedPosts) => [
-          ...displayedPosts,
-          posts[postIndex + 1],
-        ])
-        setPostindex((postIndex) => postIndex + 1)
       }
     }
-    contentDiv.addEventListener('scroll', handleScroll)
-    return () => contentDiv.removeEventListener('scroll', handleScroll)
-  }, [contentRef.current, selectedPost, posts, postIndex, displayedPosts])
+
+    container.addEventListener('scroll', handleScroll)
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll)
+    }
+  }, [displayedPosts, posts, postIndex])
+
+  useEffect(() => {
+    postRefs.current = postRefs.current.slice(0, displayedPosts.length)
+  }, [displayedPosts])
 
   useEffect(() => {
     const timer = setTimeout(() => {

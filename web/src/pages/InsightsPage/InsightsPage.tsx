@@ -11,6 +11,7 @@ const Blog = () => {
   const [displayedPosts, setDisplayedPosts] = useState([])
   const [postIndex, setPostindex] = useState(0)
   const contentRef = useRef(null)
+  const postRefs = useRef([])
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
@@ -19,6 +20,10 @@ const Blog = () => {
     const day = date.getDate()
     return `${day} ${month}, ${year}`
   }
+
+  useEffect(() => {
+    postRefs.current = postRefs.current.slice(0, displayedPosts.length)
+  }, [displayedPosts])
 
   useEffect(() => {
     const getPosts = async () => {
@@ -78,12 +83,23 @@ const Blog = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  const handlePostClick = (post) => {
+  const handlePostClick = (post, index) => {
     setOpacity(0)
     setTimeout(() => {
       setSelectedPost(post)
       setOpacity(1)
     }, 300)
+    if (index > displayedPosts.length - 1) {
+      const newPosts = posts.slice(displayedPosts.length, index + 1)
+      setDisplayedPosts([...displayedPosts, ...newPosts])
+    }
+    setPostindex(index)
+    setTimeout(() => {
+      postRefs.current[index]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }, 0)
   }
 
   return (
@@ -93,7 +109,7 @@ const Blog = () => {
           <PostPreview
             key={index}
             selected={index == postIndex}
-            onClick={() => handlePostClick(post)}
+            onClick={() => handlePostClick(post, index)}
           >
             <p style={{ fontWeight: 'lighter', fontSize: '12px' }}>
               {post.categories}
@@ -106,8 +122,12 @@ const Blog = () => {
       <MainContent>
         <LoadingMessage loading={loading}>Loading...</LoadingMessage>
         <Content loading={loading} opacity={opacity} ref={contentRef}>
-          {displayedPosts?.map((post) => (
-            <PostContainer key={post.title}>
+          {displayedPosts?.map((post, index) => (
+            <PostContainer
+              key={post.title}
+              ref={(el) => (postRefs.current[index] = el)}
+              onClick={() => handlePostClick(post, index)}
+            >
               <p style={{ fontWeight: 'lighter' }}>
                 {post.categories.join(', ')}
               </p>
@@ -143,7 +163,7 @@ const PostPreview = styled.div`
   cursor: pointer;
   display: block;
   align-items: center;
-  background: ${({ selected }) => (selected ? '#555' : '#333')};
+  background: ${({ selected }) => (selected ? '#999' : '#333')};
   border-radius: 4px;
   margin: 16px;
   img {

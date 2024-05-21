@@ -1,14 +1,30 @@
 import { useEffect, useState } from 'react'
 
+import useAxios from 'axios-hooks'
+
+import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
+
 import ThemedSkeleton from '../../Map/components/Skeleton'
 
 import { InfoTag } from './BiodiversityCard'
 import { InfoBox } from './InfoBox'
+
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
   const [loading, setLoading] = useState(true)
   const [showFiatMessage, setShowFiatMessage] = useState(false)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
+
+  const [
+    { data: attestationData, loading: attestationDataLoading },
+    attestationDataCall,
+  ] = useAxios(
+    {
+      url: CELO_EAS_SCAN_API,
+      method: 'post',
+    },
+    { manual: true }
+  )
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +64,7 @@ export const PaymentCard = ({ activeProjectData }) => {
       }
 
       setLoading(true)
+
       const cryptoPayments = await fetchCryptoPayments()
       const fiatPayments = await fetchFiatPayments()
       if (fiatPayments.length > 0) {
@@ -126,39 +143,90 @@ export const PaymentCard = ({ activeProjectData }) => {
     return allPayments
   }
 
+  const fetchCeloPaymentsMessages = async (recipient = '') => {
+    const celoMessageRes = await attestationDataCall({
+      data: {
+        query: `{
+          attestations(where: {recipient:{equals:"${recipient}"}}) {
+            decodedDataJson
+        }
+      }`,
+      },
+    })
+    return celoMessageRes.data.data.attestations
+  }
   const fetchCeloPayments = async (recipients, memberMap) => {
     const payments = []
+
+    const recipientAttestationData = []
+
+    for (let i = 0; i < recipients.length; i++) {
+      const recipientId = recipients[i]
+      const attestationsArr = await fetchCeloPaymentsMessages(recipientId)
+
+      attestationsArr.forEach((ele) => {
+        const tempArr = JSON.parse(ele.decodedDataJson)
+
+        const messageObj = tempArr.find((e) => e.name === 'message')
+        const transactionObj = tempArr.find((e) => e.name === 'transactionId')
+
+        recipientAttestationData.push({
+          recipientId,
+          message: messageObj?.value?.value,
+          transactionId: transactionObj?.value?.value,
+        })
+      })
+    }
+
     for (const address of wallets.Celo) {
       const res = await fetch(
         `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
       )
+
       const data = await res.json()
       const seen = new Set()
       let transactions = data['result'].filter((transaction) => {
+        const recipientsLowercased = [...recipients].map((e) =>
+          `${e}`.toLowerCase()
+        )
         const isValid =
           transaction.tokenSymbol === 'cUSD' &&
-          recipients.includes(transaction.to)
+          recipientsLowercased.includes(transaction.to)
+
         // fetch returns duplicate transactions, so we filter them out here
         const isNew = !seen.has(transaction.hash)
         if (isValid && isNew) {
           seen.add(transaction.hash)
-          return recipients.includes(transaction.to)
+          return recipientsLowercased.includes(transaction.to)
         }
       })
-      transactions = transactions.map((transaction) => ({
-        to: transaction.to,
-        timestamp: transaction.timeStamp,
-        firstName: memberMap[transaction.to]['firstName'],
-        lastName: memberMap[transaction.to]['lastName'],
-        profileUrl: memberMap[transaction.to]['profileUrl'],
-        amount: transaction.value / 1e18,
-        currency: 'Celo',
-        hash: transaction.hash,
-      }))
+
+      transactions = transactions.map((transaction) => {
+        const messageStringObj = recipientAttestationData.find(
+          (ele) => ele.transactionId === transaction.hash
+        )
+
+        const currentRecipientId = recipients.find(
+          (id) => `${id}`.toLowerCase() === `${transaction?.to}`.toLowerCase()
+        )
+
+        return {
+          to: transaction.to,
+          timestamp: transaction.timeStamp,
+          firstName: memberMap[currentRecipientId]['firstName'],
+          lastName: memberMap[currentRecipientId]['lastName'],
+          profileUrl: memberMap[currentRecipientId]['profileUrl'],
+          amount: transaction.value / 1e18,
+          currency: 'Celo',
+          hash: transaction.hash,
+          message: messageStringObj ? messageStringObj.message : '',
+        }
+      })
       if (transactions.length > 0) {
         payments.push(...transactions)
       }
     }
+
     return payments
   }
 
@@ -325,7 +393,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                   </div>
                   <div style={{ marginLeft: '16px' }}>
                     <h3> {formatDate(payment.timestamp)}</h3>
-                    <p>
+                    <p style={{ display: 'flex' }}>
                       To:{' '}
                       {payment.currency.startsWith('Fiat') ? (
                         payment.firstName ? (
@@ -359,9 +427,20 @@ export const PaymentCard = ({ activeProjectData }) => {
                     <p style={{ color: '#67962A' }}>
                       ${formatAmount(payment.amount)}
                     </p>
-                    <InfoTag style={{ color: tagColors[payment.currency] }}>
-                      {payment.currency}
-                    </InfoTag>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <InfoTag style={{ color: tagColors[payment.currency] }}>
+                        {payment.currency}
+                      </InfoTag>
+                      <span
+                        style={{
+                          color: '#808080',
+                          fontSize: '12px',
+                          marginLeft: '8px',
+                        }}
+                      >
+                        {payment?.message ? `(${payment?.message})` : ''}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

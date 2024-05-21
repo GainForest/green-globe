@@ -30,6 +30,7 @@
     "@turf/center": "^6.5.0",
     "@vercel/kv": "^1.0.1",
     "@what3words/react-components": "^4.1.2",
+    "axios-hooks": "^5.0.2",
     "dayjs": "^1.11.7",
     "geojson2h3": "^1.2.0",
     "h3-js": "^4.1.0",

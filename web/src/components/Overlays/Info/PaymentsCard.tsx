@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 
+import useAxios from 'axios-hooks'
+
+import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
+
 import ThemedSkeleton from '../../Map/components/Skeleton'
 
 import { InfoTag } from './BiodiversityCard'
 import { InfoBox } from './InfoBox'
-import useAxios from 'axios-hooks'
-import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
 
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
@@ -142,7 +144,7 @@ export const PaymentCard = ({ activeProjectData }) => {
   }
 
   const fetchCeloPaymentsMessages = async (recipient = '') => {
-    let celoMessageRes = await attestationDataCall({
+    const celoMessageRes = await attestationDataCall({
       data: {
         query: `{
           attestations(where: {recipient:{equals:"${recipient}"}}) {
@@ -156,17 +158,17 @@ export const PaymentCard = ({ activeProjectData }) => {
   const fetchCeloPayments = async (recipients, memberMap) => {
     const payments = []
 
-    let recipientAttestationData = []
+    const recipientAttestationData = []
 
     for (let i = 0; i < recipients.length; i++) {
       const recipientId = recipients[i]
-      let attestationsArr = await fetchCeloPaymentsMessages(recipientId)
+      const attestationsArr = await fetchCeloPaymentsMessages(recipientId)
 
       attestationsArr.forEach((ele) => {
-        let tempArr = JSON.parse(ele.decodedDataJson)
+        const tempArr = JSON.parse(ele.decodedDataJson)
 
-        let messageObj = tempArr.find((e) => e.name === 'message')
-        let transactionObj = tempArr.find((e) => e.name === 'transactionId')
+        const messageObj = tempArr.find((e) => e.name === 'message')
+        const transactionObj = tempArr.find((e) => e.name === 'transactionId')
 
         recipientAttestationData.push({
           recipientId,
@@ -200,11 +202,11 @@ export const PaymentCard = ({ activeProjectData }) => {
       })
 
       transactions = transactions.map((transaction) => {
-        let messageStringObj = recipientAttestationData.find(
+        const messageStringObj = recipientAttestationData.find(
           (ele) => ele.transactionId === transaction.hash
         )
 
-        let currentRecipientId = recipients.find(
+        const currentRecipientId = recipients.find(
           (id) => `${id}`.toLowerCase() === `${transaction?.to}`.toLowerCase()
         )
 
@@ -436,7 +438,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                           marginLeft: '8px',
                         }}
                       >
-                        {payment?.message ? `( ${payment?.message} )` : ''}
+                        {payment?.message ? `(${payment?.message})` : ''}
                       </span>
                     </div>
                   </div>

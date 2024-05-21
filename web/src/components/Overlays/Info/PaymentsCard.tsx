@@ -25,11 +25,6 @@ export const PaymentCard = ({ activeProjectData }) => {
   )
 
   useEffect(() => {
-    if (attestationData) {
-    }
-  }, [attestationData])
-
-  useEffect(() => {
     const fetchData = async () => {
       const fetchFiatPayments = async () => {
         const res = await fetch(
@@ -208,12 +203,17 @@ export const PaymentCard = ({ activeProjectData }) => {
         let messageStringObj = recipientAttestationData.find(
           (ele) => ele.transactionId === transaction.hash
         )
+
+        let currentRecipientId = recipients.find(
+          (id) => `${id}`.toLowerCase() === `${transaction?.to}`.toLowerCase()
+        )
+
         return {
           to: transaction.to,
           timestamp: transaction.timeStamp,
-          firstName: memberMap[transaction.to]['firstName'],
-          lastName: memberMap[transaction.to]['lastName'],
-          profileUrl: memberMap[transaction.to]['profileUrl'],
+          firstName: memberMap[currentRecipientId]['firstName'],
+          lastName: memberMap[currentRecipientId]['lastName'],
+          profileUrl: memberMap[currentRecipientId]['profileUrl'],
           amount: transaction.value / 1e18,
           currency: 'Celo',
           hash: transaction.hash,

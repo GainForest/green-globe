@@ -125,6 +125,9 @@ const MethodologyPage = () => {
             selected={index == postIndex}
             onClick={() => handlePostClick(post, index)}
           >
+            <p style={{ fontWeight: 'lighter', fontSize: '12px' }}>
+              {post.categories}
+            </p>
             <img src={post.thumbnail} alt={post.title} />
             <PreviewTitle>{post.title}</PreviewTitle>
           </PostPreview>
@@ -140,10 +143,13 @@ const MethodologyPage = () => {
               onClick={() => handlePostClick(post, index)}
             >
               <PostHeader>
-                <PostTitle>{post.title}</PostTitle>
+                <p style={{ fontWeight: 'lighter' }}>
+                  {post.categories.join(', ')}
+                </p>
                 <PostDate>{post.date}</PostDate>
               </PostHeader>
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              <PostTitle>{post.title}</PostTitle>
+              <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
             </PostContainer>
           ))}
         </Content>
@@ -158,6 +164,7 @@ const Container = styled.div`
   display: flex;
   overflow: hidden;
   transition: opacity 1s ease;
+  max-height: calc(100vh - 52px);
 `
 
 const PostList = styled.div`
@@ -168,19 +175,20 @@ const PostList = styled.div`
 `
 
 const PostPreview = styled.div`
-  padding: 16px;
+  padding: 8px 16px;
   cursor: pointer;
   display: block;
   align-items: center;
-  background: #333;
+  background: ${({ selected }) => (selected ? '#999' : '#333')};
   border-radius: 4px;
   margin: 16px;
   img {
     width: 114px;
     height: 57px;
     margin-right: 16px;
+    object-fit: cover;
   }
-  :hover {
+  &:hover {
     background: #555;
     transition: background 0.3s ease;
   }
@@ -213,7 +221,6 @@ const LoadingMessage = styled.div`
   color: #333;
 `
 
-// What is this opacity for???????????
 const Content = styled.div`
   max-height: calc(100vh - 52px);
   overflow-y: auto;
@@ -222,13 +229,9 @@ const Content = styled.div`
   transition: opacity 0.3s ease;
 `
 
-const Header = styled.h1`
-  margin: 32px 8px;
-`
-
 const PostContainer = styled.div`
   margin: 40px 0 80px 0;
-  background: transparent;
+  background-color: rgba(85, 85, 85, 0.5);
   padding: 8px;
   max-width: 620px;
   border-radius: 4px;
@@ -240,14 +243,19 @@ const PostHeader = styled.div`
 `
 
 const PostTitle = styled.h1`
+  float: left
   display: inline;
-  opacity: 1;
-  transition: opacity 0.5s ease;
 `
 
 const PostDate = styled.p`
   display: inline;
   float: right;
-  line-height: 4px;
-  margin: 0;
+`
+
+const PostContent = styled.div`
+  img {
+    max-width: 620px;
+    width: 100%;
+    object-fit: contain;
+  }
 `

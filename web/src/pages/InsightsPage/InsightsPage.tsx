@@ -210,13 +210,13 @@ const PreviewTitle = styled.div`
 
 const MainContent = styled.div`
   flex: 1;
-  overflow-y: auto; // Ensure it's scrollable
-  max-height: calc(100vh - 52px)
+  overflow-y: auto;
+  max-height: calc(100vh - 52px);
   background-image: url('/blog-bg.jpeg');
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: +220px 0px;
+  background-position: center;
 `
 
 const LoadingMessage = styled.div`

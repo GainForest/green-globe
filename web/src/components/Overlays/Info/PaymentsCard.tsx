@@ -147,7 +147,7 @@ export const PaymentCard = ({ activeProjectData }) => {
     const celoMessageRes = await attestationDataCall({
       data: {
         query: `{
-          attestations(where: {recipient:{equals:"${recipient}"}}) {
+          attestations(where: {recipient:{mode: insensitive, equals:"${recipient}"}}) {
             id
             decodedDataJson
         }

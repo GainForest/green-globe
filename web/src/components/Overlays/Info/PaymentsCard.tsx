@@ -143,11 +143,12 @@ export const PaymentCard = ({ activeProjectData }) => {
     return allPayments
   }
 
-  const fetchCeloPaymentsMessages = async (recipient = '') => {
+  const fetchAttestations = async (recipient: string) => {
     const celoMessageRes = await attestationDataCall({
       data: {
         query: `{
           attestations(where: {recipient:{equals:"${recipient}"}}) {
+            id
             decodedDataJson
         }
       }`,
@@ -155,14 +156,14 @@ export const PaymentCard = ({ activeProjectData }) => {
     })
     return celoMessageRes.data.data.attestations
   }
+
   const fetchCeloPayments = async (recipients, memberMap) => {
     const payments = []
-
     const recipientAttestationData = []
 
     for (let i = 0; i < recipients.length; i++) {
       const recipientId = recipients[i]
-      const attestationsArr = await fetchCeloPaymentsMessages(recipientId)
+      const attestationsArr = await fetchAttestations(recipientId)
 
       attestationsArr.forEach((ele) => {
         const tempArr = JSON.parse(ele.decodedDataJson)
@@ -174,6 +175,7 @@ export const PaymentCard = ({ activeProjectData }) => {
           recipientId,
           message: messageObj?.value?.value,
           transactionId: transactionObj?.value?.value,
+          uid: ele.id,
         })
       })
     }
@@ -202,7 +204,7 @@ export const PaymentCard = ({ activeProjectData }) => {
       })
 
       transactions = transactions.map((transaction) => {
-        const messageStringObj = recipientAttestationData.find(
+        const attestation = recipientAttestationData.find(
           (ele) => ele.transactionId === transaction.hash
         )
 
@@ -219,7 +221,8 @@ export const PaymentCard = ({ activeProjectData }) => {
           amount: transaction.value / 1e18,
           currency: 'Celo',
           hash: transaction.hash,
-          message: messageStringObj ? messageStringObj.message : '',
+          message: attestation ? attestation.message : undefined,
+          attestationUid: attestation ? attestation.uid : undefined,
         }
       })
       if (transactions.length > 0) {
@@ -431,15 +434,19 @@ export const PaymentCard = ({ activeProjectData }) => {
                       <InfoTag style={{ color: tagColors[payment.currency] }}>
                         {payment.currency}
                       </InfoTag>
-                      <span
-                        style={{
-                          color: '#808080',
-                          fontSize: '12px',
-                          marginLeft: '8px',
-                        }}
+                      <a
+                        href={`https://celo.easscan.org/attestation/view/${payment.attestationUid}`}
                       >
-                        {payment?.message ? `(${payment?.message})` : ''}
-                      </span>
+                        <span
+                          style={{
+                            color: '#808080',
+                            fontSize: '12px',
+                            marginLeft: '8px',
+                          }}
+                        >
+                          {payment?.message ? `(${payment?.message})` : ''}
+                        </span>
+                      </a>
                     </div>
                   </div>
                 </div>

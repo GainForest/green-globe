@@ -1,52 +1,33 @@
 import { useEffect, useState } from 'react'
 
+import useAxios from 'axios-hooks'
+
+import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
+
 import ThemedSkeleton from '../../Map/components/Skeleton'
 
 import { InfoTag } from './BiodiversityCard'
 import { InfoBox } from './InfoBox'
+
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
   const [loading, setLoading] = useState(true)
   const [showFiatMessage, setShowFiatMessage] = useState(false)
+  const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
+
+  const [
+    { data: attestationData, loading: attestationDataLoading },
+    attestationDataCall,
+  ] = useAxios(
+    {
+      url: CELO_EAS_SCAN_API,
+      method: 'post',
+    },
+    { manual: true }
+  )
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchCryptoPayments = async () => {
-        const res = await fetch(
-          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: `
-        query {
-          transactionsByProjectId(id:"${activeProjectData.project.id}") {
-            id
-            amount
-            to
-            hash
-            blockchain
-            timestamp
-            firstName
-            lastName
-            profileUrl
-          }
-        }
-      `,
-            }),
-          }
-        )
-        const result = await res.json()
-        return result.data.transactionsByProjectId.map((payment) => {
-          return {
-            ...payment,
-            currency: payment.blockchain,
-          }
-        })
-      }
-
       const fetchFiatPayments = async () => {
         const res = await fetch(
           `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
@@ -98,20 +79,247 @@ export const PaymentCard = ({ activeProjectData }) => {
           )
           .filter((payment) => payment.amount >= 0.01)
       )
-
       setLoading(false)
     }
     fetchData()
   }, [activeProjectData])
 
-  const getDate = (timeStamp) => {
+  const fetchCryptoPayments = async () => {
+    let celoRecipients = []
+    let solanaRecipients = []
+
+    const memberMap = {}
+
+    // Get all the community members' wallet addresses
+    activeProjectData?.project?.communityMembers?.forEach((item) => {
+      if (item.Wallet && item.Wallet.CeloAccounts) {
+        celoRecipients = celoRecipients.concat(
+          item.Wallet.CeloAccounts.filter((account) => {
+            // map transaction to member for data display
+            if (account) {
+              memberMap[account] = {
+                firstName: item.firstName,
+                lastName: item.lastName,
+                profileUrl: item.profileUrl,
+              }
+            }
+            return account
+          })
+        )
+      }
+      if (item.Wallet && item.Wallet.SOLAccounts) {
+        solanaRecipients = solanaRecipients.concat(
+          item.Wallet.SOLAccounts.filter((account) => {
+            if (account) {
+              memberMap[account] = {
+                firstName: item.firstName,
+                lastName: item.lastName,
+                profileUrl: item.profileUrl,
+              }
+            }
+            return account
+          })
+        )
+      }
+    })
+
+    const allPayments = []
+    if (celoRecipients.length > 0) {
+      const celoPayments = await fetchCeloPayments(celoRecipients, memberMap)
+      if (celoPayments.length > 0) {
+        allPayments.push(...celoPayments)
+      }
+    }
+    if (solanaRecipients.length > 0) {
+      const solanaPayments = await fetchSolanaPayments(
+        solanaRecipients,
+        memberMap
+      )
+      if (solanaPayments.length > 0) {
+        allPayments.push(...solanaPayments)
+      }
+    }
+
+    return allPayments
+  }
+
+  const fetchAttestations = async (recipient: string) => {
+    const celoMessageRes = await attestationDataCall({
+      data: {
+        query: `{
+          attestations(where: {recipient:{equals:"${recipient}"}}) {
+            id
+            decodedDataJson
+        }
+      }`,
+      },
+    })
+    return celoMessageRes.data.data.attestations
+  }
+
+  const fetchCeloPayments = async (recipients, memberMap) => {
+    const payments = []
+    const recipientAttestationData = []
+
+    for (let i = 0; i < recipients.length; i++) {
+      const recipientId = recipients[i]
+      const attestationsArr = await fetchAttestations(recipientId)
+
+      attestationsArr.forEach((ele) => {
+        const tempArr = JSON.parse(ele.decodedDataJson)
+
+        const messageObj = tempArr.find((e) => e.name === 'message')
+        const transactionObj = tempArr.find((e) => e.name === 'transactionId')
+
+        recipientAttestationData.push({
+          recipientId,
+          message: messageObj?.value?.value,
+          transactionId: transactionObj?.value?.value,
+          uid: ele.id,
+        })
+      })
+    }
+
+    for (const address of wallets.Celo) {
+      const res = await fetch(
+        `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
+      )
+
+      const data = await res.json()
+      const seen = new Set()
+      let transactions = data['result'].filter((transaction) => {
+        const recipientsLowercased = [...recipients].map((e) =>
+          `${e}`.toLowerCase()
+        )
+        const isValid =
+          transaction.tokenSymbol === 'cUSD' &&
+          recipientsLowercased.includes(transaction.to)
+
+        // fetch returns duplicate transactions, so we filter them out here
+        const isNew = !seen.has(transaction.hash)
+        if (isValid && isNew) {
+          seen.add(transaction.hash)
+          return recipientsLowercased.includes(transaction.to)
+        }
+      })
+
+      transactions = transactions.map((transaction) => {
+        const attestation = recipientAttestationData.find(
+          (ele) => ele.transactionId === transaction.hash
+        )
+
+        const currentRecipientId = recipients.find(
+          (id) => `${id}`.toLowerCase() === `${transaction?.to}`.toLowerCase()
+        )
+
+        return {
+          to: transaction.to,
+          timestamp: transaction.timeStamp,
+          firstName: memberMap[currentRecipientId]['firstName'],
+          lastName: memberMap[currentRecipientId]['lastName'],
+          profileUrl: memberMap[currentRecipientId]['profileUrl'],
+          amount: transaction.value / 1e18,
+          currency: 'Celo',
+          hash: transaction.hash,
+          message: attestation ? attestation.message : undefined,
+          attestationUid: attestation ? attestation.uid : undefined,
+        }
+      })
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+
+    return payments
+  }
+
+  const fetchSolanaPayments = async (recipients, memberMap) => {
+    const payments = []
+    for (const address of wallets.Solana) {
+      const query = `
+            query MyQuery {
+              solana {
+                transfers(senderAddress: {is: "${address}"}) {
+                  amount
+                  currency {
+                    name
+                  }
+                  receiver {
+                    address
+                  }
+                  date {
+                    date
+                  }
+                  transaction {
+                    signature
+                  }
+                }
+              }
+            }
+    `
+      let res
+      let result
+      try {
+        res = await fetch('https://graphql.bitquery.io', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY': process.env.BITQUERY_API_KEY,
+          },
+          body: JSON.stringify({ query }),
+        })
+        result = await res.json()
+      } catch (e) {
+        console.error('Error fetching solana payments:', e)
+        return []
+      }
+      let transactions = result.data.solana.transfers.filter(
+        (transaction) =>
+          recipients.includes(transaction.receiver.address) &&
+          transaction.currency.name === 'USDC'
+      )
+      transactions = transactions.map((transaction) => ({
+        to: transaction.receiver.address,
+        timestamp: transaction.date.date,
+        firstName: memberMap[transaction.receiver.address]['firstName'],
+        lastName: memberMap[transaction.receiver.address]['lastName'],
+        profileUrl: memberMap[transaction.receiver.address]['profileUrl'],
+        amount: transaction.amount,
+        currency: 'Solana',
+        hash: transaction.transaction.signature,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+    return payments
+  }
+
+  const formatDate = (timeStamp) => {
     const options = {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     }
-    const dateObj = new Date(timeStamp)
+
+    const datePattern = /[-\/]/g
+
+    let dateObj
+    if (datePattern.test(timeStamp)) {
+      dateObj = new Date(timeStamp)
+    } else {
+      // Unix timestamp - convert from seconds to milliseconds
+      dateObj = new Date(parseInt(timeStamp) * 1000)
+    }
     return dateObj.toLocaleDateString('en-GB', options)
+  }
+
+  const formatAmount = (amount) => {
+    if (Number.isInteger(amount)) {
+      return amount.toString()
+    } else {
+      return amount.toFixed(2)
+    }
   }
 
   const tagColors = {
@@ -187,8 +395,8 @@ export const PaymentCard = ({ activeProjectData }) => {
                     />
                   </div>
                   <div style={{ marginLeft: '16px' }}>
-                    <h3> {getDate(payment.timestamp)}</h3>
-                    <p>
+                    <h3> {formatDate(payment.timestamp)}</h3>
+                    <p style={{ display: 'flex' }}>
                       To:{' '}
                       {payment.currency.startsWith('Fiat') ? (
                         payment.firstName ? (
@@ -219,10 +427,27 @@ export const PaymentCard = ({ activeProjectData }) => {
                         </a>
                       )}
                     </p>
-                    <p style={{ color: '#67962A' }}>${payment.amount}</p>
-                    <InfoTag style={{ color: tagColors[payment.currency] }}>
-                      {payment.currency}
-                    </InfoTag>
+                    <p style={{ color: '#67962A' }}>
+                      ${formatAmount(payment.amount)}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <InfoTag style={{ color: tagColors[payment.currency] }}>
+                        {payment.currency}
+                      </InfoTag>
+                      <a
+                        href={`https://celo.easscan.org/attestation/view/${payment.attestationUid}`}
+                      >
+                        <span
+                          style={{
+                            color: '#808080',
+                            fontSize: '12px',
+                            marginLeft: '8px',
+                          }}
+                        >
+                          {payment?.message ? `(${payment?.message})` : ''}
+                        </span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

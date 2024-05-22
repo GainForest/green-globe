@@ -8,7 +8,7 @@ const Blog = () => {
   const [loading, setLoading] = useState(true)
   const [opacity, setOpacity] = useState(0)
   const [displayedPosts, setDisplayedPosts] = useState([])
-  const [postIndex, setPostindex] = useState(0)
+  const [postIndex, setPostIndex] = useState(0)
   const contentRef = useRef(null)
   const postRefs = useRef([])
 
@@ -71,7 +71,7 @@ const Blog = () => {
       )
 
       if (closestPostIndex !== postIndex) {
-        setPostindex(closestPostIndex)
+        setPostIndex(closestPostIndex)
       }
 
       // Check if near the bottom of the container to load more posts
@@ -114,7 +114,7 @@ const Blog = () => {
       const newPosts = posts.slice(displayedPosts.length, index + 1)
       setDisplayedPosts([...displayedPosts, ...newPosts])
     }
-    setPostindex(index)
+    setPostIndex(index)
     setTimeout(() => {
       postRefs.current[index]?.scrollIntoView({
         behavior: 'smooth',

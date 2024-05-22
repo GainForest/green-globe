@@ -71,52 +71,6 @@ export const verraOutlineLayer = (lineColor: string) => ({
   },
 })
 
-export const hexagonOutlineLayer = (lineColor: string) => ({
-  id: 'hexagonOutline',
-  type: 'line',
-  source: 'hexagons',
-  paint: {
-    'line-color': lineColor,
-    'line-width': 3,
-    'line-opacity': [
-      'case',
-      ['boolean', ['feature-state', 'hover'], false],
-      1,
-      0.2,
-    ],
-  },
-})
-
-export const hexagonHoverFillLayer = () => ({
-  id: 'hexagonHoverFill',
-  type: 'fill',
-  source: 'hexagons',
-  paint: {
-    'fill-color': '#627BC1',
-    'fill-opacity': [
-      'case',
-      ['boolean', ['feature-state', 'hover'], false],
-      1,
-      0.2,
-    ],
-  },
-})
-
-export const hexagonClickFillLayer = () => ({
-  id: 'hexagonClickFillLayer',
-  type: 'fill',
-  source: 'hexagons',
-  paint: {
-    'fill-color': '#627BC1',
-    'fill-opacity': [
-      'case',
-      ['boolean', ['feature-state', 'clicked'], false],
-      1,
-      0.2,
-    ],
-  },
-})
-
 export const clusteredTreesLayer = {
   id: 'clusteredTrees',
   type: 'circle',
@@ -174,12 +128,6 @@ export const allSitesSource = (geoJson) => ({
 export const verraSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,
-})
-
-export const hexagonsSource = (hexagonsGeoJson) => ({
-  type: 'geojson',
-  data: hexagonsGeoJson,
-  generateId: true,
 })
 
 export const treesSource = (treesGeoJson) => ({

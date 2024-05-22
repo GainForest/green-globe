@@ -165,6 +165,7 @@ export const unclusteredTreesLayer = {
     'circle-stroke-color': '#000000',
   },
 }
+
 export const allSitesSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,

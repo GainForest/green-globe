@@ -25,6 +25,8 @@ export const InfoOverlay = ({
   mediaSize,
   maximize,
   setMaximize,
+  selectedSpecies,
+  setSelectedSpecies,
 }) => {
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
@@ -133,6 +135,8 @@ export const InfoOverlay = ({
           maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
+          selectedSpecies={selectedSpecies}
+          setSelectedSpecies={setSelectedSpecies}
         />
       )}
       {infoOverlay == 3 && (

@@ -11,10 +11,14 @@ export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,
   maximize,
+  selectedSpecies,
+  setSelectedSpecies,
 }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
+  const [loading, setLoading] = useState(true)
+  const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
 
   useEffect(() => {
     if (!activeProjectData) {
@@ -22,9 +26,7 @@ export const BiodiversityCard = ({
     }
     const { project } = activeProjectData
     if (project) {
-      fetch(
-        `${process.env.AWS_STORAGE}/mol/${project.id}.json`
-      )
+      fetch(`${process.env.AWS_STORAGE}/mol/${project.id}.json`)
         .then((response) => response.json())
         .then((json) => {
           const biodiversity = json.map((b) => {
@@ -69,6 +71,7 @@ export const BiodiversityCard = ({
             //removes whitespace and underscores
             .split(/[\s_]+/)
             .join('-')}-all-tree-plantings.geojson`
+
           fetch(`${process.env.AWS_STORAGE}/shapefiles/${treePlantings}`)
             .then((response) => response.json())
             .then((json) => {
@@ -156,25 +159,52 @@ export const BiodiversityCard = ({
                 total += 1
               })
 
-              const speciesArray = Object.keys(speciesCount).map((species) => ({
-                ...speciesCount[species],
-                average:
-                  // round to two decimals
-                  Math.round(
-                    (speciesCount[species].average /
-                      speciesCount[species].count) *
-                      100
-                  ) / 100,
-              }))
+              const speciesArray = Object.keys(speciesCount)
+                .sort()
+                .map((species) => ({
+                  ...speciesCount[species],
+                  average:
+                    // round to two decimals
+                    Math.round(
+                      (speciesCount[species].average /
+                        speciesCount[species].count) *
+                        100
+                    ) / 100,
+                }))
               setMeasuredData([
                 ...measuredData,
                 { title: 'Trees', species: speciesArray, total },
               ])
+              setLoading(false)
+            })
+            .catch((e) => {
+              console.log(e)
+              setLoading(false)
             })
           return setBiodiversity(biodiversity)
         })
     }
   }, [activeProjectData])
+
+  useEffect(() => {
+    if (sortBy === 'Name') {
+      setMeasuredData(
+        measuredData.map((group) => ({
+          ...group,
+          species: group.species.sort((a, b) =>
+            a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+          ),
+        }))
+      )
+    } else {
+      setMeasuredData(
+        measuredData.map((group) => ({
+          ...group,
+          species: group.species.sort((a, b) => b.count - a.count),
+        }))
+      )
+    }
+  }, [sortBy])
 
   // checks for typos between instances
   const stringDistance = (a, b) => {
@@ -208,6 +238,14 @@ export const BiodiversityCard = ({
     return str.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
     })
+  }
+
+  const handleSpeciesClick = (species) => {
+    if (selectedSpecies === species) {
+      setSelectedSpecies(null)
+    } else {
+      setSelectedSpecies(species)
+    }
   }
 
   return (
@@ -251,7 +289,11 @@ export const BiodiversityCard = ({
         ) : (
           <MeasuredDataGrid
             measuredData={measuredData}
-            biodiversity={biodiversity}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            loading={loading}
+            handleSpeciesClick={handleSpeciesClick}
+            selectedSpecies={selectedSpecies}
           />
         )}
       </div>
@@ -263,8 +305,8 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
   if (biodiversity.length) {
     return (
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {biodiversity.map((biodiversityGroup) => (
-          <div key={biodiversityGroup.title} style={{ flex: '1 1 50%' }}>
+        {biodiversity.map((biodiversityGroup, idx) => (
+          <div key={biodiversityGroup.title + idx} style={{ flex: '1 1 50%' }}>
             <h3>Predicted {biodiversityGroup.title}</h3>
             {biodiversityGroup.threatened.map((species) => (
               <div key={species.scientificname}>
@@ -287,15 +329,30 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
   }
 }
 
-const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
-  // if data hasn't loaded yet, return skeleton
-  if (biodiversity.length > 0) {
-    // if data is loaded but no measured data, return "no data" message
+const MeasuredDataGrid = ({
+  sortBy,
+  setSortBy,
+  measuredData,
+  handleSpeciesClick,
+  selectedSpecies,
+  loading,
+  mediaSize,
+}) => {
+  if (loading) {
+    return (
+      <>
+        <h3>
+          <ThemedSkeleton width={'120px'} />
+        </h3>
+        <div></div>
+      </>
+    )
+  } else {
     if (measuredData.length > 0) {
       return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {measuredData.map((group) => (
-            <div style={{ flex: '1 1 50%' }} key={group.title}>
+          {measuredData.map((group, idx) => (
+            <div style={{ flex: '1 1 50%' }} key={group.title + idx}>
               <div
                 style={{
                   border: '1px solid #2f3030',
@@ -313,9 +370,30 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
                 </h2>
               </div>
               <h3>{group.title}</h3>
+              {group.title === 'Trees' && (
+                <p style={{ marginTop: '8px' }}>
+                  Click a species to highlight them on the map
+                </p>
+              )}
+              <p>Sort By:</p>
+              <ToggleButton
+                mediaSize={mediaSize}
+                active={sortBy}
+                setToggle={setSortBy}
+                options={['Name', 'Count']}
+              />
               {group.species.map((species) => (
-                <div key={species.name}>
-                  <MeasuredDataPhoto {...species} />
+                <div
+                  className={
+                    species.name == selectedSpecies ? null : 'species-button'
+                  }
+                  key={species.name}
+                >
+                  <MeasuredDataPhoto
+                    {...species}
+                    handleSpeciesClick={handleSpeciesClick}
+                    selectedSpecies={selectedSpecies}
+                  />
                 </div>
               ))}
             </div>
@@ -325,15 +403,6 @@ const MeasuredDataGrid = ({ measuredData, biodiversity }) => {
     } else {
       return <p>There is not yet any measured biodiversity for this project.</p>
     }
-  } else {
-    return (
-      <>
-        <h3>
-          <ThemedSkeleton width={'120px'} />
-        </h3>
-        <div></div>
-      </>
-    )
   }
 }
 
@@ -379,53 +448,97 @@ const AnimalPhoto = ({ species, taxa }: { species: Species; taxa: string }) => {
   )
 }
 
-interface MeasuredSpecies {
+interface DataAndHandler {
   imageUrl: string
   name: string
   shortest: number
   tallest: number
   average: number
   count: number
+  handleSpeciesClick: (name: string) => void
+  selectedSpecies: string
 }
 
-const MeasuredDataPhoto = (species: MeasuredSpecies) => {
-  const src = species.imageUrl
-    ? species.imageUrl
+const MeasuredDataPhoto = (props: DataAndHandler) => {
+  const src = props.imageUrl
+    ? props.imageUrl
     : `https://mol.org/static/img/groups/taxa_plants.png`
 
   return (
-    <div style={{ display: 'flex' }}>
-      <img
-        alt={species.name}
-        src={src}
+    <div
+      className={props.name == props.selectedSpecies ? null : 'species-button'}
+      style={{
+        display: 'flex',
+        backgroundColor:
+          props.name == props.selectedSpecies ? '#4a4a4a' : '#22252a',
+        position: 'relative',
+        padding: '10px',
+      }}
+    >
+      <button
+        className={
+          props.name == props.selectedSpecies ? null : 'species-button'
+        }
         style={{
-          objectFit: 'cover',
-          clipPath:
-            'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
-          height: '120px',
-          width: '120px',
+          display: 'flex',
+          backgroundColor:
+            props.name == props.selectedSpecies ? '#4a4a4a' : '#22252a',
+          border: 'none',
+          cursor: 'pointer',
+          flex: '1',
         }}
-      />
-      <div style={{ margin: '12px 0 0 24px' }}>
-        <p style={{ fontSize: '1rem', marginBottom: '0px' }}>{species.name}</p>
-        <i style={{ fontSize: '0.75rem', display: 'block' }}>
-          Count: {species.count}
-        </i>
-        {typeof species.tallest === 'number' && !isNaN(species.tallest) && (
-          <div>
-            <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Tallest: {species.tallest} m
-            </i>
-            <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Shortest: {species.shortest} m
-            </i>
-            <i style={{ fontSize: '0.75rem', display: 'block' }}>
-              Average: {species.average} m
-            </i>
+        onClick={() => props.handleSpeciesClick(props.name)}
+      >
+        <img
+          alt={props.name}
+          src={src}
+          style={{
+            objectFit: 'cover',
+            clipPath:
+              'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
+            height: '120px',
+            width: '120px',
+            minWidth: '120px',
+          }}
+        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            marginLeft: '24px',
+            flex: '1',
+            position: 'relative',
+          }}
+        >
+          <p style={{ color: 'white', fontSize: '1rem', marginBottom: '4px' }}>
+            {props.name}
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              color: 'white',
+              fontSize: '0.75rem',
+              position: 'absolute',
+              right: '16px',
+              top: '50%',
+              transform: 'translateY(+50%)',
+              textAlign: 'right',
+            }}
+          >
+            <span>Count: {props.count}</span>
+            {typeof props.tallest === 'number' && !isNaN(props.tallest) && (
+              <>
+                <span>Tallest: {props.tallest} m</span>
+                <span>Shortest: {props.shortest} m</span>
+                <span>Average: {props.average} m</span>
+              </>
+            )}
           </div>
-        )}
-        {/* <RedlistStatus redlist={species.redlist} /> */}
-      </div>
+          {/* <RedlistStatus redlist={props.redlist} /> */}
+        </div>
+      </button>
     </div>
   )
 }

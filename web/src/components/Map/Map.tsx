@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -34,6 +34,7 @@ import {
   fetchHiveLocations,
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
+import { getSpeciesName } from './maptreeutils'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
@@ -61,6 +62,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [treeData, setTreeData] = useState({})
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
+  const [selectedSpecies, setSelectedSpecies] = useState('')
   // const numHexagons = useRef(0)
 
   // Fetch all prerequisite data for map initialization
@@ -171,6 +173,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
       setTreeData({})
+      setSelectedSpecies('')
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
         setActiveProjectData(result)
@@ -262,17 +265,82 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, activeProjectMosaic])
 
-  // Display tree data
   useEffect(() => {
     if (!map) return
-    let isMounted = true
+    const isMounted = true
     if (map && activeProjectTreesPlanted && isMounted) {
-      map.getSource('trees').setData(activeProjectTreesPlanted)
-    }
-    return () => {
-      isMounted = false
+      const normalizedData = { ...activeProjectTreesPlanted }
+      normalizedData.features = normalizedData.features.map((feature) => {
+        feature.properties.species = getSpeciesName(feature.properties).trim()
+        return feature
+      })
+      if (activeProjectTreesPlanted !== normalizedData) {
+        const updateData = () => {
+          map.getSource('trees')?.setData(normalizedData)
+        }
+        map.on('styledata', updateData)
+        return () => {
+          map.off('styledata', updateData)
+        }
+      }
+    } else {
+      map.getSource('trees')?.setData({
+        type: 'FeatureCollection',
+        features: [],
+      })
     }
   }, [map, activeProjectTreesPlanted])
+
+  useEffect(() => {
+    if (map && map.isStyleLoaded()) {
+      let colorExpression
+      let radiusExpression
+      if (selectedSpecies) {
+        colorExpression = [
+          'case',
+          [
+            'all',
+            ['==', ['get', 'species'], selectedSpecies],
+            ['boolean', ['feature-state', 'hover'], false],
+          ],
+          'red', // when isSelectedSpecies && hover
+          ['==', ['get', 'species'], selectedSpecies],
+          '#FF8101', // when isSelectedSpecies && !hover
+          ['boolean', ['feature-state', 'hover'], false],
+          'gray', // when !isSelectedSpecies && hover
+          'gray', // when !isSelectedSpecies && !hover
+        ]
+        radiusExpression = [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          8, // when hover (either isSelectedSpecies or not)
+          ['==', ['get', 'species'], selectedSpecies],
+          6, // when isSelectedSpecies && !hover
+          3, // when !isSelectedSpecies && !hover
+        ]
+      } else {
+        colorExpression = [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          '#0883fe', // when no selectedSpecies && hover
+          '#ff77c1', // when no selectedSpecies && !hover
+        ]
+        radiusExpression = [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          8, // when no selectedSpecies && hover
+          4, // when no selectedSpecies && !hover
+        ]
+      }
+
+      map.setPaintProperty('unclusteredTrees', 'circle-color', colorExpression)
+      map.setPaintProperty(
+        'unclusteredTrees',
+        'circle-radius',
+        radiusExpression
+      )
+    }
+  }, [map, selectedSpecies])
 
   // Hexagon onclick
   // useEffect(() => {
@@ -425,6 +493,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
             mediaSize={mediaSize}
             maximize={maximize}
             setMaximize={setMaximize}
+            selectedSpecies={selectedSpecies}
+            setSelectedSpecies={setSelectedSpecies}
           />
         </>
       )}

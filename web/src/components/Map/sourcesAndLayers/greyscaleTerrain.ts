@@ -15,32 +15,35 @@ export const addGreyscaleSourceAndLayers = (map: mapboxgl.Map) => {
       },
     })
   }
+
+  // Mask
+  map.addLayer({
+    id: 'mask-area-fill',
+    type: 'fill',
+    source: 'allSites',
+    paint: {
+      'fill-color': 'rgba(0, 0, 0, 0)', // Transparent fill to create the mask
+    },
+  })
+
+  map.addLayer({
+    id: 'mask-area-fill-inverse',
+    type: 'fill',
+    source: 'allSites',
+    paint: {
+      'fill-color': '#FFFFFF',
+      'fill-opacity': 0.6,
+    },
+  })
+
   if (map.getLayer('whiteOverlay')) {
     map.addLayer({
       id: 'whiteOverlay',
       type: 'fill',
-      source: {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          geometry: {
-            type: 'Polygon',
-            coordinates: [
-              [
-                [-180, -85],
-                [-180, 85],
-                [180, 85],
-                [180, -85],
-                [-180, -85],
-              ],
-            ],
-          },
-        },
-      },
-      layout: {},
+      source: 'allSites',
       paint: {
         'fill-color': '#ffffff',
-        'fill-opacity': 0, // Adjust the opacity as needed
+        'fill-opacity': 1, // Adjust the opacity as needed
       },
     })
   }

@@ -28,11 +28,11 @@ export const addAllSourcesAndLayers = (
   hiveLocations,
   setMarkers
 ) => {
-  addGreyscaleSourceAndLayers(map)
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
+  addGreyscaleSourceAndLayers(map)
   addHighlightedSiteSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addMeasuredTreesSourceAndLayer(map)

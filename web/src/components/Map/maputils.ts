@@ -1,6 +1,5 @@
 import mapboxgl from 'mapbox-gl'
 
-import { landCoverLayer, landCoverSource } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import {
@@ -13,6 +12,7 @@ import {
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
+import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
 import {
   addMeasuredTreesSourceAndLayer,
   toggleMeasuredTreesLayer,
@@ -149,15 +149,6 @@ export const getTreeInformation = (e, activeProject) => {
     treeDBH,
     treePhotos,
     dateOfMeasurement,
-  }
-}
-
-const addLandCoverSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('landCoverSource')) {
-    map.addSource('landCoverSource', landCoverSource)
-  }
-  if (!map.getLayer('landCoverLayer')) {
-    map.addLayer(landCoverLayer)
   }
 }
 

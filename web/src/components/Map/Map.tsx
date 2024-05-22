@@ -38,8 +38,8 @@ import {
   addAllSourcesAndLayers,
   addClickableMarkers,
   getTreeInformation,
-  toggleTreesPlantedLayer,
 } from './maputils'
+import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
@@ -320,7 +320,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (map) {
       let hoveredTreeId = null
       const onClickProjectFill = () => {
-        toggleTreesPlantedLayer(map, 'visible')
+        toggleMeasuredTreesLayer(map, 'visible')
       }
       const onMouseMoveUnclusteredTrees = (e) => {
         if (e.features.length > 0) {

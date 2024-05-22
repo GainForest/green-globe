@@ -1,13 +1,6 @@
 import mapboxgl from 'mapbox-gl'
 
-import {
-  clusteredTreesCountTextLayer,
-  clusteredTreesLayer,
-  landCoverLayer,
-  landCoverSource,
-  treesSource,
-  unclusteredTreesLayer,
-} from 'src/mapbox.config'
+import { landCoverLayer, landCoverSource } from 'src/mapbox.config'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import {
@@ -20,6 +13,10 @@ import {
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
+import {
+  addMeasuredTreesSourceAndLayer,
+  toggleMeasuredTreesLayer,
+} from './sourcesAndLayers/measuredTrees'
 import {
   addAllSitesSourceAndLayer,
   addHighlightedSiteSourceAndLayer,
@@ -38,7 +35,7 @@ export const addAllSourcesAndLayers = (
   addAllSitesSourceAndLayer(map)
   addHighlightedSiteSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
-  addTreesPlantedSourceAndLayers(map)
+  addMeasuredTreesSourceAndLayer(map)
 }
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {
@@ -77,7 +74,7 @@ export const addClickableMarkers = (
     el.addEventListener('click', () => {
       setActiveProject(feature?.properties?.projectId)
       dispatch(setInfoOverlay(1))
-      toggleTreesPlantedLayer(map, 'visible')
+      toggleMeasuredTreesLayer(map, 'visible')
     })
 
     // finally, add the marker to the map
@@ -171,47 +168,6 @@ export const generateTerraSource = () => ({
   ],
   tileSize: 256,
 })
-
-export const addTreesPlantedSourceAndLayers = (map: mapboxgl.Map) => {
-  if (!map.getSource('trees')) {
-    map.addSource(
-      'trees',
-      treesSource({
-        type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            geometry: null,
-          },
-        ],
-      })
-    )
-  }
-  if (!map.getLayer('clusteredTrees')) {
-    map.addLayer(clusteredTreesLayer)
-  }
-  if (!map.getLayer('clusteredTreesCountText')) {
-    map.addLayer(clusteredTreesCountTextLayer)
-  }
-  if (!map.getLayer('unclusteredTrees')) {
-    map.addLayer(unclusteredTreesLayer)
-  }
-}
-
-export const toggleTreesPlantedLayer = (
-  map: mapboxgl.Map,
-  visibility: 'visible' | 'none'
-) => {
-  if (map.getLayer('clusteredTrees')) {
-    map.setLayoutProperty('clusteredTrees', 'visibility', visibility)
-  }
-  if (map.getLayer('clusteredTreesCountText')) {
-    map.setLayoutProperty('clusteredTreesCountText', 'visibility', visibility)
-  }
-  if (map.getLayer('unclusteredTrees')) {
-    map.setLayoutProperty('unclusteredTrees', 'visibility', visibility)
-  }
-}
 
 export const toggleLandCoverLayer = (map: mapboxgl.Map, visibility) => {
   if (map.getLayer('landCoverLayer')) {

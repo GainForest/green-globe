@@ -10,7 +10,6 @@ import {
   getTreePhotos,
 } from './maptreeutils'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
-import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
 import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
 import {
@@ -28,7 +27,6 @@ export const addAllSourcesAndLayers = (
   hiveLocations,
   setMarkers
 ) => {
-  addGreyscaleSourceAndLayers(map)
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)

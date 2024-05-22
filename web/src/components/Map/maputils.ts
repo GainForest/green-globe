@@ -12,8 +12,6 @@ import {
   highlightedSiteOutlineLayer,
   landCoverLayer,
   landCoverSource,
-  potentialTreeCoverLayer,
-  potentialTreeCoverSource,
   treeCoverLayer,
   treeCoverSource,
   treesSource,
@@ -41,7 +39,6 @@ export const addAllSourcesAndLayers = (
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
-  addPotentialTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
   addHighlightedSiteSourceAndLayer(map)
   // addNasaSourceAndLayer(map)
@@ -198,15 +195,6 @@ export const getTreeInformation = (e, activeProject) => {
     treeDBH,
     treePhotos,
     dateOfMeasurement,
-  }
-}
-
-const addPotentialTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('potentialTreeCoverSource')) {
-    map.addSource('potentialTreeCoverSource', potentialTreeCoverSource)
-  }
-  if (!map.getLayer('potentialTreeCoverLayer')) {
-    map.addLayer(potentialTreeCoverLayer)
   }
 }
 

@@ -12,8 +12,6 @@ import {
   highlightedSiteOutlineLayer,
   landCoverLayer,
   landCoverSource,
-  treeCoverLayer,
-  treeCoverSource,
   treesSource,
   unclusteredTreesLayer,
 } from 'src/mapbox.config'
@@ -28,6 +26,7 @@ import {
 } from './maptreeutils'
 import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
+import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
@@ -195,15 +194,6 @@ export const getTreeInformation = (e, activeProject) => {
     treeDBH,
     treePhotos,
     dateOfMeasurement,
-  }
-}
-
-const addTreeCoverSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('treeCoverSource')) {
-    map.addSource('treeCoverSource', treeCoverSource)
-  }
-  if (!map.getLayer('treeCoverLayer')) {
-    map.addLayer(treeCoverLayer)
   }
 }
 

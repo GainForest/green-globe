@@ -20,13 +20,13 @@ import {
   getTreeHeight,
   getTreePhotos,
 } from './maptreeutils'
+import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
 import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
-  // hexagons,
   hiveLocations,
   setMarkers
 ) => {
@@ -38,17 +38,6 @@ export const addAllSourcesAndLayers = (
   addHighlightedSiteSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addTreesPlantedSourceAndLayers(map)
-}
-
-export const addHiveSourceAndLayers = (
-  map: mapboxgl.Map,
-  hiveLocations,
-  setMarkers
-) => {
-  if (hiveLocations) {
-    const newMarkers = addMarkers(map, hiveLocations, 'hive')
-    setMarkers((markers) => [...markers, ...newMarkers])
-  }
 }
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {

@@ -31,36 +31,6 @@ export const initializeMapbox = (
   }
 }
 
-export const allSitesOutlineLayer = (lineColor: string) => ({
-  id: 'allSitesOutline',
-  type: 'line',
-  source: 'allSites',
-  paint: {
-    'line-color': lineColor,
-    'line-width': 3,
-  },
-})
-
-export const allSitesFillLayer = (lineColor: string) => ({
-  id: 'allSitesFill',
-  type: 'fill',
-  source: 'allSites', // reference the data source
-  paint: {
-    'fill-color': lineColor, // gainforest color fill
-    'fill-opacity': 0.05,
-  },
-})
-
-export const highlightedSiteOutlineLayer = (lineColor: string) => ({
-  id: 'highlightedSiteOutline',
-  type: 'line',
-  source: 'highlightedSite',
-  paint: {
-    'line-color': lineColor,
-    'line-width': 3,
-  },
-})
-
 export const verraOutlineLayer = (lineColor: string) => ({
   id: 'verraOutlineLayer',
   type: 'line',

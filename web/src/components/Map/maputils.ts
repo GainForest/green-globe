@@ -31,6 +31,7 @@ import {
   getTreeHeight,
   getTreePhotos,
 } from './maptreeutils'
+import { addGreyscaleTerrainSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
@@ -38,6 +39,7 @@ export const addAllSourcesAndLayers = (
   hiveLocations,
   setMarkers
 ) => {
+  addGreyscaleTerrainSourceAndLayers(map)
   addPlanetLabsSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)

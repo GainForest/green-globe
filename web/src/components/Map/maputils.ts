@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import mapboxgl from 'mapbox-gl'
 
 import {
@@ -6,8 +5,6 @@ import {
   allSitesOutlineLayer,
   clusteredTreesCountTextLayer,
   clusteredTreesLayer,
-  generatePlanetLayer,
-  generatePlanetSource,
   hexagonClickFillLayer,
   hexagonHoverFillLayer,
   hexagonOutlineLayer,
@@ -31,7 +28,8 @@ import {
   getTreeHeight,
   getTreePhotos,
 } from './maptreeutils'
-import { addGreyscaleTerrainSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
+import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
+import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
 
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
@@ -39,8 +37,8 @@ export const addAllSourcesAndLayers = (
   hiveLocations,
   setMarkers
 ) => {
-  addGreyscaleTerrainSourceAndLayers(map)
-  addPlanetLabsSourceAndLayers(map)
+  addGreyscaleSourceAndLayers(map)
+  addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addPotentialTreeCoverSourceAndLayer(map)
@@ -230,17 +228,6 @@ const addLandCoverSourceAndLayer = (map: mapboxgl.Map) => {
   }
 }
 
-const getPlanetDates = (minDate: dayjs.Dayjs, maxDate: dayjs.Dayjs) => {
-  const res = []
-  let monthsBetween = maxDate.diff(minDate, 'month')
-  while (monthsBetween >= 0) {
-    res.push(minDate.format('YYYY-MM'))
-    minDate = minDate.add(1, 'month')
-    monthsBetween--
-  }
-  return res
-}
-
 export const generateTerraSource = () => ({
   type: 'raster',
   tiles: [
@@ -248,26 +235,6 @@ export const generateTerraSource = () => ({
   ],
   tileSize: 256,
 })
-
-// TODO needs to have a current planet labs layer
-export const addPlanetLabsSourceAndLayers = (map: mapboxgl) => {
-  const minDate = dayjs('2020-09-01')
-  const maxDate = dayjs().subtract(6, 'week').set('date', 1)
-
-  const planetDates = getPlanetDates(minDate, maxDate)
-  planetDates.map((planetDate) => {
-    if (!map.getSource(`planetTile${planetDate}`)) {
-      map.addSource(`planetTile${planetDate}`, generatePlanetSource(planetDate))
-    }
-  })
-  planetDates.map((planetDate) => {
-    const visibility = 'none'
-    const newPlanetLayer = generatePlanetLayer(planetDate, visibility)
-    if (!map.getLayer(`planetLayer${planetDate}`)) {
-      map.addLayer(newPlanetLayer)
-    }
-  })
-}
 
 export const addAllSitesSourceAndLayer = (map: mapboxgl.Map) => {
   if (!map.getSource('allSites')) {

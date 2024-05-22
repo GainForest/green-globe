@@ -5,10 +5,6 @@ import {
   allSitesOutlineLayer,
   clusteredTreesCountTextLayer,
   clusteredTreesLayer,
-  hexagonClickFillLayer,
-  hexagonHoverFillLayer,
-  hexagonOutlineLayer,
-  hexagonsSource,
   highlightedSiteOutlineLayer,
   landCoverLayer,
   landCoverSource,
@@ -40,7 +36,6 @@ export const addAllSourcesAndLayers = (
   addTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
   addHighlightedSiteSourceAndLayer(map)
-  // addHexagonsSourceAndLayers(map, hexagons)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addTreesPlantedSourceAndLayers(map)
 }
@@ -230,21 +225,6 @@ export const addHighlightedSiteSourceAndLayer = (map: mapboxgl.Map) => {
     !map.getLayer('highlightedSiteOutline')
   ) {
     map.addLayer(highlightedSiteOutlineLayer('#FFEA00'))
-  }
-}
-
-export const addHexagonsSourceAndLayers = (map: mapboxgl.Map, hexagons) => {
-  if (!map.getSource('hexagons')) {
-    map.addSource('hexagons', hexagonsSource(hexagons))
-  }
-  if (!map.getLayer('hexagonClickFillLayer')) {
-    map.addLayer(hexagonClickFillLayer())
-  }
-  if (!map.getLayer('hexagonOutline')) {
-    map.addLayer(hexagonOutlineLayer('#00FF00'))
-  }
-  if (!map.getLayer('hexagonHoverFill')) {
-    map.addLayer(hexagonHoverFillLayer())
   }
 }
 

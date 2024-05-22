@@ -1,11 +1,8 @@
 import mapboxgl from 'mapbox-gl'
 
 import {
-  allSitesFillLayer,
-  allSitesOutlineLayer,
   clusteredTreesCountTextLayer,
   clusteredTreesLayer,
-  highlightedSiteOutlineLayer,
   landCoverLayer,
   landCoverSource,
   treesSource,
@@ -23,6 +20,10 @@ import {
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
+import {
+  addAllSitesSourceAndLayer,
+  addHighlightedSiteSourceAndLayer,
+} from './sourcesAndLayers/projectSites'
 import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 
 export const addAllSourcesAndLayers = (
@@ -170,52 +171,6 @@ export const generateTerraSource = () => ({
   ],
   tileSize: 256,
 })
-
-export const addAllSitesSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('allSites')) {
-    map.addSource('allSites', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            geometry: null,
-          },
-        ],
-      },
-    })
-  }
-  if (map.getSource('allSites') && !map.getLayer('allSitesOutline')) {
-    map.addLayer(allSitesOutlineLayer('#00FF00'))
-  }
-  if (map.getSource('allSites') && !map.getLayer('allSitesFill')) {
-    map.addLayer(allSitesFillLayer('#00FF00'))
-  }
-}
-
-export const addHighlightedSiteSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('highlightedSite')) {
-    map.addSource('highlightedSite', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            geometry: null,
-          },
-        ],
-      },
-    })
-  }
-  if (
-    map.getSource('highlightedSite') &&
-    !map.getLayer('highlightedSiteOutline')
-  ) {
-    map.addLayer(highlightedSiteOutlineLayer('#FFEA00'))
-  }
-}
 
 export const addTreesPlantedSourceAndLayers = (map: mapboxgl.Map) => {
   if (!map.getSource('trees')) {

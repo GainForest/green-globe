@@ -10,6 +10,7 @@ import {
   getTreePhotos,
 } from './maptreeutils'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
+import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
 import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
@@ -36,6 +37,7 @@ export const addAllSourcesAndLayers = (
   addHighlightedSiteSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addMeasuredTreesSourceAndLayer(map)
+  addFlightPathSourceAndLayer(map)
 }
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {

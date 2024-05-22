@@ -40,6 +40,7 @@ import {
   addClickableMarkers,
   getTreeInformation,
 } from './maputils'
+import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
@@ -101,6 +102,12 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'star-intensity': 0.05,
         })
         addAllSourcesAndLayers(map, hiveLocations, setMarkers)
+        // if (
+        //   activeProjectId ==
+        //   'fd0836703e420812c278b9a90c591788e62c4aee5c6b0a98e54af750523c258a'
+        // ) {
+        //   addFlightPathSourceAndLayer(map)
+        // }
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -184,7 +191,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         const shapefiles = result?.project?.assets?.filter(
           (d) => d?.classification == 'Shapefiles'
         )
-        const projectPolygonCID = shapefiles.filter(
+        const projectPolygonCID = shapefiles?.filter(
           (d) => d?.shapefile?.default == true
         )?.[0]?.awsCID
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import DOMpurify from 'dompurify'
 import styled from 'styled-components'
 
+import BlogPost from 'src/components/Blog/BlogPost'
 const MethodologyPage = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -140,7 +141,6 @@ const MethodologyPage = () => {
             <PostContainer
               key={post.title}
               ref={(el) => (postRefs.current[index] = el)}
-              onClick={() => handlePostClick(post, index)}
             >
               <PostHeader>
                 <p style={{ fontWeight: 'lighter' }}>
@@ -149,7 +149,7 @@ const MethodologyPage = () => {
                 <PostDate>{post.date}</PostDate>
               </PostHeader>
               <PostTitle>{post.title}</PostTitle>
-              <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
+              <BlogPost content={post.content} />
             </PostContainer>
           ))}
         </Content>

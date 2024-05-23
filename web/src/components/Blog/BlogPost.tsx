@@ -32,7 +32,13 @@ const BlogPost = ({ content }) => {
           const handlePlay = () => {
             audio.play()
           }
-
+          progressBar.addEventListener('click', (event) => {
+            const rect = progressBar.getBoundingClientRect()
+            const clickX = event.clientX - rect.left
+            const width = rect.width
+            const clickRatio = clickX / width
+            audio.currentTime = clickRatio * audio.duration
+          })
           playButton.addEventListener('click', handlePlay)
           progressBar.addEventListener('click', handlePlay)
 

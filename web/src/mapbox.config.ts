@@ -13,7 +13,7 @@ export const initializeMapbox = (
     const map = new mapboxgl.Map({
       container: containerId,
       projection: 'globe',
-      style: 'mapbox://styles/mapbox/satellite-v9',
+      style: 'mapbox://styles/mapbox/dark-11',
       zoom: 2,
       center: [102, 9],
       bounds,
@@ -23,7 +23,7 @@ export const initializeMapbox = (
   } else {
     const map = new mapboxgl.Map({
       container: containerId,
-      style: 'mapbox://styles/mapbox/satellite-v9',
+      style: 'mapbox://styles/mapbox/dark-v11',
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

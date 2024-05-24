@@ -240,7 +240,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       const dashedSiteName = siteName?.toLowerCase().replaceAll(' ', '-')
 
       if (dashedProjectName && dashedSiteName) {
-        const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
+        const treesEndpoint = `shapefiles/${dashedProjectName}-${dashedSiteName}-all-tree-plantings.geojson`
         const fetchData = async () => {
           await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
         }

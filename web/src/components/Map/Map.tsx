@@ -39,8 +39,9 @@ import {
   addAllSourcesAndLayers,
   addClickableMarkers,
   getTreeInformation,
-  toggleTreesPlantedLayer,
 } from './maputils'
+import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
+import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
@@ -250,19 +251,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [activeProjectData])
 
   useEffect(() => {
-    if (map && activeProjectMosaic) {
-      map.addSource('orthomosaic', {
-        type: 'raster',
-        url: activeProjectMosaic,
-      })
-      if (!map.getLayer('orthomosaic')) {
-        map.addLayer({
-          id: 'orthomosaic',
-          source: 'orthomosaic',
-          type: 'raster',
-        })
-      }
-    }
+    addOrthomosaic(map, activeProjectMosaic)
   }, [map, activeProjectMosaic])
 
   useEffect(() => {
@@ -384,7 +373,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (map) {
       let hoveredTreeId = null
       const onClickProjectFill = () => {
-        toggleTreesPlantedLayer(map, 'visible')
+        toggleMeasuredTreesLayer(map, 'visible')
       }
       const onMouseMoveUnclusteredTrees = (e) => {
         if (e.features.length > 0) {

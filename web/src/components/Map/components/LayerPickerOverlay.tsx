@@ -14,8 +14,8 @@ import {
   toggleOrthomosaic,
   togglePotentialTreeCoverLayer,
   toggleTreeCoverLayer,
-  toggleTreesPlantedLayer,
 } from '../maputils'
+import { toggleMeasuredTreesLayer } from '../sourcesAndLayers/measuredTrees'
 
 export const LayerPickerOverlay = ({
   map,
@@ -177,11 +177,11 @@ const OrthomosaicToggle = ({
         onClick={() => {
           if (!orthomosaic) {
             toggleOrthomosaic(map, 'visible')
-            toggleTreesPlantedLayer(map, 'visible')
+            toggleMeasuredTreesLayer(map, 'visible')
             setOrthomosaic(true)
           } else {
             toggleOrthomosaic(map, 'none')
-            toggleTreesPlantedLayer(map, 'visible')
+            toggleMeasuredTreesLayer(map, 'visible')
             setOrthomosaic(false)
           }
         }}
@@ -210,11 +210,11 @@ const TreeCoverBox = ({ map, treeCover, setTreeCover }) => {
         onClick={() => {
           if (!treeCover) {
             toggleTreeCoverLayer(map, 'visible')
-            toggleTreesPlantedLayer(map, 'visible')
+            toggleMeasuredTreesLayer(map, 'visible')
             setTreeCover(true)
           } else {
             toggleTreeCoverLayer(map, 'none')
-            toggleTreesPlantedLayer(map, 'visible')
+            toggleMeasuredTreesLayer(map, 'visible')
             setTreeCover(false)
           }
         }}
@@ -255,12 +255,12 @@ const LandCoverBox = ({
         onClick={() => {
           if (!landCover) {
             toggleLandCoverLayer(map, 'visible')
-            toggleTreesPlantedLayer(map, 'visible')
+            toggleMeasuredTreesLayer(map, 'visible')
             setLandCover(true)
             map.getSource('project').setData(activeProjectPolygon)
           } else {
             toggleLandCoverLayer(map, 'none')
-            toggleTreesPlantedLayer(map, 'visible')
+            toggleMeasuredTreesLayer(map, 'visible')
             setLandCover(false)
           }
         }}

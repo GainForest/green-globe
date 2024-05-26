@@ -13,17 +13,20 @@ export const initializeMapbox = (
     const map = new mapboxgl.Map({
       container: containerId,
       projection: 'globe',
-      style: 'mapbox://styles/mapbox/satellite-v9',
+      style: 'mapbox://styles/mapbox/dark-11',
       zoom: 2,
       center: [102, 9],
-      bounds,
+      bounds: [
+        -60.647280831743664, -2.9562191572952914, -60.64187210310173,
+        -2.948123839147461,
+      ],
     })
     map.addControl(new mapboxgl.NavigationControl())
     setMap(map)
   } else {
     const map = new mapboxgl.Map({
       container: containerId,
-      style: 'mapbox://styles/mapbox/satellite-v9',
+      style: 'mapbox://styles/mapbox/dark-v11',
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

@@ -40,6 +40,7 @@ import {
   addClickableMarkers,
   getTreeInformation,
 } from './maputils'
+import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
@@ -250,19 +251,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [activeProjectData])
 
   useEffect(() => {
-    if (map && activeProjectMosaic) {
-      map.addSource('orthomosaic', {
-        type: 'raster',
-        url: activeProjectMosaic,
-      })
-      if (!map.getLayer('orthomosaic')) {
-        map.addLayer({
-          id: 'orthomosaic',
-          source: 'orthomosaic',
-          type: 'raster',
-        })
-      }
-    }
+    addOrthomosaic(map, activeProjectMosaic)
   }, [map, activeProjectMosaic])
 
   useEffect(() => {

@@ -1,7 +1,5 @@
 import mapboxgl from 'mapbox-gl'
 
-import { breakpoints } from 'src/constants'
-
 export const initializeMapbox = (
   containerId: string,
   setMap: React.Dispatch<mapboxgl.Map>,
@@ -28,6 +26,14 @@ export const initializeMapbox = (
     map.addControl(new mapboxgl.NavigationControl())
     setMap(map)
   }
+}
+
+export const MAPBOX_FOG = {
+  color: '#000000',
+  'high-color': 'rgb(36, 92, 223)',
+  'horizon-blend': 0.02,
+  'space-color': 'rgb(11, 11, 25)',
+  'star-intensity': 0.05,
 }
 
 export const verraOutlineLayer = (lineColor: string) => ({

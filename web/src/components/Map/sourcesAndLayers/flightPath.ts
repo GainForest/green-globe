@@ -1,13 +1,7 @@
 import mapboxgl from 'mapbox-gl'
+import { DRONE_FLIGHT_PATHS } from 'public/data/flight_paths/config.ts'
 
 export const addFlightPathSourceAndLayer = async (map: mapboxgl.Map) => {
-  const links = [
-    `${process.env.AWS_STORAGE}/flight-paths/testFlightPath.geojson`,
-    `${process.env.AWS_STORAGE}/flight-paths/DJI_0005.geojson`,
-    `${process.env.AWS_STORAGE}/flight-paths/DJI_0006.geojson`,
-    `${process.env.AWS_STORAGE}/flight-paths/DJI_0007.geojson`,
-  ]
-
   const stringToColor = (str: string) => {
     let hash = 0
     for (let i = 0; i < str.length; i++) {
@@ -17,17 +11,17 @@ export const addFlightPathSourceAndLayer = async (map: mapboxgl.Map) => {
     return `#${('000000' + color.toString(16)).slice(-6)}`
   }
 
-  for (const link of links) {
+  for (const flightPath of DRONE_FLIGHT_PATHS) {
     try {
-      const res = await fetch(link)
+      const res = await fetch(flightPath.url)
       if (!res.ok) {
-        throw new Error(`Failed to fetch ${link}: ${res.statusText}`)
+        throw new Error(`Failed to fetch ${flightPath.url}: ${res.statusText}`)
       }
 
       const flightPathSource = await res.json()
 
-      const sourceId = `flightPathSource-${link}`
-      const layerId = `flightPathLayer-${link}`
+      const sourceId = `flightPathSource-${flightPath.name}`
+      const layerId = `flightPathLayer-${flightPath.name}`
 
       if (!map.getSource(sourceId)) {
         map.addSource(sourceId, {
@@ -55,7 +49,7 @@ export const addFlightPathSourceAndLayer = async (map: mapboxgl.Map) => {
         })
       }
     } catch (error) {
-      console.error(`Error processing ${link}:`, error)
+      console.error('Error reading GeoJSON file:', error)
     }
   }
 }

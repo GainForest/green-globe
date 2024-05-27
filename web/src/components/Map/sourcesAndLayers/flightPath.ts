@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl'
-import { DRONE_FLIGHT_PATHS } from 'public/data/flight_paths/config'
+import { DRONE_FLIGHT_PATHS } from 'public/data/flight_paths/config.ts'
 
 export const addFlightPathSourceAndLayer = async (map: mapboxgl.Map) => {
   const stringToColor = (str: string) => {

@@ -9,6 +9,7 @@ import {
   getTreeHeight,
   getTreePhotos,
 } from './maptreeutils'
+import { addAmazonBasinSourceAndLayer } from './sourcesAndLayers/amazonBasin'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addCOGSourceAndLayers } from './sourcesAndLayers/cogSourceAndLayers'
 import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
@@ -38,6 +39,7 @@ export const addAllSourcesAndLayers = (
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addMeasuredTreesSourceAndLayer(map)
   addCOGSourceAndLayers(map)
+  addAmazonBasinSourceAndLayer(map)
 }
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {

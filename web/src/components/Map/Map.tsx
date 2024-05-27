@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { navigate } from '@redwoodjs/router'
 
-import { initializeMapbox } from 'src/mapbox.config'
+import { MAPBOX_FOG, initializeMapbox } from 'src/mapbox.config'
 // import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { setProjectId } from 'src/reducers/projectsReducer'
@@ -87,13 +87,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (map && gainforestCenterpoints) {
       const onLoad = () => {
-        map.setFog({
-          color: '#000000',
-          'high-color': 'rgb(36, 92, 223)',
-          'horizon-blend': 0.02,
-          'space-color': 'rgb(11, 11, 25)',
-          'star-intensity': 0.05,
-        })
+        map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
           map,
@@ -106,13 +100,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
 
       const onStyleData = () => {
-        map.setFog({
-          color: '#000000',
-          'high-color': 'rgb(36, 92, 223)',
-          'horizon-blend': 0.02,
-          'space-color': 'rgb(11, 11, 25)',
-          'star-intensity': 0.05,
-        })
+        map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map, hiveLocations, setMarkers)
       }
       map.on('load', onLoad)

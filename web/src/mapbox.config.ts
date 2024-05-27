@@ -5,7 +5,6 @@ import { breakpoints } from 'src/constants'
 export const initializeMapbox = (
   containerId: string,
   setMap: React.Dispatch<mapboxgl.Map>,
-  mediaSize,
   bounds?: mapboxgl.LngLatBoundsLike
 ) => {
   mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN

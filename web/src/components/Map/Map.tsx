@@ -80,10 +80,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Initialize Map
   useEffect(() => {
-    if (gainforestCenterpoints) {
-      initializeMapbox('map-container', setMap, mediaSize)
-    }
-  }, [gainforestCenterpoints])
+    initializeMapbox('map-container', setMap)
+  }, [])
 
   // Set initial layers on load
   useEffect(() => {

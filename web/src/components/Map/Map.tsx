@@ -66,10 +66,11 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [selectedSpecies, setSelectedSpecies] = useState('')
   // const numHexagons = useRef(0)
 
-  // Fetch all prerequisite data for map initialization
+  // Initialize map, fetch all global data
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     // fetchHexagons(setHexagons)
+    initializeMapbox('map-container', setMap)
   }, [])
 
   useEffect(() => {
@@ -77,11 +78,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       dispatch(setProjectId(urlProjectId))
     }
   }, [urlProjectId, activeProjectId])
-
-  // Initialize Map
-  useEffect(() => {
-    initializeMapbox('map-container', setMap)
-  }, [])
 
   // Set initial layers on load
   useEffect(() => {

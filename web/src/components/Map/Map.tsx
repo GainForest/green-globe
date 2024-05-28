@@ -33,8 +33,9 @@ import {
   // fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
-import { spinGlobe } from './maprotate'
+// import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
+import { addEDNAMarkers } from './maputils'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
@@ -52,6 +53,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
+  const [____, setEDNAMarkers] = useState([])
+
   // const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
@@ -96,7 +99,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'gainforest',
           setActiveProjectId
         )
+        const ednaMarkers = addEDNAMarkers(map, ednaLocations)
         setMarkers([...gainForestMarkers])
+        setEDNAMarkers([...ednaMarkers])
       }
 
       const onStyleData = () => {

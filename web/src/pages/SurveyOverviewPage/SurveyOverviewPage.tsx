@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { MetaTags } from '@redwoodjs/web'
 
-import { DataCard } from './DataCard'
+// import { DataCard } from './DataCard'
 import { DroneFlightsMap } from './Map/DroneFlightsMap'
 
 const instruments = [

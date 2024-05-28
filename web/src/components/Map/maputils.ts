@@ -127,6 +127,26 @@ export const addMarkers = (
   return markers
 }
 
+export const addEDNAMarkers = (
+  map: mapboxgl.Map,
+  geoJson: mapboxgl.geoJson
+) => {
+  const markers = []
+  for (const feature of geoJson.features) {
+    // create the marker HTML element
+    const el = document.createElement('div')
+    el.className = `edna-sample-map-marker`
+
+    // finally, add the marker to the map
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat(feature.geometry.coordinates)
+      .addTo(map)
+
+    markers.push(marker)
+  }
+  return markers
+}
+
 export const popup = new mapboxgl.Popup({
   closeButton: false,
   closeOnClick: false,

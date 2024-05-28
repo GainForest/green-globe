@@ -28,7 +28,7 @@ import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
   hiveLocations,
-  setMarkers
+  setMarkers,
   ednaLocations
 ) => {
   addHistoricalSatelliteSourceAndLayers(map)

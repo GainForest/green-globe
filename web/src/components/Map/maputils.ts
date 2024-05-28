@@ -29,6 +29,7 @@ export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
   hiveLocations,
   setMarkers
+  ednaLocations
 ) => {
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -40,6 +41,29 @@ export const addAllSourcesAndLayers = (
   addMeasuredTreesSourceAndLayer(map)
   addCOGSourceAndLayers(map)
   addAmazonBasinSourceAndLayer(map)
+  addEDNASourceAndLayers(map, ednaLocations)
+}
+
+export const addEDNASourceAndLayers = (map: mapboxgl.Map, ednaLocations) => {
+  if (!map.getSource('ednaSource') && ednaLocations) {
+    map.addSource('ednaSource', {
+      type: 'geojson',
+      data: ednaLocations,
+    })
+  }
+  if (!map.getLayer('ednaLayer')) {
+    map.addLayer({
+      id: 'ednaLayer',
+      type: 'circle',
+      source: 'ednaSource',
+      paint: {
+        'circle-color': '#b284be',
+        'circle-radius': 20,
+        'circle-stroke-color': '#623c74',
+        'circle-stroke-width': 1,
+      },
+    })
+  }
 }
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {

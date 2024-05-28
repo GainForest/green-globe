@@ -24,6 +24,7 @@ import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
+import { fetchEDNALocations } from './mapfetch'
 import {
   fetchProjectInfo,
   fetchTreeShapefile,
@@ -64,6 +65,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const [maximize, setMaximize] = useState<boolean>(false)
   const [treeData, setTreeData] = useState({})
+  const [ednaLocations, setEDNALocations] = useState()
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
   const [selectedSpecies, setSelectedSpecies] = useState('')
@@ -73,6 +75,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     // fetchHexagons(setHexagons)
+    fetchEDNALocations(setEDNALocations)
     initializeMapbox(
       'map-container',
       setMap,
@@ -91,7 +94,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (map && gainforestCenterpoints) {
       const onLoad = () => {
         map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -106,7 +109,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
       const onStyleData = () => {
         map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
@@ -115,7 +118,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints, dispatch, hiveLocations])
+  }, [map, gainforestCenterpoints, dispatch, hiveLocations, ednaLocations])
 
   // // Rotate the globe
   // useEffect(() => {

@@ -1,5 +1,7 @@
 import { MetaTags } from '@redwoodjs/web'
 
+import { DroneFlightsMap } from './Map/DroneFlightsMap'
+
 const instruments = [
   {
     name: 'DJI Matrice 300 RTK',
@@ -17,22 +19,30 @@ const instruments = [
 
 const InsightsPage = () => {
   return (
-    <div style={{ padding: '0px 30px' }}>
+    <div style={{ padding: '0px 30px', fontFamily: 'molengo' }}>
       <MetaTags title="Insights" description="Insights page" />
 
-      <h1 style={{ fontSize: '40px' }}>
+      <h1 style={{ fontSize: '48px' }}>
         XPRIZE Finals Site Survey: July 11-12, 2024
       </h1>
-      <h2 style={{ fontSize: '30px' }}>Instruments</h2>
       <div>
-        {instruments.map((d) => (
-          <Instrument name={d.name} url={d.url} />
-        ))}
+        <h1>Time period</h1>
       </div>
-      <div>
-        <h1 style={{ fontSize: '32px' }}>
-          Observations from current selection
-        </h1>
+      <div style={{ display: 'flex' }}>
+        <div>
+          <h2 style={{ fontSize: '30px' }}>Instruments</h2>
+          <div>
+            {instruments.map((d) => (
+              <Instrument name={d.name} url={d.url} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <h1 style={{ fontSize: '32px' }}>
+            Observations from current selection
+          </h1>
+          <DroneFlightsMap />
+        </div>
       </div>
     </div>
   )

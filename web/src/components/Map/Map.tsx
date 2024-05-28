@@ -237,18 +237,21 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Fetch tree data
   useEffect(() => {
-    if (activeProjectData) {
+    if (activeProjectData && activeProjectPolygon) {
+      const siteName = activeProjectPolygon?.features[0]?.properties?.name
       const projectName = activeProjectData?.project?.name
-      const dashedProjectName = projectName.toLowerCase().replaceAll(' ', '-')
-      if (dashedProjectName) {
-        const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
+      const dashedProjectName = projectName?.toLowerCase().replaceAll(' ', '-')
+      const dashedSiteName = siteName?.toLowerCase().replaceAll(' ', '-')
+
+      if (dashedProjectName && dashedSiteName) {
+        const treesEndpoint = `shapefiles/${dashedProjectName}-${dashedSiteName}-all-tree-plantings.geojson`
         const fetchData = async () => {
           await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
         }
         fetchData().catch(console.error)
       }
     }
-  }, [activeProjectData])
+  }, [activeProjectData, activeProjectPolygon])
 
   useEffect(() => {
     addOrthomosaic(map, activeProjectMosaic)

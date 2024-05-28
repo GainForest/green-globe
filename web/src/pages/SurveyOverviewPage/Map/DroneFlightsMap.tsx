@@ -11,7 +11,12 @@ export const DroneFlightsMap = () => {
 
   return (
     <div
-      style={{ height: '40%', width: '40%' }}
+      style={{
+        height: '500px',
+        width: '640px',
+        maxHeight: '50vh',
+        maxWidth: '70vw',
+      }}
       id="drone-flights-map-container"
     />
   )

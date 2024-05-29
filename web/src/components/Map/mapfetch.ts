@@ -20,6 +20,14 @@ export const fetchHexagons = (setHexagons) => {
     })
 }
 
+export const fetchEDNALocations = (setEDNALocations) => {
+  fetch(`${process.env.AWS_STORAGE}/flight-paths/edna-locations.geojson`)
+    .then((response) => response.json())
+    .then((ednaLocations) => {
+      setEDNALocations(ednaLocations)
+    })
+}
+
 export const fetchGainForestCenterpoints = (setGeoJson) => {
   fetch(
     `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`

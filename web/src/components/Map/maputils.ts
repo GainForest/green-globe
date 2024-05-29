@@ -29,7 +29,8 @@ import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
   hiveLocations,
-  setMarkers
+  setMarkers,
+  ednaLocations
 ) => {
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -42,6 +43,29 @@ export const addAllSourcesAndLayers = (
   addFlightPathSourceAndLayer(map)
   addCOGSourceAndLayers(map)
   addAmazonBasinSourceAndLayer(map)
+  addEDNASourceAndLayers(map, ednaLocations)
+}
+
+export const addEDNASourceAndLayers = (map: mapboxgl.Map, ednaLocations) => {
+  if (!map.getSource('ednaSource') && ednaLocations) {
+    map.addSource('ednaSource', {
+      type: 'geojson',
+      data: ednaLocations,
+    })
+  }
+  if (!map.getLayer('ednaLayer')) {
+    map.addLayer({
+      id: 'ednaLayer',
+      type: 'circle',
+      source: 'ednaSource',
+      paint: {
+        'circle-color': '#b284be',
+        'circle-radius': 20,
+        'circle-stroke-color': '#623c74',
+        'circle-stroke-width': 1,
+      },
+    })
+  }
 }
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {
@@ -126,6 +150,26 @@ export const addMarkers = (
     markers.push(marker)
   }
 
+  return markers
+}
+
+export const addEDNAMarkers = (
+  map: mapboxgl.Map,
+  geoJson: mapboxgl.geoJson
+) => {
+  const markers = []
+  for (const feature of geoJson.features) {
+    // create the marker HTML element
+    const el = document.createElement('div')
+    el.className = `edna-sample-map-marker`
+
+    // finally, add the marker to the map
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat(feature.geometry.coordinates)
+      .addTo(map)
+
+    markers.push(marker)
+  }
   return markers
 }
 

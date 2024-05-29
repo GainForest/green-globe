@@ -13,8 +13,8 @@ import { addAmazonBasinSourceAndLayer } from './sourcesAndLayers/amazonBasin'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addCOGSourceAndLayers } from './sourcesAndLayers/cogSourceAndLayers'
 import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
-import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/greyscaleTerrain'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
+import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/inactive/greyscaleTerrain'
 import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
 import {
   addMeasuredTreesSourceAndLayer,
@@ -36,7 +36,6 @@ export const addAllSourcesAndLayers = (
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
-  addGreyscaleSourceAndLayers(map)
   addHighlightedSiteSourceAndLayer(map)
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addMeasuredTreesSourceAndLayer(map)

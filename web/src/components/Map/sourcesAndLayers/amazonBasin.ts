@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl'
 
 export const addAmazonBasinSourceAndLayer = async (map: mapboxgl.Map) => {
   try {
-    const res = await fetch('amazonBasin.geojson')
+    const res = await fetch('world_without_amazon.geojson')
     if (!res.ok) {
       throw new Error(`Failed to fetch amazon basin: ${res.statusText}`)
     }
@@ -17,15 +17,14 @@ export const addAmazonBasinSourceAndLayer = async (map: mapboxgl.Map) => {
     if (!map.getLayer('amazonBasinLayer')) {
       map.addLayer({
         id: 'amazonBasinLayer',
-        type: 'line',
+        type: 'fill',
         source: 'amazonBasinSource',
         paint: {
-          'line-color': '#FFEA00',
-          'line-width': 3,
+          'fill-color': '#FFFFFF', // fill color
+          'fill-opacity': 0.65, // opacity
         },
       })
     }
-    console.log('should show up')
   } catch {
     console.log('unable to fetch amazon basin')
   }

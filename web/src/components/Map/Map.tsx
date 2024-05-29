@@ -24,6 +24,7 @@ import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
+import { fetchEDNALocations } from './mapfetch'
 import {
   fetchProjectInfo,
   fetchTreeShapefile,
@@ -33,8 +34,9 @@ import {
   // fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
-import { spinGlobe } from './maprotate'
+// import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
+import { addEDNAMarkers } from './maputils'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
@@ -53,6 +55,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
+  const [____, setEDNAMarkers] = useState([])
+
   // const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
@@ -62,6 +66,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const [maximize, setMaximize] = useState<boolean>(false)
   const [treeData, setTreeData] = useState({})
+  const [ednaLocations, setEDNALocations] = useState()
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
   const [selectedSpecies, setSelectedSpecies] = useState('')
@@ -71,6 +76,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     // fetchHexagons(setHexagons)
+    fetchEDNALocations(setEDNALocations)
     initializeMapbox(
       'map-container',
       setMap,
@@ -89,13 +95,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (map && gainforestCenterpoints) {
       const onLoad = () => {
         map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
-        // if (
-        //   activeProjectId ==
-        //   'fd0836703e420812c278b9a90c591788e62c4aee5c6b0a98e54af750523c258a'
-        // ) {
-        //   addFlightPathSourceAndLayer(map)
-        // }
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -103,12 +103,14 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'gainforest',
           setActiveProjectId
         )
+        const ednaMarkers = addEDNAMarkers(map, ednaLocations)
         setMarkers([...gainForestMarkers])
+        setEDNAMarkers([...ednaMarkers])
       }
 
       const onStyleData = () => {
         map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
@@ -117,7 +119,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints, dispatch, hiveLocations])
+  }, [map, gainforestCenterpoints, dispatch, hiveLocations, ednaLocations])
 
   // // Rotate the globe
   // useEffect(() => {

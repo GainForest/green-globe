@@ -8,8 +8,7 @@ import { addFlightPathSourceAndLayer } from 'src/components/Map/sourcesAndLayers
 import { initializeMapbox } from 'src/mapbox.config'
 
 const SEMIFINALS_BOUNDARIES = [
-  103.83082429098584, 1.3640090963940423, 103.80628944617558,
-  1.3475293623401257,
+  103.82236016772544, 1.357013978514786, 103.81457510747856, 1.3517848524943759,
 ]
 
 export const DroneFlightsMap = () => {

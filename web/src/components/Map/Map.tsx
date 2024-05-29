@@ -42,6 +42,7 @@ import {
   addClickableMarkers,
   getTreeInformation,
 } from './maputils'
+import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 
@@ -174,7 +175,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         const shapefiles = result?.project?.assets?.filter(
           (d) => d?.classification == 'Shapefiles'
         )
-        const projectPolygonCID = shapefiles.filter(
+        const projectPolygonCID = shapefiles?.filter(
           (d) => d?.shapefile?.default == true
         )?.[0]?.awsCID
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)

@@ -32,10 +32,6 @@ export const DroneFlightsMap = () => {
   useEffect(() => {
     if (map && ednaLocations) {
       map.on('load', () => {
-        map.loadImage('dna.png', (error, image) => {
-          if (error) throw error
-          map.addImage('ednaImage', image)
-        })
         addFlightPathSourceAndLayer(map)
         addEDNASourceAndLayers(map, ednaLocations)
       })

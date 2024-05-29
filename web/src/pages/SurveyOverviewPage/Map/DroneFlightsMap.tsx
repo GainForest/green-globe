@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 
+import { addFlightPathSourceAndLayer } from 'src/components/Map/sourcesAndLayers/flightPath'
 import { initializeMapbox } from 'src/mapbox.config'
+
+const SEMIFINALS_BOUNDARIES = [
+  103.83082429098584, 1.3640090963940423, 103.80628944617558,
+  1.3475293623401257,
+]
 
 export const DroneFlightsMap = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -9,12 +15,20 @@ export const DroneFlightsMap = () => {
     initializeMapbox(
       'drone-flights-map-container',
       setMap,
-      [
-        -54.47573384080506, -0.0019358806309526244, -64.16146283459103,
-        -6.463821341171396,
-      ]
+      SEMIFINALS_BOUNDARIES
     )
   }, [])
+
+  useEffect(() => {
+    if (map) {
+      map.on('load', () => {
+        addFlightPathSourceAndLayer(map)
+      })
+      map.on('moveend', () => {
+        console.log(map.getBounds())
+      })
+    }
+  }, [map])
 
   return (
     <div

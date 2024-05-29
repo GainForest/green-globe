@@ -36,8 +36,7 @@ const InsightsPage = () => {
           <DataCard title={'Observations'} value={2938} />
         </FlexContainer>
       </FlexContainer>
-
-      <FlexContainer>
+      <FlexContainer style={{ marginTop: '12px' }}>
         <div>
           <h2>Instruments</h2>
           <div>

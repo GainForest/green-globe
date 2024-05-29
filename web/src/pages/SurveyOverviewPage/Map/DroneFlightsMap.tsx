@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 
+import mapboxgl from 'mapbox-gl'
+
+import { fetchEDNALocations } from 'src/components/Map/mapfetch'
+import { addEDNASourceAndLayers } from 'src/components/Map/maputils'
 import { addFlightPathSourceAndLayer } from 'src/components/Map/sourcesAndLayers/flightPath'
 import { initializeMapbox } from 'src/mapbox.config'
 
@@ -11,6 +15,12 @@ const SEMIFINALS_BOUNDARIES = [
 export const DroneFlightsMap = () => {
   const [map, setMap] = useState<mapboxgl.Map>()
 
+  const [ednaLocations, setEDNALocations] = useState()
+
+  useEffect(() => {
+    fetchEDNALocations(setEDNALocations)
+  }, [])
+
   useEffect(() => {
     initializeMapbox(
       'drone-flights-map-container',
@@ -20,15 +30,20 @@ export const DroneFlightsMap = () => {
   }, [])
 
   useEffect(() => {
-    if (map) {
+    if (map && ednaLocations) {
       map.on('load', () => {
+        map.loadImage('dna.png', (error, image) => {
+          if (error) throw error
+          map.addImage('ednaImage', image)
+        })
         addFlightPathSourceAndLayer(map)
+        addEDNASourceAndLayers(map, ednaLocations)
       })
       map.on('moveend', () => {
         console.log(map.getBounds())
       })
     }
-  }, [map])
+  }, [map, ednaLocations])
 
   return (
     <div

@@ -14,7 +14,6 @@ import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addCOGSourceAndLayers } from './sourcesAndLayers/cogSourceAndLayers'
 import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
-import { addGreyscaleSourceAndLayers } from './sourcesAndLayers/inactive/greyscaleTerrain'
 import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
 import {
   addMeasuredTreesSourceAndLayer,
@@ -62,6 +61,19 @@ export const addEDNASourceAndLayers = (map: mapboxgl.Map, ednaLocations) => {
         'circle-radius': 20,
         'circle-stroke-color': '#623c74',
         'circle-stroke-width': 1,
+      },
+    })
+    map.addLayer({
+      id: 'ednaImageLayers',
+      type: 'symbol',
+      source: 'ednaSource',
+      layout: {
+        'icon-image': 'ednaImage',
+        'icon-size': 0.1, // Adjust the size as needed
+        'icon-allow-overlap': true, // Allow icons to overlap
+      },
+      paint: {
+        'icon-opacity': 0.77, // Set the opacity of the icons
       },
     })
   }

@@ -37,16 +37,14 @@ const Navbar = ({ isAuthenticated, mediaSize }) => {
         </a>
       </div>
 
-      <div
+      {/* <div
         style={{
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
           height: '100%',
         }}
-      >
-        <DonateButton mediaSize={mediaSize} isLoggedIn={isAuthenticated} />
-      </div>
+      ></div> */}
       {isAuthenticated && (
         <div
           style={{

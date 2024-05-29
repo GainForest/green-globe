@@ -180,7 +180,7 @@ const MainContent = styled.div`
   flex: 1;
   overflow-y: auto;
   max-height: calc(100vh - 52px);
-  background-image: url('/blog-bg.jpeg');
+  // background-image: url('/blog-bg.jpeg');
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;

@@ -12,6 +12,7 @@ import { InfoBox } from './InfoBox'
 export const PaymentCard = ({ activeProjectData }) => {
   const [paymentData, setPaymentData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('Fetching payments...')
   const [showFiatMessage, setShowFiatMessage] = useState(false)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
@@ -64,8 +65,8 @@ export const PaymentCard = ({ activeProjectData }) => {
       }
 
       setLoading(true)
-
       const cryptoPayments = await fetchCryptoPayments()
+      setLoadingMessage('Fetching fiat payments...')
       const fiatPayments = await fetchFiatPayments()
       if (fiatPayments.length > 0) {
         setShowFiatMessage(true)
@@ -91,6 +92,7 @@ export const PaymentCard = ({ activeProjectData }) => {
     const memberMap = {}
 
     // Get all the community members' wallet addresses
+    setLoadingMessage('Fetching Community Member wallets...')
     activeProjectData?.project?.communityMembers?.forEach((item) => {
       if (item.Wallet && item.Wallet.CeloAccounts) {
         celoRecipients = celoRecipients.concat(
@@ -125,12 +127,14 @@ export const PaymentCard = ({ activeProjectData }) => {
 
     const allPayments = []
     if (celoRecipients.length > 0) {
+      setLoadingMessage('Fetching Celo payments...')
       const celoPayments = await fetchCeloPayments(celoRecipients, memberMap)
       if (celoPayments.length > 0) {
         allPayments.push(...celoPayments)
       }
     }
     if (solanaRecipients.length > 0) {
+      setLoadingMessage('Fetching Solana payments...')
       const solanaPayments = await fetchSolanaPayments(
         solanaRecipients,
         memberMap
@@ -353,7 +357,7 @@ export const PaymentCard = ({ activeProjectData }) => {
   if (loading) {
     return (
       <div style={{ margin: '24px' }}>
-        <p style={{ marginTop: '32px' }}>loading...</p>
+        <p style={{ marginTop: '32px' }}>{loadingMessage}</p>
       </div>
     )
   }

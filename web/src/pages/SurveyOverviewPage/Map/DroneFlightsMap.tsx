@@ -44,7 +44,7 @@ export const DroneFlightsMap = () => {
     <div
       style={{
         height: '500px',
-        width: '640px',
+        width: '60vw',
         maxHeight: '50vh',
         maxWidth: '70vw',
       }}

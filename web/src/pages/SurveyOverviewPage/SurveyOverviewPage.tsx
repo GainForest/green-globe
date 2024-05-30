@@ -1,3 +1,4 @@
+import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
 
 import { MetaTags } from '@redwoodjs/web'
@@ -28,13 +29,10 @@ const InsightsPage = () => {
       <h1 style={{ fontSize: '42px' }}>
         XPRIZE Finals Site Survey: July 11-12, 2024
       </h1>
-      <FlexContainer style={{ justifyContent: 'space-between' }}>
-        <h2 style={{ fontSize: '28px' }}>Time Period</h2>
-        <FlexContainer style={{ justifyContent: 'right' }}>
-          <DataCard title={'Mission Hours'} value={220} />
-          <DataCard title={'Samples Collected'} value={82} />
-          <DataCard title={'Observations'} value={2938} />
-        </FlexContainer>
+      <FlexContainer style={{ justifyContent: 'right', marginBottom: '32px' }}>
+        <DataCard title={'Mission Hours'} value={220} />
+        <DataCard title={'Samples Collected'} value={82} />
+        <DataCard title={'Observations'} value={2938} />
       </FlexContainer>
       <FlexContainer style={{ marginTop: '12px' }}>
         <div>

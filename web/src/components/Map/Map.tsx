@@ -97,15 +97,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'star-intensity': 0.05,
         })
         addAllSourcesAndLayers(map, hiveLocations, setMarkers)
-        const gainForestMarkers = addClickableMarkers(
-          map,
-          dispatch,
-          gainforestCenterpoints,
-          'gainforest',
-          setActiveProjectId
-        )
-
-        setMarkers([...gainForestMarkers])
       }
 
       const onStyleData = () => {
@@ -125,7 +116,21 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints, dispatch, hiveLocations])
+  }, [map, dispatch, hiveLocations])
+
+  useEffect(() => {
+    if (map && gainforestCenterpoints) {
+      map.getCanvas().addEventListener('sourceAdded', function (e) {
+        console.log('Source added event detected for layer:', e.detail.sourceId)
+        if (map.getSource('gainforestMarkerSource')) {
+          console.log('adding in the source', gainforestCenterpoints)
+          map
+            .getSource('gainforestMarkerSource')
+            .setData(gainforestCenterpoints)
+        }
+      })
+    }
+  }, [map, gainforestCenterpoints])
 
   // Rotate the globe
   useEffect(() => {
@@ -163,6 +168,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (map && allSitePolygons) {
       map.on('styledata', () => {
+        console.log('allSitePolygons', allSitePolygons)
         map.getSource('allSites')?.setData(allSitePolygons)
       })
     }

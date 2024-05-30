@@ -145,7 +145,7 @@ const Container = styled.div`
 `
 
 const PostList = styled.div`
-  width: 180px;
+  width: 220px;
   background: transparent;
   overflow-y: auto;
   border-right: 1px solid #ddd;
@@ -160,8 +160,8 @@ const PostPreview = styled.div`
   border-radius: 4px;
   margin: 16px;
   img {
-    width: 114px;
-    height: 57px;
+    width: 154px;
+    height: 64px;
     margin-right: 16px;
     object-fit: cover;
   }
@@ -209,8 +209,9 @@ const Content = styled.div`
 const PostContainer = styled.div`
   margin: 40px 0 80px 0;
   background-color: rgba(85, 85, 85, 0.5);
-  padding: 8px;
-  max-width: 620px;
+  padding: 32px;
+  width: 1000px;
+  max-width: 60vw;
   border-radius: 4px;
 `
 

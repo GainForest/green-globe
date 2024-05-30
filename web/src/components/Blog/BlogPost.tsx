@@ -4,11 +4,13 @@ const BlogPost = ({ content }) => {
   useEffect(() => {
     const updateAudioElements = () => {
       const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a']
-      const anchorTags = document.querySelectorAll('a')
+      const anchorTags = document.querySelectorAll('a:not(.media-enhanced)')
 
       anchorTags.forEach((anchor) => {
         const href = anchor.href
         if (audioExtensions.some((ext) => href.endsWith(ext))) {
+          anchor.classList.add('media-enhanced')
+
           const audio = new Audio(href)
           const parent = anchor.parentElement
 
@@ -32,15 +34,17 @@ const BlogPost = ({ content }) => {
           const handlePlay = () => {
             audio.play()
           }
+
+          playButton.addEventListener('click', handlePlay)
+
           progressBar.addEventListener('click', (event) => {
             const rect = progressBar.getBoundingClientRect()
             const clickX = event.clientX - rect.left
             const width = rect.width
             const clickRatio = clickX / width
             audio.currentTime = clickRatio * audio.duration
+            audio.play()
           })
-          playButton.addEventListener('click', handlePlay)
-          progressBar.addEventListener('click', handlePlay)
 
           audio.addEventListener('timeupdate', () => {
             const progress = (audio.currentTime / audio.duration) * 100

@@ -2,6 +2,14 @@ import mapboxgl from 'mapbox-gl'
 
 import { offlineBasemapStyle } from './components/Map/offline/basemap'
 
+const XPRIZE_FINALS_BOUNDS_ZOOMED_IN = [
+  -58.09235762786959, -1.885518568243171, -61.14958923607115, -4.305983493926,
+]
+
+const XPRIZE_FINALS_BOUNDS_ZOOMED_OUT = [
+  -93.518543, -25.006906, -27.073231, 12.038313,
+]
+
 export const initializeMapbox = (
   containerId: string,
   setMap: React.Dispatch<mapboxgl.Map>,
@@ -14,10 +22,7 @@ export const initializeMapbox = (
       projection: 'globe',
       style: offlineBasemapStyle,
       center: [-100.486052, 37.830348],
-      bounds: bounds || [
-        -58.09235762786959, -1.885518568243171, -61.14958923607115,
-        -4.305983493926,
-      ],
+      bounds: bounds || XPRIZE_FINALS_BOUNDS_ZOOMED_IN,
       zoom: 2,
     })
     setMap(map)
@@ -30,10 +35,7 @@ export const initializeMapbox = (
         style: 'mapbox://styles/mapbox/satellite-v9',
         zoom: 2,
         center: [102, 9],
-        bounds: [
-          -60.647280831743664, -2.9562191572952914, -60.64187210310173,
-          -2.948123839147461,
-        ],
+        bounds: XPRIZE_FINALS_BOUNDS_ZOOMED_OUT,
       })
       map.addControl(new mapboxgl.NavigationControl())
       setMap(map)

@@ -78,11 +78,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     // fetchHexagons(setHexagons)
     fetchEDNALocations(setEDNALocations)
-    initializeMapbox(
-      'map-container',
-      setMap,
-      [-93.518543, -25.006906, -27.073231, 12.038313]
-    )
+    initializeMapbox('map-container', setMap)
   }, [])
 
   useEffect(() => {

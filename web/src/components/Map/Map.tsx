@@ -94,7 +94,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (map && gainforestCenterpoints) {
       const onLoad = () => {
-        map.setFog(MAPBOX_FOG)
+        // map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
         const gainForestMarkers = addClickableMarkers(
           map,
@@ -109,7 +109,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
 
       const onStyleData = () => {
-        map.setFog(MAPBOX_FOG)
+        // map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
       }
       map.on('load', onLoad)

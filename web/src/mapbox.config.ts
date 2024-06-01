@@ -14,6 +14,10 @@ export const initializeMapbox = (
       projection: 'globe',
       style: offlineBasemapStyle,
       center: [-100.486052, 37.830348],
+      bounds: [
+        -58.09235762786959, -1.885518568243171, -61.14958923607115,
+        -4.305983493926,
+      ],
       zoom: 2,
     })
     setMap(map)

@@ -9,9 +9,6 @@ const ALLTILES = [
   '/Users/sharfy/Code/xprize-2/web/public/data/drone/20240414_134447_ssc15_u0002_visual_clip_webmercator.tif',
   '/Users/sharfy/Code/xprize-2/web/public/data/drone/20240428_191813_ssc16_u0001_visual_clip_webmercator.tif',
   '/Users/sharfy/Code/xprize-2/web/public/data/drone/20240428_191813_ssc16_u0002_visual_clip_webmercator.tif',
-  '/Users/sharfy/Documents/drone/ingles/24_webmercator_cog.tif',
-  '/Users/sharfy/Documents/drone/ingles/23_webmercator_cog.tif',
-  '/Users/sharfy/Documents/drone/ingles/dsm_webmercator.tif',
 ]
 
 export const addCOGSourceAndLayers = (map: mapboxgl.Map) => {

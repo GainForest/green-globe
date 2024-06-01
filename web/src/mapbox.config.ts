@@ -7,38 +7,42 @@ export const initializeMapbox = (
   setMap: React.Dispatch<mapboxgl.Map>,
   bounds?: mapboxgl.LngLatBoundsLike
 ) => {
-  const map = new mapboxgl.Map({
-    container: containerId,
-    style: offlineBasemapStyle,
-    center: [-100.486052, 37.830348],
-    zoom: 2,
-  })
-  setMap(map)
-
-  // mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
-  // if (!bounds) {
-  //   const map = new mapboxgl.Map({
-  //     container: containerId,
-  //     projection: 'globe',
-  //     style: 'mapbox://styles/mapbox/satellite-v9',
-  //     zoom: 2,
-  //     center: [102, 9],
-  //     bounds: [
-  //       -60.647280831743664, -2.9562191572952914, -60.64187210310173,
-  //       -2.948123839147461,
-  //     ],
-  //   })
-  //   map.addControl(new mapboxgl.NavigationControl())
-  //   setMap(map)
-  // } else {
-  //   const map = new mapboxgl.Map({
-  //     container: containerId,
-  //     style: offlineBasemapStyle,
-  //     bounds,
-  //   })
-  //   map.addControl(new mapboxgl.NavigationControl())
-  //   setMap(map)
-  // }
+  // Show offline version if you're running the app locally
+  if (window.location.host.includes('localhost')) {
+    const map = new mapboxgl.Map({
+      container: containerId,
+      projection: 'globe',
+      style: offlineBasemapStyle,
+      center: [-100.486052, 37.830348],
+      zoom: 2,
+    })
+    setMap(map)
+  } else {
+    mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
+    if (!bounds) {
+      const map = new mapboxgl.Map({
+        container: containerId,
+        projection: 'globe',
+        style: 'mapbox://styles/mapbox/satellite-v9',
+        zoom: 2,
+        center: [102, 9],
+        bounds: [
+          -60.647280831743664, -2.9562191572952914, -60.64187210310173,
+          -2.948123839147461,
+        ],
+      })
+      map.addControl(new mapboxgl.NavigationControl())
+      setMap(map)
+    } else {
+      const map = new mapboxgl.Map({
+        container: containerId,
+        style: 'mapbox://styles/mapbox/satellite-v9',
+        bounds,
+      })
+      map.addControl(new mapboxgl.NavigationControl())
+      setMap(map)
+    }
+  }
 }
 
 export const MAPBOX_FOG = {

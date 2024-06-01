@@ -1,8 +1,5 @@
 import mapboxgl from 'mapbox-gl'
 
-const TITILER_ENDPOINT =
-  'http://127.0.0.1:8000/cog/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?url=file://'
-
 export const addNamedSource = (
   map: mapboxgl.Map,
   layer: { name: string; endpoint: string }
@@ -10,7 +7,7 @@ export const addNamedSource = (
   if (!map.getSource(layer.name)) {
     map.addSource(layer.name, {
       type: 'raster',
-      tiles: [`${TITILER_ENDPOINT}${layer.endpoint}`],
+      tiles: [`${process.env.TITILER_ENDPOINT}${layer.endpoint}`],
       tileSize: 256,
     })
   }

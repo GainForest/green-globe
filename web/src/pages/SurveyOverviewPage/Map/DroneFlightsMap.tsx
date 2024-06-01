@@ -34,9 +34,6 @@ export const DroneFlightsMap = () => {
         addFlightPathSourceAndLayer(map)
         addEDNASourceAndLayers(map, ednaLocations)
       })
-      map.on('moveend', () => {
-        console.log(map.getBounds())
-      })
     }
   }, [map, ednaLocations])
 

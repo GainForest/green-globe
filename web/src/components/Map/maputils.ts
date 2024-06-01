@@ -11,7 +11,6 @@ import {
 } from './maptreeutils'
 import { addAmazonBasinSourceAndLayer } from './sourcesAndLayers/amazonBasin'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
-import { addCOGSourceAndLayers } from './sourcesAndLayers/cogSourceAndLayers'
 import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
 import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
@@ -39,7 +38,6 @@ export const addAllSourcesAndLayers = (
   addHiveSourceAndLayers(map, hiveLocations, setMarkers)
   addMeasuredTreesSourceAndLayer(map)
   addFlightPathSourceAndLayer(map)
-  addCOGSourceAndLayers(map)
   addAmazonBasinSourceAndLayer(map)
   addEDNASourceAndLayers(map, ednaLocations)
 }
@@ -215,39 +213,6 @@ export const getTreeInformation = (e, activeProject) => {
     treeDBH,
     treePhotos,
     dateOfMeasurement,
-  }
-}
-
-export const addNamedSource = (
-  map: mapboxgl.Map,
-  layer: { name: string; endpoint: string }
-) => {
-  if (!map.getSource(layer.name)) {
-    map.addSource(layer.name, {
-      type: 'raster',
-      tiles: [layer.endpoint],
-      tileSize: 256,
-    })
-    if (map.getLayer(layer.name)) {
-      map.addLayer({
-        id: layer.name,
-        type: 'raster',
-        source: layer.name,
-        paint: {
-          'raster-opacity': 1,
-        },
-      })
-    }
-  }
-}
-
-export const removeNamedSource = (
-  map: mapboxgl.Map,
-  layer: { name: string }
-) => {
-  if (map.getSource(layer.name)) {
-    map.removeLayer(layer.name)
-    map.removeSource(layer.name)
   }
 }
 

@@ -2,30 +2,42 @@ import { useState, useEffect } from 'react'
 
 import styled from 'styled-components'
 
-import { addNamedSource, removeNamedSource } from 'src/components/Map/maputils'
+import {
+  addNamedSource,
+  removeNamedSource,
+} from '../sourcesAndLayers/cogSourceAndLayers'
+
 const XprizeLayerPicker = ({ map }) => {
   const [layers, setLayers] = useState([])
   const [showLayers, setShowLayers] = useState(true)
   const [visible, setVisible] = useState(false)
 
-  const layersData = [
-    {
-      name: 'forest-density',
-      endpoint: 'forest_density.tif',
-    },
-    {
-      name: 'urban-heat-island',
-      endpoint: 'urban_heat_island.tif',
-    },
-    {
-      name: 'water-bodies',
-      endpoint: 'water_bodies.tif',
-    },
-    {
-      name: 'soil-moisture',
-      endpoint: 'soil_moisture.tif',
-    },
-  ]
+  let layersData = []
+  if (window.location.host.includes('localhost')) {
+    layersData = [
+      {
+        name: '/Users/sharfy/Code/xprize-2/web/public/data/drone/1_webmercator.tif',
+        endpoint:
+          '/Users/sharfy/Code/xprize-2/web/public/data/drone/1_webmercator.tif',
+      },
+      {
+        name: '/Users/sharfy/Code/xprize-2/web/public/data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
+        endpoint:
+          '/Users/sharfy/Code/xprize-2/web/public/data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
+      },
+    ]
+  } else {
+    layersData = [
+      {
+        name: 'water-bodies',
+        endpoint: 'water_bodies.tif',
+      },
+      {
+        name: 'soil-moisture',
+        endpoint: 'soil_moisture.tif',
+      },
+    ]
+  }
 
   useEffect(() => {
     setLayers(

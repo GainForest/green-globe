@@ -175,14 +175,14 @@ const LayerItem = styled.div`
 const LayerLabel = styled.label`
   margin-right: 10px;
   cursor: pointer;
-  color: ${({ isActive }) => (isActive ? 'white' : 'gray')};
+  color: ${({ isActive }) => (isActive ? 'white' : 'black')};
   transition: color 0.3s ease;
 `
 
 const LayerIcon = styled.span`
   font-size: 36px;
   transition: color 0.3s ease;
-  color: ${({ isActive }) => (isActive ? 'white' : 'gray')};
+  color: ${({ isActive }) => (isActive ? 'white' : 'black')};
 `
 
 export default XprizeLayerPicker

@@ -21,7 +21,7 @@ export const fetchHexagons = (setHexagons) => {
 }
 
 export const fetchEDNALocations = (setEDNALocations) => {
-  fetch(`${process.env.AWS_STORAGE}/flight-paths/edna-locations.geojson`)
+  fetch(`${process.env.AWS_STORAGE}/edna/sample-locations-semifinals.geojson`)
     .then((response) => response.json())
     .then((ednaLocations) => {
       setEDNALocations(ednaLocations)

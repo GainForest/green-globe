@@ -3,13 +3,11 @@ export const offlineBasemapStyle = {
   sources: {
     countries: {
       type: 'vector',
-      tiles: [
-        `http://localhost:${process.env.BASEMAP_PORT}/countries/{z}/{x}/{y}.pbf`,
-      ],
+      tiles: [`${process.env.AWS_STORAGE}/basemap/countries/{z}/{x}/{y}.pbf`],
       maxzoom: 6,
     },
   },
-  glyphs: `http://localhost:${process.env.BASEMAP_PORT}/font/{fontstack}/{range}.pbf`,
+  glyphs: `${process.env.AWS_STORAGE}/basemap/font/{fontstack}/{range}.pbf`,
   layers: [
     {
       id: 'background',

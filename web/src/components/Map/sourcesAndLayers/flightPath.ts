@@ -14,7 +14,7 @@ export const addFlightPathSourceAndLayer = async (map: mapboxgl.Map) => {
 
   for (const flightPath of DRONE_FLIGHT_PATHS) {
     try {
-      const res = await fetch(flightPath.url)
+      const res = await fetch(`${process.env.AWS_STORAGE}${flightPath.url}`)
       if (!res.ok) {
         throw new Error(`Failed to fetch ${flightPath.url}: ${res.statusText}`)
       }

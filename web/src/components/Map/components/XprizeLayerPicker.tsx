@@ -16,14 +16,13 @@ const XprizeLayerPicker = ({ map }) => {
   if (window.location.host.includes('localhost')) {
     layersData = [
       {
-        name: '/Users/sharfy/Code/xprize-2/web/public/data/drone/1_webmercator.tif',
-        endpoint:
-          '/Users/sharfy/Code/xprize-2/web/public/data/drone/1_webmercator.tif',
+        name: 'data/drone/1_webmercator.tif',
+        endpoint: 'data/drone/1_webmercator.tif',
       },
       {
-        name: '/Users/sharfy/Code/xprize-2/web/public/data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
+        name: 'data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
         endpoint:
-          '/Users/sharfy/Code/xprize-2/web/public/data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
+          'data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
       },
     ]
   } else {

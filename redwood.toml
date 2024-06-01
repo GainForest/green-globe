@@ -7,7 +7,7 @@
 
 [web]
   title = "GainForest Maps"
-  port = 8915
+  port = 5173
   apiUrl = "/api"
    includeEnvironmentVariables = ['REDISHOST', 'REDISPASSWORD', 'REDISPORT', 'GAINFOREST_WALLETS', 'BITQUERY_API_KEY', 'MAPBOXGL_ACCESSTOKEN', 'AWS_STORAGE', 'NICFI_API_KEY', 'AUTH0_DOMAIN', 'AUTH0_CLIENT_ID', 'AUTH0_REDIRECT_URI', 'AUTH0_AUDIENCE', 'GAINFOREST_ENDPOINT'] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]

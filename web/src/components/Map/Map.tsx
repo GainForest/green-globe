@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { navigate } from '@redwoodjs/router'
 
+import XprizeLayerPicker from 'src/components/Map/components/XprizeLayerPicker'
 import { MAPBOX_FOG, initializeMapbox } from 'src/mapbox.config'
 // import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
@@ -20,9 +21,9 @@ import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
 import Button from './components/Button'
 import { LandCoverLegend } from './components/LandCoverLegend'
-import { LayerPickerOverlay } from './components/LayerPickerOverlay'
+// import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
-import { TimeSlider } from './components/TimeSlider'
+// import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
 import { fetchEDNALocations } from './mapfetch'
 import {
@@ -416,7 +417,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         setMarkers={setMarkers}
       /> */}
       {landCover && <LandCoverLegend mediaSize={mediaSize} />}
-      <LayerPickerOverlay
+      <XprizeLayerPicker map={map} />
+      {/* <LayerPickerOverlay
         map={map}
         activeProjectMosaic={activeProjectMosaic}
         activeProjectData={activeProjectData}
@@ -425,8 +427,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         maximize={maximize}
         landCover={landCover}
         setLandCover={setLandCover}
-      />
-      <TimeSlider map={map} mediaSize={mediaSize} />
+      /> */}
+      {/* <TimeSlider map={map} mediaSize={mediaSize} /> */}
     </>
   )
 }

@@ -1,4 +1,5 @@
 import mapboxgl from 'mapbox-gl'
+import { offlineBasemapStyle } from './components/Map/offline/basemap'
 
 export const initializeMapbox = (
   containerId: string,
@@ -23,7 +24,7 @@ export const initializeMapbox = (
   } else {
     const map = new mapboxgl.Map({
       container: containerId,
-      style: 'mapbox://styles/mapbox/satellite-v9',
+      style: offlineBasemapStyle,
       bounds,
     })
     map.addControl(new mapboxgl.NavigationControl())

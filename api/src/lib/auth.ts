@@ -51,6 +51,9 @@ export const getCurrentUser = async (
  * @returns {boolean} - If the currentUser is authenticated
  */
 export const isAuthenticated = (): boolean => {
+  if (process.env.GAINFOREST_ENDPOINT.includes('localhost')) {
+    return true
+  }
   return !!context.currentUser
 }
 

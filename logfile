@@ -1,0 +1,503 @@
+2024-06-01 23:43:29.356 CEST [62465] LOG:  starting PostgreSQL 14.12 (Homebrew) on aarch64-apple-darwin23.4.0, compiled by Apple clang version 15.0.0 (clang-1500.3.9.4), 64-bit
+2024-06-01 23:43:29.358 CEST [62465] LOG:  listening on IPv6 address "::1", port 5432
+2024-06-01 23:43:29.358 CEST [62465] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-06-01 23:43:29.358 CEST [62465] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-06-01 23:43:29.360 CEST [62466] LOG:  database system was shut down at 2024-06-01 23:41:06 CEST
+2024-06-01 23:43:29.363 CEST [62465] LOG:  database system is ready to accept connections
+2024-06-01 23:45:25.965 CEST [62550] ERROR:  database "xprize_finals" does not exist
+2024-06-01 23:45:25.965 CEST [62550] STATEMENT:  ;
+	DROP DATABASE XPRIZE_Finals;
+2024-06-01 23:45:37.260 CEST [62550] ERROR:  cannot drop the currently open database
+2024-06-01 23:45:37.260 CEST [62550] STATEMENT:  DROP DATABASE "XPRIZE_Finals";
+2024-06-01 23:58:49.656 CEST [62575] ERROR:  syntax error at or near "CREATE" at character 8
+2024-06-01 23:58:49.656 CEST [62575] STATEMENT:  CREATE CREATE TABLE Project (
+	    id VARC
+	pe VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    proponents VARCHAR[], 
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    methodologyId INT REFERENCES Methodology(id),
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    proponentId INT REFERENCES Proponent(id),
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-01 23:59:01.106 CEST [62575] ERROR:  relation "organization" does not exist
+2024-06-01 23:59:01.106 CEST [62575] STATEMENT:  CREATE TABLE Project (
+	    id VARCHAR PRIMARY KEY,
+	    name VARCHAR NOT NULL,
+	    country VARCHAR NOT NULL,
+	    organizationId INT REFERENCES Organization(id),
+	    objective VARCHAR,
+	    catalogueReason VARCHAR,
+	    category VARCHAR,
+	    description VARCHAR NOT NULL,
+	    longDescription VARCHAR DEFAULT '',
+	    dataDownloadUrl VARCHAR,
+	    dataDownloadInfo VARCHAR,
+	    kyc BOOLEAN DEFAULT false,
+	    monitorStrategy VARCHAR,
+	    restorationType VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    proponents VARCHAR[], 
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    methodologyId INT REFERENCES Methodology(id),
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    proponentId INT REFERENCES Proponent(id),
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-01 23:59:44.037 CEST [62575] ERROR:  relation "wallet" does not exist
+2024-06-01 23:59:44.037 CEST [62575] STATEMENT:  CREATE TABLE Project (
+	    id VARCHAR PRIMARY KEY,
+	    name VARCHAR NOT NULL,
+	    country VARCHAR NOT NULL,
+	    objective VARCHAR,
+	    catalogueReason VARCHAR,
+	    category VARCHAR,
+	    description VARCHAR NOT NULL,
+	    longDescription VARCHAR DEFAULT '',
+	    dataDownloadUrl VARCHAR,
+	    dataDownloadInfo VARCHAR,
+	    kyc BOOLEAN DEFAULT false,
+	    monitorStrategy VARCHAR,
+	    restorationType VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    proponents VARCHAR[], 
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    methodologyId INT REFERENCES Methodology(id),
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    proponentId INT REFERENCES Proponent(id),
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-02 00:03:28.662 CEST [62575] ERROR:  syntax error at or near "model" at character 1
+2024-06-02 00:03:28.662 CEST [62575] STATEMENT:  model Project {
+	  id                      String             @id
+	  name                    String
+	  country                 String
+	  organizationId          Int?
+	  objective               String?
+	  catalogueReason         String?
+	  category                String?
+	  description             String
+	  longDescription         String             @default("")
+	  dataDownloadUrl         String?
+	  dataDownloadInfo        String?
+	  kyc                     Boolean?           @default(false)
+	  monitorStrategy         String?
+	  restorationType         String?
+	  communitySize           Int?
+	  lat                     Float?
+	  lon                     Float?
+	  startDate               String?
+	  endDate                 String?
+	  verraId                 Int?
+	  area                    Float? // in m2
+	  score                   String?
+	  analysis                String?
+	  potentialIssues         String[]
+	  customEnterBtnText      String?
+	  isEnabled               Boolean            @default(true)
+	  isExternalProject       Boolean            @default(true)
+	  isProjectOfTheMonth     Boolean            @default(false)
+	  claimedCarbonOffset     Int?
+	  soilCarbon              Int?
+	  avoidedCarbon           Int?
+	  bufferCarbon            Int?
+	  hasReferenceArea        Boolean            @default(false)
+	  projectUrl              String?
+	  discordId               String?
+	  stripeUrl               String?
+	  proponents              String[]
+	  walletId                Int?
+	  lastCreditPrice         Float?
+	  methodologyId           Int?
+	  onChainRetirementCarbon Int?
+	  onChainSupplyCarbon     Int?
+	  proponentId             Int?
+	  retirementCarbon        Int?
+	  sdgGoals                Int[]
+	  supplyCarbon            Int?
+	  verifierId              Int?
+	  Methodology             Methodology?       @relation(fields: [methodologyId], references: [id])
+	  organization            Organization?      @relation(fields: [organizationId], references: [id])
+	  Proponent               Proponent?         @relation(fields: [proponentId], references: [id])
+	  Verifier                Verifier?          @relation(fields: [verifierId], references: [id])
+	  Wallet                  Wallet?            @relation(fields: [walletId], references: [id])
+	  assets                  Asset[]
+	  communityMembers        CommunityMember[]
+	  ForestCover             ForestCover[]
+	  RawImageAnalysis        RawImageAnalysis[]
+	  SocialMedia             SocialMedia?
+	  User                    User[]
+	  Transactions            Transaction[]
+	}
+	
+	;
+2024-06-02 00:03:43.543 CEST [62575] ERROR:  syntax error at or near "itorStrategy" at character 1
+2024-06-02 00:03:43.543 CEST [62575] STATEMENT:  itorStrategy VARCHAR,
+	    restorationType VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    proponents VARCHAR[], 
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    methodologyId INT REFERENCES Methodology(id),
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    proponentId INT REFERENCES Proponent(id),
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-02 00:04:10.693 CEST [62575] ERROR:  relation "methodology" does not exist
+2024-06-02 00:04:10.693 CEST [62575] STATEMENT:  CREATE TABLE Project (
+	    id VARCHAR PRIMARY KEY,
+	    name VARCHAR NOT NULL,
+	    country VARCHAR NOT NULL,
+	    objective VARCHAR,
+	    catalogueReason VARCHAR,
+	    category VARCHAR,
+	    description VARCHAR NOT NULL,
+	    longDescription VARCHAR DEFAULT '',
+	    dataDownloadUrl VARCHAR,
+	    dataDownloadInfo VARCHAR,
+	    kyc BOOLEAN DEFAULT false,
+	    monitorStrategy VARCHAR,
+	    restorationType VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    proponents VARCHAR[], 
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    methodologyId INT REFERENCES Methodology(id),
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    proponentId INT REFERENCES Proponent(id),
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-02 00:04:28.072 CEST [62575] ERROR:  relation "proponent" does not exist
+2024-06-02 00:04:28.072 CEST [62575] STATEMENT:  CREATE TABLE Project (
+	    id VARCHAR PRIMARY KEY,
+	    name VARCHAR NOT NULL,
+	    country VARCHAR NOT NULL,
+	    objective VARCHAR,
+	    catalogueReason VARCHAR,
+	    category VARCHAR,
+	    description VARCHAR NOT NULL,
+	    longDescription VARCHAR DEFAULT '',
+	    dataDownloadUrl VARCHAR,
+	    dataDownloadInfo VARCHAR,
+	    kyc BOOLEAN DEFAULT false,
+	    monitorStrategy VARCHAR,
+	    restorationType VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    proponents VARCHAR[], 
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    proponentId INT REFERENCES Proponent(id),
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-02 00:04:48.998 CEST [62575] ERROR:  relation "proponent" does not exist
+2024-06-02 00:04:48.998 CEST [62575] STATEMENT:  CREATE TABLE Project (
+	    id VARCHAR PRIMARY KEY,
+	    name VARCHAR NOT NULL,
+	    country VARCHAR NOT NULL,
+	    objective VARCHAR,
+	    catalogueReason VARCHAR,
+	    category VARCHAR,
+	    description VARCHAR NOT NULL,
+	    longDescription VARCHAR DEFAULT '',
+	    dataDownloadUrl VARCHAR,
+	    dataDownloadInfo VARCHAR,
+	    kyc BOOLEAN DEFAULT false,
+	    monitorStrategy VARCHAR,
+	    restorationType VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    proponentId INT REFERENCES Proponent(id),
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-02 00:05:18.004 CEST [62575] ERROR:  relation "verifier" does not exist
+2024-06-02 00:05:18.004 CEST [62575] STATEMENT:  CREATE TABLE Project (
+	    id VARCHAR PRIMARY KEY,
+	    name VARCHAR NOT NULL,
+	    country VARCHAR NOT NULL,
+	    objective VARCHAR,
+	    catalogueReason VARCHAR,
+	    category VARCHAR,
+	    description VARCHAR NOT NULL,
+	    longDescription VARCHAR DEFAULT '',
+	    dataDownloadUrl VARCHAR,
+	    dataDownloadInfo VARCHAR,
+	    kyc BOOLEAN DEFAULT false,
+	    monitorStrategy VARCHAR,
+	    restorationType VARCHAR,
+	    communitySize INT,
+	    lat FLOAT,
+	    lon FLOAT,
+	    startDate VARCHAR,
+	    endDate VARCHAR,
+	    verraId INT,
+	    area FLOAT, 
+	    score VARCHAR,
+	    analysis VARCHAR,
+	    potentialIssues VARCHAR[], 
+	    customEnterBtnText VARCHAR,
+	    isEnabled BOOLEAN DEFAULT true,
+	    isExternalProject BOOLEAN DEFAULT true,
+	    isProjectOfTheMonth BOOLEAN DEFAULT false,
+	    claimedCarbonOffset INT,
+	    soilCarbon INT,
+	    avoidedCarbon INT,
+	    bufferCarbon INT,
+	    hasReferenceArea BOOLEAN DEFAULT false,
+	    projectUrl VARCHAR,
+	    discordId VARCHAR,
+	    stripeUrl VARCHAR,
+	    walletId INT REFERENCES Wallet(id),
+	    lastCreditPrice FLOAT,
+	    onChainRetirementCarbon INT,
+	    onChainSupplyCarbon INT,
+	    retirementCarbon INT,
+	    sdgGoals INT[], 
+	    supplyCarbon INT,
+	    verifierId INT REFERENCES Verifier(id)
+	);
+2024-06-02 00:08:49.982 CEST [62575] ERROR:  function uuid_generate_v4() does not exist at character 54
+2024-06-02 00:08:49.982 CEST [62575] HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+2024-06-02 00:08:49.982 CEST [62575] STATEMENT:  CREATE TABLE Asset (
+	    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+	    name VARCHAR,
+	    projectId UUID,
+	    classification VARCHAR NOT NULL,
+	    ipfsCID VARCHAR NOT NULL,
+	    description VARCHAR,
+	    type VARCHAR NOT NULL,
+	    extension VARCHAR,
+	    geoInformation JSON[],
+	    awsCID VARCHAR,
+	    dateMeasured TIMESTAMP,
+	    dateUploaded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	    dateEdited TIMESTAMP,
+	    CONSTRAINT fk_project FOREIGN KEY (projectId) REFERENCES Project(id)
+	);
+2024-06-02 00:09:24.917 CEST [62575] ERROR:  foreign key constraint "fk_project" cannot be implemented
+2024-06-02 00:09:24.917 CEST [62575] DETAIL:  Key columns "projectid" and "id" are of incompatible types: uuid and character varying.
+2024-06-02 00:09:24.917 CEST [62575] STATEMENT:  CREATE TABLE Asset (
+	    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+	    name VARCHAR,
+	    projectId UUID,
+	    classification VARCHAR NOT NULL,
+	    ipfsCID VARCHAR NOT NULL,
+	    description VARCHAR,
+	    type VARCHAR NOT NULL,
+	    extension VARCHAR,
+	    geoInformation JSON[],
+	    awsCID VARCHAR,
+	    dateMeasured TIMESTAMP,
+	    dateUploaded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	    dateEdited TIMESTAMP,
+	    CONSTRAINT fk_project FOREIGN KEY (projectId) REFERENCES Project(id)
+	);
+2024-06-02 00:10:48.600 CEST [62575] ERROR:  syntax error at or near "PRIMARY" at character 68
+2024-06-02 00:10:48.600 CEST [62575] STATEMENT:  ALTER TABLE table_name
+	ALTER COLUMN column_name SET DATA TYPE UUID PRIMARY KEY DEFAULT uuid_generate_v4();
+2024-06-02 00:12:18.649 CEST [62575] ERROR:  syntax error at or near "PRIMARY" at character 64
+2024-06-02 00:12:18.649 CEST [62575] STATEMENT:  ALTER TABLE Asset ALTER COLUMN projectId SET DATA TYPE VARCHAR PRIMARY KEY;
+2024-06-02 00:12:25.656 CEST [62575] ERROR:  relation "asset" does not exist
+2024-06-02 00:12:25.656 CEST [62575] STATEMENT:  ALTER TABLE Asset ALTER COLUMN projectId SET DATA TYPE VARCHAR;
+2024-06-02 00:12:41.022 CEST [62575] ERROR:  relation "Asset" does not exist
+2024-06-02 00:12:41.022 CEST [62575] STATEMENT:  ALTER TABLE "Asset" ALTER COLUMN projectId SET DATA TYPE VARCHAR;
+2024-06-02 00:23:52.799 CEST [64726] FATAL:  lock file "postmaster.pid" already exists
+2024-06-02 00:23:52.799 CEST [64726] HINT:  Is another postmaster (PID 62465) running in data directory "/usr/local/var/postgres"?
+2024-06-02 18:01:02.779 CEST [68783] FATAL:  lock file "postmaster.pid" already exists
+2024-06-02 18:01:02.779 CEST [68783] HINT:  Is another postmaster (PID 62465) running in data directory "/usr/local/var/postgres"?
+2024-06-02 18:01:56.251 CEST [62465] LOG:  received smart shutdown request
+2024-06-02 18:01:56.252 CEST [62465] LOG:  background worker "logical replication launcher" (PID 62472) exited with exit code 1
+2024-06-02 18:01:56.259 CEST [62467] LOG:  shutting down
+2024-06-02 18:01:56.280 CEST [62465] LOG:  database system is shut down
+2024-06-02 18:05:17.073 CEST [2887] LOG:  starting PostgreSQL 14.12 (Homebrew) on aarch64-apple-darwin23.4.0, compiled by Apple clang version 15.0.0 (clang-1500.3.9.4), 64-bit
+2024-06-02 18:05:17.075 CEST [2887] LOG:  listening on IPv6 address "::1", port 5432
+2024-06-02 18:05:17.075 CEST [2887] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-06-02 18:05:17.075 CEST [2887] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-06-02 18:05:17.080 CEST [2888] LOG:  database system was shut down at 2024-06-02 18:01:56 CEST
+2024-06-02 18:05:17.082 CEST [2887] LOG:  database system is ready to accept connections
+2024-06-02 18:14:17.518 CEST [5359] LOG:  could not receive data from client: Connection reset by peer
+2024-06-02 18:14:17.530 CEST [5377] ERROR:  relation "_prisma_migrations" does not exist at character 126
+2024-06-02 18:14:17.530 CEST [5377] STATEMENT:  SELECT "id", "checksum", "finished_at", "migration_name", "logs", "rolled_back_at", "started_at", "applied_steps_count" FROM "_prisma_migrations" ORDER BY "started_at" ASC
+2024-06-02 18:14:21.902 CEST [5377] ERROR:  table "_prisma_migrations" does not exist
+2024-06-02 18:14:21.902 CEST [5377] STATEMENT:  DROP TABLE _prisma_migrations

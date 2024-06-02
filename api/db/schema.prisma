@@ -1,6 +1,6 @@
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = "postgres://sharfy:new_password@localhost:5432/postgres"
 }
 
 generator client {
@@ -8,11 +8,140 @@ generator client {
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+// A simplified version of our database to work locally
+
+// Run `yarn redwood prisma migrate dev` to create migrations
+// for them and apply to your dev DB.
+
+model Asset {
+  id              String         @id @default(uuid())
+  name            String?
+  projectId       String?
+  classification  String
+  ipfsCID         String
+  description     String?
+  type            String
+  extension       String?
+  geoInformation  Json[]
+  awsCID          String?
+  dateMeasured    DateTime?
+  dateUploaded    DateTime       @default(now())
+  dateEdited      DateTime?
+  project         Project?       @relation(fields: [projectId], references: [id])
+  shapefile       Shapefile?
+}
+
+model Wallet {
+  id               Int               @id @default(autoincrement())
+  SOLAccounts      String[]
+  CeloAccounts     String[]
+  EthereumAccounts String[]
+  PolygonAccounts  String[]
+  communityMembers CommunityMember[]
+  Project          Project[]
+}
+
+model CommunityMember {
+  id            Int           @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  fundsReceived Float
+  profileUrl    String?
+  projectId     String?
+  bio           String
+  role          String
+  priority      Int?
+  walletId      Int?
+  Project       Project?      @relation(fields: [projectId], references: [id])
+  Wallet        Wallet?       @relation(fields: [walletId], references: [id])
+  transactions  Transaction[]
+}
+
+model Transaction {
+  id                Int              @id @default(autoincrement())
+  from              String
+  to                String
+  amount            Float?
+  blockchain        String
+  token             String
+  hash              String?
+  motive            String?
+  timestamp         DateTime
+  communityMemberId Int?
+  projectId         String?
+  CommunityMember   CommunityMember? @relation(fields: [communityMemberId], references: [id])
+  Project           Project?         @relation(fields: [projectId], references: [id])
+}
+
+model Shapefile {
+  id          Int     @id @default(autoincrement())
+  assetId     String? @unique
+  area        Float? // square meters
+  isReference Boolean @default(false)
+  default     Boolean @default(false)
+  shortName   String?
+  iNaturalist String?
+  asset       Asset?  @relation(fields: [assetId], references: [id])
+}
+
+model SocialMedia {
+  id        Int     @id @default(autoincrement())
+  projectId String  @unique
+  facebook  String?
+  linkedIn  String?
+  instagram String?
+  twitter   String?
+  Project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Project {
+  id                      String             @id
+  name                    String
+  country                 String
+  organizationId          Int?
+  objective               String?
+  catalogueReason         String?
+  category                String?
+  description             String
+  longDescription         String             @default("")
+  dataDownloadUrl         String?
+  dataDownloadInfo        String?
+  kyc                     Boolean?           @default(false)
+  monitorStrategy         String?
+  restorationType         String?
+  communitySize           Int?
+  lat                     Float?
+  lon                     Float?
+  startDate               String?
+  endDate                 String?
+  verraId                 Int?
+  area                    Float? // in m2
+  score                   String?
+  analysis                String?
+  potentialIssues         String[]
+  customEnterBtnText      String?
+  isEnabled               Boolean            @default(true)
+  isExternalProject       Boolean            @default(true)
+  isProjectOfTheMonth     Boolean            @default(false)
+  claimedCarbonOffset     Int?
+  soilCarbon              Int?
+  avoidedCarbon           Int?
+  bufferCarbon            Int?
+  hasReferenceArea        Boolean            @default(false)
+  projectUrl              String?
+  discordId               String?
+  stripeUrl               String?
+  proponents              String[]
+  walletId                Int?
+  lastCreditPrice         Float?
+  onChainRetirementCarbon Int?
+  onChainSupplyCarbon     Int?
+  retirementCarbon        Int?
+  sdgGoals                Int[]
+  supplyCarbon            Int?
+  Wallet                  Wallet?            @relation(fields: [walletId], references: [id])
+  assets                  Asset[]
+  communityMembers        CommunityMember[]
+  SocialMedia             SocialMedia?
+  Transactions            Transaction[]
 }

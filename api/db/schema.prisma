@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgres://sharfy:new_password@localhost:5432/postgres"
+  url      = env("LOCAL_DATABASE_URL")
 }
 
 generator client {
@@ -14,21 +14,21 @@ generator client {
 // for them and apply to your dev DB.
 
 model Asset {
-  id              String         @id @default(uuid())
-  name            String?
-  projectId       String?
-  classification  String
-  ipfsCID         String
-  description     String?
-  type            String
-  extension       String?
-  geoInformation  Json[]
-  awsCID          String?
-  dateMeasured    DateTime?
-  dateUploaded    DateTime       @default(now())
-  dateEdited      DateTime?
-  project         Project?       @relation(fields: [projectId], references: [id])
-  shapefile       Shapefile?
+  id             String     @id @default(uuid())
+  name           String?
+  projectId      String?
+  classification String
+  ipfsCID        String
+  description    String?
+  type           String
+  extension      String?
+  geoInformation Json[]
+  awsCID         String?
+  dateMeasured   DateTime?
+  dateUploaded   DateTime   @default(now())
+  dateEdited     DateTime?
+  project        Project?   @relation(fields: [projectId], references: [id])
+  shapefile      Shapefile?
 }
 
 model Wallet {
@@ -95,7 +95,7 @@ model SocialMedia {
 }
 
 model Project {
-  id                      String             @id
+  id                      String            @id
   name                    String
   country                 String
   organizationId          Int?
@@ -103,10 +103,10 @@ model Project {
   catalogueReason         String?
   category                String?
   description             String
-  longDescription         String             @default("")
+  longDescription         String            @default("")
   dataDownloadUrl         String?
   dataDownloadInfo        String?
-  kyc                     Boolean?           @default(false)
+  kyc                     Boolean?          @default(false)
   monitorStrategy         String?
   restorationType         String?
   communitySize           Int?
@@ -120,14 +120,14 @@ model Project {
   analysis                String?
   potentialIssues         String[]
   customEnterBtnText      String?
-  isEnabled               Boolean            @default(true)
-  isExternalProject       Boolean            @default(true)
-  isProjectOfTheMonth     Boolean            @default(false)
+  isEnabled               Boolean           @default(true)
+  isExternalProject       Boolean           @default(true)
+  isProjectOfTheMonth     Boolean           @default(false)
   claimedCarbonOffset     Int?
   soilCarbon              Int?
   avoidedCarbon           Int?
   bufferCarbon            Int?
-  hasReferenceArea        Boolean            @default(false)
+  hasReferenceArea        Boolean           @default(false)
   projectUrl              String?
   discordId               String?
   stripeUrl               String?
@@ -139,7 +139,7 @@ model Project {
   retirementCarbon        Int?
   sdgGoals                Int[]
   supplyCarbon            Int?
-  Wallet                  Wallet?            @relation(fields: [walletId], references: [id])
+  Wallet                  Wallet?           @relation(fields: [walletId], references: [id])
   assets                  Asset[]
   communityMembers        CommunityMember[]
   SocialMedia             SocialMedia?

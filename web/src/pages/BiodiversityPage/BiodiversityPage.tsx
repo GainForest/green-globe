@@ -1,6 +1,20 @@
 import { useEffect, useState } from 'react'
 
+import DataTable from 'react-data-table-component'
+
 import { MetaTags } from '@redwoodjs/web'
+
+const columns = [
+  {
+    name: 'Time',
+    selector: (row) => row.eventDate,
+  },
+  {
+    name: 'Scientific Name',
+    selector: (row) => row.scientificName,
+    sortable: true,
+  },
+]
 
 const BiodiversityPage = () => {
   const [observations, setObservations] = useState([])
@@ -19,12 +33,12 @@ const BiodiversityPage = () => {
       <MetaTags title="Biodiversity" description="Biodiversity page" />
 
       <h1>Species Richness</h1>
-      <div>
-        {observations &&
-          observations.map((d) => (
-            <div key={d.scientificName}>{d.scientificName}</div>
-          ))}
-      </div>
+      <DataTable
+        columns={columns}
+        data={observations}
+        highlightOnHover
+        pagination
+      />
     </>
   )
 }

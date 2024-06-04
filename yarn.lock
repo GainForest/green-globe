@@ -12340,7 +12340,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.2.2":
+"deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.1":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
   checksum: e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
@@ -21868,6 +21868,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-data-table-component@npm:^7.6.2":
+  version: 7.6.2
+  resolution: "react-data-table-component@npm:7.6.2"
+  dependencies:
+    deepmerge: ^4.3.1
+  peerDependencies:
+    react: ">= 16.8.3"
+    styled-components: ">= 5.0.0"
+  peerDependenciesMeta:
+    styled-components:
+      optional: false
+  checksum: 870ac972362c8144efea9e1841f01276a5a5af59334a7bc955fc4a07a244ba2933fd67026ec253e2ece29bb57f69edcfdab573d524b89cb56aa780a6a4e4540f
+  languageName: node
+  linkType: hard
+
 "react-docgen-typescript@npm:^2.1.1":
   version: 2.2.2
   resolution: "react-docgen-typescript@npm:2.2.2"
@@ -22845,6 +22860,7 @@ __metadata:
     geojson2h3: ^1.2.0
     h3-js: ^4.1.0
     mapbox-gl: ^2.13.0
+    react-data-table-component: ^7.6.2
     react-loading-skeleton: ^3.2.0
     react-redux: ^8.1.1
     redis: ^4.6.12

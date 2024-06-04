@@ -17,6 +17,8 @@ export const initializeMapbox = (
 ) => {
   // Show offline version if you're running the app locally
   if (window.location.host.includes('localhost')) {
+    mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
+
     const map = new mapboxgl.Map({
       container: containerId,
       projection: 'globe',
@@ -28,6 +30,7 @@ export const initializeMapbox = (
     setMap(map)
   } else {
     mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
+
     if (!bounds) {
       const map = new mapboxgl.Map({
         container: containerId,

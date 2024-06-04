@@ -14,6 +14,11 @@ const columns = [
     selector: (row) => row.scientificName,
     sortable: true,
   },
+  {
+    name: 'Basis of record',
+    selector: (row) => row.basisOfRecord,
+    sortable: true,
+  },
 ]
 
 const BiodiversityPage = () => {
@@ -32,7 +37,7 @@ const BiodiversityPage = () => {
     <>
       <MetaTags title="Biodiversity" description="Biodiversity page" />
 
-      <h1>Species Richness</h1>
+      <h1>Observations</h1>
       <DataTable
         columns={columns}
         data={observations}

@@ -15,6 +15,7 @@ const Routes = () => {
     <Router>
       <Route path="/login" page={AuthPage} name="login" />
       <Set wrap={DefaultLayout}>
+        <Route path="/biodiversity" page={BiodiversityPage} name="biodiversity" />
         <Route path="/insights" page={InsightsPage} name="insights" />
         <Route path="/survey-overview" page={SurveyOverviewPage} name="surveyOverview" />
         <Route path="/methodology" page={MethodologyPage} name="methodology" />

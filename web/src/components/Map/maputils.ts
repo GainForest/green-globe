@@ -43,10 +43,12 @@ export const addAllSourcesAndLayers = (
 }
 
 export const addEDNASourceAndLayers = (map: mapboxgl.Map, ednaLocations) => {
-  map.loadImage('dna.png', (error, image) => {
-    if (error) throw error
-    map.addImage('ednaImage', image)
-  })
+  if (!map.hasImage('ednaImage')) {
+    map.loadImage('dna.png', (error, image) => {
+      if (error) throw error
+      map.addImage('ednaImage', image)
+    })
+  }
   if (!map.getSource('ednaSource') && ednaLocations) {
     map.addSource('ednaSource', {
       type: 'geojson',

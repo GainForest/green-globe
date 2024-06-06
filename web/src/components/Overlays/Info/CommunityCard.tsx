@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { Tooltip } from 'react-tooltip'
+
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
@@ -7,6 +9,13 @@ import { InfoBox } from './InfoBox'
 import { PaymentCard } from './PaymentsCard'
 export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
   const [toggle, setToggle] = useState<'Members' | 'Payments'>('Members')
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async (address) => {
+    await navigator.clipboard.writeText(address)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500) // Tooltip reset after 1.5s
+  }
 
   if (
     !activeProjectData ||
@@ -40,9 +49,11 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
     : 0
 
   const communityMembers = [...project.communityMembers].sort((a, b) => {
-    if (a.priority === null) return 1
-    if (b.priority === null) return -1
-    return a.priority - b.priority
+    if (a.priority === b.priority) {
+      return b.fundsReceived - a.fundsReceived
+    } else {
+      return a.priority - b.priority
+    }
   })
 
   const communityMembersCount = project.communityMembers.length
@@ -105,6 +116,59 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
                         <h3>
                           {d.firstName} {d.lastName}
                         </h3>
+                        {d.Wallet?.CeloAccounts?.length > 0 && (
+                          <div>
+                            <p style={{ margin: 0 }}>Celo: </p>
+                            {d.Wallet?.CeloAccounts?.map((address) => (
+                              <button
+                                key={address}
+                                style={{
+                                  background: 'transparent',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  margin: 0,
+                                  color: 'gray',
+                                  fontSize: '16px',
+                                }}
+                                onClick={() => handleCopy(address)}
+                                data-tooltip-id="clipTip"
+                              >
+                                {address.slice(0, 20)}...
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        <Tooltip id="clipTip" delayShow={200} delayHide={500}>
+                          {copied
+                            ? 'Copied to clipboard!'
+                            : 'Click to copy to clipboard'}
+                        </Tooltip>
+                        {d.Wallet?.SOLAccounts?.length > 0 && (
+                          <div>
+                            <p style={{ margin: 0 }}>Celo: </p>
+                            {d.Wallet?.SOLAccounts?.map((address) => (
+                              <button
+                                key={address}
+                                style={{
+                                  background: 'transparent',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  margin: 0,
+                                  color: 'gray',
+                                  fontSize: '16px',
+                                }}
+                                onClick={() => handleCopy(address)}
+                                title={
+                                  copied
+                                    ? 'copied to clipboard!'
+                                    : 'click to copy to clipboard'
+                                }
+                              >
+                                {address}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                         <p style={{ margin: 0, color: '#808080' }}>{d.role}</p>
                         <p style={{ color: '#67962A' }}>
                           {d.fundsReceived == 0

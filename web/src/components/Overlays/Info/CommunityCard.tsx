@@ -105,6 +105,32 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
                         <h3>
                           {d.firstName} {d.lastName}
                         </h3>
+                        {d.Wallet?.CeloAccounts?.length > 0 && (
+                          <div>
+                            <p style={{ margin: 0 }}>Celo: </p>
+                            {d.Wallet?.CeloAccounts?.map((address) => (
+                              <p
+                                key={address}
+                                style={{ margin: 0, color: 'gray' }}
+                              >
+                                {address}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                        {d.Wallet?.SOLAccounts?.length > 0 && (
+                          <div>
+                            <p style={{ margin: 0 }}>Celo: </p>
+                            {d.Wallet?.SOLAccounts?.map((address) => (
+                              <p
+                                key={address}
+                                style={{ margin: 0, color: 'gray' }}
+                              >
+                                {address}
+                              </p>
+                            ))}
+                          </div>
+                        )}
                         <p style={{ margin: 0, color: '#808080' }}>{d.role}</p>
                         <p style={{ color: '#67962A' }}>
                           {d.fundsReceived == 0

@@ -7416,6 +7416,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:>=8.0.0 <15":
+  version: 14.18.63
+  resolution: "@types/node@npm:14.18.63"
+  checksum: 626a371419a6a0e11ca460b22bb4894abe5d75c303739588bc96267e380aa8b90ba5a87bc552400584f0ac2a84b5c458dadcbcf0dfd2396ebeb765f7a7f95893
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^10.1.0":
   version: 10.17.60
   resolution: "@types/node@npm:10.17.60"
@@ -8562,7 +8569,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"abortcontroller-polyfill@npm:^1.7.3":
+"abortcontroller-polyfill@npm:^1.4.0, abortcontroller-polyfill@npm:^1.7.3":
   version: 1.7.5
   resolution: "abortcontroller-polyfill@npm:1.7.5"
   checksum: d7a5ab6fda4f9a54f22ddeb233a2564d2f4f857ec17be25fee21a91bb5090bee57c630c454634b5c4b93fc06bd90d592d1f2fc69f77cd28791ac0fe361feb7d2
@@ -8714,6 +8721,19 @@ __metadata:
     string.prototype.padstart: ^3.0.0
     symbol.prototype.description: ^1.0.0
   checksum: 55fdeb2673da440772d278816664b8e8da946b57adfd95b6635bc980ad235e388266c1488fdff3a055e95dc1c789e389821598b2711b59ce76ab4500f528216c
+  languageName: node
+  linkType: hard
+
+"airtable@npm:^0.12.2":
+  version: 0.12.2
+  resolution: "airtable@npm:0.12.2"
+  dependencies:
+    "@types/node": ">=8.0.0 <15"
+    abort-controller: ^3.0.0
+    abortcontroller-polyfill: ^1.4.0
+    lodash: ^4.17.21
+    node-fetch: ^2.6.7
+  checksum: 80a23da4826c57676bfa4835675463c951e3e6578301655ed190f1a7237774425f8e333b2ea8eacf68ea71b6b1987b277e984bb1cff9ef40baabf2301e3c3adf
   languageName: node
   linkType: hard
 
@@ -26038,6 +26058,7 @@ __metadata:
     "@redwoodjs/forms": 4.3.1
     "@redwoodjs/router": 4.3.1
     "@redwoodjs/web": 4.3.1
+    airtable: ^0.12.2
     prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2

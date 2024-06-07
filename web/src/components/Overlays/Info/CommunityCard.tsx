@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import { Tooltip } from 'react-tooltip'
 
+import { breakpoints } from 'src/constants'
+
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
@@ -133,7 +135,9 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
                                 onClick={() => handleCopy(address)}
                                 data-tooltip-id="clipTip"
                               >
-                                {address.slice(0, 20)}...
+                                {maximize || mediaSize < breakpoints.m
+                                  ? address
+                                  : `${address.slice(0, 15)}...`}
                               </button>
                             ))}
                           </div>
@@ -158,13 +162,11 @@ export const CommunityCard = ({ activeProjectData, mediaSize, maximize }) => {
                                   fontSize: '16px',
                                 }}
                                 onClick={() => handleCopy(address)}
-                                title={
-                                  copied
-                                    ? 'copied to clipboard!'
-                                    : 'click to copy to clipboard'
-                                }
+                                data-tooltip-id="clipTip"
                               >
-                                {address}
+                                {maximize || mediaSize < breakpoints.m
+                                  ? address
+                                  : `${address.slice(0, 15)}...`}
                               </button>
                             ))}
                           </div>

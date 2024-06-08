@@ -6,6 +6,8 @@ import { getTreePhotos } from 'src/components/Map/maptreeutils'
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
+import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
+
 import { InfoBox } from './InfoBox'
 export const BiodiversityCard = ({
   activeProjectData,
@@ -287,6 +289,14 @@ export const BiodiversityCard = ({
         {toggle === 'Predicted' ? (
           <PredictedAnimalsGrid biodiversity={biodiversity} />
         ) : (
+          <div>
+            <h1>Circadian Rythmn</h1>
+            <div>
+              <p> Measured activity of different frequencies in the forest. </p>
+            </div>
+          {SOUNDSCAPE_PATHS.map((path) => (
+            <img src={`${process.env.AWS_STORAGE}/${path}`} />
+          ))}
           <MeasuredDataGrid
             measuredData={measuredData}
             sortBy={sortBy}
@@ -295,6 +305,7 @@ export const BiodiversityCard = ({
             handleSpeciesClick={handleSpeciesClick}
             selectedSpecies={selectedSpecies}
           />
+          </div>
         )}
       </div>
     </InfoBox>

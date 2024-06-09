@@ -13,6 +13,7 @@ import {
   fetchTreePlantings,
   processBiodiversityData,
 } from './biodiversityCardHelpers'
+import { MeasuredDataGrid } from './MeasuredDataGrid'
 
 export const BiodiversityCard = ({
   activeProjectData,

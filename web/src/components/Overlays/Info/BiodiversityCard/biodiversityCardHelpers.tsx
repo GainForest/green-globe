@@ -2,6 +2,8 @@ import { getTreePhotos } from 'src/components/Map/maptreeutils'
 import { toTitleCase } from 'src/utils/toTitleCase'
 import { stringDistance } from 'src/utils/typoCheck'
 
+import { InfoTag } from './BiodiversityCard'
+
 export const processBiodiversityData = (b) => {
   const threatened = b.species.filter(
     (d) =>
@@ -144,4 +146,40 @@ export const fetchTreePlantings = (
       console.log(e)
       setLoading(false)
     })
+}
+
+export const RedlistStatus = ({ redlist }) => {
+  const colors = {
+    EX: 'black',
+    EW: 'black',
+    RE: '#bc85d9', // purple
+    CR: '#f07071', // red
+    EN: '#ea9755', // orange
+    VU: '#d4c05e', // yellow
+    LR: '#d4c05e', // yellow
+    NT: '#67962A', // green
+    LC: '#67962A', // green
+    DD: '#a9b4c4', // grey
+  }
+  const color = colors[redlist]
+  const redlistStatus = redlist ? redlist : 'Not Evaluated'
+  return (
+    <InfoTag key="redlist-status" style={{ color, marginTop: '8px' }}>
+      {translations[redlistStatus]}
+    </InfoTag>
+  )
+}
+
+const translations = {
+  ['EX']: 'Extinct',
+  ['EW']: 'Extinct in The Wild',
+  ['RE']: 'Regionally Extinct',
+  ['CR']: 'Critically Endangered',
+  ['EN']: 'Endangered',
+  ['VU']: 'Vulnerable',
+  ['LR']: 'Lower Risk',
+  ['NT']: 'Near Threatened',
+  ['LC']: 'Least Concern',
+  ['DD']: 'Data Deficient',
+  ['Not Evaluated']: 'Not Evaluated',
 }

@@ -7,7 +7,7 @@ import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 import ThemedSkeleton from '../../../Map/components/Skeleton'
-import { InfoTag } from '../BiodiversityCard'
+import { InfoTag } from '../BiodiversityCard/BiodiversityCard'
 import { InfoBox } from '../InfoBox'
 // import { VideoCard } from '../WildlifeCard'
 

@@ -6,7 +6,7 @@ import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 
-import { InfoTag } from './BiodiversityCard'
+import { InfoTag } from './BiodiversityCard/BiodiversityCard'
 import { InfoBox } from './InfoBox'
 
 export const PaymentCard = ({ activeProjectData }) => {

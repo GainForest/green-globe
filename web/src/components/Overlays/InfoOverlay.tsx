@@ -7,7 +7,7 @@ import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { ExitButton } from '../Map/components/ExitButton'
 import { MaximizeButton } from '../Map/components/MaximizeButton'
 
-import { BiodiversityCard } from './Info/BiodiversityCard'
+import { BiodiversityCard } from './Info/BiodiversityCard/BiodiversityCard'
 import { ChatCard } from './Info/ChatCard'
 import { CommunityCard } from './Info/CommunityCard'
 // import { DiscordCard } from './Info/DiscordCard'

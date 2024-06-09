@@ -6,8 +6,8 @@ import { useThemeUI } from 'theme-ui'
 import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
 
+import { InfoTag } from '../../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
-import { InfoTag } from '../BiodiversityCard/InfoTag'
 import { InfoBox } from '../InfoBox'
 // import { VideoCard } from '../WildlifeCard'
 

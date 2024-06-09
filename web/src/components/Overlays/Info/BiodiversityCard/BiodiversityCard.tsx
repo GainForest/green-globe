@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react'
 
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
-import { getTreePhotos } from 'src/components/Map/maptreeutils'
 
 import { InfoBox } from '../InfoBox'
 
-import { processBiodiversityData } from './biodiversityCardHelpers'
+import {
+  fetchTreePlantings,
+  processBiodiversityData,
+} from './biodiversityCardHelpers'
 export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,
@@ -31,121 +33,19 @@ export const BiodiversityCard = ({
         .then((response) => response.json())
         .then((json) => {
           const biodiversity = json.map(processBiodiversityData)
-          const treePlantings = `${project.name
+          const treePlantingsEndpoint = `${project.name
             .toLowerCase()
             //removes whitespace and underscores
             .split(/[\s_]+/)
             .join('-')}-all-tree-plantings.geojson`
 
-          fetch(`${process.env.AWS_STORAGE}/shapefiles/${treePlantings}`)
-            .then((response) => response.json())
-            .then((json) => {
-              const speciesCount = {}
-              let total = 0
-              const similarityThreshold = 3
-              json.features.map((tree) => {
-                let species =
-                  tree.properties.species || tree.properties.Plant_Name
-                if (species) {
-                  species = species.trim()
-                  species = toTitleCase(species)
-
-                  let isSimilar = false
-                  Object.keys(speciesCount).forEach((existingSpecies) => {
-                    const distance = stringDistance(species, existingSpecies)
-                    if (distance <= similarityThreshold) {
-                      isSimilar = true
-                      species = existingSpecies
-                    }
-                  })
-
-                  if (!isSimilar) {
-                    const treeID =
-                      tree?.properties['FCD-tree_records-tree_photo']?.split(
-                        '?id='
-                      )?.[1] ||
-                      tree?.ID ||
-                      'unknown'
-
-                    const photo = getTreePhotos(
-                      tree.properties,
-                      project.id,
-                      treeID
-                    )
-                    const imageUrl = photo[0]
-
-                    speciesCount[species] = {
-                      name: species,
-                      count: 1,
-                      imageUrl,
-                      tallest: parseFloat(
-                        tree.properties.height || tree.properties.Height
-                      ),
-                      shortest: parseFloat(
-                        tree.properties.height || tree.properties.Height
-                      ),
-                      average: parseFloat(
-                        tree.properties.height || tree.properties.Height
-                      ),
-                    }
-                  } else {
-                    const currObj = speciesCount[species]
-                    speciesCount[species] = {
-                      ...currObj,
-                      count: currObj.count + 1,
-                      tallest: Math.max(
-                        currObj.tallest,
-                        parseFloat(
-                          tree.properties.height || tree.properties.Height
-                        )
-                      ),
-                      shortest: Math.min(
-                        currObj.shortest,
-                        parseFloat(
-                          tree.properties.height || tree.properties.Height
-                        )
-                      ),
-                      average:
-                        parseFloat(
-                          tree.properties.height || tree.properties.Height
-                        ) + currObj.average,
-                    }
-                  }
-                } else {
-                  if ('Unknown' in speciesCount) {
-                    speciesCount['Unknown'].count += 1
-                  } else {
-                    speciesCount['Unknown'] = {
-                      name: 'Unknown',
-                      count: 1,
-                    }
-                  }
-                }
-                total += 1
-              })
-
-              const speciesArray = Object.keys(speciesCount)
-                .sort()
-                .map((species) => ({
-                  ...speciesCount[species],
-                  average:
-                    // round to two decimals
-                    Math.round(
-                      (speciesCount[species].average /
-                        speciesCount[species].count) *
-                        100
-                    ) / 100,
-                }))
-              setMeasuredData([
-                ...measuredData,
-                { title: 'Trees', species: speciesArray, total },
-              ])
-              setLoading(false)
-            })
-            .catch((e) => {
-              console.log(e)
-              setLoading(false)
-            })
+          fetchTreePlantings(
+            treePlantingsEndpoint,
+            project,
+            measuredData,
+            setMeasuredData,
+            setLoading
+          )
           return setBiodiversity(biodiversity)
         })
     }
@@ -172,38 +72,6 @@ export const BiodiversityCard = ({
   }, [sortBy])
 
   // checks for typos between instances
-  const stringDistance = (a, b) => {
-    const matrix = []
-
-    for (let i = 0; i <= b.length; i++) {
-      matrix[i] = [i]
-    }
-
-    for (let j = 0; j <= a.length; j++) {
-      matrix[0][j] = j
-    }
-
-    for (let i = 1; i <= b.length; i++) {
-      for (let j = 1; j <= a.length; j++) {
-        if (b.charAt(i - 1) === a.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1]
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
-          )
-        }
-      }
-    }
-
-    return matrix[b.length][a.length]
-  }
-
-  const toTitleCase = (str) => {
-    return str.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-    })
-  }
 
   const handleSpeciesClick = (species) => {
     if (selectedSpecies === species) {

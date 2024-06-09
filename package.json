@@ -31,6 +31,7 @@
     "@vercel/kv": "^1.0.1",
     "@what3words/react-components": "^4.1.2",
     "axios-hooks": "^5.0.2",
+    "d3": "^7.9.0",
     "dayjs": "^1.11.7",
     "geojson2h3": "^1.2.0",
     "h3-js": "^4.1.0",

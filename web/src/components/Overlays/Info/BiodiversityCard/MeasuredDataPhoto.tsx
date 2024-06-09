@@ -1,3 +1,5 @@
+import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage'
+
 interface DataAndHandler {
   imageUrl: string
   name: string
@@ -39,18 +41,7 @@ export const MeasuredDataPhoto = (props: DataAndHandler) => {
         }}
         onClick={() => props.handleSpeciesClick(props.name)}
       >
-        <img
-          alt={props.name}
-          src={src}
-          style={{
-            objectFit: 'cover',
-            clipPath:
-              'polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)',
-            height: '120px',
-            width: '120px',
-            minWidth: '120px',
-          }}
-        />
+        <HexagonalImage alt={props.name} src={src} />
         <div
           style={{
             display: 'flex',

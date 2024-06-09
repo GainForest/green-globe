@@ -11,7 +11,7 @@ interface DataAndHandler {
   selectedSpecies: string
 }
 
-export const MeasuredDataPhoto = (props: DataAndHandler) => {
+export const MeasuredDataGridCard = (props: DataAndHandler) => {
   const src = props.imageUrl
     ? props.imageUrl
     : `https://mol.org/static/img/groups/taxa_plants.png`

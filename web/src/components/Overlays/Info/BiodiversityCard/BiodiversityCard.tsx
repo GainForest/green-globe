@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 
 import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
+import * as d3 from 'd3'
 
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
@@ -13,6 +14,7 @@ import {
   fetchTreePlantings,
   processBiodiversityData,
 } from './biodiversityCardHelpers'
+import { IndividualDataGrid } from './IndividualDataGrid'
 import { MeasuredDataGrid } from './MeasuredDataGrid'
 
 export const BiodiversityCard = ({
@@ -24,9 +26,17 @@ export const BiodiversityCard = ({
 }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
+  const [individuals, setIndividuals] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
+
+  // Fetch the finals_new.csv, and display each individual in the insect spy.
+  useEffect(() => {
+    d3.csv(`${process.env.AWS_STORAGE}/insectspy/finals_new.csv`)
+      .then(setIndividuals)
+      .then(() => setLoading(false))
+  }, [])
 
   useEffect(() => {
     if (!activeProjectData) {
@@ -133,6 +143,7 @@ export const BiodiversityCard = ({
             {SOUNDSCAPE_PATHS.map((path) => (
               <img src={`${process.env.AWS_STORAGE}/${path}`} />
             ))}
+            <IndividualDataGrid data={individuals} />
             <MeasuredDataGrid
               measuredData={measuredData}
               sortBy={sortBy}

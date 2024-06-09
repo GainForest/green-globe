@@ -1,7 +1,7 @@
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
-import { MeasuredDataPhoto } from './MeasuredDataPhoto'
+import { MeasuredDataGridCard } from './MeasuredDataPhoto'
 
 export const MeasuredDataGrid = ({
   sortBy,
@@ -63,7 +63,7 @@ export const MeasuredDataGrid = ({
                   }
                   key={species.name}
                 >
-                  <MeasuredDataPhoto
+                  <MeasuredDataGridCard
                     {...species}
                     handleSpeciesClick={handleSpeciesClick}
                     selectedSpecies={selectedSpecies}

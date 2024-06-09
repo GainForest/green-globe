@@ -7,6 +7,7 @@ import { getTreePhotos } from 'src/components/Map/maptreeutils'
 
 import { InfoBox } from '../InfoBox'
 
+import { processBiodiversityData } from './biodiversityCardHelpers'
 export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,
@@ -29,43 +30,7 @@ export const BiodiversityCard = ({
       fetch(`${process.env.AWS_STORAGE}/mol/${project.id}.json`)
         .then((response) => response.json())
         .then((json) => {
-          const biodiversity = json.map((b) => {
-            const threatened = b.species.filter(
-              (d) =>
-                d.redlist === 'CR' ||
-                d.redlist === 'EN' ||
-                d.redlist === 'VU' ||
-                d.redlist === 'EW'
-            )
-            const numThreatened = threatened.length
-            const lowRisk = b.species.filter(
-              (d) =>
-                d.redlist === 'CD' || d.redlist === 'NT' || d.redlist === 'LC'
-            )
-            const numLowRisk = lowRisk.length
-            const numExtinct = b.species.filter((d) => d.redlist == 'EX').length
-            const dataDeficient = b.species.filter(
-              (d) => d.redlist === 'DD' || !d.redlist
-            )
-            const numDataDeficient = dataDeficient.length
-            const total = b.species.length
-            const threatenedPercentage = (numThreatened + numExtinct) / total
-            const lowRiskPercentage = numLowRisk / total
-            const dataDeficientPercentage = numDataDeficient / total
-            return {
-              ...b,
-              numExtinct,
-              lowRisk,
-              numLowRisk,
-              dataDeficient,
-              numDataDeficient,
-              threatened,
-              numThreatened,
-              threatenedPercentage,
-              lowRiskPercentage,
-              dataDeficientPercentage,
-            }
-          })
+          const biodiversity = json.map(processBiodiversityData)
           const treePlantings = `${project.name
             .toLowerCase()
             //removes whitespace and underscores

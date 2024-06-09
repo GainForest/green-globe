@@ -1,14 +1,13 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { getTreePhotos } from 'src/components/Map/maptreeutils'
-
-import ThemedSkeleton from '../../Map/components/Skeleton'
-import { ToggleButton } from '../../Map/components/ToggleButton'
-
 import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
 
-import { InfoBox } from './InfoBox'
+import { getTreePhotos } from 'src/components/Map/maptreeutils'
+
+import ThemedSkeleton from '../../../Map/components/Skeleton'
+import { ToggleButton } from '../../../Map/components/ToggleButton'
+import { InfoBox } from '../InfoBox'
 export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,
@@ -294,17 +293,17 @@ export const BiodiversityCard = ({
             <div>
               <p> Measured activity of different frequencies in the forest. </p>
             </div>
-          {SOUNDSCAPE_PATHS.map((path) => (
-            <img src={`${process.env.AWS_STORAGE}/${path}`} />
-          ))}
-          <MeasuredDataGrid
-            measuredData={measuredData}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            loading={loading}
-            handleSpeciesClick={handleSpeciesClick}
-            selectedSpecies={selectedSpecies}
-          />
+            {SOUNDSCAPE_PATHS.map((path) => (
+              <img src={`${process.env.AWS_STORAGE}/${path}`} />
+            ))}
+            <MeasuredDataGrid
+              measuredData={measuredData}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              loading={loading}
+              handleSpeciesClick={handleSpeciesClick}
+              selectedSpecies={selectedSpecies}
+            />
           </div>
         )}
       </div>

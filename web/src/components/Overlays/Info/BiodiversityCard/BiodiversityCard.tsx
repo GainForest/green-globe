@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
+import ThemedSkeleton from 'src/components/Map/components/Skeleton'
+import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 import { getTreePhotos } from 'src/components/Map/maptreeutils'
 
-import ThemedSkeleton from '../../Map/components/Skeleton'
-import { ToggleButton } from '../../Map/components/ToggleButton'
+import { InfoBox } from '../InfoBox'
 
-import { InfoBox } from './InfoBox'
 export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,

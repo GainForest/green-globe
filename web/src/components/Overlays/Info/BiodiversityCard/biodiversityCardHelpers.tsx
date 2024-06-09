@@ -2,7 +2,7 @@ import { getTreePhotos } from 'src/components/Map/maptreeutils'
 import { toTitleCase } from 'src/utils/toTitleCase'
 import { stringDistance } from 'src/utils/typoCheck'
 
-import { InfoTag } from './InfoTag'
+import { InfoTag } from '../../../InfoTag/InfoTag'
 
 export const processBiodiversityData = (b) => {
   const threatened = b.species.filter(

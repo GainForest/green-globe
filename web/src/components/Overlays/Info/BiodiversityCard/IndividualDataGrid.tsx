@@ -7,10 +7,11 @@ interface Individual {
 }
 
 export const IndividualDataGrid = ({ data }) => {
-  console.log('the data is', data)
   if (data.length) {
     return (
       <div>
+        <h1> Insects Spotted </h1>
+        <p> Insects detected by our insect trap. </p>
         {data.map((d) => (
           <div>
             <HexagonalImage

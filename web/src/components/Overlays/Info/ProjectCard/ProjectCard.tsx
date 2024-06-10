@@ -9,7 +9,6 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoTag } from '../BiodiversityCard'
 import { InfoBox } from '../InfoBox'
-// import { VideoCard } from '../WildlifeCard'
 
 import { ProjectSiteButtons } from './ProjectSiteButtons'
 
@@ -39,7 +38,7 @@ export const ProjectCard = ({
   if (!activeProjectData) {
     return (
       <InfoBox mediaSize={mediaSize} maximize={maximize}>
-        <ThemedSkeleton />
+        <ThemedSkeleton height={250} />
         <div style={{ margin: '8px 24px' }}>
           <h1>
             <ThemedSkeleton width={'80%'} />
@@ -131,7 +130,13 @@ const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
       </div>
     )
   } else {
-    return <ThemedSkeleton height={250} />
+    return (
+      <img
+        src={`${process.env.AWS_STORAGE}/project-splash/default-project-splash.png`}
+        style={{ width: '100%', height: '250px', objectFit: 'cover' }}
+        alt={'default project splash'}
+      />
+    )
   }
 }
 

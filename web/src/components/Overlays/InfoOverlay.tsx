@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { hideInfoOverlay, setInfoOverlay } from 'src/reducers/overlaysReducer'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
 import { MaximizeButton } from '../Map/components/MaximizeButton'

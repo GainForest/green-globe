@@ -16,14 +16,9 @@ const BiodiversityPage = () => {
   }, [])
 
   useEffect(() => {
-    console.log(photoMap)
-  }, [photoMap])
-
-  useEffect(() => {
     const fetchPhotos = async () => {
       const fetchPhoto = async (row) => {
         const name = encodeURIComponent(row.scientificName)
-        console.log(name)
         const eolRes = await fetch(
           `https://eol.org/api/search/1.0.json?q=${name}&page=1&key=`
         )
@@ -59,6 +54,9 @@ const BiodiversityPage = () => {
   }, [observations])
 
   const camelCaseToTitleCase = (str) => {
+    if (str == 'eDNA') {
+      return str
+    }
     return str
       .replace(/([A-Z])/g, ' $1')
       .trim()
@@ -73,7 +71,7 @@ const BiodiversityPage = () => {
   return (
     <>
       <MetaTags title="Biodiversity" description="Biodiversity page" />
-      <h1>Observations</h1>
+      <h1 style={{ margin: '32px' }}>Observations</h1>
       <div style={{ overflowX: 'auto' }}>
         <table
           style={{
@@ -87,14 +85,22 @@ const BiodiversityPage = () => {
               style={{
                 backgroundColor: '#333333',
                 color: '#ffffff',
+                fontSize: '20px',
                 fontWeight: 'bold',
                 textAlign: 'left',
               }}
             >
-              <th style={{ padding: '8px', width: '220px' }}>Photo</th>
-              <th style={{ padding: '8px' }}>Name</th>
-              <th style={{ padding: '8px', textAlign: 'center' }}>Time</th>
-              <th style={{ padding: '8px' }}>Basis of Record</th>
+              <th
+                style={{
+                  padding: '16px',
+                  width: '220px',
+                }}
+              >
+                Photo
+              </th>
+              <th>Name</th>
+              <th style={{ textAlign: 'center' }}>Time</th>
+              <th>Basis of Record</th>
             </tr>
           </thead>
           <tbody>
@@ -104,7 +110,7 @@ const BiodiversityPage = () => {
                 style={{
                   backgroundColor: idx % 2 ? '#404040' : '#333333',
                   color: '#ffffff',
-                  height: '100px',
+                  height: '200px',
                 }}
               >
                 <td

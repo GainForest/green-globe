@@ -134,7 +134,6 @@ export const BiodiversityCard = ({
       <div style={{ margin: '16px 24px' }}>
         {toggle === 'Predicted' ? (
           <div>
-            <LiquicertBadgeFromCID pathCID='bafkreiaw45kqjymlycpiukfmnix2b63pmyxxoz6ctw7zmjspkr2utwqmku'/>
             <PredictedBirds />
             <PredictedAnimalsGrid biodiversity={biodiversity} />
           </div>

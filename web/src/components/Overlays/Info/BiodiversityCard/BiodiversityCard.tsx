@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 
 import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
 import * as d3 from 'd3'
-
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
@@ -16,6 +15,7 @@ import {
 } from './biodiversityCardHelpers'
 import { IndividualDataGrid } from './IndividualDataGrid'
 import { MeasuredDataGrid } from './MeasuredDataGrid'
+import { PredictedBirds } from './PredictedBirds'
 
 export const BiodiversityCard = ({
   activeProjectData,
@@ -133,7 +133,11 @@ export const BiodiversityCard = ({
       </div>
       <div style={{ margin: '16px 24px' }}>
         {toggle === 'Predicted' ? (
-          <PredictedAnimalsGrid biodiversity={biodiversity} />
+          <div>
+            <LiquicertBadgeFromCID pathCID='bafkreiaw45kqjymlycpiukfmnix2b63pmyxxoz6ctw7zmjspkr2utwqmku'/>
+            <PredictedBirds />
+            <PredictedAnimalsGrid biodiversity={biodiversity} />
+          </div>
         ) : (
           <div>
             <h1>Circadian Rythmn</h1>

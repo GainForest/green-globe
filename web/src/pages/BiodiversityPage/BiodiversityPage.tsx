@@ -15,44 +15,48 @@ const BiodiversityPage = () => {
     fetchData()
   }, [])
 
-  // useEffect(() => {
-  //   const fetchPhotos = async () => {
-  //     const fetchPhoto = async (row) => {
-  //       const name = encodeURIComponent(row.scientificName)
-  //       console.log(name)
-  //       const eolRes = await fetch(
-  //         `https://eol.org/api/search/1.0.json?q=${name}&page=1&key=`
-  //       )
-  //       const eolData = await eolRes.json()
-  //       const eolId = eolData.results[0]?.id
-  //       if (eolId) {
-  //         const eolSpeciesRes = await fetch(
-  //           `https://eol.org/api/pages/1.0/${eolId}.json?details=true&images_per_page=1`
-  //         )
-  //         const eolSpeciesData = await eolSpeciesRes.json()
-  //         return eolSpeciesData?.taxonConcept?.dataObjects[0]?.mediaURL || ''
-  //       }
-  //       return ''
-  //     }
+  useEffect(() => {
+    console.log(photoMap)
+  }, [photoMap])
 
-  //     const batchSize = 10
-  //     for (let i = 0; i < observations.length; i += batchSize) {
-  //       const batch = observations.slice(i, i + batchSize)
-  //       const photos = await Promise.all(batch.map((row) => fetchPhoto(row)))
-  //       const newPhotoMap = photos.reduce((map, photo, index) => {
-  //         if (photo) {
-  //           map[batch[index].scientificName] = photo
-  //         }
-  //         return map
-  //       }, {})
-  //       setPhotoMap((prevMap) => ({ ...prevMap, ...newPhotoMap }))
-  //     }
-  //   }
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      const fetchPhoto = async (row) => {
+        const name = encodeURIComponent(row.scientificName)
+        console.log(name)
+        const eolRes = await fetch(
+          `https://eol.org/api/search/1.0.json?q=${name}&page=1&key=`
+        )
+        const eolData = await eolRes.json()
+        const eolId = eolData.results[0]?.id
+        if (eolId) {
+          const eolSpeciesRes = await fetch(
+            `https://eol.org/api/pages/1.0/${eolId}.json?details=true&images_per_page=1`
+          )
+          const eolSpeciesData = await eolSpeciesRes.json()
+          return eolSpeciesData?.taxonConcept?.dataObjects[0]?.mediaURL || ''
+        }
+        return ''
+      }
 
-  //   if (observations.length) {
-  //     fetchPhotos()
-  //   }
-  // }, [observations])
+      const batchSize = 10
+      for (let i = 0; i < observations.length; i += batchSize) {
+        const batch = observations.slice(i, i + batchSize)
+        const photos = await Promise.all(batch.map((row) => fetchPhoto(row)))
+        const newPhotoMap = photos.reduce((map, photo, index) => {
+          if (photo) {
+            map[batch[index].scientificName] = photo
+          }
+          return map
+        }, {})
+        setPhotoMap((prevMap) => ({ ...prevMap, ...newPhotoMap }))
+      }
+    }
+
+    if (observations.length) {
+      fetchPhotos()
+    }
+  }, [observations])
 
   const camelCaseToTitleCase = (str) => {
     return str

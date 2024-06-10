@@ -91,7 +91,7 @@ const BiodiversityPage = () => {
                 textAlign: 'left',
               }}
             >
-              <th style={{ padding: '8px' }}>Photo</th>
+              <th style={{ padding: '8px', width: '220px' }}>Photo</th>
               <th style={{ padding: '8px' }}>Name</th>
               <th style={{ padding: '8px', textAlign: 'center' }}>Time</th>
               <th style={{ padding: '8px' }}>Basis of Record</th>
@@ -104,15 +104,21 @@ const BiodiversityPage = () => {
                 style={{
                   backgroundColor: idx % 2 ? '#404040' : '#333333',
                   color: '#ffffff',
-                  height: '200px',
+                  height: '100px',
                 }}
               >
-                <td style={{ padding: '8px', textAlign: 'center' }}>
+                <td
+                  style={{
+                    padding: '8px',
+                    textAlign: 'center',
+                    width: '220px',
+                  }}
+                >
                   {photoMap[row.scientificName] && (
                     <img
                       src={photoMap[row.scientificName]}
                       alt={row.scientificName}
-                      style={{ width: '100px', height: '100px' }}
+                      style={{ width: '200px', height: '200px' }}
                     />
                   )}
                 </td>

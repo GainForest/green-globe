@@ -65,7 +65,7 @@ export const LogbookCard = ({ mediaSize }) => {
     >
       <ExitButton
         style={{ zIndex: '4', right: 40, top: 20, left: null }}
-        onClick={() => dispatch(setInfoOverlay(null))}
+        onClick={() => dispatch(setInfoOverlay(1))}
         mediaSize={mediaSize}
       />
       <Blog posts={posts} loading={loading} />

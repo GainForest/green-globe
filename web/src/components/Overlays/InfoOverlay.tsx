@@ -10,10 +10,9 @@ import { MaximizeButton } from '../Map/components/MaximizeButton'
 import { BiodiversityCard } from './Info/BiodiversityCard/BiodiversityCard'
 import { ChatCard } from './Info/ChatCard'
 import { CommunityCard } from './Info/CommunityCard'
-// import { DiscordCard } from './Info/DiscordCard'
-// import { HexagonCard } from './Info/HexagonCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
+import { LogbookCard } from './Info/LogbookCard'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
 
@@ -122,6 +121,16 @@ export const InfoOverlay = ({
           onClick={() => dispatch(setInfoOverlay(6))}
         />
       )}
+
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
+        buttonIcon={'book_2'}
+        position={7}
+        active={infoOverlay == 7}
+        onClick={() => dispatch(setInfoOverlay(7))}
+      />
+
       {infoOverlay == 1 && (
         <ProjectCard
           maximize={maximize}
@@ -172,6 +181,7 @@ export const InfoOverlay = ({
           activeProjectData={activeProjectData}
         />
       )}
+      {infoOverlay == 7 && <LogbookCard setInfoOverlay={setInfoOverlay} />}
     </>
   )
 }

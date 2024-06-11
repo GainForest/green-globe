@@ -101,13 +101,10 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        buttonIcon={'book_2'}
+        buttonIcon={'book'}
         position={6}
         active={infoOverlay == 6}
-        onClick={() => {
-          dispatch(setInfoOverlay(6))
-          dispatch(setMaximized(true))
-        }}
+        onClick={() => dispatch(setInfoOverlay(6))}
       />
       {activeProjectData?.project?.dataDownloadUrl && (
         <InfoOverlayButton
@@ -154,7 +151,7 @@ export const InfoOverlay = ({
       {infoOverlay == 5 && (
         <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 6 && <LogbookCard />}
+      {infoOverlay == 6 && <LogbookCard mediaSize={mediaSize} />}
 
       {infoOverlay == 7 && activeProjectData?.project?.dataDownloadUrl && (
         <DownloadCard

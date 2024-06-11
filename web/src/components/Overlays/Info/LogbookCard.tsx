@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react'
 
 import DOMpurify from 'dompurify'
+import { useDispatch } from 'react-redux'
 
 import Blog from 'src/components/Blog/Blog'
+import { ExitButton } from 'src/components/Map/components/ExitButton'
+import { setInfoOverlay, setMaximized } from 'src/reducers/overlaysReducer'
 
-export const LogbookCard = () => {
+export const LogbookCard = ({ mediaSize }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setMaximized(true))
+  })
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
@@ -55,6 +63,11 @@ export const LogbookCard = () => {
         bottom: 0,
       }}
     >
+      <ExitButton
+        style={{ zIndex: '4', right: 40, top: 20, left: null }}
+        onClick={() => dispatch(setInfoOverlay(null))}
+        mediaSize={mediaSize}
+      />
       <Blog posts={posts} loading={loading} />
     </div>
   )

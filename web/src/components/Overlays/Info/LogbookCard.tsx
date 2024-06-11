@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux'
 import Blog from 'src/components/Blog/Blog'
 
 export const LogbookCard = ({ setInfoOverlay }) => {
+  const dispatch = useDispatch()
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const dispatch = useDispatch()
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
     const year = date.getFullYear()
@@ -56,7 +56,9 @@ export const LogbookCard = ({ setInfoOverlay }) => {
         right: 0,
         bottom: 0,
       }}
-      onClick={() => dispatch(setInfoOverlay(1))}
+      onClick={() => {
+        dispatch(setInfoOverlay(1))
+      }}
     >
       <Blog posts={posts} loading={loading} />
     </div>

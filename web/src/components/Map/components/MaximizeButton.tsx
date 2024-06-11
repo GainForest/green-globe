@@ -1,8 +1,14 @@
+import { useDispatch, useSelector } from 'react-redux'
+
 import { breakpoints } from 'src/constants'
+import { setMaximized } from 'src/reducers/overlaysReducer'
 
 import { UnstyledButton } from './UnstyledButton'
 
-export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
+export const MaximizeButton = ({ style, mediaSize }) => {
+  const dispatch = useDispatch()
+  const maximized = useSelector((state: State) => state.overlays.maximized)
+
   const height =
     mediaSize >= breakpoints.xl
       ? '36px'
@@ -98,15 +104,15 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
       style={{
         zIndex: 3,
         textAlign: 'center',
-        left: maximize ? maxedLeft : left,
-        right: maximize ? maxedRight : right,
-        bottom: maximize ? null : bottom,
-        top: maximize ? maxedTop : null,
+        left: maximized ? maxedLeft : left,
+        right: maximized ? maxedRight : right,
+        bottom: maximized ? null : bottom,
+        top: maximized ? maxedTop : null,
         height: height,
         width: width,
         ...style,
       }}
-      onClick={onClick}
+      onClick={() => dispatch(setMaximized(!maximized))}
     >
       <div
         style={{

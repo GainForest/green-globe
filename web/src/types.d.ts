@@ -10,6 +10,7 @@ interface State {
     info: number | null // The tab number displayed
     basket: boolean
     profile: boolean
+    maximized: boolean
   }
   display: {
     clickedCoordinates: {

@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { useSelector } from 'react-redux'
+
 import { breakpoints } from 'src/constants'
 
 import { ToggleButton } from '../../Map/components/ToggleButton'
@@ -8,11 +10,12 @@ import { InfoBox } from './InfoBox'
 export const WildlifeCard = ({
   activeProjectData,
   mediaSize,
-  maximize,
   toggle,
   setToggle,
   handleClick,
 }) => {
+  const maximized = useSelector((state: State) => state.overlays.maximized)
+
   const photos = activeProjectData?.project?.assets?.filter(
     (d) =>
       (d.classification.includes('Camera Traps') ||
@@ -27,7 +30,7 @@ export const WildlifeCard = ({
   const videoEndpoints = videos?.map((video) => video.awsCID || '')
 
   return (
-    <InfoBox maximize={maximize} mediaSize={mediaSize}>
+    <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
         <h1 style={{ marginBottom: '8px' }}>Media</h1>
         <ToggleButton
@@ -52,7 +55,7 @@ export const WildlifeCard = ({
                 photoEndpoint={photo}
                 handleClick={handleClick}
                 mediaSize={mediaSize}
-                maximize={maximize}
+                maximize={maximized}
               />
             ))}
             {photoEndpoints?.length === 0 && (
@@ -68,7 +71,7 @@ export const WildlifeCard = ({
                 videoEndpoint={video}
                 handleClick={handleClick}
                 mediaSize={mediaSize}
-                maximize={maximize}
+                maximize={maximized}
               />
             ))}
             {videoEndpoints?.length === 0 && (

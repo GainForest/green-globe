@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
 import * as d3 from 'd3'
+
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
@@ -20,7 +21,6 @@ import { PredictedBirds } from './PredictedBirds'
 export const BiodiversityCard = ({
   activeProjectData,
   mediaSize,
-  maximize,
   selectedSpecies,
   setSelectedSpecies,
 }) => {
@@ -97,7 +97,7 @@ export const BiodiversityCard = ({
   }
 
   return (
-    <InfoBox maximize={maximize} mediaSize={mediaSize}>
+    <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
         <h1 style={{ wordWrap: 'normal', width: '80%', marginBottom: '8px' }}>
           Biodiversity

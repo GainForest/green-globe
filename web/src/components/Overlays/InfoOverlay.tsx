@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { setInfoOverlay } from 'src/reducers/overlaysReducer'
+import { setInfoOverlay, setMaximized } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
 import { MaximizeButton } from '../Map/components/MaximizeButton'
@@ -22,8 +22,6 @@ export const InfoOverlay = ({
   // numHexagons,
   setActiveProjectPolygon,
   mediaSize,
-  maximize,
-  setMaximize,
   selectedSpecies,
   setSelectedSpecies,
 }) => {
@@ -49,6 +47,7 @@ export const InfoOverlay = ({
       setFullScreenOverlay(true)
     }
   }
+
   return (
     <>
       {fullScreenOverlay && (
@@ -59,21 +58,14 @@ export const InfoOverlay = ({
           fileType={fileType}
         />
       )}
-      <MaximizeButton
-        mediaSize={mediaSize}
-        maximize={maximize}
-        onClick={() => setMaximize((max) => !max)}
-        style={null}
-      />
+      <MaximizeButton mediaSize={mediaSize} style={null} />
       <ExitButton
         mediaSize={mediaSize}
-        maximize={maximize}
         onClick={() => dispatch(setInfoOverlay(null))}
         style={null}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
         buttonIcon={'forest'}
         position={1}
         active={infoOverlay == 1}
@@ -81,7 +73,6 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
         buttonIcon={'pets'}
         position={2}
         active={infoOverlay == 2}
@@ -89,7 +80,6 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
         buttonIcon={'photo'}
         position={3}
         active={infoOverlay == 3}
@@ -97,7 +87,6 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
         buttonIcon={'emoji_people'}
         position={4}
         active={infoOverlay == 4}
@@ -105,7 +94,6 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
         buttonIcon={'chat'}
         position={5}
         active={infoOverlay == 5}
@@ -113,16 +101,17 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
         buttonIcon={'book_2'}
         position={6}
         active={infoOverlay == 6}
-        onClick={() => dispatch(setInfoOverlay(6))}
+        onClick={() => {
+          dispatch(setInfoOverlay(6))
+          dispatch(setMaximized(true))
+        }}
       />
       {activeProjectData?.project?.dataDownloadUrl && (
         <InfoOverlayButton
           mediaSize={mediaSize}
-          maximize={maximize}
           buttonIcon={'download'}
           position={7}
           active={infoOverlay == 7}
@@ -132,7 +121,6 @@ export const InfoOverlay = ({
 
       {infoOverlay == 1 && (
         <ProjectCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
@@ -142,7 +130,6 @@ export const InfoOverlay = ({
       )}
       {infoOverlay == 2 && (
         <BiodiversityCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           selectedSpecies={selectedSpecies}
@@ -151,7 +138,6 @@ export const InfoOverlay = ({
       )}
       {infoOverlay == 3 && (
         <WildlifeCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           handleClick={handleClick}
@@ -161,23 +147,17 @@ export const InfoOverlay = ({
       )}
       {infoOverlay == 4 && (
         <CommunityCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
       {infoOverlay == 5 && (
-        <ChatCard
-          maximize={maximize}
-          mediaSize={mediaSize}
-          activeProjectData={activeProjectData}
-        />
+        <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
       )}
       {infoOverlay == 6 && <LogbookCard setInfoOverlay={setInfoOverlay} />}
 
       {infoOverlay == 7 && activeProjectData?.project?.dataDownloadUrl && (
         <DownloadCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />

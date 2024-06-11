@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
@@ -6,23 +7,23 @@ export const InfoOverlayButton = ({
   position,
   active,
   mediaSize,
-  maximize,
   onClick,
 }: {
   buttonIcon: string
   position: number
   active: boolean
   mediaSize?: number
-  maximize?: boolean
   onClick: () => void
 }) => {
+  const maximized = useSelector((state: State) => state.overlays.maximized)
+
   return (
     <StyledButton
       mediaSize={mediaSize}
       active={active}
       position={position}
       onClick={onClick}
-      maximize={maximize}
+      maximize={maximized}
     >
       <span
         className="material-icons-round"

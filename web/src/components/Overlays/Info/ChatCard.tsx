@@ -68,7 +68,7 @@ const useOutsideClick = (ref, callback) => {
   }, [ref, callback])
 }
 
-export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
+export const ChatCard = ({ activeProjectData, mediaSize }) => {
   const [messageLog, setMessageLog] = useState([])
   const { isAuthenticated, userMetadata, signUp } = useAuth()
   const [message, setMessage] = useState({
@@ -167,7 +167,7 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
   }, [isAuthenticated, userMetadata?.email, getChat])
 
   return (
-    <InfoBox maximize={maximize} mediaSize={mediaSize}>
+    <InfoBox mediaSize={mediaSize}>
       <div
         style={{
           display: 'flex',

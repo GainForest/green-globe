@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import mapboxgl from 'mapbox-gl'
@@ -65,7 +65,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
-  const [maximize, setMaximize] = useState<boolean>(false)
   const [treeData, setTreeData] = useState({})
   const [ednaLocations, setEDNALocations] = useState()
   const [landCover, setLandCover] = useState(false)
@@ -389,8 +388,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
             activeProjectPolygon={activeProjectPolygon}
             setActiveProjectPolygon={setActiveProjectPolygon}
             mediaSize={mediaSize}
-            maximize={maximize}
-            setMaximize={setMaximize}
             selectedSpecies={selectedSpecies}
             setSelectedSpecies={setSelectedSpecies}
           />

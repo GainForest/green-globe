@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
@@ -17,7 +18,6 @@ export const ProjectCard = ({
   activeProjectPolygon,
   setActiveProjectPolygon,
   mediaSize,
-  maximize,
   handleClick,
 }) => {
   const [promoVideo, setPromoVideo] = useState('')
@@ -37,7 +37,7 @@ export const ProjectCard = ({
 
   if (!activeProjectData) {
     return (
-      <InfoBox mediaSize={mediaSize} maximize={maximize}>
+      <InfoBox mediaSize={mediaSize}>
         <ThemedSkeleton height={250} />
         <div style={{ margin: '8px 24px' }}>
           <h1>
@@ -55,7 +55,7 @@ export const ProjectCard = ({
   }
 
   return (
-    <InfoBox maximize={maximize} mediaSize={mediaSize}>
+    <InfoBox mediaSize={mediaSize}>
       <ProjectSplash
         activeProjectData={activeProjectData}
         promoVideo={promoVideo}

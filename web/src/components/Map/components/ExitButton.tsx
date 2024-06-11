@@ -1,8 +1,12 @@
+import { useSelector } from 'react-redux'
+
 import { breakpoints } from 'src/constants'
 
 import { UnstyledButton } from './UnstyledButton'
 
-export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
+export const ExitButton = ({ style, onClick, mediaSize }) => {
+  const maximized = useSelector((state: State) => state.overlays.maximized)
+
   const height =
     mediaSize >= breakpoints.xl
       ? '36px'
@@ -98,10 +102,10 @@ export const ExitButton = ({ style, onClick, mediaSize, maximize }) => {
       style={{
         zIndex: 3,
         textAlign: 'center',
-        right: maximize ? maxedRight : right,
-        left: maximize ? maxedLeft : left,
-        bottom: maximize ? null : bottom,
-        top: maximize ? maxedTop : null,
+        right: maximized ? maxedRight : right,
+        left: maximized ? maxedLeft : left,
+        bottom: maximized ? null : bottom,
+        top: maximized ? maxedTop : null,
         height: height,
         width: width,
         ...style,

@@ -6,6 +6,7 @@ export const overlaysSlice = createSlice({
     info: null, // either 1-6, or null
     basket: false,
     profile: false,
+    maximized: false,
   },
   reducers: {
     showBasket: (state) => {
@@ -16,6 +17,9 @@ export const overlaysSlice = createSlice({
     },
     toggleBasket: (state) => {
       state.basket = !state.basket
+    },
+    setMaximized: (state, action) => {
+      state.maximized = action.payload
     },
     setInfoOverlay: (state, action) => {
       state.info = action.payload
@@ -37,6 +41,7 @@ export const {
   showBasket,
   hideBasket,
   toggleBasket,
+  setMaximized,
   setInfoOverlay,
   hideInfoOverlay,
   showProfile,

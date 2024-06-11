@@ -47,8 +47,15 @@ export const LogbookCard = ({ setInfoOverlay }) => {
 
   return (
     <div
-      className="overlay"
-      style={{ backgroundColor: 'black', zIndex: 10 }}
+      style={{
+        backgroundColor: '#22252B',
+        zIndex: 10,
+        position: 'fixed',
+        top: 50,
+        left: 60,
+        right: 0,
+        bottom: 0,
+      }}
       onClick={() => dispatch(setInfoOverlay(1))}
     >
       <Blog posts={posts} loading={loading} />

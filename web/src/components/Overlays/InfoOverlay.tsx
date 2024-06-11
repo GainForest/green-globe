@@ -111,25 +111,24 @@ export const InfoOverlay = ({
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        maximize={maximize}
+        buttonIcon={'book_2'}
+        position={6}
+        active={infoOverlay == 6}
+        onClick={() => dispatch(setInfoOverlay(6))}
+      />
       {activeProjectData?.project?.dataDownloadUrl && (
         <InfoOverlayButton
           mediaSize={mediaSize}
           maximize={maximize}
           buttonIcon={'download'}
-          position={6}
-          active={infoOverlay == 6}
-          onClick={() => dispatch(setInfoOverlay(6))}
+          position={7}
+          active={infoOverlay == 7}
+          onClick={() => dispatch(setInfoOverlay(7))}
         />
       )}
-
-      <InfoOverlayButton
-        mediaSize={mediaSize}
-        maximize={maximize}
-        buttonIcon={'book_2'}
-        position={7}
-        active={infoOverlay == 7}
-        onClick={() => dispatch(setInfoOverlay(7))}
-      />
 
       {infoOverlay == 1 && (
         <ProjectCard
@@ -174,14 +173,15 @@ export const InfoOverlay = ({
           activeProjectData={activeProjectData}
         />
       )}
-      {infoOverlay == 6 && activeProjectData?.project?.dataDownloadUrl && (
+      {infoOverlay == 6 && <LogbookCard setInfoOverlay={setInfoOverlay} />}
+
+      {infoOverlay == 7 && activeProjectData?.project?.dataDownloadUrl && (
         <DownloadCard
           maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
-      {infoOverlay == 7 && <LogbookCard setInfoOverlay={setInfoOverlay} />}
     </>
   )
 }

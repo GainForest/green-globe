@@ -6,7 +6,7 @@ export const Sidebar = ({ active, handleClick }) => {
   const sidebarStyle = {
     height: '100%',
     backgroundColor: '#1E2024',
-    width: active ? '180px' : '50px',
+    width: active ? '180px' : '60px',
     transition: 'width 0.3s',
   }
 

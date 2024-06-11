@@ -154,7 +154,7 @@ export const InfoOverlay = ({
       {infoOverlay == 5 && (
         <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 6 && <LogbookCard setInfoOverlay={setInfoOverlay} />}
+      {infoOverlay == 6 && <LogbookCard />}
 
       {infoOverlay == 7 && activeProjectData?.project?.dataDownloadUrl && (
         <DownloadCard

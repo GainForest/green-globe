@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
 
 import DOMpurify from 'dompurify'
-import { useDispatch } from 'react-redux'
 
 import Blog from 'src/components/Blog/Blog'
 
-export const LogbookCard = ({ setInfoOverlay }) => {
-  const dispatch = useDispatch()
+export const LogbookCard = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -55,9 +53,6 @@ export const LogbookCard = ({ setInfoOverlay }) => {
         left: 60,
         right: 0,
         bottom: 0,
-      }}
-      onClick={() => {
-        dispatch(setInfoOverlay(1))
       }}
     >
       <Blog posts={posts} loading={loading} />

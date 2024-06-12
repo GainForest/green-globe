@@ -1,24 +1,43 @@
 import { useEffect, useState } from 'react'
 
+import { useSelector, useDispatch } from 'react-redux'
+
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
 import { InfoBox } from '../InfoBox'
 
-import SpeciesCard from './SpeciesCard'
+import { KingdomList } from './KingdomList'
 
 const Pokedex = ({ activeProjectData, mediaSize }) => {
   const [predictedPlants, setPredictedPlants] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
   // const [speciesData, setSpeciesData] = useState([])
 
+  const dispatch = useDispatch()
+  const setFullScreenOverlay = useSelector(
+    (state: State) => state.fullscreenOverlay
+  )
+
+  const openOverlay = (component, props) => {
+    dispatch(
+      setFullScreenOverlay({
+        source: null, // If you need to specify a source for images/videos, set it here
+        type: 'component', // Specify the type, e.g., 'image', 'video', 'component'
+        component: component, // The component to render in the overlay
+        props: props, // Props for the component
+        active: true, // Set active to true to open the overlay
+      })
+    )
+  }
+
   useEffect(() => {
     const getPlantsList = async () => {
       try {
+        const filename =
+          activeProjectData.project.name.split(' ').join('-').toLowerCase() +
+          '.json'
         const response = await fetch(
-          `${process.env.AWS_STORAGE}/restor/${activeProjectData.project.name
-            .split(' ')
-            .join('-')
-            .toLowerCase()}.json`
+          `${process.env.AWS_STORAGE}/restor/${filename}`
         )
         const data = await response.json()
         // Display plants with images first
@@ -59,20 +78,24 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
           active={toggle}
           setToggle={setToggle}
           options={['Predicted', 'Measured']}
+          mediaSize={mediaSize}
         />
         {toggle == 'Predicted' ? (
           <div>
-            {predictedPlants?.length && (
+            {predictedPlants?.length > 0 && (
               <div>
                 <h2>Plants</h2>
-                {predictedPlants.slice(0, 3).map((plant) => (
-                  <SpeciesCard
-                    key={plant.id}
-                    species={plant}
-                    mediaSize={mediaSize}
-                  />
-                ))}
+                <KingdomList
+                  speciesList={predictedPlants.slice(0, 3)}
+                  mediaSize={mediaSize}
+                />
                 <button
+                  onClick={() =>
+                    openOverlay(KingdomList, {
+                      speciesList: activeProjectData.species,
+                      mediaSize: mediaSize,
+                    })
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     border: 'none',

@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { setInfoOverlay, setMaximized } from 'src/reducers/overlaysReducer'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
 import { MaximizeButton } from '../Map/components/MaximizeButton'
@@ -33,14 +33,20 @@ export const InfoOverlay = ({
   const [fullScreenOverlay, setFullScreenOverlay] = useState<boolean>(false)
   const [endpoint, setEndpoint] = useState<string>('')
   const [fileType, setFileType] = useState<string | null>(null)
+  const [contentProps, setContentProps] = useState({})
+  const [ContentComponent, setContentComponent] = useState(null)
 
-  const handleClick = (source, type: string | null) => {
-    // optional "type" param if fullScreenOverlay is used outside of WildlifeCard.tsx
-    if (type) {
+  const handleClick = ({ source, type, component, props }) => {
+    if (component) {
+      setContentComponent(component)
+      setContentProps(props)
+      setFileType('component')
+    } else if (type) {
       setFileType(type)
     } else {
       setFileType(null)
     }
+    setTimeout(() => {}, 1000)
     if (fullScreenOverlay) {
       setFullScreenOverlay(false)
     } else {
@@ -57,6 +63,8 @@ export const InfoOverlay = ({
           endpoint={endpoint}
           handleClick={handleClick}
           fileType={fileType}
+          contentProps={contentProps}
+          ContentComponent={ContentComponent}
         />
       )}
       <MaximizeButton mediaSize={mediaSize} style={null} />
@@ -168,13 +176,48 @@ export const InfoOverlay = ({
         />
       )}
       {infoOverlay == 8 && (
-        <Pokedex activeProjectData={activeProjectData} mediaSize={mediaSize} />
+        <Pokedex
+          activeProjectData={activeProjectData}
+          mediaSize={mediaSize}
+          handleClick={handleClick}
+        />
       )}
     </>
   )
 }
 
-export const ImageOverlay = ({ toggle, endpoint, handleClick, fileType }) => {
+export const ImageOverlay = ({
+  toggle,
+  endpoint,
+  handleClick,
+  fileType,
+  ContentComponent,
+  contentProps,
+}) => {
+  if (fileType === 'component' && ContentComponent) {
+    console.log({ ContentComponent, contentProps })
+    return <div>hi</div>
+    //   return (
+    //     <div className="overlay" style={{ zIndex: 4 }}>
+    //       <button
+    //         onClick={() => handleClick(null, null)}
+    //         style={{
+    //           position: 'absolute',
+    //           top: '10px',
+    //           right: '10px',
+    //           background: 'transparent',
+    //           border: 'none',
+    //           color: 'white',
+    //           fontSize: '24px',
+    //           cursor: 'pointer',
+    //         }}
+    //       >
+    //         &times;
+    //       </button>
+    //       <ContentComponent {...contentProps} />
+    //     </div>
+    //   )
+  }
   return (
     <div className="overlay" onClick={handleClick} style={{ zIndex: 4 }}>
       {fileType !== 'video' && toggle == 'Photos' ? (

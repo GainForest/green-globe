@@ -59,7 +59,11 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
               <div>
                 <h2>Plants</h2>
                 {predictedPlants.slice(0, 5).map((plant) => (
-                  <SpeciesCard key={plant.id} species={plant} />
+                  <SpeciesCard
+                    key={plant.id}
+                    species={plant}
+                    mediaSize={mediaSize}
+                  />
                 ))}
                 <button>See more Plants</button>
               </div>

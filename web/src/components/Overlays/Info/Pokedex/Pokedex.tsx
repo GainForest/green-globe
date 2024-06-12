@@ -55,11 +55,15 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
         />
         {toggle == 'Predicted' ? (
           <div>
-            {predictedPlants?.length && <h2>Plants</h2>}
-            {predictedPlants?.length &&
-              predictedPlants
-                .slice(0, 5)
-                .map((plant) => <SpeciesCard key={plant.id} species={plant} />)}
+            {predictedPlants?.length && (
+              <div>
+                <h2>Plants</h2>
+                {predictedPlants.slice(0, 5).map((plant) => (
+                  <SpeciesCard key={plant.id} species={plant} />
+                ))}
+                <button>See more Plants</button>
+              </div>
+            )}
           </div>
         ) : (
           <></>

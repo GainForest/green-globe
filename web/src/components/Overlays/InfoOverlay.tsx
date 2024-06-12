@@ -13,6 +13,7 @@ import { CommunityCard } from './Info/CommunityCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { LogbookCard } from './Info/LogbookCard'
+import Pokedex from './Info/Pokedex/Pokedex'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
 
@@ -115,6 +116,13 @@ export const InfoOverlay = ({
           onClick={() => dispatch(setInfoOverlay(7))}
         />
       )}
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        buttonIcon={'bug_report'}
+        position={6}
+        active={infoOverlay == 8}
+        onClick={() => dispatch(setInfoOverlay(8))}
+      />
 
       {infoOverlay == 1 && (
         <ProjectCard
@@ -158,6 +166,9 @@ export const InfoOverlay = ({
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
+      )}
+      {infoOverlay == 8 && (
+        <Pokedex activeProjectData={activeProjectData} mediaSize={mediaSize} />
       )}
     </>
   )

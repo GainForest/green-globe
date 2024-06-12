@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -43,6 +43,8 @@ const SpeciesCard = ({ species, mediaSize }) => {
         src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
         alt={scientificName}
         awsUrl={awsUrl}
+        mediaSize={mediaSize}
+        maximized={maximized}
       />
       <InfoContainer>
         <h3>{scientificName}</h3>
@@ -81,7 +83,8 @@ const CardContainer = styled.div`
 
 const StyledImage = styled.img`
   width: 100%;
-  height: 150px;
+  height: ${(props) =>
+    props.mediaSize > breakpoints.xl || props.maximized ? '150px' : '100px'};
   object-fit: ${(props) => (props.awsUrl ? 'cover' : 'contain')};
 `
 

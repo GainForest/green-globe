@@ -9,7 +9,6 @@ import SpeciesCard from './SpeciesCard'
 const Pokedex = ({ activeProjectData, mediaSize }) => {
   const [predictedPlants, setPredictedPlants] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
-
   // const [speciesData, setSpeciesData] = useState([])
 
   useEffect(() => {
@@ -22,7 +21,15 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
             .toLowerCase()}.json`
         )
         const data = await response.json()
-        setPredictedPlants(data.items)
+        // Display plants with images first
+        const hasImage = (obj) => obj.awsUrl && obj.awsUrl.trim() !== ''
+        const plantList = data.items.sort((a, b) => {
+          if (hasImage(a) === hasImage(b)) {
+            return 0
+          }
+          return hasImage(a) ? -1 : 1
+        })
+        setPredictedPlants(plantList)
       } catch (e) {
         console.log(e)
       }
@@ -58,14 +65,27 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
             {predictedPlants?.length && (
               <div>
                 <h2>Plants</h2>
-                {predictedPlants.slice(0, 5).map((plant) => (
+                {predictedPlants.slice(0, 3).map((plant) => (
                   <SpeciesCard
                     key={plant.id}
                     species={plant}
                     mediaSize={mediaSize}
                   />
                 ))}
-                <button>See more Plants</button>
+                <button
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    color: '#0070f3',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    marginTop: '8px',
+                    padding: '0',
+                    textDecoration: 'underline',
+                  }}
+                >
+                  See more Plants
+                </button>
               </div>
             )}
           </div>

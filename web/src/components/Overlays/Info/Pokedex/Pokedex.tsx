@@ -21,10 +21,8 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
             .join('-')
             .toLowerCase()}.json`
         )
-        console.log(response)
         const data = await response.json()
-        console.log(data)
-        setPredictedPlants(data.results)
+        setPredictedPlants(data.items)
       } catch (e) {
         console.log(e)
       }
@@ -57,10 +55,11 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
         />
         {toggle == 'Predicted' ? (
           <div>
+            {predictedPlants?.length && <h2>Plants</h2>}
             {predictedPlants?.length &&
-              predictedPlants.map((plant) => (
-                <SpeciesCard key={plant.id} species={plant} />
-              ))}
+              predictedPlants
+                .slice(0, 5)
+                .map((plant) => <SpeciesCard key={plant.id} species={plant} />)}
           </div>
         ) : (
           <></>

@@ -4,7 +4,7 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
     return <div>Loading...</div>
   }
   return (
-    <div>
+    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       {speciesList.map((species) => (
         <SpeciesCard
           key={species.scientificName}

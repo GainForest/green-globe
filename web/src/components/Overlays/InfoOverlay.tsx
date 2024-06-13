@@ -36,13 +36,17 @@ export const InfoOverlay = ({
   )
   const { source, type, component, props, active } = fullScreenOverlay
 
+  const handleClick = () => {
+    dispatch(toggleFullscreenOverlay())
+  }
+
   return (
     <>
       {active && (
         <ImageOverlay
           toggle={toggle}
           endpoint={source}
-          handleClick={toggleFullscreenOverlay}
+          handleClick={handleClick}
           fileType={type}
           contentProps={props}
           ContentComponent={component}
@@ -119,7 +123,7 @@ export const InfoOverlay = ({
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
-          handleClick={toggleFullscreenOverlay}
+          handleClick={handleClick}
         />
       )}
       {infoOverlay == 2 && (
@@ -134,7 +138,7 @@ export const InfoOverlay = ({
         <WildlifeCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
-          handleClick={toggleFullscreenOverlay}
+          handleClick={handleClick}
           toggle={toggle}
           setToggle={setToggle}
         />
@@ -171,13 +175,12 @@ export const ImageOverlay = ({
   ContentComponent,
   contentProps,
 }) => {
-  console.log(contentProps, ContentComponent)
   if (fileType === 'component' && ContentComponent) {
     if (ContentComponent == 'KingdomList') {
       return (
         <div className="overlay" style={{ zIndex: 4 }}>
           <button
-            onClick={() => handleClick(null, null)}
+            onClick={handleClick}
             style={{
               position: 'absolute',
               top: '10px',
@@ -185,13 +188,15 @@ export const ImageOverlay = ({
               background: 'transparent',
               border: 'none',
               color: 'white',
-              fontSize: '24px',
+              fontSize: '48px',
               cursor: 'pointer',
             }}
           >
             &times;
           </button>
-          <KingdomList {...contentProps} />
+          <div className="species-overlay">
+            <KingdomList {...contentProps} />
+          </div>
         </div>
       )
     }

@@ -90,7 +90,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
                 <button
                   onClick={() =>
                     openOverlay('KingdomList', {
-                      speciesList: activeProjectData.species,
+                      speciesList: predictedPlants,
                       mediaSize: mediaSize,
                     })
                   }

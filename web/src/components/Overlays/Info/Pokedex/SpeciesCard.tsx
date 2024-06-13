@@ -69,7 +69,7 @@ const CardContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
   position: relative;
-  margin-top: 16px;
+  margin 8px;
   width: ${(props) => {
     if (props.mediaSize > breakpoints.xl || props.maximized) {
       return '300px'

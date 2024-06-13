@@ -302,6 +302,18 @@ margin-top: 4px;
   max-height: 80%;
 }
 
+.species-overlay {
+  position: absolute;
+  top: 50px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: transparent;
+  scrollbar-width: none;
+  justify-content: center;
+}
 .search-button {
   width: 20px;
   height: 20px;

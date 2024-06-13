@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
+import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 
 import { InfoBox } from '../InfoBox'
 
@@ -14,18 +15,15 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
   // const [speciesData, setSpeciesData] = useState([])
 
   const dispatch = useDispatch()
-  const setFullScreenOverlay = useSelector(
-    (state: State) => state.fullscreenOverlay
-  )
 
   const openOverlay = (component, props) => {
     dispatch(
-      setFullScreenOverlay({
-        source: null, // If you need to specify a source for images/videos, set it here
-        type: 'component', // Specify the type, e.g., 'image', 'video', 'component'
-        component: component, // The component to render in the overlay
-        props: props, // Props for the component
-        active: true, // Set active to true to open the overlay
+      setFullscreenOverlay({
+        source: null,
+        type: 'component',
+        component: component,
+        props: props,
+        active: true,
       })
     )
   }
@@ -91,7 +89,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
                 />
                 <button
                   onClick={() =>
-                    openOverlay(KingdomList, {
+                    openOverlay('KingdomList', {
                       speciesList: activeProjectData.species,
                       mediaSize: mediaSize,
                     })

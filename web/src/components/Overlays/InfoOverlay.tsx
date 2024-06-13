@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
+import { toggleFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
@@ -13,6 +14,7 @@ import { CommunityCard } from './Info/CommunityCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { LogbookCard } from './Info/LogbookCard'
+import { KingdomList } from './Info/Pokedex/KingdomList'
 import Pokedex from './Info/Pokedex/Pokedex'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
@@ -29,42 +31,21 @@ export const InfoOverlay = ({
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-  // Position of the buttons go from left to right
-  const [fullScreenOverlay, setFullScreenOverlay] = useState<boolean>(false)
-  const [endpoint, setEndpoint] = useState<string>('')
-  const [fileType, setFileType] = useState<string | null>(null)
-  const [contentProps, setContentProps] = useState({})
-  const [ContentComponent, setContentComponent] = useState(null)
-
-  const handleClick = ({ source, type, component, props }) => {
-    if (component) {
-      setContentComponent(component)
-      setContentProps(props)
-      setFileType('component')
-    } else if (type) {
-      setFileType(type)
-    } else {
-      setFileType(null)
-    }
-    setTimeout(() => {}, 1000)
-    if (fullScreenOverlay) {
-      setFullScreenOverlay(false)
-    } else {
-      setEndpoint(source)
-      setFullScreenOverlay(true)
-    }
-  }
+  const fullScreenOverlay = useSelector(
+    (state: State) => state.fullscreenOverlay
+  )
+  const { source, type, component, props, active } = fullScreenOverlay
 
   return (
     <>
-      {fullScreenOverlay && (
+      {active && (
         <ImageOverlay
           toggle={toggle}
-          endpoint={endpoint}
-          handleClick={handleClick}
-          fileType={fileType}
-          contentProps={contentProps}
-          ContentComponent={ContentComponent}
+          endpoint={source}
+          handleClick={toggleFullscreenOverlay}
+          fileType={type}
+          contentProps={props}
+          ContentComponent={component}
         />
       )}
       <MaximizeButton mediaSize={mediaSize} style={null} />
@@ -138,7 +119,7 @@ export const InfoOverlay = ({
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
           setActiveProjectPolygon={setActiveProjectPolygon}
-          handleClick={handleClick}
+          handleClick={toggleFullscreenOverlay}
         />
       )}
       {infoOverlay == 2 && (
@@ -153,7 +134,7 @@ export const InfoOverlay = ({
         <WildlifeCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
-          handleClick={handleClick}
+          handleClick={toggleFullscreenOverlay}
           toggle={toggle}
           setToggle={setToggle}
         />
@@ -176,11 +157,7 @@ export const InfoOverlay = ({
         />
       )}
       {infoOverlay == 8 && (
-        <Pokedex
-          activeProjectData={activeProjectData}
-          mediaSize={mediaSize}
-          handleClick={handleClick}
-        />
+        <Pokedex activeProjectData={activeProjectData} mediaSize={mediaSize} />
       )}
     </>
   )
@@ -194,29 +171,30 @@ export const ImageOverlay = ({
   ContentComponent,
   contentProps,
 }) => {
+  console.log(contentProps, ContentComponent)
   if (fileType === 'component' && ContentComponent) {
-    console.log({ ContentComponent, contentProps })
-    return <div>hi</div>
-    //   return (
-    //     <div className="overlay" style={{ zIndex: 4 }}>
-    //       <button
-    //         onClick={() => handleClick(null, null)}
-    //         style={{
-    //           position: 'absolute',
-    //           top: '10px',
-    //           right: '10px',
-    //           background: 'transparent',
-    //           border: 'none',
-    //           color: 'white',
-    //           fontSize: '24px',
-    //           cursor: 'pointer',
-    //         }}
-    //       >
-    //         &times;
-    //       </button>
-    //       <ContentComponent {...contentProps} />
-    //     </div>
-    //   )
+    if (ContentComponent == 'KingdomList') {
+      return (
+        <div className="overlay" style={{ zIndex: 4 }}>
+          <button
+            onClick={() => handleClick(null, null)}
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              background: 'transparent',
+              border: 'none',
+              color: 'white',
+              fontSize: '24px',
+              cursor: 'pointer',
+            }}
+          >
+            &times;
+          </button>
+          <KingdomList {...contentProps} />
+        </div>
+      )
+    }
   }
   return (
     <div className="overlay" onClick={handleClick} style={{ zIndex: 4 }}>

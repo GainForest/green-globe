@@ -10,21 +10,40 @@ export const fullscreenOverlaySlice = createSlice({
     props: {},
   },
   reducers: {
-    setFullScreenOverlay: (state, action) => {
+    setFullscreenSource: (state, action) => {
+      state.source = action.payload
+    },
+    setFullscreenType: (state, action) => {
+      state.type = action.payload
+    },
+    setFullscreenComponent: (state, action) => {
+      state.component = action.payload
+    },
+    setFullscreenProps: (state, action) => {
+      state.props = action.payload
+    },
+    setFullscreenOverlay: (state, action) => {
       state.source = action.payload.source
       state.type = action.payload.type
       state.component = action.payload.component
       state.props = action.payload.props
       state.active = action.payload.active
     },
-    toggleFullScreenOverlay: (state) => {
+
+    toggleFullscreenOverlay: (state) => {
       state.active = !state.active
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setFullScreenOverlay, toggleFullScreenOverlay } =
-  fullscreenOverlaySlice.actions
+export const {
+  setFullscreenComponent,
+  setFullscreenOverlay,
+  setFullscreenProps,
+  setFullscreenSource,
+  setFullscreenType,
+  toggleFullscreenOverlay,
+} = fullscreenOverlaySlice.actions
 
 export default fullscreenOverlaySlice.reducer

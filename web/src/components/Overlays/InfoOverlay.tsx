@@ -2,7 +2,8 @@ import { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { setInfoOverlay, setMaximized } from 'src/reducers/overlaysReducer'
+import { toggleFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
 import { MaximizeButton } from '../Map/components/MaximizeButton'
@@ -13,6 +14,7 @@ import { CommunityCard } from './Info/CommunityCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { LogbookCard } from './Info/LogbookCard'
+import { KingdomList } from './Info/Pokedex/KingdomList'
 import Pokedex from './Info/Pokedex/Pokedex'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
@@ -29,34 +31,25 @@ export const InfoOverlay = ({
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-  // Position of the buttons go from left to right
-  const [fullScreenOverlay, setFullScreenOverlay] = useState<boolean>(false)
-  const [endpoint, setEndpoint] = useState<string>('')
-  const [fileType, setFileType] = useState<string | null>(null)
+  const fullScreenOverlay = useSelector(
+    (state: State) => state.fullscreenOverlay
+  )
+  const { source, type, component, props, active } = fullScreenOverlay
 
-  const handleClick = (source, type: string | null) => {
-    // optional "type" param if fullScreenOverlay is used outside of WildlifeCard.tsx
-    if (type) {
-      setFileType(type)
-    } else {
-      setFileType(null)
-    }
-    if (fullScreenOverlay) {
-      setFullScreenOverlay(false)
-    } else {
-      setEndpoint(source)
-      setFullScreenOverlay(true)
-    }
+  const handleClick = () => {
+    dispatch(toggleFullscreenOverlay())
   }
 
   return (
     <>
-      {fullScreenOverlay && (
+      {active && (
         <ImageOverlay
           toggle={toggle}
-          endpoint={endpoint}
+          endpoint={source}
           handleClick={handleClick}
-          fileType={fileType}
+          fileType={type}
+          contentProps={props}
+          ContentComponent={component}
         />
       )}
       <MaximizeButton mediaSize={mediaSize} style={null} />
@@ -174,7 +167,40 @@ export const InfoOverlay = ({
   )
 }
 
-export const ImageOverlay = ({ toggle, endpoint, handleClick, fileType }) => {
+export const ImageOverlay = ({
+  toggle,
+  endpoint,
+  handleClick,
+  fileType,
+  ContentComponent,
+  contentProps,
+}) => {
+  if (fileType === 'component' && ContentComponent) {
+    if (ContentComponent == 'KingdomList') {
+      return (
+        <div className="overlay" style={{ zIndex: 4 }}>
+          <button
+            onClick={handleClick}
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              background: 'transparent',
+              border: 'none',
+              color: 'white',
+              fontSize: '48px',
+              cursor: 'pointer',
+            }}
+          >
+            &times;
+          </button>
+          <div className="species-overlay">
+            <KingdomList {...contentProps} />
+          </div>
+        </div>
+      )
+    }
+  }
   return (
     <div className="overlay" onClick={handleClick} style={{ zIndex: 4 }}>
       {fileType !== 'video' && toggle == 'Photos' ? (

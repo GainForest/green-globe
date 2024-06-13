@@ -21,6 +21,13 @@ interface State {
   project: {
     id: string
   }
+  fullscreenOverlay: {
+    active: boolean
+    source: string
+    type: string
+    component: string
+    props: any
+  }
 }
 
 interface Cart {

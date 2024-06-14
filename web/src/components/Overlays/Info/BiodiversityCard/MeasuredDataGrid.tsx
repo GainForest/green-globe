@@ -36,17 +36,17 @@ export const MeasuredDataGrid = ({
       <IconBar>
         <IconButton
           buttonIcon={'schedule'}
-          active={false}
+          active={displayedInsight == 'circadian'}
           onClick={() => setDisplayedInsight('circadian')}
         />
         <IconButton
           buttonIcon={'bug_report'}
-          active={false}
+          active={displayedInsight == 'insectspy'}
           onClick={() => setDisplayedInsight('insectspy')}
         />
         <IconButton
           buttonIcon={'park'}
-          active={false}
+          active={displayedInsight == 'trees'}
           onClick={() => setDisplayedInsight('trees')}
         />
       </IconBar>
@@ -69,9 +69,8 @@ export const MeasuredDataGrid = ({
 }
 
 const IconBar = styled.div`
-width: 100%
-height: 40px
-& > * {
-  margin: 4px
-}
+  width: 100%;
+  height: 40px;
+  display: flex;
+  gap: 6px;
 `

@@ -19,6 +19,9 @@ export const MeasuredDataGrid = ({
   handleSpeciesClick,
   selectedSpecies,
 }) => {
+  const [displayedInsight, setDisplayedInsight] = useState<
+    'circadian' | 'trees' | 'insectspy'
+  >('circadian')
   const [individuals, setIndividuals] = useState([])
 
   // Fetch the finals_new.csv, and display each individual in the insect spy.
@@ -34,25 +37,33 @@ export const MeasuredDataGrid = ({
         <IconButton
           buttonIcon={'schedule'}
           active={false}
-          mediaSize={mediaSize}
+          onClick={() => setDisplayedInsight('circadian')}
         />
         <IconButton
           buttonIcon={'bug_report'}
           active={false}
-          mediaSize={mediaSize}
+          onClick={() => setDisplayedInsight('insectspy')}
         />
-        <IconButton buttonIcon={'park'} active={false} mediaSize={mediaSize} />
+        <IconButton
+          buttonIcon={'park'}
+          active={false}
+          onClick={() => setDisplayedInsight('trees')}
+        />
       </IconBar>
-      <CircadianRythmn />
-      <IndividualDataGrid data={individuals} />
-      <MeasuredTreesGrid
-        measuredData={measuredData}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        loading={loading}
-        handleSpeciesClick={handleSpeciesClick}
-        selectedSpecies={selectedSpecies}
-      />
+      {displayedInsight == 'circadian' && <CircadianRythmn />}
+      {displayedInsight == 'insectspy' && (
+        <IndividualDataGrid data={individuals} />
+      )}
+      {displayedInsight == 'trees' && (
+        <MeasuredTreesGrid
+          measuredData={measuredData}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          loading={loading}
+          handleSpeciesClick={handleSpeciesClick}
+          selectedSpecies={selectedSpecies}
+        />
+      )}
     </div>
   )
 }

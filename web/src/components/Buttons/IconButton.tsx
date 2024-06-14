@@ -1,11 +1,8 @@
 import styled from 'styled-components'
 
-import { breakpoints } from 'src/constants'
-
-export const IconButton = ({ buttonIcon, active, mediaSize }) => {
-  console.log(mediaSize)
+export const IconButton = ({ buttonIcon, active, onClick }) => {
   return (
-    <IconButtonContainer active={active}>
+    <IconButtonContainer active={active} onClick={onClick}>
       <span
         className="material-icons-round"
         style={{

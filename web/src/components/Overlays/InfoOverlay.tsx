@@ -14,6 +14,7 @@ import { CommunityCard } from './Info/CommunityCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { LogbookCard } from './Info/LogbookCard'
+import ActiveSpeciesCard from './Info/Pokedex/ActiveSpeciesCard'
 import { KingdomList } from './Info/Pokedex/KingdomList'
 import Pokedex from './Info/Pokedex/Pokedex'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
@@ -30,6 +31,7 @@ export const InfoOverlay = ({
 }) => {
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
+
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const fullScreenOverlay = useSelector(
     (state: State) => state.fullscreenOverlay
@@ -197,6 +199,12 @@ export const ImageOverlay = ({
           <div className="species-overlay">
             <KingdomList {...contentProps} />
           </div>
+        </div>
+      )
+    } else if (ContentComponent == 'ActiveSpeciesCard') {
+      return (
+        <div className="overlay" style={{ zIndex: 5 }}>
+          <ActiveSpeciesCard {...contentProps} />
         </div>
       )
     }

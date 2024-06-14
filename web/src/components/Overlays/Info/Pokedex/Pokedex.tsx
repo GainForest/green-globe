@@ -1,34 +1,39 @@
 import { useEffect, useState } from 'react'
 
-import { useDispatch } from 'react-redux'
-
-import { ToggleButton } from 'src/components/Map/components/ToggleButton'
-import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
+import Modal from 'react-modal'
 
 import { InfoBox } from '../InfoBox'
 
 import { KingdomList } from './KingdomList'
 
 const Pokedex = ({ activeProjectData, mediaSize }) => {
-  const [predictedPlants, setPredictedPlants] = useState([])
-  const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
-  // const [speciesData, setSpeciesData] = useState([])
+  const [allKingdoms, setAllKingdoms] = useState([])
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [species, setSpecies] = useState([])
 
-  const dispatch = useDispatch()
+  Modal.setAppElement('#redwood-app')
 
-  const openOverlay = (component, props) => {
-    dispatch(
-      setFullscreenOverlay({
-        source: null,
-        type: 'component',
-        component: component,
-        props: props,
-        active: true,
-      })
-    )
+  const openModal = (speciesList) => {
+    setSpecies(speciesList)
+    setModalIsOpen(true)
   }
 
   useEffect(() => {
+    const updateKingdoms = (newKingdom) => {
+      const index = allKingdoms.findIndex(
+        (kingdom) => kingdom.name === newKingdom.name
+      )
+      if (index >= 0) {
+        setAllKingdoms((allKingdoms) =>
+          allKingdoms.map((kingdom, idx) =>
+            idx === index ? newKingdom : kingdom
+          )
+        )
+      } else {
+        setAllKingdoms((allKingdoms) => [...allKingdoms, newKingdom])
+      }
+    }
+
     const getPlantsList = async () => {
       try {
         const filename =
@@ -46,7 +51,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
           }
           return hasImage(a) ? -1 : 1
         })
-        setPredictedPlants(plantList)
+        updateKingdoms({ name: 'Plants', data: plantList })
       } catch (e) {
         console.log(e)
       }
@@ -54,67 +59,69 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
     if (activeProjectData) {
       getPlantsList()
     }
-  }, [activeProjectData])
-
-  // useEffect(() => {
-  //   const getSpeciesData = async () => {
-  //     const res = await Promise.all(
-  //       speciesList.map((species) =>
-  //         fetch(`${process.env.AWS_STORAGE}/restor/${species.name}.json`)
-  //       )
-  //     )
-  //     setSpeciesData(res)
-  //   }
-  //   getSpeciesData()
-  // }, [speciesList])
+  }, [activeProjectData, allKingdoms])
 
   return (
     <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
         <h1>Pokedex</h1>
-        <ToggleButton
-          active={toggle}
-          setToggle={setToggle}
-          options={['Predicted', 'Measured']}
-          mediaSize={mediaSize}
-        />
-        {toggle == 'Predicted' ? (
-          <div>
-            {predictedPlants?.length > 0 && (
-              <div>
-                <h2>Plants</h2>
-                <KingdomList
-                  speciesList={predictedPlants.slice(0, 3)}
-                  mediaSize={mediaSize}
-                />
-                <button
-                  onClick={() =>
-                    openOverlay('KingdomList', {
-                      speciesList: predictedPlants,
-                      mediaSize: mediaSize,
-                    })
-                  }
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    color: '#0070f3',
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    marginTop: '8px',
-                    padding: '0',
-                    textDecoration: 'underline',
-                  }}
-                >
-                  See more Plants
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <></>
-        )}
+        <div>
+          {allKingdoms.map((kingdom) => (
+            <div key={kingdom.name}>
+              <h2>{kingdom.name}</h2>
+              <KingdomList
+                speciesList={kingdom.data.slice(0, 3)}
+                mediaSize={mediaSize}
+              />
+              <button
+                onClick={() => openModal(kingdom.data)}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  color: '#0070f3',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  marginTop: '8px',
+                  padding: '0',
+                  textDecoration: 'underline',
+                }}
+              >
+                See more {kingdom.name.toLowerCase()}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={customStyles}
+      >
+        <KingdomList speciesList={species} mediaSize={mediaSize} />
+      </Modal>
     </InfoBox>
   )
 }
+
 export default Pokedex
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    width: '80%',
+    height: '80%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '10px',
+    padding: '20px',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    scrollbarWidth: 'none',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    zIndex: 3,
+  },
+}

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
+import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
@@ -16,7 +17,7 @@ import {
 } from './biodiversityCardHelpers'
 import { CircadianRythmn } from './CircadianRythmn'
 import { IndividualDataGrid } from './IndividualDataGrid'
-import { MeasuredDataGrid } from './MeasuredDataGrid'
+import { MeasuredTreesGrid } from './MeasuredTreesGrid'
 import { PredictedBirds } from './PredictedBirds'
 
 export const BiodiversityCard = ({
@@ -140,7 +141,7 @@ export const BiodiversityCard = ({
           </div>
         ) : (
           <div>
-            <div style={{ width: '100%', height: '40px' }}>
+            <IconBar>
               <IconButton
                 buttonIcon={'schedule'}
                 active={false}
@@ -156,10 +157,10 @@ export const BiodiversityCard = ({
                 active={false}
                 mediaSize={mediaSize}
               />
-            </div>
+            </IconBar>
             <CircadianRythmn />
             <IndividualDataGrid data={individuals} />
-            <MeasuredDataGrid
+            <MeasuredTreesGrid
               measuredData={measuredData}
               sortBy={sortBy}
               setSortBy={setSortBy}
@@ -201,3 +202,11 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
     )
   }
 }
+
+const IconBar = styled.div`
+width: 100%
+height: 40px
+& > * {
+  margin: 4px
+}
+`

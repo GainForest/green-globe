@@ -3,14 +3,13 @@ import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
 import { MeasuredDataGridCard } from './MeasuredDataPhoto'
 
-export const MeasuredDataGrid = ({
+export const MeasuredTreesGrid = ({
   sortBy,
   setSortBy,
   measuredData,
   handleSpeciesClick,
   selectedSpecies,
   loading,
-  mediaSize,
 }) => {
   if (loading) {
     return (
@@ -51,7 +50,6 @@ export const MeasuredDataGrid = ({
               )}
               <p>Sort By:</p>
               <ToggleButton
-                mediaSize={mediaSize}
                 active={sortBy}
                 setToggle={setSortBy}
                 options={['Name', 'Count']}

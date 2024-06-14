@@ -171,11 +171,3 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
     )
   }
 }
-
-const IconBar = styled.div`
-width: 100%
-height: 40px
-& > * {
-  margin: 4px
-}
-`

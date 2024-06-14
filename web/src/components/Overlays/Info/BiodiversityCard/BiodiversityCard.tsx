@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
 import * as d3 from 'd3'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
@@ -15,6 +14,7 @@ import {
   fetchTreePlantings,
   processBiodiversityData,
 } from './biodiversityCardHelpers'
+import { CircadianRythmn } from './CircadianRythmn'
 import { IndividualDataGrid } from './IndividualDataGrid'
 import { MeasuredDataGrid } from './MeasuredDataGrid'
 import { PredictedBirds } from './PredictedBirds'
@@ -140,18 +140,24 @@ export const BiodiversityCard = ({
           </div>
         ) : (
           <div>
-            <IconButton
-              buttonIcon={'schedule'}
-              active={false}
-              mediaSize={mediaSize}
-            />
-            <h1>Circadian Rythmn</h1>
-            <div>
-              <p> Measured activity of different frequencies in the forest. </p>
+            <div style={{ width: '100%', height: '40px' }}>
+              <IconButton
+                buttonIcon={'schedule'}
+                active={false}
+                mediaSize={mediaSize}
+              />
+              <IconButton
+                buttonIcon={'bug_report'}
+                active={false}
+                mediaSize={mediaSize}
+              />
+              <IconButton
+                buttonIcon={'park'}
+                active={false}
+                mediaSize={mediaSize}
+              />
             </div>
-            {SOUNDSCAPE_PATHS.map((path) => (
-              <img src={`${process.env.AWS_STORAGE}/${path}`} />
-            ))}
+            <CircadianRythmn />
             <IndividualDataGrid data={individuals} />
             <MeasuredDataGrid
               measuredData={measuredData}

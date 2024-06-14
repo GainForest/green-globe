@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import * as d3 from 'd3'
 import styled from 'styled-components'
 
-import { IconButton } from 'src/components/Buttons/IconButton'
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
@@ -15,9 +14,7 @@ import {
   fetchTreePlantings,
   processBiodiversityData,
 } from './biodiversityCardHelpers'
-import { CircadianRythmn } from './CircadianRythmn'
-import { IndividualDataGrid } from './IndividualDataGrid'
-import { MeasuredTreesGrid } from './MeasuredTreesGrid'
+import { MeasuredDataGrid } from './MeasuredDataGrid'
 import { PredictedBirds } from './PredictedBirds'
 
 export const BiodiversityCard = ({
@@ -140,35 +137,16 @@ export const BiodiversityCard = ({
             <PredictedAnimalsGrid biodiversity={biodiversity} />
           </div>
         ) : (
-          <div>
-            <IconBar>
-              <IconButton
-                buttonIcon={'schedule'}
-                active={false}
-                mediaSize={mediaSize}
-              />
-              <IconButton
-                buttonIcon={'bug_report'}
-                active={false}
-                mediaSize={mediaSize}
-              />
-              <IconButton
-                buttonIcon={'park'}
-                active={false}
-                mediaSize={mediaSize}
-              />
-            </IconBar>
-            <CircadianRythmn />
-            <IndividualDataGrid data={individuals} />
-            <MeasuredTreesGrid
-              measuredData={measuredData}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              loading={loading}
-              handleSpeciesClick={handleSpeciesClick}
-              selectedSpecies={selectedSpecies}
-            />
-          </div>
+          <MeasuredDataGrid
+            loading={loading}
+            measuredData={measuredData}
+            setLoading={setLoading}
+            mediaSize={mediaSize}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            selectedSpecies={selectedSpecies}
+            handleSpeciesClick={handleSpeciesClick}
+          />
         )}
       </div>
     </InfoBox>

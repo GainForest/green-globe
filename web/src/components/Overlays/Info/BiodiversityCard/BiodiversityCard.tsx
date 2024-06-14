@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
 import * as d3 from 'd3'
 
+import { IconButton } from 'src/components/Buttons/IconButton'
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
@@ -139,6 +140,11 @@ export const BiodiversityCard = ({
           </div>
         ) : (
           <div>
+            <IconButton
+              buttonIcon={'schedule'}
+              active={false}
+              mediaSize={mediaSize}
+            />
             <h1>Circadian Rythmn</h1>
             <div>
               <p> Measured activity of different frequencies in the forest. </p>

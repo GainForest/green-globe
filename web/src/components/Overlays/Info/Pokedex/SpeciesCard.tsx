@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 const SpeciesCard = ({ species, mediaSize }) => {
-  const { scientificName, iucnCategory, awsUrl, info } = species
+  const { scientificName, iucnCategory, awsUrl } = species
   const dispatch = useDispatch()
 
   const backgroundColors = {

@@ -31,6 +31,7 @@ export const InfoOverlay = ({
 }) => {
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
+
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const fullScreenOverlay = useSelector(
     (state: State) => state.fullscreenOverlay

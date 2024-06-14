@@ -73,7 +73,7 @@ export const MeasuredTreesGrid = ({
         </div>
       )
     } else {
-      return <p>There is not yet any measured trees for this project.</p>
+      return <p>This project has not yet measured any trees.</p>
     }
   }
 }

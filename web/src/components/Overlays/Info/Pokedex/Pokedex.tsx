@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import Modal from 'react-modal'
-import { useDispatch } from 'react-redux'
-
-import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 
 import { InfoBox } from '../InfoBox'
 
@@ -14,25 +11,12 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
   const [allKingdoms, setAllKingdoms] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
-  const dispatch = useDispatch()
 
   Modal.setAppElement('#redwood-app')
 
   const openModal = (speciesList) => {
     setModalIsOpen(true)
     setSpecies(speciesList)
-  }
-
-  const openOverlay = (component, props) => {
-    dispatch(
-      setFullscreenOverlay({
-        source: null,
-        type: 'component',
-        component: component,
-        props: props,
-        active: true,
-      })
-    )
   }
 
   useEffect(() => {
@@ -61,7 +45,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
     if (activeProjectData) {
       getPlantsList()
     }
-  }, [activeProjectData])
+  }, [activeProjectData, allKingdoms])
 
   // useEffect(() => {
   //   const getSpeciesData = async () => {
@@ -100,19 +84,19 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
                   textDecoration: 'underline',
                 }}
               >
-                See more {kingdom.name.toLowerCase}
+                See more {kingdom.name.toLowerCase()}
               </button>
             </div>
           ))}
         </div>
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          style={customStyles}
-        >
-          <KingdomList speciesList={species} mediaSize={mediaSize} />
-        </Modal>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={customStyles}
+      >
+        <KingdomList speciesList={species} mediaSize={mediaSize} />
+      </Modal>
     </InfoBox>
   )
 }
@@ -124,7 +108,7 @@ const customStyles = {
     top: '50%',
     left: '50%',
     width: '80%',
-    maxWidth: '800px',
+    height: '80%',
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
@@ -132,10 +116,11 @@ const customStyles = {
     border: '1px solid #ccc',
     borderRadius: '10px',
     padding: '20px',
-    backgroundColor: 'black',
-    overflowY: 'auto',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    scrollbarWidth: 'none',
   },
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    zIndex: 3,
   },
 }

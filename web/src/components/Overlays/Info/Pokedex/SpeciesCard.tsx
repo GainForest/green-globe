@@ -1,10 +1,20 @@
-import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+
+import Modal from 'react-modal'
 import styled from 'styled-components'
 
-import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
+import { breakpoints } from 'src/constants'
+
+import ActiveSpeciesCard from './ActiveSpeciesCard'
 const SpeciesCard = ({ species, mediaSize }) => {
   const { scientificName, iucnCategory, awsUrl } = species
-  const dispatch = useDispatch()
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+
+  Modal.setAppElement('#redwood-app')
+
+  const openModal = () => {
+    setModalIsOpen(true)
+  }
 
   const backgroundColors = {
     LC: '#4CAF50',
@@ -13,22 +23,40 @@ const SpeciesCard = ({ species, mediaSize }) => {
     CR: '#F44336',
   }
 
-  const handleClick = () => {
-    dispatch(
-      setFullscreenOverlay({
-        type: 'component',
-        component: 'ActiveSpeciesCard',
-        props: { species, mediaSize, backgroundColors },
-        active: true,
-      })
-    )
+  const modalStyles = {
+    content: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      width:
+        mediaSize > breakpoints.xl
+          ? '500px'
+          : mediaSize > breakpoints.m
+          ? '400px'
+          : '96px',
+      height:
+        mediaSize > breakpoints.xl || mediaSize > breakpoints.m
+          ? '300px'
+          : '96px',
+
+      transform: 'translate(-50%, -50%)',
+      border: '1px solid #ccc',
+      borderRadius: '10px',
+      backgroundColor: 'transparent',
+      padding: 0,
+      overflow: 'hidden',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.75)',
+      zIndex: 4,
+    },
   }
 
   return (
     <CardContainer
       backgroundColor={backgroundColors[iucnCategory] || '#ccc'}
       mediaSize={mediaSize}
-      onClick={handleClick}
+      onClick={openModal}
     >
       <StyledImage
         src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
@@ -41,6 +69,17 @@ const SpeciesCard = ({ species, mediaSize }) => {
       <CategoryTag>
         <span>{iucnCategory}</span>
       </CategoryTag>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={modalStyles}
+      >
+        <ActiveSpeciesCard
+          species={species}
+          mediaSize={mediaSize}
+          backgroundColors={backgroundColors}
+        />
+      </Modal>
     </CardContainer>
   )
 }

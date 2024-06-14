@@ -1,16 +1,13 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useRef } from 'react'
 
-import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
-import { toggleFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 
 const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
   const { scientificName, iucnCategory, awsUrl, info } = species
 
-  const dispatch = useDispatch()
   const dnaAudioRef = useRef(null)
   // const cantoAudioRef = useRef(null)
 
@@ -22,7 +19,7 @@ const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
   //   scientificName
   // )}`
 
-  const toggleAudio = async (type) => {
+  const toggleAudio = async () => {
     const audio = dnaAudioRef.current
     // if (type === 'canto') {
     //   const res = await fetch(cantoAudioUrl)
@@ -40,30 +37,11 @@ const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
     }
   }
 
-  const handleClick = () => {
-    dispatch(toggleFullscreenOverlay())
-  }
-
   return (
     <CardContainer
       backgroundColor={backgroundColors[iucnCategory] || '#ccc'}
       mediaSize={mediaSize}
     >
-      <button
-        onClick={handleClick}
-        style={{
-          position: 'absolute',
-          top: '-8px',
-          right: '0',
-          background: 'transparent',
-          border: 'none',
-          color: 'white',
-          fontSize: '48px',
-          cursor: 'pointer',
-        }}
-      >
-        &times;
-      </button>
       <StyledImage
         src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
         alt={scientificName}
@@ -71,7 +49,7 @@ const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
       />
       <InfoContainer mediaSize={mediaSize}>
         <h3>{scientificName}</h3>
-        <StyledButton onClick={() => toggleAudio('dna')}>
+        <StyledButton onClick={() => toggleAudio()}>
           {!dnaAudioRef?.current?.paused ? 'Pause' : 'Play'} DNA
         </StyledButton>
       </InfoContainer>
@@ -83,7 +61,6 @@ const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
   )
 }
 
-// Styled components
 const CardContainer = styled.div`
   background-color: ${(props) => props.backgroundColor};
   cursor: pointer;
@@ -91,8 +68,7 @@ const CardContainer = styled.div`
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
-  position: absolute;
-  margin: 8px;
+  position: relative
   width: ${(props) => {
     if (props.mediaSize > breakpoints.xl) {
       return '500px'
@@ -111,11 +87,11 @@ const CardContainer = styled.div`
       return '96px'
     }
   }};
-  transform: scale(1.5);
+  // transform: scale(1.5);
   z-index: 4;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out,
-    top 0.3s ease-in-out, left 0.3s ease-in-out;
-  opacity: 1;
+  // transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out,
+  //   top 0.3s ease-in-out, left 0.3s ease-in-out;
+  // opacity: 1;
   top: 20vh;
   left: 30vw;
 `

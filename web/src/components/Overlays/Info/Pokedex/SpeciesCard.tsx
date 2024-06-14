@@ -19,6 +19,7 @@ const SpeciesCard = ({
   const backgroundColors = {
     LC: '#4CAF50',
     EN: '#FFC107',
+    VU: '#FF9800',
     CR: '#F44336',
   }
 
@@ -52,10 +53,13 @@ const SpeciesCard = ({
   }
 
   const handleClick = () => {
-    if (fullscreenOverlay) {
-      setActiveSpeciesName(
-        scientificName === activeSpeciesName ? null : scientificName
-      )
+    if (!fullscreenOverlay) {
+      return
+    }
+    if (activeSpeciesName === scientificName) {
+      return
+    } else {
+      setActiveSpeciesName(activeSpeciesName ? null : scientificName)
     }
   }
 
@@ -67,8 +71,8 @@ const SpeciesCard = ({
       maximized={maximized}
       onClick={handleClick}
       fullscreenOverlay={fullscreenOverlay}
-      activeSpeciesName={activeSpeciesName}
-      scientificName={scientificName}
+      isActive={activeSpeciesName === scientificName}
+      isDulled={activeSpeciesName && activeSpeciesName !== scientificName}
     >
       <StyledImage
         src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
@@ -76,8 +80,13 @@ const SpeciesCard = ({
         awsUrl={awsUrl}
         mediaSize={mediaSize}
         maximized={maximized}
+        isActive={activeSpeciesName === scientificName}
       />
-      <InfoContainer>
+      <InfoContainer
+        mediaSize={mediaSize}
+        maximized={maximized}
+        isActive={activeSpeciesName === scientificName}
+      >
         <h3>{scientificName}</h3>
         <StyledButton onClick={() => toggleAudio('dna')}>
           {!dnaAudioRef.current?.paused ? 'Pause' : 'Play'} DNA
@@ -85,10 +94,16 @@ const SpeciesCard = ({
         {/* <StyledButton onClick={() => toggleAudio('canto')}>
           {!cantoAudioRef.current?.paused ? 'Pause' : 'Play'} Call
         </StyledButton> */}
-        {fullscreenOverlay && activeSpeciesName === scientificName && (
-          <p>{info}</p>
-        )}
       </InfoContainer>
+      {fullscreenOverlay && activeSpeciesName === scientificName && (
+        <InfoContainer
+          mediaSize={mediaSize}
+          maximized={maximized}
+          isActive={activeSpeciesName === scientificName}
+        >
+          <p>{info}</p>
+        </InfoContainer>
+      )}
       <CategoryTag>
         <span>{iucnCategory}</span>
       </CategoryTag>
@@ -102,7 +117,12 @@ export default SpeciesCard
 const CardContainer = styled.div`
   background-color: ${(props) =>
     props.backgroundColors[props.iucnCategory] || '#ccc'};
-  cursor: ${(props) => (props.fullscreenOverlay ? 'pointer' : 'default')};
+  cursor: ${(props) =>
+    !props.fullscreenOverlay.active
+      ? 'default'
+      : props.isDulled
+      ? 'default'
+      : 'pointer'};
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -118,30 +138,35 @@ const CardContainer = styled.div`
       return '200px'
     }
   }};
-  transform: ${(props) =>
-    props.activeSpeciesName === props.scientificName
-      ? 'scale(1.5)'
-      : 'scale(1)'};
-  z-index: ${(props) =>
-    props.activeSpeciesName === props.scientificName ? 4 : 1};
-  transition: transform 0.3s ease-in-out;
-  opacity: ${(props) =>
-    props.fullscreenOverlay && props.activeSpeciesName !== props.scientificName
-      ? 0.5
-      : 1};
+  transform: ${(props) => (props.isActive ? 'scale(1.5)' : 'scale(1)')};
+  z-index: ${(props) => (props.isActive ? 999 : 1)};
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out,
+    top 0.3s ease-in-out, left 0.3s ease-in-out;
+  opacity: ${(props) => (props.isDulled ? 0.6 : 1)};
+  top: ${(props) => (props.isActive ? '10vh' : 'auto')};
+  left: ${(props) => (props.isActive ? '30vw' : 'auto')};
+  position: ${(props) => (props.isActive ? 'absolute' : 'relative')};
 `
 
 const StyledImage = styled.img`
   width: 100%;
   height: ${(props) =>
-    props.mediaSize > breakpoints.xl || props.maximized ? '150px' : '80px'};
+    props.isActive
+      ? '216px'
+      : props.mediaSize > breakpoints.xl || props.maximized
+      ? '160px'
+      : '80px'};
   object-fit: ${(props) => (props.awsUrl ? 'cover' : 'contain')};
 `
 
 const InfoContainer = styled.div`
   display: flex;
   height: ${(props) =>
-    props.mediaSize > breakpoints.xl || props.maximized ? '160px' : '48px'};
+    props.isActive
+      ? '280'
+      : props.mediaSize > breakpoints.xl || props.maximized
+      ? '160px'
+      : '48px'};
   justify-content: space-between;
   align-items: center;
   padding: 8px;

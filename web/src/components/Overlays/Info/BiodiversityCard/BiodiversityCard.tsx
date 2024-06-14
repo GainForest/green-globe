@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import * as d3 from 'd3'
 import styled from 'styled-components'
 
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
@@ -25,17 +24,9 @@ export const BiodiversityCard = ({
 }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
-  const [individuals, setIndividuals] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
-
-  // Fetch the finals_new.csv, and display each individual in the insect spy.
-  useEffect(() => {
-    d3.csv(`${process.env.AWS_STORAGE}/insectspy/finals_new.csv`)
-      .then(setIndividuals)
-      .then(() => setLoading(false))
-  }, [])
 
   useEffect(() => {
     if (!activeProjectData) {

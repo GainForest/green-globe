@@ -12,10 +12,6 @@ const SpeciesCard = ({ species, mediaSize }) => {
 
   Modal.setAppElement('#redwood-app')
 
-  const openModal = () => {
-    setModalIsOpen(true)
-  }
-
   const backgroundColors = {
     LC: '#4CAF50',
     EN: '#FFC107',
@@ -25,7 +21,6 @@ const SpeciesCard = ({ species, mediaSize }) => {
 
   const modalStyles = {
     content: {
-      position: 'absolute',
       top: '50%',
       left: '50%',
       width:
@@ -42,12 +37,12 @@ const SpeciesCard = ({ species, mediaSize }) => {
       transform: 'translate(-50%, -50%)',
       border: '1px solid #ccc',
       borderRadius: '10px',
-      backgroundColor: 'transparent',
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
       padding: 0,
       overflow: 'hidden',
     },
     overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.75)',
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
       zIndex: 4,
     },
   }
@@ -56,7 +51,7 @@ const SpeciesCard = ({ species, mediaSize }) => {
     <CardContainer
       backgroundColor={backgroundColors[iucnCategory] || '#ccc'}
       mediaSize={mediaSize}
-      onClick={openModal}
+      onClick={() => setModalIsOpen(true)}
     >
       <StyledImage
         src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
@@ -70,6 +65,7 @@ const SpeciesCard = ({ species, mediaSize }) => {
         <span>{iucnCategory}</span>
       </CategoryTag>
       <Modal
+        onClick={() => console.log('click')}
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         style={modalStyles}
@@ -101,7 +97,8 @@ const CardContainer = styled.div`
 const StyledImage = styled.img`
   width: 100%;
   max-height: 96px;
-  object-fit: contain;
+  object-fit: ${(props) =>
+    props.awsUrl?.startsWith('/placeholder') ? 'contain' : 'cover'};
 `
 
 const InfoContainer = styled.div`

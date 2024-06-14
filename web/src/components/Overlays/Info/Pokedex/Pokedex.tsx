@@ -7,7 +7,6 @@ import { InfoBox } from '../InfoBox'
 import { KingdomList } from './KingdomList'
 
 const Pokedex = ({ activeProjectData, mediaSize }) => {
-  // const [speciesData, setSpeciesData] = useState([])
   const [allKingdoms, setAllKingdoms] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
@@ -15,11 +14,26 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
   Modal.setAppElement('#redwood-app')
 
   const openModal = (speciesList) => {
-    setModalIsOpen(true)
     setSpecies(speciesList)
+    setModalIsOpen(true)
   }
 
   useEffect(() => {
+    const updateKingdoms = (newKingdom) => {
+      const index = allKingdoms.findIndex(
+        (kingdom) => kingdom.name === newKingdom.name
+      )
+      if (index >= 0) {
+        setAllKingdoms((allKingdoms) =>
+          allKingdoms.map((kingdom, idx) =>
+            idx === index ? newKingdom : kingdom
+          )
+        )
+      } else {
+        setAllKingdoms((allKingdoms) => [...allKingdoms, newKingdom])
+      }
+    }
+
     const getPlantsList = async () => {
       try {
         const filename =
@@ -37,7 +51,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
           }
           return hasImage(a) ? -1 : 1
         })
-        setAllKingdoms([...allKingdoms, { name: 'Plants', data: plantList }])
+        updateKingdoms({ name: 'Plants', data: plantList })
       } catch (e) {
         console.log(e)
       }
@@ -46,18 +60,6 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
       getPlantsList()
     }
   }, [activeProjectData, allKingdoms])
-
-  // useEffect(() => {
-  //   const getSpeciesData = async () => {
-  //     const res = await Promise.all(
-  //       speciesList.map((species) =>
-  //         fetch(`${process.env.AWS_STORAGE}/restor/${species.name}.json`)
-  //       )
-  //     )
-  //     setSpeciesData(res)
-  //   }
-  //   getSpeciesData()
-  // }, [speciesList])
 
   return (
     <InfoBox mediaSize={mediaSize}>
@@ -113,7 +115,6 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    border: '1px solid #ccc',
     borderRadius: '10px',
     padding: '20px',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',

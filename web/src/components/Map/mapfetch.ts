@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import geojson2h3 from 'geojson2h3'
 
 export const fetchHiveLocations = (setHiveLocations) => {
@@ -20,12 +22,16 @@ export const fetchHexagons = (setHexagons) => {
     })
 }
 
-export const fetchEDNALocations = (setEDNALocations) => {
-  fetch(`${process.env.AWS_STORAGE}/edna/sample-locations-semifinals.geojson`)
+export const fetchEDNALocations = async (map) => {
+  let ednaLocations = undefined
+
+  await fetch(
+    `${process.env.AWS_STORAGE}/edna/sample-locations-semifinals.geojson`
+  )
     .then((response) => response.json())
-    .then((ednaLocations) => {
-      setEDNALocations(ednaLocations)
-    })
+    .then((res) => (ednaLocations = res))
+
+  map.getSource('ednaSource')?.setData(ednaLocations)
 }
 
 export const fetchGainForestCenterpoints = (setGeoJson) => {

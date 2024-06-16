@@ -121,3 +121,13 @@ export const countryCodes = [
   'SO',
   'ZW',
 ]
+
+export const EMPTY_GEOJSON = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      geometry: null,
+    },
+  ],
+}

@@ -1,5 +1,6 @@
 import mapboxgl from 'mapbox-gl'
 
+import { EMPTY_GEOJSON } from 'src/constants'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import {
@@ -27,8 +28,7 @@ import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 export const addAllSourcesAndLayers = (
   map: mapboxgl.Map,
   hiveLocations,
-  setMarkers,
-  ednaLocations
+  setMarkers
 ) => {
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
@@ -39,20 +39,20 @@ export const addAllSourcesAndLayers = (
   addMeasuredTreesSourceAndLayer(map)
   addFlightPathSourceAndLayer(map)
   addAmazonBasinSourceAndLayer(map)
-  addEDNASourceAndLayers(map, ednaLocations)
+  addEDNASourceAndLayers(map)
 }
 
-export const addEDNASourceAndLayers = (map: mapboxgl.Map, ednaLocations) => {
+export const addEDNASourceAndLayers = (map: mapboxgl.Map) => {
   if (!map.hasImage('ednaImage')) {
     map.loadImage('dna.png', (error, image) => {
       if (error) throw error
       map.addImage('ednaImage', image)
     })
   }
-  if (!map.getSource('ednaSource') && ednaLocations) {
+  if (!map.getSource('ednaSource')) {
     map.addSource('ednaSource', {
       type: 'geojson',
-      data: ednaLocations,
+      data: EMPTY_GEOJSON,
     })
   }
   if (!map.getLayer('ednaLayer')) {
@@ -166,26 +166,6 @@ export const addMarkers = (
     markers.push(marker)
   }
 
-  return markers
-}
-
-export const addEDNAMarkers = (
-  map: mapboxgl.Map,
-  geoJson: mapboxgl.geoJson
-) => {
-  const markers = []
-  for (const feature of geoJson.features) {
-    // create the marker HTML element
-    const el = document.createElement('div')
-    el.className = `edna-sample-map-marker`
-
-    // finally, add the marker to the map
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat(feature.geometry.coordinates)
-      .addTo(map)
-
-    markers.push(marker)
-  }
   return markers
 }
 

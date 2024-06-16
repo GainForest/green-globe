@@ -56,7 +56,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
-  const [____, setEDNAMarkers] = useState([])
+  const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] = useState()
 
   // const [hexagons, setHexagons] = useState()
   const [hiveLocations, setHiveLocations] = useState()
@@ -66,7 +66,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
   const [treeData, setTreeData] = useState({})
-  const [ednaLocations, setEDNALocations] = useState()
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
   const [selectedSpecies, setSelectedSpecies] = useState('')
@@ -76,7 +75,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     fetchGainForestCenterpoints(setGainForestCenterpoints)
     // fetchHexagons(setHexagons)
-    fetchEDNALocations(setEDNALocations)
     initializeMapbox('map-container', setMap)
   }, [])
 
@@ -91,7 +89,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (map && gainforestCenterpoints) {
       const onLoad = () => {
         // map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -99,14 +97,12 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'gainforest',
           setActiveProjectId
         )
-        const ednaMarkers = addEDNAMarkers(map, ednaLocations)
-        setMarkers([...gainForestMarkers])
-        setEDNAMarkers([...ednaMarkers])
+        setSourcesAndLayersLoaded(true)
       }
 
       const onStyleData = () => {
         // map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers, ednaLocations)
+        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
@@ -115,7 +111,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints, dispatch, hiveLocations, ednaLocations])
+  }, [map, gainforestCenterpoints, hiveLocations])
+
+  useEffect(() => {
+    if (sourcesAndLayersLoaded) {
+      fetchEDNALocations(map)
+    }
+  }, [map, sourcesAndLayersLoaded])
 
   // // Rotate the globe
   // useEffect(() => {

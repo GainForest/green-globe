@@ -2,8 +2,6 @@ import mapboxgl from 'mapbox-gl'
 
 import { EMPTY_GEOJSON } from 'src/constants'
 
-import { addMarkers } from '../maputils'
-
 export const addHiveSourceAndLayers = (map: mapboxgl.Map) => {
   if (!map.hasImage('hive')) {
     map.loadImage('hive.png', (error, image) => {

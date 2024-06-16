@@ -37,13 +37,11 @@ import {
 } from './mapfetch'
 // import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
-import { addEDNAMarkers } from './maputils'
 import {
   addAllSourcesAndLayers,
   addClickableMarkers,
   getTreeInformation,
 } from './maputils'
-import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
@@ -54,8 +52,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [markers, setMarkers] = useState([])
-  // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] =
     useState<boolean>(false)
@@ -100,7 +96,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       const onLoad = () => {
         // map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
-        const gainForestMarkers = addClickableMarkers(
+        addClickableMarkers(
           map,
           dispatch,
           gainforestCenterpoints,

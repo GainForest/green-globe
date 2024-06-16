@@ -25,7 +25,7 @@ import { LandCoverLegend } from './components/LandCoverLegend'
 import { SearchOverlay } from './components/SearchOverlay'
 // import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
-import { fetchEDNALocations } from './mapfetch'
+import { fetchEDNALocations, fetchMeasuredTrees } from './mapfetch'
 import {
   fetchProjectInfo,
   fetchTreeShapefile,
@@ -89,6 +89,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       dispatch(setProjectId(urlProjectId))
     }
   }, [urlProjectId, activeProjectId])
+
+  // Fetch tree data
+  useEffect(() => {
+    if (activeProjectData) {
+      fetchMeasuredTrees(activeProjectData, setActiveProjectTreesPlanted)
+    }
+  }, [activeProjectData])
 
   // Set initial layers on load
   useEffect(() => {
@@ -211,21 +218,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       map.getSource('highlightedSite')?.setData(activeProjectPolygon)
     }
   }, [map, activeProjectPolygon])
-
-  // Fetch tree data
-  useEffect(() => {
-    if (activeProjectData) {
-      const projectName = activeProjectData?.project?.name
-      const dashedProjectName = projectName?.toLowerCase().replaceAll(' ', '-')
-      if (dashedProjectName) {
-        const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
-        const fetchData = async () => {
-          await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
-        }
-        fetchData().catch(console.error)
-      }
-    }
-  }, [activeProjectData])
 
   useEffect(() => {
     addOrthomosaic(map, activeProjectMosaic)

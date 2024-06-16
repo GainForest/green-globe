@@ -1,5 +1,20 @@
 import geojson2h3 from 'geojson2h3'
 
+export const fetchMeasuredTrees = (
+  activeProjectData,
+  setActiveProjectTreesPlanted
+) => {
+  const projectName = activeProjectData?.project?.name
+  const dashedProjectName = projectName?.toLowerCase().replaceAll(' ', '-')
+  if (dashedProjectName) {
+    const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
+    const fetchData = async () => {
+      await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
+    }
+    fetchData().catch(console.error)
+  }
+}
+
 export const fetchHiveLocations = async (map, activeProjectId) => {
   if (
     activeProjectId ==

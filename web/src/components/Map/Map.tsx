@@ -46,6 +46,7 @@ import {
 import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
+import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
 
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
@@ -262,52 +263,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   useEffect(() => {
     if (map && map.isStyleLoaded()) {
-      let colorExpression
-      let radiusExpression
-      if (selectedSpecies) {
-        colorExpression = [
-          'case',
-          [
-            'all',
-            ['==', ['get', 'species'], selectedSpecies],
-            ['boolean', ['feature-state', 'hover'], false],
-          ],
-          'red', // when isSelectedSpecies && hover
-          ['==', ['get', 'species'], selectedSpecies],
-          '#FF8101', // when isSelectedSpecies && !hover
-          ['boolean', ['feature-state', 'hover'], false],
-          'gray', // when !isSelectedSpecies && hover
-          'gray', // when !isSelectedSpecies && !hover
-        ]
-        radiusExpression = [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          8, // when hover (either isSelectedSpecies or not)
-          ['==', ['get', 'species'], selectedSpecies],
-          6, // when isSelectedSpecies && !hover
-          3, // when !isSelectedSpecies && !hover
-        ]
-      } else {
-        colorExpression = [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          '#0883fe', // when no selectedSpecies && hover
-          '#ff77c1', // when no selectedSpecies && !hover
-        ]
-        radiusExpression = [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          8, // when no selectedSpecies && hover
-          4, // when no selectedSpecies && !hover
-        ]
-      }
-
-      map.setPaintProperty('unclusteredTrees', 'circle-color', colorExpression)
-      map.setPaintProperty(
-        'unclusteredTrees',
-        'circle-radius',
-        radiusExpression
-      )
+      toggleSelectedSpecies(map, selectedSpecies)
     }
   }, [map, selectedSpecies])
 

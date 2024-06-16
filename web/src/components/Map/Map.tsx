@@ -83,9 +83,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (sourcesAndLayersLoaded) {
       fetchEDNALocations(map)
-      fetchHiveLocations(map)
+      fetchHiveLocations(map, activeProjectId)
     }
-  }, [map, sourcesAndLayersLoaded])
+  }, [map, activeProjectId, sourcesAndLayersLoaded])
 
   useEffect(() => {
     if (urlProjectId && !activeProjectId) {
@@ -188,23 +188,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           (d) => d.classification == 'Drone Mosaic'
         )?.awsCID
         setActiveProjectMosaic(projectMosaic)
-      }
-      if (
-        activeProjectId ==
-          '7f7b643aca10dae0c71afc9910b3f67bff441504d97e0d90a12c40db5d2d02c1' &&
-        !hiveLocations
-      ) {
-        fetchHiveLocations(setHiveLocations)
-      } else {
-        const nonHiveMarkers = markers.filter((marker) => {
-          if (marker._element.className.includes('hive')) {
-            marker.remove()
-            return false
-          }
-          return true
-        })
-        setMarkers(nonHiveMarkers)
-        setHiveLocations(null)
       }
       fetchData().catch(console.error)
     }

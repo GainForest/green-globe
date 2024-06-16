@@ -1,14 +1,21 @@
 import geojson2h3 from 'geojson2h3'
 
-export const fetchHiveLocations = async (map) => {
-  let hiveLocations = undefined
+export const fetchHiveLocations = async (map, activeProjectId) => {
+  if (
+    activeProjectId ==
+    '7f7b643aca10dae0c71afc9910b3f67bff441504d97e0d90a12c40db5d2d02c1'
+  ) {
+    let hiveLocations = undefined
 
-  fetch(`${process.env.AWS_STORAGE}/points-of-interest/hive-locations.geojson`)
-    .then((response) => response.json())
-    .then((res) => {
-      hiveLocations = res
-    })
-  map.getSource('hiveSource')?.setData(hiveLocations)
+    fetch(
+      `${process.env.AWS_STORAGE}/points-of-interest/hive-locations.geojson`
+    )
+      .then((response) => response.json())
+      .then((res) => {
+        hiveLocations = res
+      })
+    map.getSource('hiveSource')?.setData(hiveLocations)
+  }
 }
 
 export const fetchHexagons = (setHexagons) => {

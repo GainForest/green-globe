@@ -12,6 +12,7 @@ import {
 } from './maptreeutils'
 import { addAmazonBasinSourceAndLayer } from './sourcesAndLayers/amazonBasin'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
+import { addEDNASourceAndLayers } from './sourcesAndLayers/edna'
 import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
 import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
@@ -25,63 +26,19 @@ import {
 } from './sourcesAndLayers/projectSites'
 import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 
-export const addAllSourcesAndLayers = (
-  map: mapboxgl.Map,
-  hiveLocations,
-  setMarkers
-) => {
+export const addAllSourcesAndLayers = (map: mapboxgl.Map, setMarkers) => {
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
   addHighlightedSiteSourceAndLayer(map)
-  addHiveSourceAndLayers(map, hiveLocations, setMarkers)
+  addHiveSourceAndLayers(map)
   addMeasuredTreesSourceAndLayer(map)
   addFlightPathSourceAndLayer(map)
   addAmazonBasinSourceAndLayer(map)
   addEDNASourceAndLayers(map)
 }
 
-export const addEDNASourceAndLayers = (map: mapboxgl.Map) => {
-  if (!map.hasImage('ednaImage')) {
-    map.loadImage('dna.png', (error, image) => {
-      if (error) throw error
-      map.addImage('ednaImage', image)
-    })
-  }
-  if (!map.getSource('ednaSource')) {
-    map.addSource('ednaSource', {
-      type: 'geojson',
-      data: EMPTY_GEOJSON,
-    })
-  }
-  if (!map.getLayer('ednaLayer')) {
-    map.addLayer({
-      id: 'ednaLayer',
-      type: 'circle',
-      source: 'ednaSource',
-      paint: {
-        'circle-color': '#b284be',
-        'circle-radius': 20,
-        'circle-stroke-color': '#623c74',
-        'circle-stroke-width': 1,
-      },
-    })
-    map.addLayer({
-      id: 'ednaImageLayers',
-      type: 'symbol',
-      source: 'ednaSource',
-      layout: {
-        'icon-image': 'ednaImage',
-        'icon-size': 0.1, // Adjust the size as needed
-        'icon-allow-overlap': true, // Allow icons to overlap
-      },
-      paint: {
-        'icon-opacity': 0.77, // Set the opacity of the icons
-      },
-    })
-  }
-}
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {

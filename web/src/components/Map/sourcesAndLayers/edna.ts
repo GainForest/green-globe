@@ -37,7 +37,7 @@ export const addEDNASourceAndLayers = (map: mapboxgl.Map) => {
         'icon-allow-overlap': true, // Allow icons to overlap
       },
       paint: {
-        'icon-opacity': 0.77, // Set the opacity of the icons
+        'icon-opacity': 1,
       },
     })
   }

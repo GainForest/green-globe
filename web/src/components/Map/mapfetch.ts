@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
-
 import geojson2h3 from 'geojson2h3'
 
-export const fetchHiveLocations = (setHiveLocations) => {
+export const fetchHiveLocations = async (map) => {
+  let hiveLocations = undefined
+
   fetch(`${process.env.AWS_STORAGE}/points-of-interest/hive-locations.geojson`)
     .then((response) => response.json())
-    .then((hiveLocations) => {
-      setHiveLocations(hiveLocations)
+    .then((res) => {
+      hiveLocations = res
     })
+  map.getSource('hiveSource')?.setData(hiveLocations)
 }
 
 export const fetchHexagons = (setHexagons) => {

@@ -26,7 +26,7 @@ import {
 } from './sourcesAndLayers/projectSites'
 import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 
-export const addAllSourcesAndLayers = (map: mapboxgl.Map, setMarkers) => {
+export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addHistoricalSatelliteSourceAndLayers(map)
   addLandCoverSourceAndLayer(map)
   addTreeCoverSourceAndLayer(map)

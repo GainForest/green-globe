@@ -56,10 +56,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [markers, setMarkers] = useState([])
   // TODO: Combine these two following useStates into one
   const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
-  const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] = useState()
+  const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] =
+    useState<boolean>(false)
 
   // const [hexagons, setHexagons] = useState()
-  const [hiveLocations, setHiveLocations] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
   const [allSitePolygons, setAllSitePolygons] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
@@ -78,6 +78,15 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     initializeMapbox('map-container', setMap)
   }, [])
 
+  // Fetch all other data that can be fetched after the map is
+  // loaded.
+  useEffect(() => {
+    if (sourcesAndLayersLoaded) {
+      fetchEDNALocations(map)
+      fetchHiveLocations(map)
+    }
+  }, [map, sourcesAndLayersLoaded])
+
   useEffect(() => {
     if (urlProjectId && !activeProjectId) {
       dispatch(setProjectId(urlProjectId))
@@ -89,7 +98,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     if (map && gainforestCenterpoints) {
       const onLoad = () => {
         // map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map)
         const gainForestMarkers = addClickableMarkers(
           map,
           dispatch,
@@ -100,9 +109,11 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         setSourcesAndLayersLoaded(true)
       }
 
+      // TODO: check - I think this only displays when all the
+      // sources and layers sre added
       const onStyleData = () => {
         // map.setFog(MAPBOX_FOG)
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map)
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
@@ -111,13 +122,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints, hiveLocations])
-
-  useEffect(() => {
-    if (sourcesAndLayersLoaded) {
-      fetchEDNALocations(map)
-    }
-  }, [map, sourcesAndLayersLoaded])
+  }, [map, gainforestCenterpoints])
 
   // // Rotate the globe
   // useEffect(() => {

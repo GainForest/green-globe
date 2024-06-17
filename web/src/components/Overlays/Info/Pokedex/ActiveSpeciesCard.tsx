@@ -68,30 +68,17 @@ const CardContainer = styled.div`
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
-  position: relative
   width: ${(props) => {
     if (props.mediaSize > breakpoints.xl) {
       return '500px'
     } else if (props.mediaSize > breakpoints.m) {
       return '400px'
     } else {
-      return '96px'
+      return '300px'
     }
   }};
-  height: ${(props) => {
-    if (props.mediaSize > breakpoints.xl) {
-      return '300px'
-    } else if (props.mediaSize > breakpoints.m) {
-      return '300px'
-    } else {
-      return '96px'
-    }
-  }};
-  // transform: scale(1.5);
+  height: ${(props) => (props.mediaSize > breakpoints.m ? 'auto' : '300px')};
   z-index: 4;
-  // transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out,
-  //   top 0.3s ease-in-out, left 0.3s ease-in-out;
-  // opacity: 1;
   top: 20vh;
   left: 30vw;
 `
@@ -111,7 +98,7 @@ const StyledButton = styled.button`
 
 const StyledImage = styled.img`
   width: 100%;
-  height: 160px;
+  height: ${(props) => (props.mediaSize > breakpoints.m ? '160px' : '120px')};
   object-fit: cover;
 `
 
@@ -120,7 +107,7 @@ const InfoContainer = styled.div`
   height: 72px;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
+  padding: 0 8px 8px 8px;
   background-color: rgba(0, 0, 0, 0.4);
 `
 

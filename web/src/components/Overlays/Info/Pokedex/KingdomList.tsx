@@ -35,11 +35,11 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
           ? '500px'
           : mediaSize > breakpoints.m
           ? '400px'
-          : '96px',
+          : '300px',
       height:
         mediaSize > breakpoints.xl || mediaSize > breakpoints.m
           ? '300px'
-          : '96px',
+          : '300px',
 
       transform: 'translate(-50%, -50%)',
       border: '1px solid #ccc',

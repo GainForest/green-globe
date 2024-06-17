@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
 
-const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
+export const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
   const { scientificName, iucnCategory, awsUrl, info } = species
 
   const dnaAudioRef = useRef(null)
@@ -39,7 +39,7 @@ const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
 
   return (
     <CardContainer
-      backgroundColor={backgroundColors[iucnCategory] || '#ccc'}
+      backgroundColor={backgroundColors[iucnCategory] || '#6e6e6e'}
       mediaSize={mediaSize}
     >
       <StyledImage
@@ -108,7 +108,4 @@ const InfoContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 8px 8px 8px;
-  background-color: rgba(0, 0, 0, 0.4);
 `
-
-export default ActiveSpeciesCard

@@ -9,6 +9,7 @@ import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
 import { InfoBox } from '../InfoBox'
+import { RestorPredictions } from '../Pokedex/RestorPredictions'
 
 import { AnimalPhoto } from './AnimalPhoto'
 import {
@@ -114,13 +115,6 @@ export const BiodiversityCard = ({
               Predicted distribution of species habitats within 150km of the
               project area.
             </p>
-            <p
-              style={{
-                fontSize: 10,
-              }}
-            >
-              Data provided by <a href="https://mol.org/">Map of Life</a>
-            </p>
           </div>
         ) : (
           <div>
@@ -135,6 +129,10 @@ export const BiodiversityCard = ({
       <div style={{ margin: '16px 24px' }}>
         {toggle === 'Predicted' ? (
           <div>
+            <RestorPredictions
+              activeProjectData={activeProjectData}
+              mediaSize={mediaSize}
+            />
             <PredictedBirds />
             <PredictedAnimalsGrid biodiversity={biodiversity} />
           </div>

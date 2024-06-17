@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 
+import * as d3 from 'd3'
 import Modal from 'react-modal'
 
 import { InfoBox } from '../InfoBox'
 
 import { KingdomList } from './KingdomList'
 
-const Pokedex = ({ activeProjectData, mediaSize }) => {
+const Pokedex = ({ mediaSize }) => {
   const [allKingdoms, setAllKingdoms] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
@@ -36,33 +37,30 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
       setLoading(false)
     }
 
-    const getPlantsList = async () => {
-      try {
-        const filename =
-          activeProjectData.project.name.split(' ').join('-').toLowerCase() +
-          '.json'
-        const response = await fetch(
-          `${process.env.AWS_STORAGE}/restor/${filename}`
-        )
-        const data = await response.json()
-        // Display plants with images first
-        const hasImage = (obj) => obj.awsUrl && obj.awsUrl.trim() !== ''
-        const plantList = data.items.sort((a, b) => {
-          if (hasImage(a) === hasImage(b)) {
-            return 0
-          }
-          return hasImage(a) ? -1 : 1
-        })
-        updateKingdoms({ name: 'Plants', data: plantList })
-      } catch (e) {
-        console.log(e)
-        setLoading(false)
-      }
+    const getCsv = async () => {
+      const data = await d3.csv(
+        `${process.env.AWS_STORAGE}/observations/semifinals.csv`
+      )
+      const kingdoms = {}
+
+      data.forEach((d) => {
+        const kingdom = d.kingdom
+        if (!kingdoms[kingdom]) {
+          kingdoms[kingdom] = []
+        }
+        kingdoms[kingdom].push(d)
+      })
+      // turn kingdoms into an array of objects
+      const kingdomsArray = Object.entries(kingdoms).map(([name, data]) => ({
+        name,
+        data,
+      }))
+      setAllKingdoms(kingdomsArray)
+      setLoading(false)
+      console.log(kingdomsArray)
     }
-    if (activeProjectData) {
-      getPlantsList()
-    }
-  }, [activeProjectData, allKingdoms])
+    getCsv()
+  }, [])
 
   return (
     <InfoBox mediaSize={mediaSize}>

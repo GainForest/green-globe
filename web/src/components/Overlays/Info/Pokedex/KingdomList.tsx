@@ -4,8 +4,8 @@ import Modal from 'react-modal'
 
 import { breakpoints } from 'src/constants'
 
-import ActiveSpeciesCard from './ActiveSpeciesCard'
-import SpeciesCard from './SpeciesCard'
+import { ActiveSpeciesCard } from './ActiveSpeciesCard'
+import { SpeciesCard } from './SpeciesCard'
 export const KingdomList = ({ speciesList = [], mediaSize }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [activeSpecies, setActiveSpecies] = useState(null)
@@ -20,10 +20,10 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
   }
 
   const backgroundColors = {
-    LC: '#4CAF50',
-    EN: '#FFC107',
-    VU: '#FF9800',
-    CR: '#F44336',
+    LC: '#388E3C',
+    EN: '#FFA000',
+    VU: '#F57C00',
+    CR: '#D32F2F',
   }
 
   const modalStyles = {

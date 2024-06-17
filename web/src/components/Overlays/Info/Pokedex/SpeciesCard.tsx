@@ -1,11 +1,20 @@
 import styled from 'styled-components'
 
-const SpeciesCard = ({ species, mediaSize, handleClick, backgroundColors }) => {
+export const SpeciesCard = ({
+  species,
+  mediaSize,
+  handleClick,
+  backgroundColors,
+}) => {
   const { scientificName, iucnCategory, awsUrl } = species
 
   return (
     <CardContainer
-      backgroundColor={backgroundColors[iucnCategory] || '#ccc'}
+      backgroundColor={
+        backgroundColors[iucnCategory]
+          ? `${backgroundColors[iucnCategory]}`
+          : '#6e6e6e'
+      }
       mediaSize={mediaSize}
       onClick={() => handleClick(species)}
     >
@@ -15,7 +24,7 @@ const SpeciesCard = ({ species, mediaSize, handleClick, backgroundColors }) => {
         mediaSize={mediaSize}
       />
       <InfoContainer mediaSize={mediaSize}>
-        <h3>{scientificName}</h3>
+        <p style={{ margin: 0, textAlign: 'center' }}>{scientificName}</p>
       </InfoContainer>
       {iucnCategory && (
         <CategoryTag>
@@ -41,18 +50,16 @@ const CardContainer = styled.div`
 
 const StyledImage = styled.img`
   width: 100%;
-  max-height: 96px;
+  height: 120px;
   object-fit: ${(props) =>
     props.awsUrl?.startsWith('/placeholder') ? 'contain' : 'cover'};
 `
 
 const InfoContainer = styled.div`
   display: flex;
-  height: 48px;
+  height: auto;
   justify-content: center;
   align-items: center;
-  padding: 8px;
-  background-color: rgba(0, 0, 0, 0.4);
 `
 
 const CategoryTag = styled.div`
@@ -63,5 +70,3 @@ const CategoryTag = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 5px;
 `
-
-export default SpeciesCard

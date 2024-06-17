@@ -1,57 +1,13 @@
-import { useState } from 'react'
-
-import Modal from 'react-modal'
 import styled from 'styled-components'
 
-import { breakpoints } from 'src/constants'
-
-import ActiveSpeciesCard from './ActiveSpeciesCard'
-const SpeciesCard = ({ species, mediaSize }) => {
+const SpeciesCard = ({ species, mediaSize, handleClick, backgroundColors }) => {
   const { scientificName, iucnCategory, awsUrl } = species
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-
-  Modal.setAppElement('#redwood-app')
-
-  const backgroundColors = {
-    LC: '#4CAF50',
-    EN: '#FFC107',
-    VU: '#FF9800',
-    CR: '#F44336',
-  }
-
-  const modalStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      width:
-        mediaSize > breakpoints.xl
-          ? '500px'
-          : mediaSize > breakpoints.m
-          ? '400px'
-          : '96px',
-      height:
-        mediaSize > breakpoints.xl || mediaSize > breakpoints.m
-          ? '300px'
-          : '96px',
-
-      transform: 'translate(-50%, -50%)',
-      border: '1px solid #ccc',
-      borderRadius: '10px',
-      backgroundColor: 'rgba(0, 0, 0, 0.6)',
-      padding: 0,
-      overflow: 'hidden',
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.6)',
-      zIndex: 4,
-    },
-  }
 
   return (
     <CardContainer
       backgroundColor={backgroundColors[iucnCategory] || '#ccc'}
       mediaSize={mediaSize}
-      onClick={() => setModalIsOpen(true)}
+      onClick={() => handleClick(species)}
     >
       <StyledImage
         src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
@@ -61,26 +17,15 @@ const SpeciesCard = ({ species, mediaSize }) => {
       <InfoContainer mediaSize={mediaSize}>
         <h3>{scientificName}</h3>
       </InfoContainer>
-      <CategoryTag>
-        <span>{iucnCategory}</span>
-      </CategoryTag>
-      <Modal
-        onClick={() => console.log('click')}
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        style={modalStyles}
-      >
-        <ActiveSpeciesCard
-          species={species}
-          mediaSize={mediaSize}
-          backgroundColors={backgroundColors}
-        />
-      </Modal>
+      {iucnCategory && (
+        <CategoryTag>
+          <span>{iucnCategory}</span>
+        </CategoryTag>
+      )}
     </CardContainer>
   )
 }
 
-// Styled components
 const CardContainer = styled.div`
   background-color: ${(props) => props.backgroundColor};
   cursor: pointer;

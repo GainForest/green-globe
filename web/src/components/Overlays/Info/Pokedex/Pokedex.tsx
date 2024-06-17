@@ -10,6 +10,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
   const [allKingdoms, setAllKingdoms] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
+  const [loading, setLoading] = useState(true)
 
   Modal.setAppElement('#redwood-app')
 
@@ -32,6 +33,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
       } else {
         setAllKingdoms((allKingdoms) => [...allKingdoms, newKingdom])
       }
+      setLoading(false)
     }
 
     const getPlantsList = async () => {
@@ -54,6 +56,7 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
         updateKingdoms({ name: 'Plants', data: plantList })
       } catch (e) {
         console.log(e)
+        setLoading(false)
       }
     }
     if (activeProjectData) {
@@ -65,32 +68,38 @@ const Pokedex = ({ activeProjectData, mediaSize }) => {
     <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
         <h1>Pokedex</h1>
-        <div>
-          {allKingdoms.map((kingdom) => (
-            <div key={kingdom.name}>
-              <h2>{kingdom.name}</h2>
-              <KingdomList
-                speciesList={kingdom.data.slice(0, 3)}
-                mediaSize={mediaSize}
-              />
-              <button
-                onClick={() => openModal(kingdom.data)}
-                style={{
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  color: '#0070f3',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  marginTop: '8px',
-                  padding: '0',
-                  textDecoration: 'underline',
-                }}
-              >
-                See more {kingdom.name.toLowerCase()}
-              </button>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : allKingdoms.length > 0 ? (
+          <div>
+            {allKingdoms.map((kingdom) => (
+              <div key={kingdom.name}>
+                <h2>{kingdom.name}</h2>
+                <KingdomList
+                  speciesList={kingdom.data.slice(0, 3)}
+                  mediaSize={mediaSize}
+                />
+                <button
+                  onClick={() => openModal(kingdom.data)}
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    color: '#0070f3',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    marginTop: '8px',
+                    padding: '0',
+                    textDecoration: 'underline',
+                  }}
+                >
+                  See more {kingdom.name.toLowerCase()}
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No species found</p>
+        )}
       </div>
       <Modal
         isOpen={modalIsOpen}

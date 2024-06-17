@@ -93,7 +93,8 @@ export const Pokedex = ({ mediaSize }) => {
                     textDecoration: 'underline',
                   }}
                 >
-                  See more {kingdom.name.toLowerCase()}s
+                  See {kingdom.data.length - 3} more{' '}
+                  {kingdom.name.toLowerCase()}s
                 </button>
               </div>
             ))}

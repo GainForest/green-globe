@@ -66,6 +66,7 @@ const CardContainer = styled.div`
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
+  padding-bottom: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
   width: ${(props) => {
@@ -107,5 +108,5 @@ const InfoContainer = styled.div`
   height: 72px;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px 8px 8px;
+  padding: 0 8px 24px 8px;
 `

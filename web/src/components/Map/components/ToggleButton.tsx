@@ -17,7 +17,6 @@ export const ToggleButton = ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setToggle: any
   options: [L, R]
-  mediaSize: number
 }) => {
   const [firstOption, secondOption] = options
   return (

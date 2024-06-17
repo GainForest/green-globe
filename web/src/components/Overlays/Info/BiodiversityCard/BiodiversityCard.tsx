@@ -1,10 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
-import * as d3 from 'd3'
-
-import { IconButton } from 'src/components/Buttons/IconButton'
 import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
@@ -17,7 +13,6 @@ import {
   fetchTreePlantings,
   processBiodiversityData,
 } from './biodiversityCardHelpers'
-import { IndividualDataGrid } from './IndividualDataGrid'
 import { MeasuredDataGrid } from './MeasuredDataGrid'
 import { PredictedBirds } from './PredictedBirds'
 
@@ -29,17 +24,9 @@ export const BiodiversityCard = ({
 }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
-  const [individuals, setIndividuals] = useState([])
   const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
-
-  // Fetch the finals_new.csv, and display each individual in the insect spy.
-  useEffect(() => {
-    d3.csv(`${process.env.AWS_STORAGE}/insectspy/finals_new.csv`)
-      .then(setIndividuals)
-      .then(() => setLoading(false))
-  }, [])
 
   useEffect(() => {
     if (!activeProjectData) {
@@ -141,31 +128,15 @@ export const BiodiversityCard = ({
         ) : (
           <div>
             <Pokedex mediaSize={mediaSize} />
-            <IconButton
-              buttonIcon={'schedule'}
-              active={false}
-              mediaSize={mediaSize}
-            />
-            <h1>Circadian Rythmn</h1>
-            <div>
-              <p> Measured activity of different frequencies in the forest. </p>
-            </div>
-            {SOUNDSCAPE_PATHS.map((path) => (
-              <img
-                key={path}
-                alt={path}
-                src={`${process.env.AWS_STORAGE}/${path}`}
-              />
-            ))}
-            <IndividualDataGrid data={individuals} />
             <MeasuredDataGrid
+              loading={loading}
               measuredData={measuredData}
+              setLoading={setLoading}
+              mediaSize={mediaSize}
               sortBy={sortBy}
               setSortBy={setSortBy}
-              loading={loading}
-              handleSpeciesClick={handleSpeciesClick}
               selectedSpecies={selectedSpecies}
-              mediaSize={mediaSize}
+              handleSpeciesClick={handleSpeciesClick}
             />
           </div>
         )}

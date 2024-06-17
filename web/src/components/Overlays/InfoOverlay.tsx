@@ -16,7 +16,7 @@ import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { LogbookCard } from './Info/LogbookCard'
 import { ActiveSpeciesCard } from './Info/Pokedex/ActiveSpeciesCard'
 import { KingdomList } from './Info/Pokedex/KingdomList'
-import Pokedex from './Info/Pokedex/Pokedex'
+import { Pokedex } from './Info/Pokedex/Pokedex'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { WildlifeCard } from './Info/WildlifeCard'
 

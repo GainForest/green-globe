@@ -3,11 +3,9 @@ import { useEffect, useState } from 'react'
 import * as d3 from 'd3'
 import Modal from 'react-modal'
 
-import { InfoBox } from '../InfoBox'
-
 import { KingdomList } from './KingdomList'
 
-const Pokedex = ({ mediaSize }) => {
+export const Pokedex = ({ mediaSize }) => {
   const [allKingdoms, setAllKingdoms] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
@@ -21,21 +19,21 @@ const Pokedex = ({ mediaSize }) => {
   }
 
   useEffect(() => {
-    const updateKingdoms = (newKingdom) => {
-      const index = allKingdoms.findIndex(
-        (kingdom) => kingdom.name === newKingdom.name
-      )
-      if (index >= 0) {
-        setAllKingdoms((allKingdoms) =>
-          allKingdoms.map((kingdom, idx) =>
-            idx === index ? newKingdom : kingdom
-          )
-        )
-      } else {
-        setAllKingdoms((allKingdoms) => [...allKingdoms, newKingdom])
-      }
-      setLoading(false)
-    }
+    //   const updateKingdoms = (newKingdom) => {
+    //     const index = allKingdoms.findIndex(
+    //       (kingdom) => kingdom.name === newKingdom.name
+    //     )
+    //     if (index >= 0) {
+    //       setAllKingdoms((allKingdoms) =>
+    //         allKingdoms.map((kingdom, idx) =>
+    //           idx === index ? newKingdom : kingdom
+    //         )
+    //       )
+    //     } else {
+    //       setAllKingdoms((allKingdoms) => [...allKingdoms, newKingdom])
+    //     }
+    //     setLoading(false)
+    //   }
 
     const getCsv = async () => {
       const data = await d3.csv(
@@ -44,13 +42,18 @@ const Pokedex = ({ mediaSize }) => {
       const kingdoms = {}
 
       data.forEach((d) => {
-        const kingdom = d.kingdom
+        let kingdom
+        if (d.kingdom === 'Plantae') {
+          kingdom = 'Plant'
+        } else if (d.phylum === 'Arthropoda') {
+          kingdom = 'Insect'
+        } else kingdom = 'Animal'
+
         if (!kingdoms[kingdom]) {
           kingdoms[kingdom] = []
         }
-        kingdoms[kingdom].push(d)
+        kingdoms[kingdom].push({ ...d, category: kingdom })
       })
-      // turn kingdoms into an array of objects
       const kingdomsArray = Object.entries(kingdoms).map(([name, data]) => ({
         name,
         data,
@@ -63,16 +66,16 @@ const Pokedex = ({ mediaSize }) => {
   }, [])
 
   return (
-    <InfoBox mediaSize={mediaSize}>
-      <div style={{ margin: '16px 24px' }}>
-        <h1>Pokedex</h1>
+    <>
+      <div>
+        <h1>Observations</h1>
         {loading ? (
           <p>Loading...</p>
         ) : allKingdoms.length > 0 ? (
           <div>
             {allKingdoms.map((kingdom) => (
               <div key={kingdom.name}>
-                <h2>{kingdom.name}</h2>
+                <h2>{kingdom.name}s</h2>
                 <KingdomList
                   speciesList={kingdom.data.slice(0, 3)}
                   mediaSize={mediaSize}
@@ -90,7 +93,7 @@ const Pokedex = ({ mediaSize }) => {
                     textDecoration: 'underline',
                   }}
                 >
-                  See more {kingdom.name.toLowerCase()}
+                  See more {kingdom.name.toLowerCase()}s
                 </button>
               </div>
             ))}
@@ -106,11 +109,9 @@ const Pokedex = ({ mediaSize }) => {
       >
         <KingdomList speciesList={species} mediaSize={mediaSize} />
       </Modal>
-    </InfoBox>
+    </>
   )
 }
-
-export default Pokedex
 
 const customStyles = {
   content: {

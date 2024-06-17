@@ -9,6 +9,7 @@ import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
 import { InfoBox } from '../InfoBox'
+import { Pokedex } from '../Pokedex/Pokedex'
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
 
 import { AnimalPhoto } from './AnimalPhoto'
@@ -108,6 +109,7 @@ export const BiodiversityCard = ({
           active={toggle}
           setToggle={setToggle}
           options={['Predicted', 'Measured']}
+          mediaSize={mediaSize}
         />
         {toggle === 'Predicted' ? (
           <div>
@@ -138,6 +140,7 @@ export const BiodiversityCard = ({
           </div>
         ) : (
           <div>
+            <Pokedex mediaSize={mediaSize} />
             <IconButton
               buttonIcon={'schedule'}
               active={false}
@@ -148,7 +151,11 @@ export const BiodiversityCard = ({
               <p> Measured activity of different frequencies in the forest. </p>
             </div>
             {SOUNDSCAPE_PATHS.map((path) => (
-              <img src={`${process.env.AWS_STORAGE}/${path}`} />
+              <img
+                key={path}
+                alt={path}
+                src={`${process.env.AWS_STORAGE}/${path}`}
+              />
             ))}
             <IndividualDataGrid data={individuals} />
             <MeasuredDataGrid
@@ -158,6 +165,7 @@ export const BiodiversityCard = ({
               loading={loading}
               handleSpeciesClick={handleSpeciesClick}
               selectedSpecies={selectedSpecies}
+              mediaSize={mediaSize}
             />
           </div>
         )}

@@ -25,13 +25,6 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
     }
   }, [activeSpecies])
 
-  const backgroundColors = {
-    LC: '#388E3C',
-    EN: '#FFA000',
-    VU: '#F57C00',
-    CR: '#D32F2F',
-  }
-
   const modalStyles = {
     content: {
       top: '50%',
@@ -77,7 +70,6 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
           species={species}
           mediaSize={mediaSize}
           handleClick={handleClick}
-          backgroundColors={backgroundColors}
         />
       ))}
       <Modal
@@ -85,11 +77,7 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
         onRequestClose={() => setModalIsOpen(false)}
         style={modalStyles}
       >
-        <ActiveSpeciesCard
-          species={activeSpecies}
-          mediaSize={mediaSize}
-          backgroundColors={backgroundColors}
-        />
+        <ActiveSpeciesCard species={activeSpecies} mediaSize={mediaSize} />
       </Modal>
     </div>
   )

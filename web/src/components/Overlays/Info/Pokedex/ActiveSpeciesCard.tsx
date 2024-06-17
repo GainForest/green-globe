@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
 
-export const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
+export const ActiveSpeciesCard = ({ species, mediaSize }) => {
   const { scientificName, iucnCategory, awsUrl, info } = species
 
   const dnaAudioRef = useRef(null)
@@ -37,13 +37,33 @@ export const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
     }
   }
 
+  const backgroundColors = {
+    LC: '#388E3C',
+    EN: '#FFA000',
+    VU: '#F57C00',
+    CR: '#D32F2F',
+  }
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  }
+
+  const titleCaseToSpaces = (str) => {
+    if (str === 'eDNA') return str
+    return str.replace(/([A-Z])/g, ' $1').trim()
+  }
+
   return (
     <CardContainer
       backgroundColor={backgroundColors[iucnCategory] || '#6e6e6e'}
       mediaSize={mediaSize}
     >
       <StyledImage
-        src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
+        src={awsUrl?.length ? awsUrl : `/placeholder${species.category}.png`}
         alt={scientificName}
         mediaSize={mediaSize}
       />
@@ -53,9 +73,30 @@ export const ActiveSpeciesCard = ({ species, mediaSize, backgroundColors }) => {
           {!dnaAudioRef?.current?.paused ? 'Pause' : 'Play'} DNA
         </StyledButton>
       </InfoContainer>
-      <InfoContainer mediaSize={mediaSize}>
-        <p>{info}</p>
-      </InfoContainer>
+      {species.info && (
+        <InfoContainer mediaSize={mediaSize}>
+          <p>{info}</p>
+        </InfoContainer>
+      )}
+      {species.eventDate && (
+        <ObservationContainer mediaSize={mediaSize}>
+          <Observation>
+            Date Observed: {formatDate(species.eventDate)}
+          </Observation>
+          {species.fileName && (
+            <Observation>fileName: {species.fileName}</Observation>
+          )}
+          <Observation>
+            Basis of Record: {titleCaseToSpaces(species.basisOfRecord)}
+          </Observation>
+          {species['Confidence %'] && (
+            <Observation>Confidence %: {species['Confidence %']}</Observation>
+          )}
+          {species.location && (
+            <Observation>Location: {species.location}</Observation>
+          )}
+        </ObservationContainer>
+      )}
       <audio ref={dnaAudioRef} src={dnaAudioUrl} />
     </CardContainer>
   )
@@ -109,4 +150,16 @@ const InfoContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 8px 24px 8px;
+`
+const Observation = styled.p`
+  margin: 0;
+`
+
+const ObservationContainer = styled.div`
+  display: flex;
+  height: 72px;
+  flex-direction: column;
+  // justify-content: space-between;
+  // align-items: center;
+  padding: 0;
 `

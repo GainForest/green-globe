@@ -27,12 +27,14 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
         const data = await response.json()
         // Display plants with images first
         const hasImage = (obj) => obj.awsUrl && obj.awsUrl.trim() !== ''
-        const plantList = data.items.sort((a, b) => {
-          if (hasImage(a) === hasImage(b)) {
-            return 0
-          }
-          return hasImage(a) ? -1 : 1
-        })
+        const plantList = data.items
+          .sort((a, b) => {
+            if (hasImage(a) === hasImage(b)) {
+              return 0
+            }
+            return hasImage(a) ? -1 : 1
+          })
+          .map((d) => ({ ...d, category: 'Plant' }))
         setSpecies(plantList)
       } catch (e) {
         console.log(e)

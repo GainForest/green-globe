@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import Modal from 'react-modal'
 
@@ -9,15 +9,21 @@ import { SpeciesCard } from './SpeciesCard'
 export const KingdomList = ({ speciesList = [], mediaSize }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [activeSpecies, setActiveSpecies] = useState(null)
-  if (speciesList?.length === 0) {
-    return <div>Loading...</div>
-  }
+
   Modal.setAppElement('#redwood-app')
 
   const handleClick = (species) => {
-    setModalIsOpen(true)
     setActiveSpecies(species)
+    setModalIsOpen(true)
   }
+
+  useEffect(() => {
+    if (activeSpecies) {
+      setModalIsOpen(true)
+    } else {
+      setModalIsOpen(false)
+    }
+  }, [activeSpecies])
 
   const backgroundColors = {
     LC: '#388E3C',
@@ -57,6 +63,10 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
       backgroundColor: 'rgba(0, 0, 0, 0.6)',
       zIndex: 4,
     },
+  }
+
+  if (speciesList?.length === 0) {
+    return <div>Loading...</div>
   }
 
   return (

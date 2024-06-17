@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import styled from 'styled-components'
 
 export const SpeciesCard = ({
@@ -8,6 +10,16 @@ export const SpeciesCard = ({
 }) => {
   const { scientificName, iucnCategory, awsUrl } = species
 
+  let hoverTimer
+
+  const handleMouseEnter = () => {
+    hoverTimer = setTimeout(() => handleClick(species), 1000)
+  }
+
+  const handleMouseLeave = () => {
+    clearTimeout(hoverTimer)
+  }
+
   return (
     <CardContainer
       backgroundColor={
@@ -17,6 +29,8 @@ export const SpeciesCard = ({
       }
       mediaSize={mediaSize}
       onClick={() => handleClick(species)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <StyledImage
         src={awsUrl?.length ? awsUrl : '/placeholderPlant.png'}
@@ -46,6 +60,9 @@ const CardContainer = styled.div`
   margin: 8px;
   width: 144px;
   height: 144px;
+  &:hover {
+    filter: grayscale(80%);
+  }
 `
 
 const StyledImage = styled.img`

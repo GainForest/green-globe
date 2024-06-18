@@ -59,7 +59,7 @@ export const Pokedex = ({ mediaSize }) => {
     content: {
       top: '50%',
       left: '50%',
-      width: `${modalWidth}px`, // Set width directly using modalWidth
+      width: `${modalWidth}px`,
       height: '80%',
       right: 'auto',
       bottom: 'auto',

@@ -5,7 +5,6 @@ import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
 import { InfoBox } from '../InfoBox'
-import { Pokedex } from '../Pokedex/Pokedex'
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
 
 import { AnimalPhoto } from './AnimalPhoto'

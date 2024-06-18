@@ -7,6 +7,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   const [loading, setLoading] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [speciesList, setSpecies] = useState([])
+  const [modalWidth, setModalWidth] = useState(0)
 
   Modal.setAppElement('#redwood-app')
 
@@ -14,6 +15,12 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
     setSpecies(speciesList)
     setModalIsOpen(true)
   }
+
+  useEffect(() => {
+    // 144 is the width of the species card, 4 is the margin, and 72 is the width of the modal border
+    const itemsPerRow = Math.floor(mediaSize / (144 + 4))
+    setModalWidth(itemsPerRow * (144 + 4) - 72)
+  }, [mediaSize])
 
   useEffect(() => {
     const getPlantsList = async () => {
@@ -47,6 +54,26 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   }, [activeProjectData])
 
   Modal.setAppElement('#redwood-app')
+
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      width: `${modalWidth}px`,
+      height: '80%',
+      right: 'auto',
+      bottom: 'auto',
+      transform: 'translate(-50%, -50%)',
+      borderRadius: '10px',
+      padding: '20px',
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      scrollbarWidth: 'none',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      zIndex: 3,
+    },
+  }
 
   return (
     <div>
@@ -90,33 +117,4 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
       </Modal>
     </div>
   )
-}
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    width: '80%',
-    height: '80%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    borderRadius: '10px',
-    padding: '20px',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    scrollbarColor: 'rgba(0, 0, 0, 0.6) transparent',
-    overflow: 'auto',
-    '::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(0, 0, 0, 0.6)',
-      borderRadius: '10px',
-    },
-    '::-webkit-scrollbar-track': {
-      background: 'rgba(0, 0, 0, 0.6)',
-    },
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    zIndex: 3,
-  },
 }

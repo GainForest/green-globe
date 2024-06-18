@@ -1,81 +1,84 @@
-import ThemedSkeleton from 'src/components/Map/components/Skeleton'
-import { ToggleButton } from 'src/components/Map/components/ToggleButton'
+import { useEffect, useState } from 'react'
 
-import { MeasuredDataGridCard } from './MeasuredDataPhoto'
+import * as d3 from 'd3'
+import styled from 'styled-components'
+
+import { IconButton } from 'src/components/Buttons/IconButton'
+
+import { Pokedex } from '../Pokedex/Pokedex'
+
+import { CircadianRythmn } from './CircadianRythmn'
+import { IndividualDataGrid } from './IndividualDataGrid'
+import { MeasuredTreesGrid } from './MeasuredTreesGrid'
 
 export const MeasuredDataGrid = ({
+  mediaSize,
   sortBy,
   setSortBy,
   measuredData,
+  loading,
+  setLoading,
   handleSpeciesClick,
   selectedSpecies,
-  loading,
-  mediaSize,
 }) => {
-  if (loading) {
-    return (
-      <>
-        <h3>
-          <ThemedSkeleton width={'120px'} />
-        </h3>
-        <div></div>
-      </>
-    )
-  } else {
-    if (measuredData.length > 0) {
-      return (
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {measuredData.map((group, idx) => (
-            <div style={{ flex: '1 1 50%' }} key={group.title + idx}>
-              <div
-                style={{
-                  border: '1px solid #2f3030',
-                  height: '80px',
-                  width: '160px',
-                  margin: '16px 0px',
-                  borderRadius: '10px',
-                }}
-              >
-                <h4 style={{ margin: '16px' }}>
-                  Total {group.title.toLowerCase()}
-                </h4>
-                <h2 style={{ float: 'right', margin: '0 16px' }}>
-                  {group.total}
-                </h2>
-              </div>
-              <h3>{group.title}</h3>
-              {group.title === 'Trees' && (
-                <p style={{ marginTop: '8px' }}>
-                  Click a species to highlight them on the map
-                </p>
-              )}
-              <p>Sort By:</p>
-              <ToggleButton
-                mediaSize={mediaSize}
-                active={sortBy}
-                setToggle={setSortBy}
-                options={['Name', 'Count']}
-              />
-              {group.species.map((species) => (
-                <div
-                  className={
-                    species.name == selectedSpecies ? null : 'species-button'
-                  }
-                  key={species.name}
-                >
-                  <MeasuredDataGridCard
-                    {...species}
-                    handleSpeciesClick={handleSpeciesClick}
-                    selectedSpecies={selectedSpecies}
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      )
-    } else {
-      return <p>There is not yet any measured biodiversity for this project.</p>
-    }
-  }
+  const [displayedInsight, setDisplayedInsight] = useState<
+    'circadian' | 'trees' | 'insectspy' | 'pokedex'
+  >('circadian')
+  const [individuals, setIndividuals] = useState([])
+
+  // Fetch the finals_new.csv, and display each individual in the insect spy.
+  useEffect(() => {
+    d3.csv(`${process.env.AWS_STORAGE}/insectspy/finals_new.csv`)
+      .then(setIndividuals)
+      .then(() => setLoading(false))
+  }, [])
+
+  return (
+    <div>
+      <IconBar>
+        <IconButton
+          buttonIcon={'schedule'}
+          active={displayedInsight == 'circadian'}
+          onClick={() => setDisplayedInsight('circadian')}
+        />
+        <IconButton
+          buttonIcon={'bug_report'}
+          active={displayedInsight == 'insectspy'}
+          onClick={() => setDisplayedInsight('insectspy')}
+        />
+        <IconButton
+          buttonIcon={'park'}
+          active={displayedInsight == 'trees'}
+          onClick={() => setDisplayedInsight('trees')}
+        />
+        <IconButton
+          buttonIcon={'search'}
+          active={displayedInsight == 'pokedex'}
+          onClick={() => setDisplayedInsight('pokedex')}
+        />
+      </IconBar>
+      {displayedInsight == 'circadian' && <CircadianRythmn />}
+      {displayedInsight == 'insectspy' && (
+        <IndividualDataGrid data={individuals} />
+      )}
+      {displayedInsight == 'trees' && (
+        <MeasuredTreesGrid
+          measuredData={measuredData}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          loading={loading}
+          handleSpeciesClick={handleSpeciesClick}
+          selectedSpecies={selectedSpecies}
+        />
+      )}
+      {displayedInsight == 'pokedex' && <Pokedex mediaSize={mediaSize} />}
+    </div>
+  )
 }
+
+const IconBar = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  gap: 6px;
+`

@@ -9,7 +9,7 @@ import {
 
 const XprizeLayerPicker = ({ map }) => {
   const [layers, setLayers] = useState([])
-  const [showLayers, setShowLayers] = useState(true)
+  const [showLayers, setShowLayers] = useState(false)
   const [visible, setVisible] = useState(false)
 
   let layersData = []

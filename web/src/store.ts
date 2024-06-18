@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import displayReducer from './reducers/displayReducer'
+import fullscreenOverlayReducer from './reducers/fullscreenOverlayReducer'
 import overlaysReducer from './reducers/overlaysReducer'
 import projectsReducer from './reducers/projectsReducer'
 import satelliteHistoryReducer from './reducers/satelliteHistoryReducer'
@@ -13,5 +14,6 @@ export default configureStore({
     shop: shopReducer,
     display: displayReducer,
     project: projectsReducer,
+    fullscreenOverlay: fullscreenOverlayReducer,
   },
 })

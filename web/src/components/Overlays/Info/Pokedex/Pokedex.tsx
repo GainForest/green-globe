@@ -10,6 +10,7 @@ export const Pokedex = ({ mediaSize }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
   const [loading, setLoading] = useState(true)
+  const [modalWidth, setModalWidth] = useState(0)
 
   Modal.setAppElement('#redwood-app')
 
@@ -19,22 +20,12 @@ export const Pokedex = ({ mediaSize }) => {
   }
 
   useEffect(() => {
-    //   const updateKingdoms = (newKingdom) => {
-    //     const index = allKingdoms.findIndex(
-    //       (kingdom) => kingdom.name === newKingdom.name
-    //     )
-    //     if (index >= 0) {
-    //       setAllKingdoms((allKingdoms) =>
-    //         allKingdoms.map((kingdom, idx) =>
-    //           idx === index ? newKingdom : kingdom
-    //         )
-    //       )
-    //     } else {
-    //       setAllKingdoms((allKingdoms) => [...allKingdoms, newKingdom])
-    //     }
-    //     setLoading(false)
-    //   }
+    // 144 is the width of the species card, 4 is the margin, and 78 is the width of the modal border
+    const itemsPerRow = Math.floor(mediaSize / (144 + 4))
+    setModalWidth(itemsPerRow * (144 + 4) - 4 - 78)
+  }, [mediaSize])
 
+  useEffect(() => {
     const getCsv = async () => {
       const data = await d3.csv(
         `${process.env.AWS_STORAGE}/observations/semifinals.csv`
@@ -60,10 +51,29 @@ export const Pokedex = ({ mediaSize }) => {
       }))
       setAllKingdoms(kingdomsArray)
       setLoading(false)
-      console.log(kingdomsArray)
     }
     getCsv()
   }, [])
+
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      width: `${modalWidth}px`, // Set width directly using modalWidth
+      height: '80%',
+      right: 'auto',
+      bottom: 'auto',
+      transform: 'translate(-50%, -50%)',
+      borderRadius: '10px',
+      padding: '20px',
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      scrollbarWidth: 'none',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      zIndex: 3,
+    },
+  }
 
   return (
     <>
@@ -77,7 +87,7 @@ export const Pokedex = ({ mediaSize }) => {
               <div key={kingdom.name}>
                 <h2>{kingdom.name}s</h2>
                 <KingdomList
-                  speciesList={kingdom.data.slice(0, 3)}
+                  speciesList={kingdom.data.slice(0, 4)}
                   mediaSize={mediaSize}
                 />
                 <button
@@ -104,6 +114,7 @@ export const Pokedex = ({ mediaSize }) => {
         )}
       </div>
       <Modal
+        key={modalWidth}
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         style={customStyles}
@@ -112,25 +123,4 @@ export const Pokedex = ({ mediaSize }) => {
       </Modal>
     </>
   )
-}
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    width: '80%',
-    height: '80%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    borderRadius: '10px',
-    padding: '20px',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    scrollbarWidth: 'none',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    zIndex: 3,
-  },
 }

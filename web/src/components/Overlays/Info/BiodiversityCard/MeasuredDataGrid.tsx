@@ -5,6 +5,8 @@ import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
 
+import { Pokedex } from '../Pokedex/Pokedex'
+
 import { CircadianRythmn } from './CircadianRythmn'
 import { IndividualDataGrid } from './IndividualDataGrid'
 import { MeasuredTreesGrid } from './MeasuredTreesGrid'
@@ -20,7 +22,7 @@ export const MeasuredDataGrid = ({
   selectedSpecies,
 }) => {
   const [displayedInsight, setDisplayedInsight] = useState<
-    'circadian' | 'trees' | 'insectspy'
+    'circadian' | 'trees' | 'insectspy' | 'pokedex'
   >('circadian')
   const [individuals, setIndividuals] = useState([])
 
@@ -49,6 +51,11 @@ export const MeasuredDataGrid = ({
           active={displayedInsight == 'trees'}
           onClick={() => setDisplayedInsight('trees')}
         />
+        <IconButton
+          buttonIcon={'search'}
+          active={displayedInsight == 'pokedex'}
+          onClick={() => setDisplayedInsight('pokedex')}
+        />
       </IconBar>
       {displayedInsight == 'circadian' && <CircadianRythmn />}
       {displayedInsight == 'insectspy' && (
@@ -64,6 +71,7 @@ export const MeasuredDataGrid = ({
           selectedSpecies={selectedSpecies}
         />
       )}
+      {displayedInsight == 'pokedex' && <Pokedex mediaSize={mediaSize} />}
     </div>
   )
 }

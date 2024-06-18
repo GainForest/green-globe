@@ -96,7 +96,6 @@ export const BiodiversityCard = ({
           active={toggle}
           setToggle={setToggle}
           options={['Predicted', 'Measured']}
-          mediaSize={mediaSize}
         />
         {toggle === 'Predicted' ? (
           <div>
@@ -127,7 +126,6 @@ export const BiodiversityCard = ({
           </div>
         ) : (
           <div>
-            <Pokedex mediaSize={mediaSize} />
             <MeasuredDataGrid
               loading={loading}
               measuredData={measuredData}

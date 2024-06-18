@@ -64,9 +64,9 @@ export const KingdomList = ({ speciesList = [], mediaSize }) => {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', position: 'relative' }}>
-      {speciesList.map((species) => (
+      {speciesList.map((species, idx) => (
         <SpeciesCard
-          key={species.scientificName}
+          key={species.scientificName + idx}
           species={species}
           mediaSize={mediaSize}
           handleClick={handleClick}

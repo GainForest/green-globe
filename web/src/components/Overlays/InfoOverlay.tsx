@@ -162,9 +162,7 @@ export const InfoOverlay = ({
           activeProjectData={activeProjectData}
         />
       )}
-      {infoOverlay == 8 && (
-        <Pokedex activeProjectData={activeProjectData} mediaSize={mediaSize} />
-      )}
+      {infoOverlay == 8 && <Pokedex mediaSize={mediaSize} />}
     </>
   )
 }
@@ -202,6 +200,7 @@ export const ImageOverlay = ({
         </div>
       )
     } else if (ContentComponent == 'ActiveSpeciesCard') {
+      // full size version of speciesCard, appears when clicked
       return (
         <div className="overlay" style={{ zIndex: 5 }}>
           <ActiveSpeciesCard {...contentProps} />

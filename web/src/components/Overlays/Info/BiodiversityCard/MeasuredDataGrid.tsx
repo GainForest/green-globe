@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import styled from 'styled-components'
 
@@ -7,7 +7,7 @@ import { IconButton } from 'src/components/Buttons/IconButton'
 import { Pokedex } from '../Pokedex/Pokedex'
 
 import { CircadianRythmn } from './CircadianRythmn'
-import { IndividualDataGrid } from './IndividualDataGrid'
+import { InsectSpy } from './InsectSpy'
 import { MeasuredTreesGrid } from './MeasuredTreesGrid'
 
 export const MeasuredDataGrid = ({
@@ -49,7 +49,7 @@ export const MeasuredDataGrid = ({
         />
       </IconBar>
       {displayedInsight == 'circadian' && <CircadianRythmn />}
-      {displayedInsight == 'insectspy' && <IndividualDataGrid />}
+      {displayedInsight == 'insectspy' && <InsectSpy />}
       {displayedInsight == 'trees' && (
         <MeasuredTreesGrid
           measuredData={measuredData}

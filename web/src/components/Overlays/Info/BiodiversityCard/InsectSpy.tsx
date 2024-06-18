@@ -10,7 +10,7 @@ interface Individual {
   class: string
 }
 
-export const IndividualDataGrid = () => {
+export const InsectSpy = () => {
   const [individuals, setIndividuals] = useState<Individual[]>([])
 
   // Fetch the finals_new.csv, and display each individual in the insect spy.

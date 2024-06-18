@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import * as d3 from 'd3'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
@@ -24,14 +23,6 @@ export const MeasuredDataGrid = ({
   const [displayedInsight, setDisplayedInsight] = useState<
     'circadian' | 'trees' | 'insectspy' | 'pokedex'
   >('circadian')
-  const [individuals, setIndividuals] = useState([])
-
-  // Fetch the finals_new.csv, and display each individual in the insect spy.
-  useEffect(() => {
-    d3.csv(`${process.env.AWS_STORAGE}/insectspy/finals_new.csv`)
-      .then(setIndividuals)
-      .then(() => setLoading(false))
-  }, [])
 
   return (
     <div>
@@ -58,9 +49,7 @@ export const MeasuredDataGrid = ({
         />
       </IconBar>
       {displayedInsight == 'circadian' && <CircadianRythmn />}
-      {displayedInsight == 'insectspy' && (
-        <IndividualDataGrid data={individuals} />
-      )}
+      {displayedInsight == 'insectspy' && <IndividualDataGrid />}
       {displayedInsight == 'trees' && (
         <MeasuredTreesGrid
           measuredData={measuredData}

@@ -153,6 +153,7 @@ const InfoContainer = styled.div`
 `
 const Observation = styled.p`
   margin: 0;
+  padding: 2px 8px;
 `
 
 const ObservationContainer = styled.div`

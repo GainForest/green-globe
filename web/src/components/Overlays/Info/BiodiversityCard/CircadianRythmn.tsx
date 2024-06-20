@@ -16,7 +16,7 @@ export const CircadianRythmn = () => {
           />
           <AudioPlayer
             label="Tyrant"
-            src={`${process.env.AWS_STORAGE}/audio/Tufted Tit Tyrant.mp3`}
+            src={`${process.env.AWS_STORAGE}/audio/013-089-Tufted-Tit-Tyrant.mp3`}
           />
         </div>
       ))}

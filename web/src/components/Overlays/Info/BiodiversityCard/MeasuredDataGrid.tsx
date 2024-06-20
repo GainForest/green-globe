@@ -37,11 +37,11 @@ export const MeasuredDataGrid = ({
           active={displayedInsight == 'insectspy'}
           onClick={() => setDisplayedInsight('insectspy')}
         />
-        <IconButton
+        {/* <IconButton
           buttonIcon={'park'}
           active={displayedInsight == 'trees'}
           onClick={() => setDisplayedInsight('trees')}
-        />
+        /> */}
         <IconButton
           buttonIcon={'search'}
           active={displayedInsight == 'pokedex'}

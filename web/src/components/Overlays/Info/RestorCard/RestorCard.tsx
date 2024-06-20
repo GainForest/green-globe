@@ -8,6 +8,7 @@ import { InfoBox } from 'src/components/Overlays/Info/InfoBox'
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
 
 import { CarbonChart } from './CarbonChart'
+import { TreeCoverChart } from './TreeCoverChart'
 import { WaterChart } from './WaterChart'
 export const RestorCard = ({ mediaSize, activeProjectData }) => {
   const [displayedInsight, setDisplayedInsight] = useState('biodiversity')
@@ -18,13 +19,13 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
     environment: {},
     water: {},
     ecosystems: {},
-    scientific_monitoring: {},
-    tree_cover: {},
+    scientificMonitoring: {},
+    treeCover: {},
   })
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
-      const formattedName = siteName.replace(/ /g, '-')
+      const formattedName = siteName.replace(/ /g, '-').toLowerCase()
       const baseURL = `${process.env.AWS_STORAGE}/restor/chartData/${formattedName}`
       const jsonFiles = {
         carbon: 'carbon.json',
@@ -32,9 +33,9 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         ecoregionsBiomes: 'ecoregions_biomes.json',
         environment: 'environment.json',
         water: 'water.json',
-        ecosystems: 'ecosystems.json',
-        scientific_monitoring: 'scientific_monitoring.json',
-        tree_cover: 'tree_cover.json',
+        // ecosystems: 'ecosystems.json',
+        scientificMonitoring: 'scientific_monitoring.json',
+        treeCover: 'tree_cover.json',
       }
       try {
         const dataPromises = Object.entries(jsonFiles).map(([key, file]) =>
@@ -75,6 +76,11 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
           active={displayedInsight == 'water'}
           onClick={() => setDisplayedInsight('water')}
         />
+        <IconButton
+          buttonIcon={'forest'}
+          active={displayedInsight == 'treeCover'}
+          onClick={() => setDisplayedInsight('treeCover')}
+        />
       </IconBar>
       {displayedInsight == 'biodiversity' && (
         <RestorPredictions
@@ -86,6 +92,9 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         <CarbonChart chartData={allData?.carbon} />
       )}
       {displayedInsight == 'water' && <WaterChart chartData={allData?.water} />}
+      {displayedInsight == 'treeCover' && (
+        <TreeCoverChart chartData={allData?.treeCover} />
+      )}
     </InfoBox>
   )
 }

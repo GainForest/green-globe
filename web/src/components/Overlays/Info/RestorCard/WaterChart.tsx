@@ -2,6 +2,9 @@ import React from 'react'
 
 import { SmallChart } from './SmallChart'
 export const WaterChart = ({ chartData }) => {
+  if (!chartData?.evotranspirationPerYear) {
+    return null
+  }
   const data = {
     labels: chartData?.evotranspirationPerYear?.data.years,
     datasets: [

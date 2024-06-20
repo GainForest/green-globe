@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 
 import { KingdomList } from './KingdomList'
-import { RestorCharts } from './RestorCharts'
 export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   const [loading, setLoading] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -78,9 +77,9 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
 
   return (
     <div>
-      <RestorCharts activeProjectData={activeProjectData} />
+      {' '}
       <div>
-        <h1>Restor Plant Predictions</h1>
+        <h1 style={{ marginLeft: '16px' }}>Plant Predictions</h1>
 
         {loading ? (
           <p>Loading...</p>

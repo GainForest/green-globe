@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { SmallChart } from './SmallChart'
-export const WaterChart = ({ waterData }) => {
-  const chartData = {
-    labels: waterData?.evotranspirationPerYear?.data.years,
+export const WaterChart = ({ chartData }) => {
+  const data = {
+    labels: chartData?.evotranspirationPerYear?.data.years,
     datasets: [
       {
         label: 'Total annual evapotranspiration',
-        data: waterData?.evotranspirationPerYear?.data.values,
+        data: chartData?.evotranspirationPerYear?.data.values,
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         borderColor: 'rgba(75, 192, 192, 1)',
         fill: false,
@@ -16,7 +16,6 @@ export const WaterChart = ({ waterData }) => {
       },
     ],
   }
-  console.log(chartData)
   const options = {
     scales: {
       y: {
@@ -52,5 +51,5 @@ export const WaterChart = ({ waterData }) => {
       },
     },
   }
-  return <SmallChart type="line" data={chartData} options={options} />
+  return <SmallChart type="line" data={data} options={options} />
 }

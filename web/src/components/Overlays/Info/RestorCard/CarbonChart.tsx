@@ -1,7 +1,7 @@
 import { SmallChart } from './SmallChart'
 
-export const CarbonChart = ({ carbonData }) => {
-  const chartData = {
+export const CarbonChart = ({ chartData }) => {
+  const carbonData = {
     labels: [
       'Above Ground Woody Carbon',
       'Below Ground Woody Carbon',
@@ -11,25 +11,25 @@ export const CarbonChart = ({ carbonData }) => {
       {
         label: 'Current',
         data: [
-          carbonData?.walker?.data.carbon.carbonPerType.CURRENT_AGB,
-          carbonData?.walker?.data.carbon.carbonPerType.CURRENT_BGB,
-          carbonData?.walker?.data.carbon.carbonPerType.CURRENT_SOC,
+          chartData?.walker?.data.carbon.carbonPerType.CURRENT_AGB,
+          chartData?.walker?.data.carbon.carbonPerType.CURRENT_BGB,
+          chartData?.walker?.data.carbon.carbonPerType.CURRENT_SOC,
         ],
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'Potential',
         data: [
-          carbonData?.walker?.data.carbon.carbonPerType.POTENTIAL_AGB,
-          carbonData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB,
-          carbonData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC,
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_AGB,
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB,
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC,
         ],
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
       },
     ],
   }
 
-  const options = {
+  const carbonOptions = {
     scales: {
       y: {
         type: 'linear',
@@ -46,27 +46,18 @@ export const CarbonChart = ({ carbonData }) => {
     maintainAspectRatio: false,
   }
 
-  return (
-    <div style={{ height: '300px' }}>
-      <SmallChart type="bar" data={chartData} options={options} />
-    </div>
-  )
-}
-
-export const ProductivityChart = ({ carbonData }) => {
-  const years = carbonData?.productivityPerYear?.data?.years
-  const values = carbonData?.productivityPerYear?.data?.values
+  const years = chartData?.productivityPerYear?.data?.years
+  const values = chartData?.productivityPerYear?.data?.values
 
   if (!years || !values) {
-    return <div>Loading data, please wait...</div>
+    return null
   }
-
-  const chartData = {
-    labels: carbonData?.productivityPerYear?.data.years,
+  const productivityData = {
+    labels: chartData?.productivityPerYear?.data.years,
     datasets: [
       {
         label: 'Net primary productivity',
-        data: carbonData?.productivityPerYear?.data.values,
+        data: chartData?.productivityPerYear?.data.values,
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 1)',
         fill: false,
@@ -75,7 +66,7 @@ export const ProductivityChart = ({ carbonData }) => {
     ],
   }
 
-  const options = {
+  const productivityOptions = {
     scales: {
       y: {
         type: 'linear',
@@ -112,8 +103,17 @@ export const ProductivityChart = ({ carbonData }) => {
   }
 
   return (
-    <div style={{ height: '300px' }}>
-      <SmallChart type="line" data={chartData} options={options} />
+    <div>
+      <div style={{ height: '300px' }}>
+        <SmallChart type="bar" data={carbonData} options={carbonOptions} />
+      </div>
+      <div style={{ height: '300px' }}>
+        <SmallChart
+          type="line"
+          data={productivityData}
+          options={productivityOptions}
+        />
+      </div>
     </div>
   )
 }

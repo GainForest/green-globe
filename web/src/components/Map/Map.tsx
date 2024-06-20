@@ -3,6 +3,17 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useReducer, useState } from 'react'
 
 import bbox from '@turf/bbox'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
 import mapboxgl from 'mapbox-gl'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -45,6 +56,17 @@ import {
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()

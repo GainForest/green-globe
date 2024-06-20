@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { CarbonChart, ProductivityChart } from './CarbonChart'
+import { WaterChart } from './WaterChart'
 
 export const RestorCharts = ({ activeProjectData }) => {
   type restorData = {
@@ -56,6 +57,7 @@ export const RestorCharts = ({ activeProjectData }) => {
     <div>
       <CarbonChart carbonData={allData?.carbon} />
       <ProductivityChart carbonData={allData?.carbon} />
+      <WaterChart waterData={allData?.water} />
     </div>
   )
 }

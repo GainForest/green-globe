@@ -26,7 +26,7 @@ export const SmallChart = ({ type, data, options }) => {
       transform: 'translate(-50%, -50%)',
       border: '1px solid #ccc',
       borderRadius: '10px',
-      backgroundColor: 'white',
+      backgroundColor: '#22252a',
       padding: 0,
       overflow: 'hidden',
     },

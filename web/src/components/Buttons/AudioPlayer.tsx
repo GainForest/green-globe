@@ -31,7 +31,7 @@ export const AudioPlayer = ({ label, src }) => {
   }
 
   return (
-    <div className="media-wrapper">
+    <div style={{ margin: '8px 0' }}>
       <button className="g-audio--playbutton" onClick={handlePlayClick}>
         ►
       </button>

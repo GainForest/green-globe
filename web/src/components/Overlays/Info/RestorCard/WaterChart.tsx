@@ -54,5 +54,10 @@ export const WaterChart = ({ chartData }) => {
       },
     },
   }
-  return <SmallChart type="line" data={data} options={options} />
+  return (
+    <div>
+      <h2>Total annual evapotranspiration</h2>
+      <SmallChart type="line" data={data} options={options} />
+    </div>
+  )
 }

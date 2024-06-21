@@ -15,7 +15,8 @@ export const CarbonChart = ({ chartData }) => {
           chartData?.walker?.data.carbon.carbonPerType.CURRENT_BGB,
           chartData?.walker?.data.carbon.carbonPerType.CURRENT_SOC,
         ],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: ['#66c2a4', '#fec47b', '#a36f45'],
+        borderRadius: 8,
       },
       {
         label: 'Potential',
@@ -24,7 +25,8 @@ export const CarbonChart = ({ chartData }) => {
           chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB,
           chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC,
         ],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        backgroundColor: ['#244542', '#43453a', '#31342f'],
+        borderRadius: 8,
       },
     ],
   }
@@ -32,8 +34,12 @@ export const CarbonChart = ({ chartData }) => {
   const carbonOptions = {
     scales: {
       y: {
+        stacked: true,
         type: 'linear',
         beginAtZero: true,
+      },
+      x: {
+        stacked: true,
       },
     },
     plugins: {

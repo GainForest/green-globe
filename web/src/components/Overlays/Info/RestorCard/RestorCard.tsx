@@ -24,6 +24,10 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
   })
 
   useEffect(() => {
+    console.log(allData)
+  }, [allData])
+
+  useEffect(() => {
     const loadJsonFiles = async (siteName) => {
       const formattedName = siteName.replace(/ /g, '-').toLowerCase()
       const baseURL = `${process.env.AWS_STORAGE}/restor/chartData/${formattedName}`
@@ -33,7 +37,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         ecoregionsBiomes: 'ecoregions_biomes.json',
         environment: 'environment.json',
         water: 'water.json',
-        // ecosystems: 'ecosystems.json',
+        ecosystems: 'ecosystems.json',
         scientificMonitoring: 'scientific_monitoring.json',
         treeCover: 'tree_cover.json',
       }
@@ -93,7 +97,10 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
       )}
       {displayedInsight == 'water' && <WaterChart chartData={allData?.water} />}
       {displayedInsight == 'treeCover' && (
-        <TreeCoverChart chartData={allData?.treeCover} />
+        <TreeCoverChart
+          treeData={allData?.treeCover}
+          ecosystemsData={allData?.ecosystems}
+        />
       )}
     </InfoBox>
   )

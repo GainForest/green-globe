@@ -29,14 +29,20 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
+      console.log(siteName)
       let formattedName = siteName
-        .replace(/\s+/g, '')
-        .replace(/(.)([A-Z])/g, '$1-$2')
+        .replace(/[\s-]+/g, ' ')
+        .trim()
         .toLowerCase()
+        .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
+          index === 0
+            ? match.toLowerCase()
+            : match.toUpperCase().replace(/\s+/g, '')
+        ) // Convert to camelCase
       if (formattedName == 'inhaãBé') {
         formattedName = 'inhaaBe'
       }
-
+      console.log(formattedName)
       const baseURL = `${process.env.AWS_STORAGE}/restor/chartData/${formattedName}`
       const jsonFiles = {
         carbon: 'carbon.json',

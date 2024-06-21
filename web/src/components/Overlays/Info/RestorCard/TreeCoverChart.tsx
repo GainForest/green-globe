@@ -25,8 +25,7 @@ export const TreeCoverChart = ({ treeData, ecosystemsData }) => {
         {
           label: 'Tree cover loss',
           data: values,
-          backgroundColor: 'rgba(231, 76, 60, 0.75)',
-          borderColor: 'rgba(231, 76, 60, 1)',
+          backgroundColor: '#c99b59',
           borderWidth: 1,
         },
       ],
@@ -147,7 +146,7 @@ export const TreeCoverChart = ({ treeData, ecosystemsData }) => {
   }
 
   return (
-    <div style={{ margin: '8px' }}>
+    <div style={{ margin: '16px' }}>
       {displayTreeData && (
         <div>
           <h2>Land cover</h2>

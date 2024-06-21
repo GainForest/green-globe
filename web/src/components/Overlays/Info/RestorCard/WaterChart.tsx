@@ -11,11 +11,10 @@ export const WaterChart = ({ chartData }) => {
       {
         label: 'Total annual evapotranspiration',
         data: chartData?.evotranspirationPerYear?.data.values,
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: '#4e7edf',
+        borderColor: '#4e7edf',
         fill: false,
-        tension: 0.4,
-        borderWidth: 2,
+        tension: 0.1,
       },
     ],
   }
@@ -37,7 +36,7 @@ export const WaterChart = ({ chartData }) => {
     },
     plugins: {
       legend: {
-        display: true,
+        display: false,
         position: 'top',
       },
       tooltip: {
@@ -49,13 +48,13 @@ export const WaterChart = ({ chartData }) => {
     maintainAspectRatio: false,
     elements: {
       point: {
-        radius: 3,
-        hoverRadius: 5,
+        radius: 0,
+        hoverRadius: 3,
       },
     },
   }
   return (
-    <div>
+    <div style={{ margin: '16px' }}>
       <h2>Total annual evapotranspiration</h2>
       <SmallChart type="line" data={data} options={options} />
     </div>

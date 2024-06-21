@@ -64,8 +64,8 @@ export const CarbonChart = ({ chartData }) => {
       {
         label: 'Net primary productivity',
         data: chartData?.productivityPerYear?.data.values,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: '#b9eec2',
+        borderColor: '#b9eec2',
         fill: false,
         tension: 0.1,
       },
@@ -76,7 +76,7 @@ export const CarbonChart = ({ chartData }) => {
     scales: {
       y: {
         type: 'linear',
-        beginAtZero: true,
+        beginAtZero: false,
         title: {
           display: true,
           text: 'Tonnes of carbon (total)',
@@ -91,7 +91,7 @@ export const CarbonChart = ({ chartData }) => {
     },
     plugins: {
       legend: {
-        display: true,
+        display: false,
         position: 'top',
       },
     },
@@ -102,18 +102,20 @@ export const CarbonChart = ({ chartData }) => {
         borderWidth: 2,
       },
       point: {
-        radius: 3,
-        backgroundColor: 'rgba(75, 192, 192, 1)',
+        radius: 0,
+        hoverRadius: 3,
       },
     },
   }
 
   return (
-    <div>
-      <div style={{ height: '300px' }}>
+    <div style={{ margin: '16px' }}>
+      <div>
+        <h2>Carbon</h2>
         <SmallChart type="bar" data={carbonData} options={carbonOptions} />
       </div>
-      <div style={{ height: '300px' }}>
+      <div>
+        <h2>Net primary productivity</h2>
         <SmallChart
           type="line"
           data={productivityData}

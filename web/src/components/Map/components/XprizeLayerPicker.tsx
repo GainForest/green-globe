@@ -76,12 +76,10 @@ const XprizeLayerPicker = ({ map }) => {
 
   if (!showLayers) {
     return (
-      <div>
-        <Maximize onClick={handleShowLayers}>
-          <Icon className="material-icons-round">layers</Icon>
-          <Text>Show Layers</Text>
-        </Maximize>
-      </div>
+      <Maximize onClick={handleShowLayers}>
+        <Icon className="material-icons-round">layers</Icon>
+        <Text>Show Layers</Text>
+      </Maximize>
     )
   } else
     return (
@@ -108,7 +106,7 @@ const XprizeLayerPicker = ({ map }) => {
 
 const Container = styled.div`
   position: absolute;
-  top: 200px;
+  top: 80px;
   right: 40px;
   background-color: #1e202480;
   border-radius: 4px;
@@ -119,10 +117,11 @@ const Container = styled.div`
 
 const Maximize = styled.button`
   position: absolute;
-  top: 200px;
+  top: 80px;
   right: 40px;
   border: none;
-  font-size: 24px;
+  font-size: 16px;
+  font-height: 26px;
   cursor: pointer;
   padding: 5px;
   border-radius: 4px;
@@ -134,9 +133,11 @@ const Maximize = styled.button`
   overflow: hidden;
   white-space: nowrap;
   opacity: ${({ visible }) => (visible ? 0 : 1)};
+  display: flex;
+  align-items: center;
 
   &:hover {
-    width: 176px;
+    width: 160px;
   }
 `
 

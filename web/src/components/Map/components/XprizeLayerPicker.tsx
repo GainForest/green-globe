@@ -87,17 +87,19 @@ const XprizeLayerPicker = ({ map }) => {
         <Minimize className="material-icons-round" onClick={handleShowLayers}>
           close
         </Minimize>
+        Click on a layer to activate it.
+        <br />
         {layers.map((layer, index) => (
           <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
-            <LayerLabel htmlFor={layer.name} isActive={layer.isActive}>
-              {layer.name}
-            </LayerLabel>
             <LayerIcon
               className="material-icons-round"
               isActive={layer.isActive}
             >
               {layer.isActive ? 'toggle_on' : 'toggle_off'}
             </LayerIcon>
+            <LayerLabel htmlFor={layer.name} isActive={layer.isActive}>
+              {layer.name}
+            </LayerLabel>
           </LayerItem>
         ))}
       </Container>
@@ -108,7 +110,8 @@ const Container = styled.div`
   position: absolute;
   top: 80px;
   right: 40px;
-  background-color: #1e202480;
+  background-color: #1e2024cc;
+  color: white;
   border-radius: 4px;
   padding: 10px;
   transition: opacity 0.3s ease;
@@ -125,7 +128,7 @@ const Maximize = styled.button`
   cursor: pointer;
   padding: 5px;
   border-radius: 4px;
-  background-color: #1e202480;
+  background-color: #1e2024cc;
   color: black;
   display: flex;
   width: 36px;
@@ -177,17 +180,15 @@ const Minimize = styled.button`
 const LayerItem = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   cursor: pointer;
-  &:hover label {
-    color: white;
-  }
 `
 
 const LayerLabel = styled.label`
   margin-right: 10px;
   cursor: pointer;
-  color: ${({ isActive }) => (isActive ? 'white' : 'black')};
+  color: ${({ isActive }) =>
+    isActive ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.6)'};
+  font-size: 14px;
   transition: color 0.3s ease;
 `
 

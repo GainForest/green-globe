@@ -76,12 +76,10 @@ const XprizeLayerPicker = ({ map }) => {
 
   if (!showLayers) {
     return (
-      <div>
-        <Maximize onClick={handleShowLayers}>
-          <Icon className="material-icons-round">layers</Icon>
-          <Text>Show Layers</Text>
-        </Maximize>
-      </div>
+      <Maximize onClick={handleShowLayers}>
+        <Icon className="material-icons-round">layers</Icon>
+        <Text>Show Layers</Text>
+      </Maximize>
     )
   } else
     return (
@@ -89,17 +87,19 @@ const XprizeLayerPicker = ({ map }) => {
         <Minimize className="material-icons-round" onClick={handleShowLayers}>
           close
         </Minimize>
+        <LayerTitle>Click on a layer to activate it.</LayerTitle>
+        <br />
         {layers.map((layer, index) => (
           <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
-            <LayerLabel htmlFor={layer.name} isActive={layer.isActive}>
-              {layer.name}
-            </LayerLabel>
             <LayerIcon
               className="material-icons-round"
               isActive={layer.isActive}
             >
               {layer.isActive ? 'toggle_on' : 'toggle_off'}
             </LayerIcon>
+            <LayerLabel htmlFor={layer.name} isActive={layer.isActive}>
+              {layer.name}
+            </LayerLabel>
           </LayerItem>
         ))}
       </Container>
@@ -108,9 +108,10 @@ const XprizeLayerPicker = ({ map }) => {
 
 const Container = styled.div`
   position: absolute;
-  top: 200px;
+  top: 80px;
   right: 40px;
-  background-color: #1e202480;
+  background-color: #1e2024cc;
+  color: white;
   border-radius: 4px;
   padding: 10px;
   transition: opacity 0.3s ease;
@@ -119,14 +120,15 @@ const Container = styled.div`
 
 const Maximize = styled.button`
   position: absolute;
-  top: 200px;
+  top: 80px;
   right: 40px;
   border: none;
-  font-size: 24px;
+  font-size: 16px;
+  font-height: 26px;
   cursor: pointer;
   padding: 5px;
   border-radius: 4px;
-  background-color: #1e202480;
+  background-color: #1e2024cc;
   color: black;
   display: flex;
   width: 36px;
@@ -134,9 +136,11 @@ const Maximize = styled.button`
   overflow: hidden;
   white-space: nowrap;
   opacity: ${({ visible }) => (visible ? 0 : 1)};
+  display: flex;
+  align-items: center;
 
   &:hover {
-    width: 176px;
+    width: 160px;
   }
 `
 
@@ -173,20 +177,22 @@ const Minimize = styled.button`
   transition: background-color 0.3s ease;
 `
 
+const LayerTitle = styled.div`
+  height: 10px;
+`
+
 const LayerItem = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   cursor: pointer;
-  &:hover label {
-    color: white;
-  }
 `
 
 const LayerLabel = styled.label`
-  margin-right: 10px;
+  margin-left: 4px;
   cursor: pointer;
-  color: ${({ isActive }) => (isActive ? 'white' : 'black')};
+  color: ${({ isActive }) =>
+    isActive ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.6)'};
+  font-size: 14px;
   transition: color 0.3s ease;
 `
 

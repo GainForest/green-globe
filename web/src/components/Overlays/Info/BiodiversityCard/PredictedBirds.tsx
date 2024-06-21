@@ -20,11 +20,9 @@ export const PredictedBirds = () => {
         {predictedBirds[1]?.data
           .filter((d) => d[1] > 1)
           .map((d) => (
-            <div>
-              <p key={d[1]}>
-                {d[0].replace(/_/g, ' ')} - {d[1]}%
-              </p>
-            </div>
+            <p key={d[1]}>
+              {d[0].replace(/_/g, ' ')} - {d[1]}%
+            </p>
           ))}
       </div>
     )

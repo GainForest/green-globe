@@ -40,11 +40,6 @@ export const Sidebar = ({ active, handleClick }) => {
               Biodiversity
             </SidebarItem>
           </Link>
-          <Link href="/insights">
-            <SidebarItem active={location?.includes('insights')}>
-              Insights
-            </SidebarItem>
-          </Link>
           <Link href="/methodology">
             <SidebarItem active={location?.includes('methodology')}>
               Methodology

@@ -120,7 +120,7 @@ export const BiodiversityCard = ({
               activeProjectData={activeProjectData}
               mediaSize={mediaSize}
             />
-            <PredictedBirds />
+            <PredictedBirds mediaSize={mediaSize} />
             <PredictedAnimalsGrid biodiversity={biodiversity} />
           </div>
         ) : (

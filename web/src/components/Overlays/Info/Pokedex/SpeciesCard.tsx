@@ -1,6 +1,14 @@
 import styled from 'styled-components'
 
-export const SpeciesCard = ({ species, mediaSize, handleClick }) => {
+export const SpeciesCard = ({
+  species,
+  mediaSize,
+  handleClick,
+}: {
+  species: Species
+  mediaSize: number
+  handleClick: (species: Species) => void
+}) => {
   const { scientificName, iucnCategory, awsUrl } = species
 
   let hoverTimer

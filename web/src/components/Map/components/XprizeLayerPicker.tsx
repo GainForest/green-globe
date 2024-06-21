@@ -87,7 +87,7 @@ const XprizeLayerPicker = ({ map }) => {
         <Minimize className="material-icons-round" onClick={handleShowLayers}>
           close
         </Minimize>
-        Click on a layer to activate it.
+        <LayerTitle>Click on a layer to activate it.</LayerTitle>
         <br />
         {layers.map((layer, index) => (
           <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
@@ -177,6 +177,10 @@ const Minimize = styled.button`
   transition: background-color 0.3s ease;
 `
 
+const LayerTitle = styled.div`
+  height: 10px;
+`
+
 const LayerItem = styled.div`
   display: flex;
   align-items: center;
@@ -184,7 +188,7 @@ const LayerItem = styled.div`
 `
 
 const LayerLabel = styled.label`
-  margin-right: 10px;
+  margin-left: 4px;
   cursor: pointer;
   color: ${({ isActive }) =>
     isActive ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.6)'};

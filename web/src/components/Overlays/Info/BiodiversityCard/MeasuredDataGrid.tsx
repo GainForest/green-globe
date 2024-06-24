@@ -3,7 +3,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
-import Dendogram from 'src/components/Dendogram/dendogram'
+import Dendogram from 'src/components/Dendogram/Dendogram'
 
 import { Pokedex } from '../Pokedex/Pokedex'
 

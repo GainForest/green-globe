@@ -17,6 +17,7 @@ import { LogbookCard } from './Info/LogbookCard'
 import { ActiveSpeciesCard } from './Info/Pokedex/ActiveSpeciesCard'
 import { KingdomList } from './Info/Pokedex/KingdomList'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
+import { RestorCard } from './Info/RestorCard/RestorCard'
 import { WildlifeCard } from './Info/WildlifeCard'
 
 export const InfoOverlay = ({
@@ -101,13 +102,20 @@ export const InfoOverlay = ({
         active={infoOverlay == 6}
         onClick={() => dispatch(setInfoOverlay(6))}
       />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        buttonIcon={'restart_alt'}
+        position={7}
+        active={infoOverlay == 7}
+        onClick={() => dispatch(setInfoOverlay(7))}
+      />
       {activeProjectData?.project?.dataDownloadUrl && (
         <InfoOverlayButton
           mediaSize={mediaSize}
           buttonIcon={'download'}
-          position={7}
-          active={infoOverlay == 7}
-          onClick={() => dispatch(setInfoOverlay(7))}
+          position={8}
+          active={infoOverlay == 8}
+          onClick={() => dispatch(setInfoOverlay(8))}
         />
       )}
 
@@ -147,8 +155,13 @@ export const InfoOverlay = ({
         <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
       )}
       {infoOverlay == 6 && <LogbookCard mediaSize={mediaSize} />}
-
-      {infoOverlay == 7 && activeProjectData?.project?.dataDownloadUrl && (
+      {infoOverlay == 7 && (
+        <RestorCard
+          mediaSize={mediaSize}
+          activeProjectData={activeProjectData}
+        />
+      )}
+      {infoOverlay == 8 && activeProjectData?.project?.dataDownloadUrl && (
         <DownloadCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}

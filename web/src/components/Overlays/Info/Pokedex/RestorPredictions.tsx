@@ -77,8 +77,9 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
 
   return (
     <div>
+      {' '}
       <div>
-        <h1>Restor Plant Predictions</h1>
+        <h1 style={{ marginLeft: '16px' }}>Plant Predictions</h1>
 
         {loading ? (
           <p>Loading...</p>

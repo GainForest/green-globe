@@ -6,7 +6,7 @@ export const Dendogram = () => {
       <h1> Species Dendogram</h1>
       <p>All species recorded in this project.</p>
       <img
-        src={`${process.env.AWS_STORAGE}/dendogram/semifinals_dendogram.png`}
+        src={`${process.env.AWS_STORAGE}/dendogram/semifinals_dendogram.svg`}
         alt={'species dendogram'}
         style={{ margin: '20px 0px' }}
       />

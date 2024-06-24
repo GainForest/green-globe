@@ -3,6 +3,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
+import Dendogram from 'src/components/Dendogram/dendogram'
 
 import { Pokedex } from '../Pokedex/Pokedex'
 
@@ -21,7 +22,7 @@ export const MeasuredDataGrid = ({
   selectedSpecies,
 }) => {
   const [displayedInsight, setDisplayedInsight] = useState<
-    'circadian' | 'trees' | 'insectspy' | 'pokedex'
+    'circadian' | 'trees' | 'insectspy' | 'pokedex' | 'dendogram'
   >('circadian')
 
   return (
@@ -43,6 +44,11 @@ export const MeasuredDataGrid = ({
           onClick={() => setDisplayedInsight('trees')}
         /> */}
         <IconButton
+          buttonIcon={'/icons/dendogram_small'}
+          active={displayedInsight == 'dendogram'}
+          onClick={() => setDisplayedInsight('dendogram')}
+        />
+        <IconButton
           buttonIcon={'search'}
           active={displayedInsight == 'pokedex'}
           onClick={() => setDisplayedInsight('pokedex')}
@@ -60,6 +66,7 @@ export const MeasuredDataGrid = ({
           selectedSpecies={selectedSpecies}
         />
       )}
+      {displayedInsight == 'dendogram' && <Dendogram />}
       {displayedInsight == 'pokedex' && <Pokedex mediaSize={mediaSize} />}
     </div>
   )

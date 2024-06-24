@@ -5,7 +5,6 @@ import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
 import { InfoBox } from '../InfoBox'
-import { RestorPredictions } from '../Pokedex/RestorPredictions'
 
 import { AnimalPhoto } from './AnimalPhoto'
 import {
@@ -116,11 +115,7 @@ export const BiodiversityCard = ({
       <div style={{ margin: '16px 24px' }}>
         {toggle === 'Predicted' ? (
           <div>
-            <RestorPredictions
-              activeProjectData={activeProjectData}
-              mediaSize={mediaSize}
-            />
-            <PredictedBirds />
+            <PredictedBirds mediaSize={mediaSize} />
             <PredictedAnimalsGrid biodiversity={biodiversity} />
           </div>
         ) : (

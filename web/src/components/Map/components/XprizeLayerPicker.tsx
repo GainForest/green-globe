@@ -108,7 +108,7 @@ const XprizeLayerPicker = ({ map }) => {
 
 const Container = styled.div`
   position: absolute;
-  top: 80px;
+  bottom: 40px;
   right: 40px;
   background-color: #1e2024cc;
   color: white;
@@ -120,7 +120,7 @@ const Container = styled.div`
 
 const Maximize = styled.button`
   position: absolute;
-  top: 80px;
+  bottom: 40px;
   right: 40px;
   border: none;
   font-size: 16px;

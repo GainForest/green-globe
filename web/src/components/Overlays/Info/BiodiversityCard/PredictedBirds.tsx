@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage'
+import { KingdomList } from '../Pokedex/KingdomList'
 
-export const PredictedBirds = () => {
+export const PredictedBirds = ({ mediaSize }) => {
   const [predictedBirds, setPredictedBirds] = useState([])
 
   useEffect(() => {
@@ -14,16 +14,22 @@ export const PredictedBirds = () => {
   }, [])
 
   if (predictedBirds) {
+    const speciesList: Species[] = predictedBirds[1]?.data
+      .filter((d) => d[1] > 1)
+      .map((d) => {
+        const birdName = d[0]?.replace(/_/g, ' ')
+        return {
+          scientificName: birdName,
+          category: 'Animal',
+          awsUrl: undefined,
+          iucnCategory: undefined,
+        }
+      })
+
     return (
       <div>
         <h1>Predicted Birds</h1>
-        {predictedBirds[1]?.data
-          .filter((d) => d[1] > 1)
-          .map((d) => (
-            <p key={d[1]}>
-              {d[0].replace(/_/g, ' ')} - {d[1]}%
-            </p>
-          ))}
+        <KingdomList speciesList={speciesList} mediaSize={mediaSize} />
       </div>
     )
   } else {

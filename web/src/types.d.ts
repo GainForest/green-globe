@@ -43,6 +43,13 @@ interface Ecosystem {
   image: string
 }
 
+interface Species {
+  scientificName: string
+  iucnCategory: string
+  category: string
+  awsUrl: string
+}
+
 // Not the complete interface
 
 interface Asset {

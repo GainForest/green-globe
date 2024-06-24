@@ -6,7 +6,13 @@ import { breakpoints } from 'src/constants'
 
 import { ActiveSpeciesCard } from './ActiveSpeciesCard'
 import { SpeciesCard } from './SpeciesCard'
-export const KingdomList = ({ speciesList = [], mediaSize }) => {
+export const KingdomList = ({
+  speciesList = [],
+  mediaSize,
+}: {
+  speciesList: Species[]
+  mediaSize: number
+}) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [activeSpecies, setActiveSpecies] = useState(null)
 

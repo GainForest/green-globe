@@ -1,17 +1,15 @@
 import styled from 'styled-components'
 
-export const SpeciesCard = ({ species, mediaSize, handleClick }) => {
+export const SpeciesCard = ({
+  species,
+  mediaSize,
+  handleClick,
+}: {
+  species: Species
+  mediaSize: number
+  handleClick: (species: Species) => void
+}) => {
   const { scientificName, iucnCategory, awsUrl } = species
-
-  let hoverTimer
-
-  const handleMouseEnter = () => {
-    hoverTimer = setTimeout(() => handleClick(species), 1000)
-  }
-
-  const handleMouseLeave = () => {
-    clearTimeout(hoverTimer)
-  }
 
   const backgroundColors = {
     LC: '#388E3C',
@@ -29,8 +27,6 @@ export const SpeciesCard = ({ species, mediaSize, handleClick }) => {
       }
       mediaSize={mediaSize}
       onClick={() => handleClick(species)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <StyledImage
         src={awsUrl?.length ? awsUrl : `/placeholder${species.category}.png`}

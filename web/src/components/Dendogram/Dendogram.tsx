@@ -8,7 +8,7 @@ export const Dendogram = () => {
       <img
         src={`${process.env.AWS_STORAGE}/dendogram/semifinals_dendogram.svg`}
         alt={'species dendogram'}
-        style={{ margin: '20px 0px' }}
+        style={{ margin: '20px 0px', backgroundColor: 'white' }}
       />
     </div>
   )

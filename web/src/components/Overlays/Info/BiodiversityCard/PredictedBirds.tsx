@@ -29,10 +29,10 @@ export const PredictedBirds = ({ mediaSize }) => {
     return (
       <div>
         <h2>Predicted Birds</h2>
+        <p>Birds predicted to exist in this region.</p>
         <p>
-          Birds predicted to be in this region. Audiomoths are installed in this
-          region, and the bird sounds are analyzed and predicted with a bird
-          sound recognition algorithm.
+          Audiomoths are installed in this region, and the bird sounds are
+          analyzed and predicted with a bird sound recognition algorithm.
         </p>
         <KingdomList speciesList={speciesList} mediaSize={mediaSize} />
       </div>

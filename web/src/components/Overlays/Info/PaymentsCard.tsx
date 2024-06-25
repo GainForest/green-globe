@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 
 import useAxios from 'axios-hooks'
 
+import { useQuery } from '@redwoodjs/web'
+
 import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
@@ -25,49 +27,34 @@ export const PaymentCard = ({ activeProjectData }) => {
     },
     { manual: true }
   )
+  const FETCH_FIAT_TRANSACTIONS = gql`
+    query findEntry($orgName: String!) {
+      findEntry(orgName: $orgName) {
+        platform
+        originalAmount
+        currency
+        amountInUsd
+        hash
+        timestamp
+        orgName
+        id
+        recipientName
+        communityMemberId
+      }
+    }
+  `
+  const { data: fiatData } = useQuery(FETCH_FIAT_TRANSACTIONS, {
+    variables: { orgName: activeProjectData.project.name },
+    skip: !activeProjectData.name,
+  })
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchFiatPayments = async () => {
-        const res = await fetch(
-          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: `
-        query {
-          fiatTransactionsByProjectId(id:"${activeProjectData.project.id}") {
-            amountInUsd
-            timestamp
-            currency
-            originalAmount
-            firstName
-            lastName
-            profileUrl
-          }
-        }
-      `,
-            }),
-          }
-        )
-        const result = await res.json()
-        return result.data.fiatTransactionsByProjectId.map((payment) => {
-          return {
-            ...payment,
-            amount: payment.amountInUsd,
-            currency: `Fiat (${payment.currency})`,
-          }
-        })
-      }
-
       setLoading(true)
+      const fiatPayments = await fiatData
 
       const cryptoPayments = await fetchCryptoPayments()
-      const fiatPayments = await fetchFiatPayments()
-      if (fiatPayments.length > 0) {
+      if (fiatPayments?.length > 0) {
         setShowFiatMessage(true)
       }
       const allPayments = [...cryptoPayments, ...fiatPayments]
@@ -82,7 +69,7 @@ export const PaymentCard = ({ activeProjectData }) => {
       setLoading(false)
     }
     fetchData()
-  }, [activeProjectData])
+  }, [activeProjectData, fiatData])
 
   const fetchCryptoPayments = async () => {
     let celoRecipients = []

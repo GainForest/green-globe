@@ -11,16 +11,6 @@ export const SpeciesCard = ({
 }) => {
   const { scientificName, iucnCategory, awsUrl } = species
 
-  let hoverTimer
-
-  const handleMouseEnter = () => {
-    hoverTimer = setTimeout(() => handleClick(species), 1000)
-  }
-
-  const handleMouseLeave = () => {
-    clearTimeout(hoverTimer)
-  }
-
   const backgroundColors = {
     LC: '#388E3C',
     EN: '#FFA000',
@@ -37,8 +27,6 @@ export const SpeciesCard = ({
       }
       mediaSize={mediaSize}
       onClick={() => handleClick(species)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <StyledImage
         src={awsUrl?.length ? awsUrl : `/placeholder${species.category}.png`}

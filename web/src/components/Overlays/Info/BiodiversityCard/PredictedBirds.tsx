@@ -28,7 +28,7 @@ export const PredictedBirds = ({ mediaSize }) => {
 
     return (
       <div>
-        <h1>Predicted Birds</h1>
+        <h2>Predicted Birds</h2>
         <KingdomList speciesList={speciesList} mediaSize={mediaSize} />
       </div>
     )

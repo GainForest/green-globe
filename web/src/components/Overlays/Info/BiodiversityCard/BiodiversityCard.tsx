@@ -154,13 +154,6 @@ const PredictedAnimalsGrid = ({ biodiversity }) => {
       </div>
     )
   } else {
-    return (
-      <>
-        <h3>
-          <ThemedSkeleton width={'120px'} />
-        </h3>
-        <div></div>
-      </>
-    )
+    return <></>
   }
 }

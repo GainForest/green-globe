@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import ThemedSkeleton from 'src/components/Map/components/Skeleton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
 import { InfoBox } from '../InfoBox'
@@ -96,12 +95,7 @@ export const BiodiversityCard = ({
           options={['Predicted', 'Measured']}
         />
         {toggle === 'Predicted' ? (
-          <div>
-            <p>
-              Predicted distribution of species habitats within 150km of the
-              project area.
-            </p>
-          </div>
+          <div></div>
         ) : (
           <div>
             <h2>Measured Biodiversity</h2>

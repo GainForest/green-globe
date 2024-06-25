@@ -20,7 +20,7 @@ export const PredictedBirds = ({ mediaSize }) => {
         const birdName = d[0]?.replace(/_/g, ' ')
         return {
           scientificName: birdName,
-          category: 'Animal',
+          category: 'Bird',
           awsUrl: undefined,
           iucnCategory: undefined,
         }
@@ -29,6 +29,11 @@ export const PredictedBirds = ({ mediaSize }) => {
     return (
       <div>
         <h2>Predicted Birds</h2>
+        <p>
+          Birds predicted to be in this region. Audiomoths are installed in this
+          region, and the bird sounds are analyzed and predicted with a bird
+          sound recognition algorithm.
+        </p>
         <KingdomList speciesList={speciesList} mediaSize={mediaSize} />
       </div>
     )

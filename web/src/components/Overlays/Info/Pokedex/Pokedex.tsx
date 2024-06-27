@@ -79,6 +79,7 @@ export const Pokedex = ({ mediaSize }) => {
     <>
       <div>
         <h1>Observations</h1>
+        <p> All species recorded in this project.</p>
         {loading ? (
           <p>Loading...</p>
         ) : allKingdoms.length > 0 ? (

@@ -16,13 +16,78 @@ const XprizeLayerPicker = ({ map }) => {
   if (window.location.host.includes('localhost')) {
     layersData = [
       {
-        name: 'data/drone/1_webmercator.tif',
+        name: 'Competition Area Drone',
         endpoint: 'data/drone/1_webmercator.tif',
       },
       {
-        name: 'data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
+        name: 'Tumbira Deforestation YOD',
         endpoint:
-          'data/drone/20240414_134447_ssc15_u0001_visual_clip_webmercator.tif',
+          'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_Yod_w.tif',
+      },
+      {
+        name: 'Tumbira Deforestation Dur',
+        endpoint:
+          'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_dur_w.tif',
+      },
+      {
+        name: 'Tumbira Deforestation Mag',
+        endpoint:
+          'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_mag_w.tif',
+      },
+      {
+        name: 'Tumbira Regrowth Map Dur',
+        endpoint:
+          'data/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_dur_w.tif',
+      },
+      {
+        name: 'Tumbira Regrowth Map Mag',
+        endpoint:
+          'data/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_mag_w.tif',
+      },
+      {
+        name: 'Tumbira Regrowth Map Yod',
+        endpoint:
+          'data/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_yod_w.tif',
+      },
+      // End
+      {
+        name: 'PM 2.5 2001',
+        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2001_webmercator.tif',
+      },
+      {
+        name: 'PM 2.5 2002',
+        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2002.tif',
+      },
+      {
+        name: 'PM 2.5 2003',
+        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2003.tif',
+      },
+      {
+        name: 'PM 2.5 2004',
+        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2004.tif',
+      },
+      {
+        name: 'PM 2.5 2005',
+        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2005.tif',
+      },
+      {
+        name: 'PM 2.5 2006',
+        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2006.tif',
+      },
+      {
+        name: 'PM 2.5 02/22 MK Tau 95 Signif',
+        endpoint:
+          'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_webmercator.tif',
+      },
+      {
+        name: 'Spectral Diversity',
+        endpoint:
+          'data/layers/spectral_diversity/CV_combined_sum_webmercator.tif',
+      },
+      {
+        name: 'PM 2.5 02/22 MK Tau 95 Signif',
+        endpoint:
+          'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_webmercator.tif',
       },
     ]
   } else {

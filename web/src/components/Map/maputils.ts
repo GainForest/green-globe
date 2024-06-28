@@ -20,11 +20,14 @@ import {
   addMeasuredTreesSourceAndLayer,
   toggleMeasuredTreesLayer,
 } from './sourcesAndLayers/measuredTrees'
+import { addVectorTileLayer } from './sourcesAndLayers/pbfLayer'
 import {
   addAllSitesSourceAndLayer,
   addHighlightedSiteSourceAndLayer,
 } from './sourcesAndLayers/projectSites'
+import { addTiledDroneImagery } from './sourcesAndLayers/tiledDroneImagery'
 import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
+import { addTreeCrownSourceAndLayer } from './sourcesAndLayers/treeCrown'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addHistoricalSatelliteSourceAndLayers(map)
@@ -37,6 +40,8 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addFlightPathSourceAndLayer(map)
   addAmazonBasinSourceAndLayer(map)
   addEDNASourceAndLayers(map)
+  // addTreeCrownSourceAndLayer(map)
+  addTiledDroneImagery(map)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0

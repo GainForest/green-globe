@@ -1,6 +1,5 @@
 import mapboxgl from 'mapbox-gl'
 
-import { EMPTY_GEOJSON } from 'src/constants'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import {
@@ -20,7 +19,6 @@ import {
   addMeasuredTreesSourceAndLayer,
   toggleMeasuredTreesLayer,
 } from './sourcesAndLayers/measuredTrees'
-import { addVectorTileLayer } from './sourcesAndLayers/pbfLayer'
 import {
   addAllSitesSourceAndLayer,
   addHighlightedSiteSourceAndLayer,
@@ -40,7 +38,7 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addFlightPathSourceAndLayer(map)
   addAmazonBasinSourceAndLayer(map)
   addEDNASourceAndLayers(map)
-  // addTreeCrownSourceAndLayer(map)
+  addTreeCrownSourceAndLayer(map)
   addTiledDroneImagery(map)
 }
 

@@ -15,9 +15,9 @@ export const InsectSpy = () => {
 
   // Fetch the finals_new.csv, and display each individual in the insect spy.
   useEffect(() => {
-    d3.csv(`${process.env.AWS_STORAGE}/insectspy/finals_new.csv`).then(
-      setIndividuals
-    )
+    d3.csv(
+      `${process.env.AWS_STORAGE}/insectspy/xprize-finals-dry-run/individuals.csv`
+    ).then(setIndividuals)
   }, [])
 
   if (individuals.length) {
@@ -30,7 +30,7 @@ export const InsectSpy = () => {
             <HexagonalImage
               key={d.class}
               alt={d.class}
-              src={`${process.env.AWS_STORAGE}/${d['Filename/Run']}`}
+              src={`${process.env.AWS_STORAGE}/xprize-finals-dry-run/${d['Filename/Run']}`}
             />
             {d.class}
           </div>

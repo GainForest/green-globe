@@ -82,12 +82,16 @@ const XprizeLayerPicker = ({ map }) => {
       {
         name: 'Spectral Diversity',
         endpoint:
-          'data/layers/spectral_diversity/CV_combined_sum_webmercator.tif',
+          'data/layers/spectral_diversity/CV_p12_sum10m-msk_mercator_bit.tif',
       },
       {
         name: 'PM 2.5 02/22 MK Tau 95 Signif',
         endpoint:
           'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_webmercator.tif',
+      },
+      {
+        name: 'Canopy Height',
+        endpoint: 'data/layers/CH_EPSG3857-003-003.tif',
       },
     ]
   } else {

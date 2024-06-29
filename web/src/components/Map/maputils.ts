@@ -19,6 +19,7 @@ import {
   addMeasuredTreesSourceAndLayer,
   toggleMeasuredTreesLayer,
 } from './sourcesAndLayers/measuredTrees'
+import { addProjectMarkers } from './sourcesAndLayers/projectMarkers'
 import {
   addAllSitesSourceAndLayer,
   addHighlightedSiteSourceAndLayer,
@@ -28,18 +29,19 @@ import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 import { addTreeCrownSourceAndLayer } from './sourcesAndLayers/treeCrown'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
-  addHistoricalSatelliteSourceAndLayers(map)
-  addLandCoverSourceAndLayer(map)
-  addTreeCoverSourceAndLayer(map)
-  addAllSitesSourceAndLayer(map)
-  addHighlightedSiteSourceAndLayer(map)
-  addHiveSourceAndLayers(map)
-  addMeasuredTreesSourceAndLayer(map)
-  addFlightPathSourceAndLayer(map)
-  addAmazonBasinSourceAndLayer(map)
+  // addHistoricalSatelliteSourceAndLayers(map)
+  // addLandCoverSourceAndLayer(map)
+  // addTreeCoverSourceAndLayer(map)
+  // addAllSitesSourceAndLayer(map)
+  // addHighlightedSiteSourceAndLayer(map)
+  // addHiveSourceAndLayers(map)
+  // addMeasuredTreesSourceAndLayer(map)
+  // addFlightPathSourceAndLayer(map)
+  // addAmazonBasinSourceAndLayer(map)
   addEDNASourceAndLayers(map)
-  addTreeCrownSourceAndLayer(map)
-  addTiledDroneImagery(map)
+  addProjectMarkers(map)
+  // addTreeCrownSourceAndLayer(map)
+  // addTiledDroneImagery(map)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
@@ -58,7 +60,6 @@ export const addClickableMarkers = (
   setActiveProject
 ) => {
   const markers = []
-  console.log(geoJson)
   for (const feature of geoJson.features) {
     // create the marker HTML element
     const el = document.createElement('div')

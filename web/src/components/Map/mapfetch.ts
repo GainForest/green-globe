@@ -57,12 +57,16 @@ export const fetchEDNALocations = async (map) => {
   map.getSource('ednaSource')?.setData(ednaLocations)
 }
 
-export const fetchGainForestCenterpoints = (setGeoJson) => {
-  fetch(
+export const fetchGainForestCenterpoints = async (map) => {
+  let gainforestCenterpoints = undefined
+
+  await fetch(
     `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
   )
     .then((response) => response.json())
-    .then((newGeojson) => setGeoJson(newGeojson))
+    .then((res) => (gainforestCenterpoints = res))
+
+  map.getSource('gainforestMarkerSource')?.setData(gainforestCenterpoints)
 }
 
 export const fetchProjectInfo = async (projectId) => {

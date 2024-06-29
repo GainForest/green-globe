@@ -74,7 +74,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
   const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] =
     useState<boolean>(false)
 
@@ -92,7 +91,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Initialize map, fetch all global data
   useEffect(() => {
-    fetchGainForestCenterpoints(setGainForestCenterpoints)
     // fetchHexagons(setHexagons)
     initializeMapbox('map-container', setMap)
   }, [])
@@ -101,6 +99,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // loaded.
   useEffect(() => {
     if (sourcesAndLayersLoaded) {
+      fetchGainForestCenterpoints(map)
       fetchEDNALocations(map)
       fetchHiveLocations(map, activeProjectId)
     }
@@ -121,18 +120,17 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Set initial layers on load
   useEffect(() => {
-    console.log('gainforestCenterpoints', gainforestCenterpoints)
-    if (map && gainforestCenterpoints) {
+    if (map) {
       const onLoad = () => {
         // map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
-        addClickableMarkers(
-          map,
-          dispatch,
-          gainforestCenterpoints,
-          'gainforest',
-          setActiveProjectId
-        )
+        // addClickableMarkers(
+        //   map,
+        //   dispatch,
+        //   gainforestCenterpoints,
+        //   'gainforest',
+        //   setActiveProjectId
+        // )
         setSourcesAndLayersLoaded(true)
       }
 
@@ -144,12 +142,44 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
+      // Create a popup, but don't add it to the map yet.
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+      })
+
+      console.log('hello')
+      map.on('mousemove', 'gainforestMarkerLayer', (e) => {
+        console.log('source')
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer'
+
+        // Copy coordinates array.
+        const coordinates = e.features[0].geometry.coordinates.slice()
+        const description = e.features[0].properties.name
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates).setHTML(description).addTo(map)
+      })
+
+      map.on('mouseleave', 'gainforestMarkerLayer', () => {
+        map.getCanvas().style.cursor = ''
+        popup.remove()
+      })
       return () => {
         map.off('load', onLoad)
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints])
+  }, [map])
 
   // // Rotate the globe
   // useEffect(() => {
@@ -318,15 +348,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <ProfileOverlay />
       <BasketDetails />
-      {gainforestCenterpoints && (
-        <SearchOverlay
-          map={map}
-          allCenterpoints={gainforestCenterpoints}
-          mediaSize={mediaSize}
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-        />
-      )}
+      <SearchOverlay
+        map={map}
+        allCenterpoints={[]}
+        mediaSize={mediaSize}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+      />
       {/* <BackToGlobe map={map} /> */}
 
       {Object.values(treeData)?.length > 0 && (

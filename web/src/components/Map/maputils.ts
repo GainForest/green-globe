@@ -58,6 +58,7 @@ export const addClickableMarkers = (
   setActiveProject
 ) => {
   const markers = []
+  console.log(geoJson)
   for (const feature of geoJson.features) {
     // create the marker HTML element
     const el = document.createElement('div')

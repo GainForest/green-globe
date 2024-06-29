@@ -121,6 +121,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   // Set initial layers on load
   useEffect(() => {
+    console.log('gainforestCenterpoints', gainforestCenterpoints)
     if (map && gainforestCenterpoints) {
       const onLoad = () => {
         // map.setFog(MAPBOX_FOG)

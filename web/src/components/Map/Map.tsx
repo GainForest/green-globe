@@ -341,13 +341,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <ProfileOverlay />
       <BasketDetails />
-      <SearchOverlay
+      {/* <SearchOverlay
         map={map}
         allCenterpoints={[]}
         mediaSize={mediaSize}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
-      />
+      /> */}
       {/* <BackToGlobe map={map} /> */}
 
       {Object.values(treeData)?.length > 0 && (

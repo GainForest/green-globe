@@ -12,8 +12,18 @@ const XprizeLayerPicker = ({ map }) => {
   const [showLayers, setShowLayers] = useState(false)
   const [visible, setVisible] = useState(false)
 
+  // const years = [
+  //   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011,
+  //   2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
+  // ]
+
   let layersData = []
   if (window.location.host.includes('localhost')) {
+    // layersData = years.map((year) => ({
+    //   name: `PM 2.5 ${year}`,
+    //   endpoint: `data/layers/pm2.5/Rescale_rs_AVG_AOD_${year}_rescaled.tif`,
+    // }))
+
     layersData = [
       {
         name: 'Competition Area Drone',
@@ -49,49 +59,10 @@ const XprizeLayerPicker = ({ map }) => {
         endpoint:
           'data/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_yod_w.tif',
       },
-      // End
       {
-        name: 'PM 2.5 2001',
-        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2001_webmercator.tif',
-      },
-      {
-        name: 'PM 2.5 2002',
-        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2002.tif',
-      },
-      {
-        name: 'PM 2.5 2003',
-        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2003.tif',
-      },
-      {
-        name: 'PM 2.5 2004',
-        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2004.tif',
-      },
-      {
-        name: 'PM 2.5 2005',
-        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2005.tif',
-      },
-      {
-        name: 'PM 2.5 2006',
-        endpoint: 'data/layers/pm2.5/Rescale_rs_AVG_AOD_2006.tif',
-      },
-      {
-        name: 'PM 2.5 02/22 MK Tau 95 Signif',
+        name: 'PM 2.5',
         endpoint:
-          'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_webmercator.tif',
-      },
-      {
-        name: 'Spectral Diversity',
-        endpoint:
-          'data/layers/spectral_diversity/CV_p12_sum10m-msk_mercator_bit.tif',
-      },
-      {
-        name: 'PM 2.5 02/22 MK Tau 95 Signif',
-        endpoint:
-          'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_webmercator.tif',
-      },
-      {
-        name: 'Canopy Height',
-        endpoint: 'data/layers/CH_EPSG3857-003-003.tif',
+          '/Users/sharfy/Code/xprize/data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
       },
     ]
   } else {

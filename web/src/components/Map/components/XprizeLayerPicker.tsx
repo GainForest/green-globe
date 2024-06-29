@@ -62,7 +62,7 @@ const XprizeLayerPicker = ({ map }) => {
       {
         name: 'PM 2.5',
         endpoint:
-          '/Users/sharfy/Code/xprize/data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
+          'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
       },
     ]
   } else {

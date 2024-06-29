@@ -22,7 +22,7 @@ export const addProjectMarkers = (map: mapboxgl.Map) => {
       source: 'gainforestMarkerSource',
       layout: {
         'icon-image': 'gainforestMarkerImage',
-        'icon-size': 0.07, // Adjust the size as needed
+        'icon-size': 0.06, // Adjust the size as needed
         'icon-allow-overlap': true, // Allow icons to overlap
       },
       paint: {

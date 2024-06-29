@@ -124,18 +124,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       const onLoad = () => {
         // map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
-        // addClickableMarkers(
-        //   map,
-        //   dispatch,
-        //   gainforestCenterpoints,
-        //   'gainforest',
-        //   setActiveProjectId
-        // )
         setSourcesAndLayersLoaded(true)
       }
 
-      // TODO: check - I think this only displays when all the
-      // sources and layers sre added
       const onStyleData = () => {
         // map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
@@ -148,9 +139,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         closeOnClick: false,
       })
 
-      console.log('hello')
       map.on('mousemove', 'gainforestMarkerLayer', (e) => {
-        console.log('source')
         // Change the cursor style as a UI indicator.
         map.getCanvas().style.cursor = 'pointer'
 
@@ -168,6 +157,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         // Populate the popup and set its coordinates
         // based on the feature found.
         popup.setLngLat(coordinates).setHTML(description).addTo(map)
+      })
+      map.on('click', 'gainforestMarkerLayer', (e) => {
+        const projectId = e.features[0].properties.projectId
+        setActiveProjectId(projectId)
       })
 
       map.on('mouseleave', 'gainforestMarkerLayer', () => {

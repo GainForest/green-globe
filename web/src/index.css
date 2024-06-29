@@ -78,6 +78,11 @@ figure {
   margin: 4px;
 }
 
+.mapboxgl-popup-content {
+  color: black;
+}
+
+
 .hive-map-marker {
   background-image: url('../public/hive.png');
   background-size: cover;

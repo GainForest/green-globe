@@ -29,17 +29,17 @@ import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 import { addTreeCrownSourceAndLayer } from './sourcesAndLayers/treeCrown'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
+  addEDNASourceAndLayers(map)
+  addProjectMarkers(map)
   // addHistoricalSatelliteSourceAndLayers(map)
   // addLandCoverSourceAndLayer(map)
   // addTreeCoverSourceAndLayer(map)
-  // addAllSitesSourceAndLayer(map)
-  // addHighlightedSiteSourceAndLayer(map)
+  addAllSitesSourceAndLayer(map)
+  addHighlightedSiteSourceAndLayer(map)
   // addHiveSourceAndLayers(map)
   // addMeasuredTreesSourceAndLayer(map)
   // addFlightPathSourceAndLayer(map)
   // addAmazonBasinSourceAndLayer(map)
-  addEDNASourceAndLayers(map)
-  addProjectMarkers(map)
   // addTreeCrownSourceAndLayer(map)
   // addTiledDroneImagery(map)
 }

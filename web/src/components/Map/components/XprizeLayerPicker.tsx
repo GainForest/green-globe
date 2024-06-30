@@ -18,10 +18,6 @@ const XprizeLayerPicker = ({ map }) => {
   // ]
 
   let layersData = []
-  // layersData = years.map((year) => ({
-  //   name: `PM 2.5 ${year}`,
-  //   endpoint: `data/layers/pm2.5/Rescale_rs_AVG_AOD_${year}_rescaled.tif`,
-  // }))
 
   layersData = [
     {
@@ -60,7 +56,7 @@ const XprizeLayerPicker = ({ map }) => {
     },
     {
       name: 'PM 2.5',
-      endpoint: `${process.env.AWS_STORAGE}/data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
+      endpoint: `${process.env.AWS_STORAGE}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
     },
   ]
 

@@ -40,7 +40,7 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   // addFlightPathSourceAndLayer(map)
   // addAmazonBasinSourceAndLayer(map)
   addTreeCrownSourceAndLayer(map)
-  // addTiledDroneImagery(map)
+  addTiledDroneImagery(map)
   addProjectMarkers(map)
 }
 

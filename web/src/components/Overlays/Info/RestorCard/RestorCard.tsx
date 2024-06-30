@@ -75,7 +75,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
   }, [activeProjectData])
   return (
     <InfoBox mediaSize={mediaSize}>
-      <h1 style={{ marginLeft: '16px', marginBottom: '8px' }}>Restor Data</h1>
+      <h1 style={{ marginLeft: '16px', marginBottom: '8px' }}>Remote Sensing Analysis</h1>
       <IconBar>
         <IconButton
           buttonIcon={'eco'}

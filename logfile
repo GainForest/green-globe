@@ -501,3 +501,494 @@
 2024-06-02 18:14:17.530 CEST [5377] STATEMENT:  SELECT "id", "checksum", "finished_at", "migration_name", "logs", "rolled_back_at", "started_at", "applied_steps_count" FROM "_prisma_migrations" ORDER BY "started_at" ASC
 2024-06-02 18:14:21.902 CEST [5377] ERROR:  table "_prisma_migrations" does not exist
 2024-06-02 18:14:21.902 CEST [5377] STATEMENT:  DROP TABLE _prisma_migrations
+2024-06-30 06:31:45.215 -03 [88413] LOG:  starting PostgreSQL 16.3 (Homebrew) on aarch64-apple-darwin23.4.0, compiled by Apple clang version 15.0.0 (clang-1500.3.9.4), 64-bit
+2024-06-30 06:31:45.217 -03 [88413] LOG:  listening on IPv6 address "::1", port 5432
+2024-06-30 06:31:45.217 -03 [88413] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-06-30 06:31:45.218 -03 [88413] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-06-30 06:31:45.219 -03 [88416] LOG:  database system was shut down at 2024-06-30 06:31:43 -03
+2024-06-30 06:31:45.221 -03 [88413] LOG:  database system is ready to accept connections
+2024-06-30 06:32:57.866 -03 [88966] FATAL:  database "david" does not exist
+2024-06-30 06:33:02.600 -03 [89049] FATAL:  database "david" does not exist
+2024-06-30 06:33:15.412 -03 [89161] FATAL:  database "david" does not exist
+2024-06-30 06:36:45.223 -03 [88414] LOG:  checkpoint starting: time
+2024-06-30 06:37:30.988 -03 [90753] ERROR:  database "xprize_postgresdb" already exists
+2024-06-30 06:37:30.988 -03 [90753] STATEMENT:  CREATE DATABASE xprize_postgresdb;
+2024-06-30 06:37:44.932 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.932 -03 [90873] STATEMENT:  ALTER SCHEMA public OWNER TO "default";
+2024-06-30 06:37:44.936 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.936 -03 [90873] STATEMENT:  ALTER TABLE public."Asset" OWNER TO "default";
+2024-06-30 06:37:44.937 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.937 -03 [90873] STATEMENT:  ALTER TABLE public."CommunityMember" OWNER TO "default";
+2024-06-30 06:37:44.938 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.938 -03 [90873] STATEMENT:  ALTER SEQUENCE public."CommunityMember_id_seq" OWNER TO "default";
+2024-06-30 06:37:44.940 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.940 -03 [90873] STATEMENT:  ALTER TABLE public."Project" OWNER TO "default";
+2024-06-30 06:37:44.940 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.940 -03 [90873] STATEMENT:  ALTER TABLE public."Shapefile" OWNER TO "default";
+2024-06-30 06:37:44.941 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.941 -03 [90873] STATEMENT:  ALTER SEQUENCE public."Shapefile_id_seq" OWNER TO "default";
+2024-06-30 06:37:44.942 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.942 -03 [90873] STATEMENT:  ALTER TABLE public."SocialMedia" OWNER TO "default";
+2024-06-30 06:37:44.942 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.942 -03 [90873] STATEMENT:  ALTER SEQUENCE public."SocialMedia_id_seq" OWNER TO "default";
+2024-06-30 06:37:44.943 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.943 -03 [90873] STATEMENT:  ALTER TABLE public."Transaction" OWNER TO "default";
+2024-06-30 06:37:44.943 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.943 -03 [90873] STATEMENT:  ALTER SEQUENCE public."Transaction_id_seq" OWNER TO "default";
+2024-06-30 06:37:44.946 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.946 -03 [90873] STATEMENT:  ALTER TABLE public."Wallet" OWNER TO "default";
+2024-06-30 06:37:44.946 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.946 -03 [90873] STATEMENT:  ALTER SEQUENCE public."Wallet_id_seq" OWNER TO "default";
+2024-06-30 06:37:44.947 -03 [90873] ERROR:  role "default" does not exist
+2024-06-30 06:37:44.947 -03 [90873] STATEMENT:  ALTER TABLE public._prisma_migrations OWNER TO "default";
+2024-06-30 06:37:44.961 -03 [90873] ERROR:  role "neon_superuser" does not exist
+2024-06-30 06:37:44.961 -03 [90873] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON SEQUENCES TO neon_superuser WITH GRANT OPTION;
+2024-06-30 06:37:44.961 -03 [90873] ERROR:  role "neon_superuser" does not exist
+2024-06-30 06:37:44.961 -03 [90873] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON TABLES TO neon_superuser WITH GRANT OPTION;
+2024-06-30 06:39:58.270 -03 [88414] LOG:  checkpoint complete: wrote 1909 buffers (11.7%); 1 WAL file(s) added, 0 removed, 0 recycled; write=193.021 s, sync=0.011 s, total=193.048 s; sync files=645, longest=0.001 s, average=0.001 s; distance=8963 kB, estimate=8963 kB; lsn=0/1E34658, redo lsn=0/1DCCBF8
+2024-06-30 06:41:43.950 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.950 -03 [92358] STATEMENT:  ALTER SCHEMA public OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.960 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.960 -03 [92358] STATEMENT:  ALTER TABLE public."Asset" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.961 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.961 -03 [92358] STATEMENT:  ALTER TABLE public."CommunityMember" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.962 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.962 -03 [92358] STATEMENT:  ALTER SEQUENCE public."CommunityMember_id_seq" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.963 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.963 -03 [92358] STATEMENT:  ALTER TABLE public."Project" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.964 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.964 -03 [92358] STATEMENT:  ALTER TABLE public."Shapefile" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.965 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.965 -03 [92358] STATEMENT:  ALTER SEQUENCE public."Shapefile_id_seq" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.966 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.966 -03 [92358] STATEMENT:  ALTER TABLE public."SocialMedia" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.966 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.966 -03 [92358] STATEMENT:  ALTER SEQUENCE public."SocialMedia_id_seq" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.967 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.967 -03 [92358] STATEMENT:  ALTER TABLE public."Transaction" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.968 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.968 -03 [92358] STATEMENT:  ALTER SEQUENCE public."Transaction_id_seq" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.970 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.970 -03 [92358] STATEMENT:  ALTER TABLE public."Wallet" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.970 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.970 -03 [92358] STATEMENT:  ALTER SEQUENCE public."Wallet_id_seq" OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.972 -03 [92358] ERROR:  role "default" does not exist
+2024-06-30 06:41:43.972 -03 [92358] STATEMENT:  ALTER TABLE public._prisma_migrations OWNER TO "default";
+	
+	
+2024-06-30 06:41:43.989 -03 [92358] ERROR:  role "neon_superuser" does not exist
+2024-06-30 06:41:43.989 -03 [92358] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON SEQUENCES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:41:43.989 -03 [92358] ERROR:  role "neon_superuser" does not exist
+2024-06-30 06:41:43.989 -03 [92358] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON TABLES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:41:45.277 -03 [88414] LOG:  checkpoint starting: time
+2024-06-30 06:41:59.966 -03 [88414] LOG:  checkpoint complete: wrote 146 buffers (0.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=14.682 s, sync=0.005 s, total=14.690 s; sync files=120, longest=0.001 s, average=0.001 s; distance=829 kB, estimate=8150 kB; lsn=0/1E9C110, redo lsn=0/1E9C0D8
+2024-06-30 06:42:22.961 -03 [92653] ERROR:  relation "Asset" already exists
+2024-06-30 06:42:22.961 -03 [92653] STATEMENT:  CREATE TABLE public."Asset" (
+	    id text NOT NULL,
+	    name text,
+	    "projectId" text,
+	    classification text NOT NULL,
+	    "ipfsCID" text NOT NULL,
+	    description text,
+	    type text NOT NULL,
+	    extension text,
+	    "geoInformation" jsonb[],
+	    "awsCID" text,
+	    "dateMeasured" timestamp(3) without time zone,
+	    "dateUploaded" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	    "dateEdited" timestamp(3) without time zone
+	);
+	
+	
+	
+2024-06-30 06:42:22.962 -03 [92653] ERROR:  relation "CommunityMember" already exists
+2024-06-30 06:42:22.962 -03 [92653] STATEMENT:  CREATE TABLE public."CommunityMember" (
+	    id integer NOT NULL,
+	    "firstName" text NOT NULL,
+	    "lastName" text NOT NULL,
+	    "fundsReceived" double precision NOT NULL,
+	    "profileUrl" text,
+	    "projectId" text,
+	    bio text NOT NULL,
+	    role text NOT NULL,
+	    priority integer,
+	    "walletId" integer
+	);
+	
+	
+	
+2024-06-30 06:42:22.962 -03 [92653] ERROR:  relation "CommunityMember_id_seq" already exists
+2024-06-30 06:42:22.962 -03 [92653] STATEMENT:  CREATE SEQUENCE public."CommunityMember_id_seq"
+	    AS integer
+	    START WITH 1
+	    INCREMENT BY 1
+	    NO MINVALUE
+	    NO MAXVALUE
+	    CACHE 1;
+	
+	
+	
+2024-06-30 06:42:22.963 -03 [92653] ERROR:  relation "Project" already exists
+2024-06-30 06:42:22.963 -03 [92653] STATEMENT:  CREATE TABLE public."Project" (
+	    id text NOT NULL,
+	    name text NOT NULL,
+	    country text NOT NULL,
+	    "organizationId" integer,
+	    objective text,
+	    "catalogueReason" text,
+	    category text,
+	    description text NOT NULL,
+	    "longDescription" text DEFAULT ''::text NOT NULL,
+	    "dataDownloadUrl" text,
+	    "dataDownloadInfo" text,
+	    kyc boolean DEFAULT false,
+	    "monitorStrategy" text,
+	    "restorationType" text,
+	    "communitySize" integer,
+	    lat double precision,
+	    lon double precision,
+	    "startDate" text,
+	    "endDate" text,
+	    "verraId" integer,
+	    area double precision,
+	    score text,
+	    analysis text,
+	    "potentialIssues" text[],
+	    "customEnterBtnText" text,
+	    "isEnabled" boolean DEFAULT true NOT NULL,
+	    "isExternalProject" boolean DEFAULT true NOT NULL,
+	    "isProjectOfTheMonth" boolean DEFAULT false NOT NULL,
+	    "claimedCarbonOffset" integer,
+	    "soilCarbon" integer,
+	    "avoidedCarbon" integer,
+	    "bufferCarbon" integer,
+	    "hasReferenceArea" boolean DEFAULT false NOT NULL,
+	    "projectUrl" text,
+	    "discordId" text,
+	    "stripeUrl" text,
+	    proponents text[],
+	    "walletId" integer,
+	    "lastCreditPrice" double precision,
+	    "onChainRetirementCarbon" integer,
+	    "onChainSupplyCarbon" integer,
+	    "retirementCarbon" integer,
+	    "sdgGoals" integer[],
+	    "supplyCarbon" integer
+	);
+	
+	
+	
+2024-06-30 06:42:22.963 -03 [92653] ERROR:  relation "Shapefile" already exists
+2024-06-30 06:42:22.963 -03 [92653] STATEMENT:  CREATE TABLE public."Shapefile" (
+	    id integer NOT NULL,
+	    "assetId" text,
+	    area double precision,
+	    "isReference" boolean DEFAULT false NOT NULL,
+	    "default" boolean DEFAULT false NOT NULL,
+	    "shortName" text,
+	    "iNaturalist" text
+	);
+	
+	
+	
+2024-06-30 06:42:22.964 -03 [92653] ERROR:  relation "Shapefile_id_seq" already exists
+2024-06-30 06:42:22.964 -03 [92653] STATEMENT:  CREATE SEQUENCE public."Shapefile_id_seq"
+	    AS integer
+	    START WITH 1
+	    INCREMENT BY 1
+	    NO MINVALUE
+	    NO MAXVALUE
+	    CACHE 1;
+	
+	
+	
+2024-06-30 06:42:22.964 -03 [92653] ERROR:  relation "SocialMedia" already exists
+2024-06-30 06:42:22.964 -03 [92653] STATEMENT:  CREATE TABLE public."SocialMedia" (
+	    id integer NOT NULL,
+	    "projectId" text NOT NULL,
+	    facebook text,
+	    "linkedIn" text,
+	    instagram text,
+	    twitter text
+	);
+	
+	
+	
+2024-06-30 06:42:22.965 -03 [92653] ERROR:  relation "SocialMedia_id_seq" already exists
+2024-06-30 06:42:22.965 -03 [92653] STATEMENT:  CREATE SEQUENCE public."SocialMedia_id_seq"
+	    AS integer
+	    START WITH 1
+	    INCREMENT BY 1
+	    NO MINVALUE
+	    NO MAXVALUE
+	    CACHE 1;
+	
+	
+	
+2024-06-30 06:42:22.965 -03 [92653] ERROR:  relation "Transaction" already exists
+2024-06-30 06:42:22.965 -03 [92653] STATEMENT:  CREATE TABLE public."Transaction" (
+	    id integer NOT NULL,
+	    "from" text NOT NULL,
+	    "to" text NOT NULL,
+	    amount double precision,
+	    blockchain text NOT NULL,
+	    token text NOT NULL,
+	    hash text,
+	    motive text,
+	    "timestamp" timestamp(3) without time zone NOT NULL,
+	    "communityMemberId" integer,
+	    "projectId" text
+	);
+	
+	
+	
+2024-06-30 06:42:22.965 -03 [92653] ERROR:  relation "Transaction_id_seq" already exists
+2024-06-30 06:42:22.965 -03 [92653] STATEMENT:  CREATE SEQUENCE public."Transaction_id_seq"
+	    AS integer
+	    START WITH 1
+	    INCREMENT BY 1
+	    NO MINVALUE
+	    NO MAXVALUE
+	    CACHE 1;
+	
+	
+	
+2024-06-30 06:42:22.966 -03 [92653] ERROR:  relation "Wallet" already exists
+2024-06-30 06:42:22.966 -03 [92653] STATEMENT:  CREATE TABLE public."Wallet" (
+	    id integer NOT NULL,
+	    "SOLAccounts" text[],
+	    "CeloAccounts" text[],
+	    "EthereumAccounts" text[],
+	    "PolygonAccounts" text[]
+	);
+	
+	
+	
+2024-06-30 06:42:22.966 -03 [92653] ERROR:  relation "Wallet_id_seq" already exists
+2024-06-30 06:42:22.966 -03 [92653] STATEMENT:  CREATE SEQUENCE public."Wallet_id_seq"
+	    AS integer
+	    START WITH 1
+	    INCREMENT BY 1
+	    NO MINVALUE
+	    NO MAXVALUE
+	    CACHE 1;
+	
+	
+	
+2024-06-30 06:42:22.966 -03 [92653] ERROR:  relation "_prisma_migrations" already exists
+2024-06-30 06:42:22.966 -03 [92653] STATEMENT:  CREATE TABLE public._prisma_migrations (
+	    id character varying(36) NOT NULL,
+	    checksum character varying(64) NOT NULL,
+	    finished_at timestamp with time zone,
+	    migration_name character varying(255) NOT NULL,
+	    logs text,
+	    rolled_back_at timestamp with time zone,
+	    started_at timestamp with time zone DEFAULT now() NOT NULL,
+	    applied_steps_count integer DEFAULT 0 NOT NULL
+	);
+	
+	
+	
+2024-06-30 06:42:22.969 -03 [92653] ERROR:  duplicate key value violates unique constraint "Asset_pkey"
+2024-06-30 06:42:22.969 -03 [92653] DETAIL:  Key (id)=(f3581f2d-4509-4495-abca-fccd1a8a66ea) already exists.
+2024-06-30 06:42:22.969 -03 [92653] CONTEXT:  COPY Asset, line 1
+2024-06-30 06:42:22.969 -03 [92653] STATEMENT:  COPY public."Asset" (id, name, "projectId", classification, "ipfsCID", description, type, extension, "geoInformation", "awsCID", "dateMeasured", "dateUploaded", "dateEdited") FROM stdin;
+	
+2024-06-30 06:42:22.970 -03 [92653] ERROR:  duplicate key value violates unique constraint "Project_pkey"
+2024-06-30 06:42:22.970 -03 [92653] DETAIL:  Key (id)=(c9c6c5f2c0388ea2fdfa3f36b6a6abfba4050245e47e61d44052812b5d8a0be6) already exists.
+2024-06-30 06:42:22.970 -03 [92653] CONTEXT:  COPY Project, line 1
+2024-06-30 06:42:22.970 -03 [92653] STATEMENT:  COPY public."Project" (id, name, country, "organizationId", objective, "catalogueReason", category, description, "longDescription", "dataDownloadUrl", "dataDownloadInfo", kyc, "monitorStrategy", "restorationType", "communitySize", lat, lon, "startDate", "endDate", "verraId", area, score, analysis, "potentialIssues", "customEnterBtnText", "isEnabled", "isExternalProject", "isProjectOfTheMonth", "claimedCarbonOffset", "soilCarbon", "avoidedCarbon", "bufferCarbon", "hasReferenceArea", "projectUrl", "discordId", "stripeUrl", proponents, "walletId", "lastCreditPrice", "onChainRetirementCarbon", "onChainSupplyCarbon", "retirementCarbon", "sdgGoals", "supplyCarbon") FROM stdin;
+	
+2024-06-30 06:42:22.970 -03 [92653] ERROR:  duplicate key value violates unique constraint "Shapefile_pkey"
+2024-06-30 06:42:22.970 -03 [92653] DETAIL:  Key (id)=(2) already exists.
+2024-06-30 06:42:22.970 -03 [92653] CONTEXT:  COPY Shapefile, line 1
+2024-06-30 06:42:22.970 -03 [92653] STATEMENT:  COPY public."Shapefile" (id, "assetId", area, "isReference", "default", "shortName", "iNaturalist") FROM stdin;
+	
+2024-06-30 06:42:22.971 -03 [92653] ERROR:  duplicate key value violates unique constraint "_prisma_migrations_pkey"
+2024-06-30 06:42:22.971 -03 [92653] DETAIL:  Key (id)=(450fa794-ebe9-4195-ae3a-b29a23a80d56) already exists.
+2024-06-30 06:42:22.971 -03 [92653] CONTEXT:  COPY _prisma_migrations, line 1
+2024-06-30 06:42:22.971 -03 [92653] STATEMENT:  COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count) FROM stdin;
+	
+2024-06-30 06:42:22.972 -03 [92653] ERROR:  multiple primary keys for table "Asset" are not allowed
+2024-06-30 06:42:22.972 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Asset"
+	    ADD CONSTRAINT "Asset_pkey" PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.972 -03 [92653] ERROR:  multiple primary keys for table "CommunityMember" are not allowed
+2024-06-30 06:42:22.972 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."CommunityMember"
+	    ADD CONSTRAINT "CommunityMember_pkey" PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.972 -03 [92653] ERROR:  multiple primary keys for table "Project" are not allowed
+2024-06-30 06:42:22.972 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Project"
+	    ADD CONSTRAINT "Project_pkey" PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.972 -03 [92653] ERROR:  multiple primary keys for table "Shapefile" are not allowed
+2024-06-30 06:42:22.972 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Shapefile"
+	    ADD CONSTRAINT "Shapefile_pkey" PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.973 -03 [92653] ERROR:  multiple primary keys for table "SocialMedia" are not allowed
+2024-06-30 06:42:22.973 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."SocialMedia"
+	    ADD CONSTRAINT "SocialMedia_pkey" PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.973 -03 [92653] ERROR:  multiple primary keys for table "Transaction" are not allowed
+2024-06-30 06:42:22.973 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Transaction"
+	    ADD CONSTRAINT "Transaction_pkey" PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.973 -03 [92653] ERROR:  multiple primary keys for table "Wallet" are not allowed
+2024-06-30 06:42:22.973 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Wallet"
+	    ADD CONSTRAINT "Wallet_pkey" PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.973 -03 [92653] ERROR:  multiple primary keys for table "_prisma_migrations" are not allowed
+2024-06-30 06:42:22.973 -03 [92653] STATEMENT:  ALTER TABLE ONLY public._prisma_migrations
+	    ADD CONSTRAINT _prisma_migrations_pkey PRIMARY KEY (id);
+	
+	
+	
+2024-06-30 06:42:22.973 -03 [92653] ERROR:  relation "Shapefile_assetId_key" already exists
+2024-06-30 06:42:22.973 -03 [92653] STATEMENT:  CREATE UNIQUE INDEX "Shapefile_assetId_key" ON public."Shapefile" USING btree ("assetId");
+	
+	
+	
+2024-06-30 06:42:22.973 -03 [92653] ERROR:  relation "SocialMedia_projectId_key" already exists
+2024-06-30 06:42:22.973 -03 [92653] STATEMENT:  CREATE UNIQUE INDEX "SocialMedia_projectId_key" ON public."SocialMedia" USING btree ("projectId");
+	
+	
+	
+2024-06-30 06:42:22.973 -03 [92653] ERROR:  constraint "Asset_projectId_fkey" for relation "Asset" already exists
+2024-06-30 06:42:22.973 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Asset"
+	    ADD CONSTRAINT "Asset_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES public."Project"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  constraint "CommunityMember_projectId_fkey" for relation "CommunityMember" already exists
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."CommunityMember"
+	    ADD CONSTRAINT "CommunityMember_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES public."Project"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  constraint "CommunityMember_walletId_fkey" for relation "CommunityMember" already exists
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."CommunityMember"
+	    ADD CONSTRAINT "CommunityMember_walletId_fkey" FOREIGN KEY ("walletId") REFERENCES public."Wallet"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  constraint "Project_walletId_fkey" for relation "Project" already exists
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Project"
+	    ADD CONSTRAINT "Project_walletId_fkey" FOREIGN KEY ("walletId") REFERENCES public."Wallet"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  constraint "Shapefile_assetId_fkey" for relation "Shapefile" already exists
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Shapefile"
+	    ADD CONSTRAINT "Shapefile_assetId_fkey" FOREIGN KEY ("assetId") REFERENCES public."Asset"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  constraint "SocialMedia_projectId_fkey" for relation "SocialMedia" already exists
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."SocialMedia"
+	    ADD CONSTRAINT "SocialMedia_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES public."Project"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  constraint "Transaction_communityMemberId_fkey" for relation "Transaction" already exists
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Transaction"
+	    ADD CONSTRAINT "Transaction_communityMemberId_fkey" FOREIGN KEY ("communityMemberId") REFERENCES public."CommunityMember"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  constraint "Transaction_projectId_fkey" for relation "Transaction" already exists
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER TABLE ONLY public."Transaction"
+	    ADD CONSTRAINT "Transaction_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES public."Project"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  role "cloud_admin" does not exist
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON SEQUENCES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:42:22.974 -03 [92653] ERROR:  role "cloud_admin" does not exist
+2024-06-30 06:42:22.974 -03 [92653] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON TABLES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:42:58.560 -03 [92920] ERROR:  role "cloud_admin" does not exist
+2024-06-30 06:42:58.560 -03 [92920] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON SEQUENCES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:42:58.561 -03 [92920] ERROR:  role "cloud_admin" does not exist
+2024-06-30 06:42:58.561 -03 [92920] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON TABLES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:43:10.493 -03 [93032] FATAL:  database "david" does not exist
+2024-06-30 06:43:24.444 -03 [93152] ERROR:  role "cloud_admin" does not exist
+2024-06-30 06:43:24.444 -03 [93152] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON SEQUENCES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:43:24.445 -03 [93152] ERROR:  role "cloud_admin" does not exist
+2024-06-30 06:43:24.445 -03 [93152] STATEMENT:  ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON TABLES TO neon_superuser WITH GRANT OPTION;
+	
+	
+	
+2024-06-30 06:46:45.970 -03 [88414] LOG:  checkpoint starting: time
+2024-06-30 06:47:02.117 -03 [88414] LOG:  checkpoint complete: wrote 160 buffers (1.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=16.130 s, sync=0.007 s, total=16.148 s; sync files=137, longest=0.001 s, average=0.001 s; distance=1281 kB, estimate=7463 kB; lsn=0/1FDC6F0, redo lsn=0/1FDC6B8
+2024-06-30 06:48:17.422 -03 [94967] FATAL:  database "david" does not exist
+2024-06-30 06:51:45.122 -03 [88414] LOG:  checkpoint starting: time
+2024-06-30 06:51:45.229 -03 [88414] PANIC:  could not open file "/Users/david/Projects/xprize/data/global/pg_control": No such file or directory
+2024-06-30 06:51:45.230 -03 [88413] LOG:  checkpointer process (PID 88414) was terminated by signal 6: Abort trap: 6
+2024-06-30 06:51:45.230 -03 [88413] LOG:  terminating any other active server processes
+2024-06-30 06:51:45.231 -03 [88413] LOG:  all server processes terminated; reinitializing
+2024-06-30 06:51:45.240 -03 [96228] LOG:  database system was interrupted; last known up at 2024-06-30 06:47:02 -03
+2024-06-30 06:51:45.312 -03 [96228] LOG:  database system was not properly shut down; automatic recovery in progress
+2024-06-30 06:51:45.314 -03 [96228] PANIC:  could not open file "/Users/david/Projects/xprize/data/global/pg_control": No such file or directory
+2024-06-30 06:51:45.315 -03 [88413] LOG:  startup process (PID 96228) was terminated by signal 6: Abort trap: 6
+2024-06-30 06:51:45.315 -03 [88413] LOG:  aborting startup due to startup process failure
+2024-06-30 06:51:45.315 -03 [88413] LOG:  database system is shut down

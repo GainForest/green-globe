@@ -27,24 +27,24 @@ export const Sidebar = ({ active, handleClick }) => {
       </button>
       {active && (
         <>
-          <Link href="/survey-overview">
+          {/* <Link href="/survey-overview">
             <SidebarItem active={location?.includes('survey-overview')}>
               Survey Overview
             </SidebarItem>
-          </Link>
+          </Link> */}
           <Link href="/map">
             <SidebarItem active={location?.includes('map')}>Map</SidebarItem>
           </Link>
-          <Link href="/biodiversity">
+          {/* <Link href="/biodiversity">
             <SidebarItem active={location?.includes('biodiversity')}>
               Biodiversity
             </SidebarItem>
-          </Link>
-          <Link href="/methodology">
+          </Link> */}
+          {/* <Link href="/methodology">
             <SidebarItem active={location?.includes('methodology')}>
               Methodology
             </SidebarItem>
-          </Link>
+          </Link> */}
         </>
       )}
     </div>

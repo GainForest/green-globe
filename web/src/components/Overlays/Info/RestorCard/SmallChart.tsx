@@ -13,7 +13,7 @@ export const SmallChart = ({ type, data, options }) => {
   Modal.setAppElement('#redwood-app')
 
   const handleClick = () => {
-    setModalIsOpen(true)
+    setModalIsOpen(false) //disable accidential modal clicks
   }
   const ChartComponent = chartComponents[type]
 
@@ -26,7 +26,7 @@ export const SmallChart = ({ type, data, options }) => {
       transform: 'translate(-50%, -50%)',
       border: '1px solid #ccc',
       borderRadius: '10px',
-      backgroundColor: '#22252a',
+      backgroundColor: '#f5f3ef',
       padding: 0,
       overflow: 'hidden',
     },

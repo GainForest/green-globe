@@ -58,6 +58,7 @@ export const fetchEDNALocations = async (map) => {
 }
 
 export const fetchGainForestCenterpoints = async (map) => {
+  console.log('fetching!!')
   let gainforestCenterpoints = undefined
 
   await fetch(

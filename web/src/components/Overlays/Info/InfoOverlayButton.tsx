@@ -66,10 +66,10 @@ const StyledButton = styled.button<{
   cursor: pointer;
   padding: 0;
   border: none;
-  background-color: ${({ active }) => (active ? '#67962A' : '#ffffff')};
+  background-color: ${({ active }) => (active ? '#2bce89' : '#ffffff')};
 
   &:hover {
-    background-color: ${({ active }) => (active ? '#67962A' : '#e9f5da')};
+    background-color: ${({ active }) => (active ? '#2bce89' : '#e9f5da')};
   }
 
   // Conditional styling based on maximize prop

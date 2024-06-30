@@ -210,7 +210,7 @@ const Objectives = ({ activeProjectData }) => {
         <h3>Objective</h3>
         <ObjectivesContainer style={{ margin: '2px' }}>
           {objectives.map((d) => (
-            <InfoTag key={`infotag-${d}`} style={{ color: '#ffffff' }}>
+            <InfoTag key={`infotag-${d}`} style={{ color: '#00000' }}>
               {d}
             </InfoTag>
           ))}

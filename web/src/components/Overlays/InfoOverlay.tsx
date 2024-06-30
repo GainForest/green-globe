@@ -83,32 +83,33 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        buttonIcon={'emoji_people'}
+        buttonIcon={'satellite_alt'}
         position={4}
+        active={infoOverlay == 7}
+        onClick={() => dispatch(setInfoOverlay(7))}
+      />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        buttonIcon={'emoji_people'}
+        position={5}
         active={infoOverlay == 4}
         onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
         buttonIcon={'chat'}
-        position={5}
+        position={6}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
         buttonIcon={'book'}
-        position={6}
+        position={7}
         active={infoOverlay == 6}
         onClick={() => dispatch(setInfoOverlay(6))}
       />
-      <InfoOverlayButton
-        mediaSize={mediaSize}
-        buttonIcon={'restart_alt'}
-        position={7}
-        active={infoOverlay == 7}
-        onClick={() => dispatch(setInfoOverlay(7))}
-      />
+
       {activeProjectData?.project?.dataDownloadUrl && (
         <InfoOverlayButton
           mediaSize={mediaSize}

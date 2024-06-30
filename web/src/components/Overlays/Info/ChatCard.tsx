@@ -168,7 +168,9 @@ export const ChatCard = ({ activeProjectData, mediaSize }) => {
 
   return (
     <InfoBox mediaSize={mediaSize}>
-      <div
+      {/* Connects to Gainforest Polly */}
+      <iframe style={{ height: '100%', width: '100%'}} src='http://localhost:3000'></iframe>
+      {/* <div
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -178,7 +180,6 @@ export const ChatCard = ({ activeProjectData, mediaSize }) => {
       >
         <h1>Chat</h1>
 
-        {/* Message Container */}
         <div
           style={{
             overflowY: 'auto',
@@ -278,7 +279,6 @@ export const ChatCard = ({ activeProjectData, mediaSize }) => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-        {/* Input Box */}
         <div
           style={{
             position: 'relative',
@@ -308,7 +308,7 @@ export const ChatCard = ({ activeProjectData, mediaSize }) => {
             </SignupButton>
           )}
         </div>
-      </div>
+      </div> */}
     </InfoBox>
   )
 }

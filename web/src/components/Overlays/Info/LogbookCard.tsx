@@ -54,7 +54,7 @@ export const LogbookCard = ({ mediaSize }) => {
   return (
     <div
       style={{
-        backgroundColor: '#22252B',
+        backgroundColor: '#f5f3ef',
         zIndex: 10,
         position: 'fixed',
         top: 50,

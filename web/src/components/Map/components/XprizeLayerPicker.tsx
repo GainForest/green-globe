@@ -26,6 +26,10 @@ const XprizeLayerPicker = ({ map }) => {
 
     layersData = [
       {
+        name: 'Tumbira Satellite',
+        endpoint: 'data/drone/tumbira/skysat/3_webmercator.tif',
+      },
+      {
         name: 'Competition Area Drone',
         endpoint: 'data/drone/1_webmercator.tif',
       },
@@ -118,7 +122,7 @@ const XprizeLayerPicker = ({ map }) => {
     return (
       <Maximize onClick={handleShowLayers}>
         <Icon className="material-icons-round">layers</Icon>
-        <Text>Show Layers</Text>
+        <Text>Toggle layers</Text>
       </Maximize>
     )
   } else
@@ -127,7 +131,7 @@ const XprizeLayerPicker = ({ map }) => {
         <Minimize className="material-icons-round" onClick={handleShowLayers}>
           close
         </Minimize>
-        <LayerTitle>Click on a layer to activate it.</LayerTitle>
+        <LayerTitle>Geospatial Data</LayerTitle>
         <br />
         {layers.map((layer, index) => (
           <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
@@ -168,7 +172,7 @@ const Maximize = styled.button`
   cursor: pointer;
   padding: 5px;
   border-radius: 4px;
-  background-color: #1e2024cc;
+  background-color: #2bce89;
   color: black;
   display: flex;
   width: 36px;

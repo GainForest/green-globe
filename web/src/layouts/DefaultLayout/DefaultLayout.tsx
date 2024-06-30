@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useAuth } from 'src/auth'
 import Navbar from 'src/components/Navbar/Navbar'
-import Sidebar from 'src/components/Sidebar/Sidebar'
+// import Sidebar from 'src/components/Sidebar/Sidebar'
 
 type DefaultLayoutProps = {
   children?: React.ReactNode
@@ -36,7 +36,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
           width: '100%',
         }}
       >
-        <Sidebar active={sidebarIsActive} handleClick={handleMenuClick} />
+        {/* <Sidebar active={sidebarIsActive} handleClick={handleMenuClick} /> */}
         <main
           style={{
             flexGrow: 1,

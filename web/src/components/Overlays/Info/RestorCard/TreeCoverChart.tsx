@@ -120,7 +120,7 @@ export const TreeCoverChart = ({ treeData, ecosystemsData }) => {
                   (dataset.data[0] / siteSurfaceArea) *
                   100
                 ).toFixed(2)}%`,
-                fontColor: '#ebebec',
+                fontColor: '#000000',
                 fillStyle: dataset.backgroundColor,
                 strokeStyle: dataset.backgroundColor,
                 lineWidth: 2,

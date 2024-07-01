@@ -35,19 +35,23 @@ const XprizeLayerPicker = ({ map }) => {
     {
       name: 'Competition Area Drone',
       type: 'raster_tif',
-      endpoint: 'data/drone/1_webmercator.tif',
+      endpoint: 'drone/1_webmercator.tif',
     },
     {
       name: 'Tumbira Deforestation YOD',
       type: 'raster_tif',
       endpoint:
-        'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_Yod_w.tif',
+        'layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_Yod_w.tif',
     },
     {
       name: 'PM 2.5',
       type: 'raster_tif',
-      endpoint:
-        'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
+      endpoint: 'layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
+    },
+    {
+      name: 'AGBD',
+      type: 'raster_tif',
+      endpoint: 'layers/AGBD_EPSG3857-002.tif',
     },
   ]
 

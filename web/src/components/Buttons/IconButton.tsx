@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 export const IconButton = ({ buttonIcon, active, onClick }) => {
   if (buttonIcon?.includes('/')) {
-    const buttonColor = active ? 'white' : 'black'
     return (
       <IconButtonContainer active={active} onClick={onClick}>
         <img
@@ -14,7 +13,7 @@ export const IconButton = ({ buttonIcon, active, onClick }) => {
             color: active ? '#ffffff' : '#000000',
             width: '28px',
           }}
-          src={`${process.env.AWS_STORAGE}${buttonIcon}_${buttonColor}.svg`}
+          src={`${process.env.AWS_STORAGE}${buttonIcon}_black.svg`}
         />
       </IconButtonContainer>
     )

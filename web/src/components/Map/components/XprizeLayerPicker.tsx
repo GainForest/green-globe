@@ -28,6 +28,11 @@ const XprizeLayerPicker = ({ map }) => {
       endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
     },
     {
+      name: 'Dry run drone flight',
+      type: 'tms_tile',
+      endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
+    },
+    {
       name: 'Tumbira Satellite',
       type: 'raster_tif',
       endpoint: 'data/drone/tumbira/skysat/3_webmercator.tif',

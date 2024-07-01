@@ -1,18 +1,19 @@
 import mapboxgl from 'mapbox-gl'
 
-export const addTiledDroneImagery = (map: mapboxgl.Map) => {
-  map.addSource('tms-tiles-source', {
+export const addTiledDroneImagery = (
+  map: mapboxgl.Map,
+  layer: { name: string; type: string; endpoint: string }
+) => {
+  map.addSource(layer.name, {
     type: 'raster',
-    tiles: [
-      `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`, // Your TMS tile URL template
-    ],
+    tiles: [layer.endpoint],
     tileSize: 256, // Tile size, usually 256 or 512
     scheme: 'tms', // Specify that the tiles are in TMS format
   })
 
   map.addLayer({
-    id: 'tms-tiles-layer',
+    id: layer.name,
     type: 'raster',
-    source: 'tms-tiles-source',
+    source: layer.name,
   })
 }

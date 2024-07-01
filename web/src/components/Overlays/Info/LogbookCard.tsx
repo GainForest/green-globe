@@ -42,7 +42,7 @@ export const LogbookCard = ({ mediaSize }) => {
             // update relative path
             content = content.replace(
               /\]\((?!http)(.+?)\)/g,
-              (match, p1) => `]/${process.env.AWS_STORAGE}/logbook/media/${p1})`
+              (match, p1) => `](${process.env.AWS_STORAGE}/logbook/media/${p1})`
             )
 
             return {

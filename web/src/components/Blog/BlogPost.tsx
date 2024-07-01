@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import Markdown from 'markdown-to-jsx'
 const BlogPost = ({ content }) => {
+  console.log(content)
   useEffect(() => {
     const updateMediaElements = () => {
       const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a']
@@ -98,12 +99,14 @@ export default BlogPost
 export const CustomLink = ({ href, children }) => {
   const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a']
   const videoExtensions = ['.mp4', '.webm', '.ogv']
-
-  const isAudio = audioExtensions.some((ext) => href.endsWith(ext))
-  const isVideo = videoExtensions.some((ext) => href.endsWith(ext))
-
+  console.log('href: ', href, 'children: ', children)
+  const isMedia = audioExtensions
+    .concat(videoExtensions)
+    .some((ext) => href.endsWith(ext))
   const [playing, setPlaying] = useState(false)
+  const [progress, setProgress] = useState(0) // Track playback progress
   const mediaRef = useRef(null)
+  const progressBarRef = useRef(null)
 
   const togglePlay = () => {
     if (mediaRef.current) {
@@ -117,43 +120,93 @@ export const CustomLink = ({ href, children }) => {
     }
   }
 
-  const handleTimeUpdate = (event) => {
-    const progress = (event.target.currentTime / event.target.duration) * 100
-    // Set state or do something with progress if needed
+  const handleTimeUpdate = () => {
+    if (mediaRef.current) {
+      const currentProgress =
+        (mediaRef.current.currentTime / mediaRef.current.duration) * 100
+      setProgress(currentProgress)
+    }
   }
 
-  if (isAudio) {
-    return (
-      <div className="media-wrapper">
-        <button onClick={togglePlay} className="g-media--playbutton">
-          {playing ? '❚❚' : '►'}
-        </button>
-        <audio ref={mediaRef} onTimeUpdate={handleTimeUpdate} src={href} hidden>
-          Your browser does not support the audio element.
-        </audio>
-        {children}
-      </div>
-    )
-  } else if (isVideo) {
-    return (
-      <div className="media-wrapper">
-        <button onClick={togglePlay} className="g-media--playbutton">
-          {playing ? '❚❚' : '►'}
-        </button>
-        <video
-          ref={mediaRef}
-          onTimeUpdate={handleTimeUpdate}
-          src={href}
-          width="100%"
-          controls
-          hidden
-        >
-          Your browser does not support the video tag.
-        </video>
-        {children}
-      </div>
-    )
+  const adjustPlayback = (event) => {
+    const progressBar = progressBarRef.current
+    if (progressBar && mediaRef.current) {
+      const bounds = progressBar.getBoundingClientRect()
+      const posX = event.clientX - bounds.left // Click position X within the progress bar
+      const newTime =
+        (posX / progressBar.offsetWidth) * mediaRef.current.duration
+      mediaRef.current.currentTime = newTime
+    }
   }
 
-  return <a href={href}>{children}</a>
+  return (
+    <div
+      className="media-wrapper"
+      style={{ position: 'relative', width: '100%', cursor: 'pointer' }}
+    >
+      <div
+        ref={progressBarRef}
+        onClick={adjustPlayback}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1,
+          backgroundColor: 'transparent',
+        }}
+      >
+        <div
+          style={{
+            height: '100%',
+            backgroundColor: 'rgba(43, 206, 137, 0.5)', // Semi-transparent green
+            width: `${progress}%`,
+          }}
+        />
+      </div>
+      {isMedia ? (
+        <>
+          <button
+            onClick={togglePlay}
+            className="g-media--playbutton"
+            style={{ position: 'absolute', zIndex: 2 }}
+          >
+            {playing ? '❚❚' : '►'}
+          </button>
+          <span style={{ opacity: playing ? 0.5 : 1, zIndex: 0 }}>
+            <p
+              style={{
+                color: 'white',
+                marginLeft: '32px',
+                backgroundColor: '#243f48',
+              }}
+            >
+              {children}
+            </p>
+          </span>
+          {isMedia &&
+            (audioExtensions.some((ext) => href.endsWith(ext)) ? (
+              <audio
+                ref={mediaRef}
+                onTimeUpdate={handleTimeUpdate}
+                src={href}
+                hidden
+              />
+            ) : (
+              <video
+                ref={mediaRef}
+                onTimeUpdate={handleTimeUpdate}
+                src={href}
+                width="100%"
+                controls
+                hidden
+              />
+            ))}
+        </>
+      ) : (
+        <a href={href}>{children}</a>
+      )}
+    </div>
+  )
 }

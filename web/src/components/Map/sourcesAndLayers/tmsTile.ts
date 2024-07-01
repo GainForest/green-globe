@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl'
 
-export const addTiledDroneImagery = (
+export const addTMSTileSourceAndLayer = (
   map: mapboxgl.Map,
   layer: { name: string; type: string; endpoint: string }
 ) => {

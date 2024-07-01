@@ -38,7 +38,7 @@ const geojsonLineLayer = (layerName) => ({
   },
 })
 
-export const addGeojsonLineSource = async (
+export const addGeojsonLineSourceAndLayer = async (
   map: mapboxgl.Map,
   layer: { name: string; endpoint: string; type: string }
 ) => {

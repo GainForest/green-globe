@@ -36,7 +36,7 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   // addHiveSourceAndLayers(map)
   // addMeasuredTreesSourceAndLayer(map)
   // addFlightPathSourceAndLayer(map)
-  // addAmazonBasinSourceAndLayer(map)
+  addAmazonBasinSourceAndLayer(map)
   addProjectMarkers(map)
 }
 

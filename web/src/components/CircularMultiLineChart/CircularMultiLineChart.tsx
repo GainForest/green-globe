@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { csv } from 'd3-fetch';
 import { scaleLinear } from 'd3-scale';
 
 const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
@@ -29,12 +30,12 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
   const innerRadius = size / 6;
 
   const frequencies = useMemo(() => {
-    return Object.keys(data[0]).filter(key => key !== 'time');
-  }, [data]);
+    return ['low', 'medium', 'high', '20000', '60000'];
+  }, []);
 
   const colorScale = scaleLinear()
     .domain([0, frequencies.length - 1])
-    .range([0, 270]);
+    .range([240, 0]); // From blue (240) to red (0)
 
   const getColor = (index) => `hsl(${colorScale(index)}, 100%, 50%)`;
 
@@ -86,10 +87,7 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
       {size > 0 && (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
           <g transform={`translate(${centerX},${centerY})`}>
-            {/* Bounding circle */}
             <circle r={maxRadius} fill="none" stroke="#666" strokeWidth="2" />
-
-            {/* Axis lines */}
             {axisLines.map((line, index) => (
               <line
                 key={index}
@@ -101,8 +99,6 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
                 strokeWidth="0.5"
               />
             ))}
-
-            {/* Line charts */}
             {linePaths.map((path, index) => (
               <path
                 key={index}
@@ -113,8 +109,6 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
                 strokeLinejoin="round"
               />
             ))}
-
-            {/* Interaction points */}
             {interactionPoints.map((point, index) => (
               <circle
                 key={index}
@@ -129,8 +123,6 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
               />
             ))}
           </g>
-
-          {/* Time labels */}
           {[0, 3, 6, 9, 12, 15, 18, 21].map((hour, index) => {
             const angle = (hour / 24) * Math.PI * 2 - Math.PI / 2;
             const x = centerX + Math.cos(angle) * (maxRadius + 25);
@@ -149,28 +141,20 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
               </text>
             );
           })}
-
-          {/* Frequency legend */}
           {frequencies.map((freq, index) => (
             <g key={freq} transform={`translate(${size - 120}, ${20 + index * 20})`}>
               <rect width="20" height="10" fill={getColor(index)} />
               <text x="25" y="9" fontSize={size / 60} fill="#666">{freq}</text>
             </g>
           ))}
-
-          {/* Center label */}
-          <text x={centerX} y={centerY} textAnchor="middle" fontSize={size / 50} fill="#666">461279</text>
-
-          {/* Hover information */}
+          <text x={centerX} y={centerY} textAnchor="middle" fontSize={size / 50} fill="#666">{maxValue.toFixed(2)}</text>
           {hoveredPoint && (
             <text x={centerX} y={size - 20} textAnchor="middle" fontSize={size / 40}>
               Time: {hoveredPoint.item.time.toFixed(2)} | {hoveredPoint.freq}: {hoveredPoint.item[hoveredPoint.freq].toFixed(2)}
             </text>
           )}
-
-          {/* Max Value indicator */}
           <text x={size - 20} y={size - 20} textAnchor="end" fontSize={size / 50} fill="#666">
-            Max Value: {maxValue.toFixed(2)}
+            Max Average Value: {maxValue.toFixed(2)}
           </text>
         </svg>
       )}
@@ -178,4 +162,34 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
   );
 };
 
-export default CircularMultiLineChart;
+const CircularMultiLineChartWithCSVLoader = ({ csvPath, maxFixedValue = null }) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const csvData = await csv(csvPath, d => ({
+          time: +d.time,
+          low: +d.low,
+          medium: +d.medium,
+          high: +d.high,
+          '20000': +d['20000'],
+          '60000': +d['60000']
+        }));
+        setData(csvData);
+      } catch (error) {
+        console.error('Error fetching or parsing CSV:', error);
+      }
+    };
+
+    fetchData();
+  }, [csvPath]);
+
+  if (data.length === 0) {
+    return <div>Loading...</div>;
+  }
+
+  return <CircularMultiLineChart data={data} maxFixedValue={maxFixedValue} />;
+};
+
+export default CircularMultiLineChartWithCSVLoader;

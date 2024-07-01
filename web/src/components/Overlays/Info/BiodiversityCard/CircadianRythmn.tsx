@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { AudioPlayer } from 'src/components/Buttons/AudioPlayer'
 import CircularBarChart from 'src/components/CircularBarChart'
 import CircularLineChart from 'src/components/CircularLineChart'
-import CircularMultiLineChart from 'src/components/CircularMultiLineChart'
+import CircularMultiLineChartWithCSVLoader from 'src/components/CircularMultiLineChart'
 
 
 export const CircadianRythmn = () => {
@@ -15,7 +15,7 @@ export const CircadianRythmn = () => {
       freq1: Math.random() * 100,
       freq2: Math.random() * 1000,
       freq3: Math.random() * 5000,
-      freq4: Math.random() * 10000,
+      hi: Math.random() * 10000,
       freq5: Math.random() * 2000
     }));
   }, []);
@@ -37,7 +37,7 @@ export const CircadianRythmn = () => {
             <CircularBarChart csvPath={`${process.env.AWS_STORAGE}/pmn/max_results_final.csv`}/>
           </div>
           <div style={{ width: '100%', aspectRatio: '1 / 1', maxWidth: '600px', margin: 'auto' }}>
-            <CircularMultiLineChart data={sampleMultiData} maxFixedValue={15000}/>
+            <CircularMultiLineChartWithCSVLoader csvPath={`${process.env.AWS_STORAGE}/pmn/median_results_final.csv`}/>
           </div>
           <AudioPlayer
             label="Tyrant"

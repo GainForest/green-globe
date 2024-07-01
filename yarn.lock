@@ -21316,6 +21316,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"papaparse@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "papaparse@npm:5.4.1"
+  checksum: 201f37c4813453fed5bfb4c01816696b099d2db9ff1e8fb610acc4771fdde91d2a22b6094721edb0fedb21ca3c46f04263f68be4beb3e35b8c72278f0cedc7b7
+  languageName: node
+  linkType: hard
+
 "parallel-transform@npm:^1.1.0":
   version: 1.2.0
   resolution: "parallel-transform@npm:1.2.0"
@@ -23919,6 +23926,7 @@ __metadata:
     geojson2h3: ^1.2.0
     h3-js: ^4.1.0
     mapbox-gl: ^2.13.0
+    papaparse: ^5.4.1
     react-data-table-component: ^7.6.2
     react-loading-skeleton: ^3.2.0
     react-redux: ^8.1.1

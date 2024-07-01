@@ -21,6 +21,7 @@ export const addNamedSource = (
       },
     })
   }
+  map.moveLayer(layer.name, 'gainforestMarkerLayer')
 }
 
 export const removeNamedSource = (

@@ -18,11 +18,6 @@ const XprizeLayerPicker = ({ map }) => {
   // ]
 
   let layersData = []
-  if (window.location.host.includes('localhost')) {
-    // layersData = years.map((year) => ({
-    //   name: `PM 2.5 ${year}`,
-    //   endpoint: `data/layers/pm2.5/Rescale_rs_AVG_AOD_${year}_rescaled.tif`,
-    // }))
 
     layersData = [
       {

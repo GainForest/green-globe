@@ -30,7 +30,7 @@ export const InsectSpy = () => {
             <HexagonalImage
               key={d.class}
               alt={d.class}
-              src={`${process.env.AWS_STORAGE}/xprize-finals-dry-run/${d['Filename/Run']}`}
+              src={`${process.env.AWS_STORAGE}/insectspy/xprize-finals-dry-run/${d['Filename/Run']}`}
             />
             {d.class}
           </div>

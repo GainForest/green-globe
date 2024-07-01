@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl'
 
-import { addTreeCrownSourceAndLayer } from './treeCrown'
+import { addGeojsonLineSource } from './geojsonLine'
 
 export const addNamedSource = (
   map: mapboxgl.Map,
@@ -14,7 +14,7 @@ export const addNamedSource = (
     })
   }
   if (!map.getSource(layer.name) && layer.type == 'geojson_line') {
-    addTreeCrownSourceAndLayer(map, layer)
+    addGeojsonLineSource(map, layer)
   }
   if (!map.getLayer(layer.name) && layer.type == 'raster_tif') {
     map.addLayer({

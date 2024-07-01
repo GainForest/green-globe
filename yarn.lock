@@ -12948,7 +12948,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"d3-geo@npm:3":
+"d3-geo@npm:3, d3-geo@npm:^3.1.1":
   version: 3.1.1
   resolution: "d3-geo@npm:3.1.1"
   dependencies:
@@ -13031,7 +13031,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"d3-shape@npm:3":
+"d3-shape@npm:3, d3-shape@npm:^3.2.0":
   version: 3.2.0
   resolution: "d3-shape@npm:3.2.0"
   dependencies:
@@ -19783,6 +19783,24 @@ __metadata:
   version: 1.0.4
   resolution: "markdown-escapes@npm:1.0.4"
   checksum: cf3f2231191d9df61cd1d02a50a55a5c89ab9cebfe75572950f4844b93a41d561eed2d82e42732d55f2c55fa0d426b51df3a7f378b4068ae1e2923bb758a9cc8
+  languageName: node
+  linkType: hard
+
+"markdown-to-jsx@npm:^7.4.7":
+  version: 7.4.7
+  resolution: "markdown-to-jsx@npm:7.4.7"
+  peerDependencies:
+    react: ">= 0.14.0"
+  checksum: 7dab3e2c8d7374c45e6ca34fd12b40453533a5b89749eff3359975b1d296c553ff7675f56be7c9d1fb3b97b7b7d143d1b3237137d5c262322e0534eea72e2800
+  languageName: node
+  linkType: hard
+
+"marked@npm:^13.0.1":
+  version: 13.0.1
+  resolution: "marked@npm:13.0.1"
+  bin:
+    marked: bin/marked.js
+  checksum: f14b83b65397ce5c5c4703b2808db6ca0e580d89a52e0f61e204b2451774cd87a7d79a40127d3f7e867e6e03486d1b3f508eb9af7d74623dc7f57adb6a7f8890
   languageName: node
   linkType: hard
 
@@ -27184,7 +27202,12 @@ __metadata:
     "@redwoodjs/web": 4.3.1
     axios-hooks: ^5.0.2
     chart.js: ^4.4.3
+    d3-geo: ^3.1.1
+    d3-shape: ^3.2.0
     dompurify: ^3.1.2
+    js-yaml: ^4.1.0
+    markdown-to-jsx: ^7.4.7
+    marked: ^13.0.1
     prop-types: 15.8.1
     react: 17.0.2
     react-chartjs-2: ^5.2.0

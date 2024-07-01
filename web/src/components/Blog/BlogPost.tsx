@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
+import Markdown from 'markdown-to-jsx'
 const BlogPost = ({ content }) => {
   useEffect(() => {
     const updateMediaElements = () => {
@@ -11,7 +12,6 @@ const BlogPost = ({ content }) => {
         const href = anchor.href
         const isAudio = audioExtensions.some((ext) => href.endsWith(ext))
         const isVideo = videoExtensions.some((ext) => href.endsWith(ext))
-
         if (!isAudio && !isVideo) {
           return
         }
@@ -75,10 +75,85 @@ const BlogPost = ({ content }) => {
       })
     }
 
-    updateMediaElements()
+    // updateMediaElements()
   }, [content])
 
-  return <div dangerouslySetInnerHTML={{ __html: content }} />
+  return (
+    <div>
+      <Markdown
+        options={{
+          overrides: {
+            a: { component: CustomLink },
+          },
+        }}
+      >
+        {content}
+      </Markdown>
+    </div>
+  )
 }
 
 export default BlogPost
+
+export const CustomLink = ({ href, children }) => {
+  const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a']
+  const videoExtensions = ['.mp4', '.webm', '.ogv']
+
+  const isAudio = audioExtensions.some((ext) => href.endsWith(ext))
+  const isVideo = videoExtensions.some((ext) => href.endsWith(ext))
+
+  const [playing, setPlaying] = useState(false)
+  const mediaRef = useRef(null)
+
+  const togglePlay = () => {
+    if (mediaRef.current) {
+      if (mediaRef.current.paused) {
+        mediaRef.current.play()
+        setPlaying(true)
+      } else {
+        mediaRef.current.pause()
+        setPlaying(false)
+      }
+    }
+  }
+
+  const handleTimeUpdate = (event) => {
+    const progress = (event.target.currentTime / event.target.duration) * 100
+    // Set state or do something with progress if needed
+  }
+
+  if (isAudio) {
+    return (
+      <div className="media-wrapper">
+        <button onClick={togglePlay} className="g-media--playbutton">
+          {playing ? '❚❚' : '►'}
+        </button>
+        <audio ref={mediaRef} onTimeUpdate={handleTimeUpdate} src={href} hidden>
+          Your browser does not support the audio element.
+        </audio>
+        {children}
+      </div>
+    )
+  } else if (isVideo) {
+    return (
+      <div className="media-wrapper">
+        <button onClick={togglePlay} className="g-media--playbutton">
+          {playing ? '❚❚' : '►'}
+        </button>
+        <video
+          ref={mediaRef}
+          onTimeUpdate={handleTimeUpdate}
+          src={href}
+          width="100%"
+          controls
+          hidden
+        >
+          Your browser does not support the video tag.
+        </video>
+        {children}
+      </div>
+    )
+  }
+
+  return <a href={href}>{children}</a>
+}

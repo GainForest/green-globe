@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import DOMpurify from 'dompurify'
+import axios from 'axios'
+import yaml from 'js-yaml'
 import { useDispatch } from 'react-redux'
 
 import Blog from 'src/components/Blog/Blog'
@@ -26,30 +27,68 @@ export const LogbookCard = ({ mediaSize }) => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const response = await fetch(
-        'https://public-api.wordpress.com/rest/v1.1/sites/gainforestxprize.wordpress.com/posts/'
-      )
-      const data = await response.json()
-      const cleanPosts = data.posts.map((post) => {
-        // DO NOT remove the DOMpurify.sanitize() function. It is used to prevent XSS attacks.
-        const cleanObj = {
-          title: DOMpurify.sanitize(post.title),
-          content: DOMpurify.sanitize(post.content),
-          categories: Object.keys(post.categories),
-          date: formatDate(post.date),
-          thumbnail: post.featured_image || '/biodivx-forest.jpeg',
-        }
-        return cleanObj
-      })
-      const uncategorizedPosts = cleanPosts.filter(
-        (d) => !d.categories.includes('Methodology')
-      )
-      setPosts(uncategorizedPosts)
+      try {
+        const response = await axios.get(
+          `${process.env.AWS_STORAGE}/logbook/posts/`
+        )
+        const filenames = parseDirectoryListing(response.data)
+        const postsData = await Promise.all(
+          filenames.map(async (filename) => {
+            const postResponse = await axios.get(
+              `${process.env.AWS_STORAGE}/logbook/posts/${filename}`
+            )
+            let { content, metadata } = parseMarkdown(postResponse.data)
 
-      setLoading(false)
+            // update relative path
+            content = content.replace(
+              /\]\((?!http)(.+?)\)/g,
+              (match, p1) => `]/${process.env.AWS_STORAGE}/logbook/media/${p1})`
+            )
+
+            return {
+              title: metadata.title,
+              content: content,
+              categories: metadata.categories || ['Uncategorized'],
+              date: formatDate(metadata.date) || '',
+              thumbnail: metadata.featured_image || '/biodivx-forest.jpeg',
+            }
+          })
+        )
+        setPosts(postsData)
+        setLoading(false)
+      } catch (error) {
+        console.error('Failed to load posts:', error)
+        setLoading(false)
+      }
     }
+
     getPosts()
-  }, [])
+  }, [setLoading])
+
+  const parseDirectoryListing = (html) => {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+    const links = doc.querySelectorAll('ul li a')
+    return Array.from(links).map((link) => link.textContent.trim())
+  }
+
+  const parseMarkdown = (markdown) => {
+    let metadata = {}
+    let content = markdown
+
+    try {
+      const matcher = /^---\s*\n([\s\S]+?)\n---/
+      const match = markdown.match(matcher)
+      if (match) {
+        metadata = yaml.load(match[1])
+        content = markdown.slice(match[0].length)
+      }
+    } catch (error) {
+      console.error('Error parsing YAML:', error)
+    }
+
+    return { content, metadata }
+  }
 
   return (
     <div

@@ -29,10 +29,6 @@ export const CircadianRythmn = () => {
 
       {SOUNDSCAPE_PATHS.map((path) => (
         <div key={path}>
-          {/* <img
-            src={`${process.env.AWS_STORAGE}/${path}`}
-            alt={`circadian rythmn for ${path}`}
-          /> */}
           <div style={{ width: '100%', aspectRatio: '1 / 1', maxWidth: '600px', margin: 'auto' }}>
             <CircularBarChart csvPath={`${process.env.AWS_STORAGE}/pmn/max_results_final.csv`}/>
           </div>

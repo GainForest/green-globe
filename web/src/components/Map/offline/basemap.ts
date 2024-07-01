@@ -25,7 +25,7 @@ export const offlineBasemapStyle = {
         'fill-color': [
           'case',
           ['==', ['get', 'ADM0_A3'], 'BRA'],
-          '#d6d1c4', // Subtle highlight for Brazil
+          '#f2ede3', // Subtle highlight for Brazil
           '#f2ede3'  // Default color for other countries
         ],
         'fill-opacity': 1, // Full opacity to prevent any gaps

@@ -18,15 +18,15 @@ const treeCrownLayerPbf = {
   },
 }
 
-const treeCrownSource = (treeCrownGeojson = EMPTY_GEOJSON) => ({
+const geojsonLineSource = (treeCrownGeojson = EMPTY_GEOJSON) => ({
   type: 'geojson',
   data: treeCrownGeojson,
 })
 
-const treeCrownLayer = {
-  id: 'treeCrownLayer',
+const geojsonLineLayer = (layerName) => ({
+  id: layerName,
   type: 'line',
-  source: 'treeCrownSource',
+  source: layerName,
   layout: {
     'line-join': 'round',
     'line-cap': 'round',
@@ -36,20 +36,21 @@ const treeCrownLayer = {
     'line-color': '#AC4197',
     'line-width': 2.5,
   },
-}
+})
 
-export const addTreeCrownSourceAndLayer = async (map: mapboxgl.Map) => {
+export const addGeojsonLineSource = async (
+  map: mapboxgl.Map,
+  layer: { name: string; endpoint: string; type: string }
+) => {
   try {
-    const res = await fetch(
-      `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`
-    )
+    const res = await fetch(layer.endpoint)
     const treeCrownGeojson = await res.json()
 
-    if (!map.getSource('treeCrownSource')) {
-      map.addSource('treeCrownSource', treeCrownSource(treeCrownGeojson))
+    if (!map.getSource(layer.name)) {
+      map.addSource(layer.name, geojsonLineSource(treeCrownGeojson))
     }
-    if (!map.getLayer('treeCrownLayer')) {
-      map.addLayer(treeCrownLayer)
+    if (!map.getLayer(layer.name)) {
+      map.addLayer(geojsonLineLayer(layer.name))
     }
   } catch (error) {
     console.error('Error reading GeoJSON file:', error)

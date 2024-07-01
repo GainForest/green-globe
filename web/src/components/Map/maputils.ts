@@ -26,7 +26,6 @@ import {
 } from './sourcesAndLayers/projectSites'
 import { addTiledDroneImagery } from './sourcesAndLayers/tiledDroneImagery'
 import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
-import { addTreeCrownSourceAndLayer } from './sourcesAndLayers/treeCrown'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   addEDNASourceAndLayers(map)
@@ -39,7 +38,6 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   // addMeasuredTreesSourceAndLayer(map)
   // addFlightPathSourceAndLayer(map)
   // addAmazonBasinSourceAndLayer(map)
-  addTreeCrownSourceAndLayer(map)
   addTiledDroneImagery(map)
   addProjectMarkers(map)
 }

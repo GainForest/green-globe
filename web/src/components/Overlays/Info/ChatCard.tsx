@@ -169,7 +169,19 @@ export const ChatCard = ({ activeProjectData, mediaSize }) => {
   return (
     <InfoBox mediaSize={mediaSize}>
       {/* Connects to Gainforest Polly */}
-      <iframe style={{ height: '100%', width: '100%'}} src='http://localhost:3000'></iframe>
+      {window.location.host.includes('localhost') ? (
+        <iframe
+          title={'Polly chatbot'}
+          style={{ height: '100%', width: '100%' }}
+          src="http://localhost:3000"
+        />
+      ) : (
+        <iframe
+          title={'Polly chatbot'}
+          style={{ height: '100%', width: '100%' }}
+          src="https://polly.gainforest.earth/"
+        />
+      )}
       {/* <div
         style={{
           display: 'flex',

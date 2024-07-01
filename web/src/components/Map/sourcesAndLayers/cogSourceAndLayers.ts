@@ -21,7 +21,8 @@ export const addNamedSource = (
       },
     })
   }
-  map.moveLayer(layer.name, 'gainforestMarkerLayer')
+  map.moveLayer(layer.name, 'highlightedSiteOutline')
+  map.moveLayer('highlightedSiteOutline', 'gainforestMarkerLayer')
 }
 
 export const removeNamedSource = (

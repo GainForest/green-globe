@@ -2,16 +2,16 @@ import mapboxgl from 'mapbox-gl'
 
 export const addNamedSource = (
   map: mapboxgl.Map,
-  layer: { name: string; endpoint: string }
+  layer: { name: string; endpoint: string; type: string }
 ) => {
-  if (!map.getSource(layer.name)) {
+  if (!map.getSource(layer.name) && layer.type == 'raster_tif') {
     map.addSource(layer.name, {
       type: 'raster',
       tiles: [`${process.env.TITILER_ENDPOINT}${layer.endpoint}`],
       tileSize: 256,
     })
   }
-  if (!map.getLayer(layer.name)) {
+  if (!map.getLayer(layer.name) && layer.type == 'raster_tif') {
     map.addLayer({
       id: layer.name,
       type: 'raster',

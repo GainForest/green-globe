@@ -7,6 +7,8 @@ import {
   removeNamedSource,
 } from '../sourcesAndLayers/cogSourceAndLayers'
 
+// supported types: raster_tif
+
 const XprizeLayerPicker = ({ map }) => {
   const [layers, setLayers] = useState([])
   const [showLayers, setShowLayers] = useState(false)
@@ -19,63 +21,30 @@ const XprizeLayerPicker = ({ map }) => {
 
   let layersData = []
 
-    layersData = [
-      {
-        name: 'Tumbira Satellite',
-        endpoint: 'data/drone/tumbira/skysat/3_webmercator.tif',
-      },
-      {
-        name: 'Competition Area Drone',
-        endpoint: 'data/drone/1_webmercator.tif',
-      },
-      {
-        name: 'Tumbira Deforestation YOD',
-        endpoint:
-          'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_Yod_w.tif',
-      },
-      {
-        name: 'Tumbira Deforestation Dur',
-        endpoint:
-          'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_dur_w.tif',
-      },
-      {
-        name: 'Tumbira Deforestation Mag',
-        endpoint:
-          'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_mag_w.tif',
-      },
-      {
-        name: 'Tumbira Regrowth Map Dur',
-        endpoint:
-          'data/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_dur_w.tif',
-      },
-      {
-        name: 'Tumbira Regrowth Map Mag',
-        endpoint:
-          'data/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_mag_w.tif',
-      },
-      {
-        name: 'Tumbira Regrowth Map Yod',
-        endpoint:
-          'data/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_yod_w.tif',
-      },
-      {
-        name: 'PM 2.5',
-        endpoint:
-          'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
-      },
-    ]
-  // } else {
-  //   layersData = [
-  //     {
-  //       name: 'water-bodies',
-  //       endpoint: 'water_bodies.tif',
-  //     },
-  //     {
-  //       name: 'soil-moisture',
-  //       endpoint: 'soil_moisture.tif',
-  //     },
-  //   ]
-  // }
+  layersData = [
+    {
+      name: 'Tumbira Satellite',
+      type: 'raster_tif',
+      endpoint: 'data/drone/tumbira/skysat/3_webmercator.tif',
+    },
+    {
+      name: 'Competition Area Drone',
+      type: 'raster_tif',
+      endpoint: 'data/drone/1_webmercator.tif',
+    },
+    {
+      name: 'Tumbira Deforestation YOD',
+      type: 'raster_tif',
+      endpoint:
+        'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_Yod_w.tif',
+    },
+    {
+      name: 'PM 2.5',
+      type: 'raster_tif',
+      endpoint:
+        'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
+    },
+  ]
 
   useEffect(() => {
     setLayers(
@@ -85,6 +54,7 @@ const XprizeLayerPicker = ({ map }) => {
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' '),
         endpoint: layer.endpoint,
+        type: layer.type,
         isActive: false,
       }))
     )

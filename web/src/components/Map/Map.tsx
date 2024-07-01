@@ -122,13 +122,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (map) {
       const onLoad = () => {
-        // map.setFog(MAPBOX_FOG)
+        map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
         setSourcesAndLayersLoaded(true)
       }
 
       const onStyleData = () => {
-        // map.setFog(MAPBOX_FOG)
+        map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
       }
       map.on('load', onLoad)

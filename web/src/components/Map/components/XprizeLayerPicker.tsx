@@ -33,11 +33,6 @@ const XprizeLayerPicker = ({ map }) => {
       endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
     },
     {
-      name: 'Tumbira Satellite',
-      type: 'raster_tif',
-      endpoint: 'data/drone/tumbira/skysat/3_webmercator.tif',
-    },
-    {
       name: 'Competition Area Drone',
       type: 'raster_tif',
       endpoint: 'data/drone/1_webmercator.tif',

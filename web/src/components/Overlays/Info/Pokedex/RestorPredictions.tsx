@@ -93,12 +93,11 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
               style={{
                 backgroundColor: 'transparent',
                 border: 'none',
-                color: '#0070f3',
+                color: '#2bce89',
                 cursor: 'pointer',
                 fontSize: '16px',
                 marginTop: '8px',
                 padding: '0',
-                textDecoration: 'underline',
               }}
             >
               See more plants

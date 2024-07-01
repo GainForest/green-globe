@@ -71,7 +71,7 @@ const BlogPost = ({ content }) => {
 
       media.addEventListener('timeupdate', () => {
         const progress = (media.currentTime / media.duration) * 100
-        progressBar.style.background = `linear-gradient(to right, rgba(18, 165, 179, 1.0) ${progress}%, rgba(26, 236, 255, 0.1) ${progress}%)`
+        progressBar.style.background = `linear-gradient(to right, rgba(43, 206, 137, 1.0) ${progress}%, rgba(43, 206, 137, 0.1) ${progress}%)`
       })
     }
 

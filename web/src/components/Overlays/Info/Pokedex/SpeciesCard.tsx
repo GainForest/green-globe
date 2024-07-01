@@ -12,7 +12,7 @@ export const SpeciesCard = ({
   const { scientificName, iucnCategory, awsUrl } = species
 
   const backgroundColors = {
-    LC: '#388E3C',
+    LC: '#a9d18e',
     EN: '#FFA000',
     VU: '#F57C00',
     CR: '#D32F2F',
@@ -23,7 +23,7 @@ export const SpeciesCard = ({
       backgroundColor={
         backgroundColors[iucnCategory]
           ? `${backgroundColors[iucnCategory]}`
-          : '#6e6e6e'
+          : '#000000'
       }
       mediaSize={mediaSize}
       onClick={() => handleClick(species)}

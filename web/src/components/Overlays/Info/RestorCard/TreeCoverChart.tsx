@@ -25,7 +25,7 @@ export const TreeCoverChart = ({ treeData, ecosystemsData }) => {
         {
           label: 'Tree cover loss',
           data: values,
-          backgroundColor: '#c99b59',
+          backgroundColor: '#cc0100',
           borderWidth: 1,
         },
       ],

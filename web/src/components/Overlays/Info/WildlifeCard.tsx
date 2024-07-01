@@ -32,7 +32,7 @@ export const WildlifeCard = ({
   return (
     <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>
-        <h1 style={{ marginBottom: '8px' }}>Media</h1>
+        <h1 style={{ marginBottom: '8px' }}>Images & Sounds</h1>
         <ToggleButton
           active={toggle}
           setToggle={setToggle}

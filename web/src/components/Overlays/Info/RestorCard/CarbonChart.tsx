@@ -64,8 +64,8 @@ export const CarbonChart = ({ chartData }) => {
       {
         label: 'Net primary productivity',
         data: chartData?.productivityPerYear?.data.values,
-        backgroundColor: '#b9eec2',
-        borderColor: '#b9eec2',
+        backgroundColor: '#2bce89',
+        borderColor: '#2bce89',
         fill: false,
         tension: 0.1,
       },

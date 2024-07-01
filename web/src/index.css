@@ -30,7 +30,7 @@ p {
 }
 
 input[type=checkbox] {
-    accent-color: #2bce89
+    accent-color: #669629
 }
 
 img {
@@ -128,14 +128,14 @@ input:focus {
   width: 14px; /* Set a specific slider handle width */
   height: 14px; /* Slider handle height */
   border-radius: 50%;
-  background: #2bce89; /* Green background */
+  background: #669629; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
-  background: #2bce89; /* Green background */
+  background: #669629; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
 
@@ -176,7 +176,7 @@ margin-top: 4px;
 
 .message-bubble-right {
   border-bottom-right-radius: 0;
-  background-color: #2bce89;
+  background-color: #669629;
 }
 
 .message-text {

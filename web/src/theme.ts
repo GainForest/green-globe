@@ -18,7 +18,7 @@ export const theme: Theme = {
     hinted: '#000000',
     skeletonHighlight: '#393a3d',
     boxShadow: '#000000',
-    green: '#2bce89',
+    green: '#669629',
     // modes: {
     // light: {
     //   text: '#1b1e23',
@@ -31,7 +31,7 @@ export const theme: Theme = {
     //   hinted: '#f2f2f1',
     //   skeletonHighlight: '#f5f5f5',
     //   boxShadow: '#b9b9bb',
-    //   green: '#2bce89',
+    //   green: '#669629',
     // },
     // dark: {
     //   text: '#ebebec',
@@ -44,7 +44,7 @@ export const theme: Theme = {
     //   hinted: '#2a2c30',
     //   skeletonHighlight: '#393a3d',
     //   boxShadow: '#000000',
-    //   green: '#2bce89',
+    //   green: '#669629',
     // },
     // },
   },

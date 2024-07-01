@@ -49,10 +49,10 @@ export const HalfButton = styled.button<{ active: boolean }>`
   height: 36px;
   cursor: pointer;
   color: ${(props) => (props.active ? '#ffffff' : '#808080')};
-  background-color: ${(props) => (props.active ? '#2bce89' : '#f5f5f5')};
+  background-color: ${(props) => (props.active ? '#669629' : '#f5f5f5')};
   :hover {
     background-color: ${(props) =>
-      props.active ? '#2bce89' : 'rgba(103, 150, 42, 0.15)'};
+      props.active ? '#669629' : 'rgba(103, 150, 42, 0.15)'};
   }
 
   @media (max-width: ${breakpoints.xl}px) {

@@ -60,13 +60,13 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
         {toggle === 'Members' ? (
           <div>
             <h2>Total Funds Received</h2>
-            <p style={{ color: '#2bce89', fontWeight: 'bold' }}>
+            <p style={{ color: '#669629', fontWeight: 'bold' }}>
               {'$' + formatedTotalFundsReceived}
             </p>
             <div>
               <h2>People</h2>
               <p>
-                <b style={{ color: '#2bce89' }}>{communityMembersCount}</b>{' '}
+                <b style={{ color: '#669629' }}>{communityMembersCount}</b>{' '}
                 {memberOrMembers} from the local communities are registered to
                 receive financial benefits from this project.
               </p>
@@ -106,7 +106,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                           {d.firstName} {d.lastName}
                         </h3>
                         <p style={{ margin: 0, color: '#808080' }}>{d.role}</p>
-                        <p style={{ color: '#2bce89' }}>
+                        <p style={{ color: '#669629' }}>
                           {d.fundsReceived == 0
                             ? 'No funds received.'
                             : '$' + d.fundsReceived}

@@ -157,8 +157,8 @@ export const RedlistStatus = ({ redlist }) => {
     EN: '#ea9755', // orange
     VU: '#d4c05e', // yellow
     LR: '#d4c05e', // yellow
-    NT: '#2bce89', // green
-    LC: '#2bce89', // green
+    NT: '#669629', // green
+    LC: '#669629', // green
     DD: '#a9b4c4', // grey
   }
   const color = colors[redlist]

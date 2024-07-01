@@ -93,7 +93,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
               style={{
                 backgroundColor: 'transparent',
                 border: 'none',
-                color: '#2bce89',
+                color: '#669629',
                 cursor: 'pointer',
                 fontSize: '16px',
                 marginTop: '8px',

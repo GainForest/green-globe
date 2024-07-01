@@ -49,8 +49,8 @@ export const IconButtonContainer = styled.button<{
   border: none;
   height: 42px;
   width: 42px;
-  background-color: ${({ active }) => (active ? '#2bce89' : '#ffffff')};
+  background-color: ${({ active }) => (active ? '#669629' : '#ffffff')};
   &:hover {
-    background-color: ${({ active }) => (active ? '#2bce89' : '#e9f5da')};
+    background-color: ${({ active }) => (active ? '#669629' : '#e9f5da')};
   }
 `

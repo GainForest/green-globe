@@ -64,18 +64,18 @@ const XprizeLayerPicker = ({ map }) => {
           'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
       },
     ]
-  } else {
-    layersData = [
-      {
-        name: 'water-bodies',
-        endpoint: 'water_bodies.tif',
-      },
-      {
-        name: 'soil-moisture',
-        endpoint: 'soil_moisture.tif',
-      },
-    ]
-  }
+  // } else {
+  //   layersData = [
+  //     {
+  //       name: 'water-bodies',
+  //       endpoint: 'water_bodies.tif',
+  //     },
+  //     {
+  //       name: 'soil-moisture',
+  //       endpoint: 'soil_moisture.tif',
+  //     },
+  //   ]
+  // }
 
   useEffect(() => {
     setLayers(
@@ -167,7 +167,7 @@ const Maximize = styled.button`
   cursor: pointer;
   padding: 5px;
   border-radius: 4px;
-  background-color: #2bce89;
+  background-color: #669629;
   color: black;
   display: flex;
   width: 36px;

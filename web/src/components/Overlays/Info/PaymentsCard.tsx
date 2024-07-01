@@ -427,7 +427,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                         </a>
                       )}
                     </p>
-                    <p style={{ color: '#2bce89' }}>
+                    <p style={{ color: '#669629' }}>
                       ${formatAmount(payment.amount)}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center' }}>

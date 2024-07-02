@@ -14,19 +14,19 @@ const XprizeLayerPicker = ({ map }) => {
 
   const layersData = [
     {
-      name: 'Tree Crown',
+      name: 'Tree Crown Delineations',
       type: 'geojson_line',
       endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
     },
     {
-      name: 'Dry run drone flight',
+      name: 'Drone flights',
       type: 'tms_tile',
       endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
     },
     {
-      name: 'Competition Area Drone',
+      name: 'Tumbira Drone',
       type: 'raster_tif',
-      endpoint: 'drone/1_webmercator.tif',
+      endpoint: 'layers/competition_area_drone_cog.tif',
     },
     {
       name: 'Tumbira Deforestation YOD',

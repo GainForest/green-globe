@@ -29,9 +29,14 @@ const XprizeLayerPicker = ({ map }) => {
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
     },
     {
-      name: 'PM 2.5',
+      name: 'PM 2.5 (MK Tau)',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
+    },
+    {
+      name: 'PM 2.5 (MK Tau 95% Confidence Level)',
+      type: 'raster_tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_95Signif_rescaled.tif`,
     },
     {
       name: 'Tumbira Regrowth (Year of regrowth)',

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import useAxios from 'axios-hooks'
+import * as d3 from 'd3'
 
 import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
+import { stringDistance } from 'src/utils/typoCheck'
 
 import { InfoTag } from '../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../Map/components/Skeleton'
@@ -26,47 +28,45 @@ export const PaymentCard = ({ activeProjectData }) => {
     { manual: true }
   )
 
+  const formatFiatDate = (str) => {
+    const parts = str.split('/')
+    const day = parseInt(parts[0], 10)
+    const month = parseInt(parts[1], 10) - 1
+    const year = parseInt(parts[2], 10)
+
+    return new Date(year, month, day)
+  }
+
+  useEffect(() => {
+    console.log(activeProjectData)
+  }, [activeProjectData])
+
   useEffect(() => {
     const fetchData = async () => {
       const fetchFiatPayments = async () => {
-        const res = await fetch(
-          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: `
-        query {
-          fiatTransactionsByProjectId(id:"${activeProjectData.project.id}") {
-            amountInUsd
-            timestamp
-            currency
-            originalAmount
-            firstName
-            lastName
-            profileUrl
-          }
-        }
-      `,
-            }),
-          }
+        const res = await d3.csv(
+          `${process.env.AWS_STORAGE}/transactions/fiat-transactions.csv`
         )
-        const result = await res.json()
-        return result.data.fiatTransactionsByProjectId.map((payment) => {
-          return {
-            ...payment,
-            amount: payment.amountInUsd,
-            currency: `Fiat (${payment.currency})`,
-          }
-        })
+        const filteredRes = res
+          .filter(
+            (d) => stringDistance(d.orgName, activeProjectData.project.name) < 3
+          )
+          .map((d) => ({
+            ...d,
+            timestamp: formatFiatDate(d.timestamp),
+            firstName: d.recipientName?.split(' ')[0],
+            lastName: d.recipientName?.split(' ')[1],
+            amount: parseFloat(d.amountInUsd),
+            currency: `Fiat: ` + d.currency,
+          }))
+        return filteredRes
       }
 
       setLoading(true)
 
       const cryptoPayments = await fetchCryptoPayments()
       const fiatPayments = await fetchFiatPayments()
+      console.log(fiatPayments)
       if (fiatPayments.length > 0) {
         setShowFiatMessage(true)
       }
@@ -83,6 +83,10 @@ export const PaymentCard = ({ activeProjectData }) => {
     }
     fetchData()
   }, [activeProjectData])
+
+  useEffect(() => {
+    console.log(paymentData)
+  }, [paymentData])
 
   const fetchCryptoPayments = async () => {
     let celoRecipients = []
@@ -397,7 +401,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                   <div style={{ marginLeft: '16px' }}>
                     <h3> {formatDate(payment.timestamp)}</h3>
                     <p style={{ display: 'flex' }}>
-                      To:{' '}
+                      To:
                       {payment.currency.startsWith('Fiat') ? (
                         payment.firstName ? (
                           `${payment.firstName} ${payment.lastName}`
@@ -428,7 +432,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                       )}
                     </p>
                     <p style={{ color: '#669629' }}>
-                      ${formatAmount(payment.amount)}
+                      {formatAmount(payment.amount)}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <InfoTag style={{ color: tagColors[payment.currency] }}>

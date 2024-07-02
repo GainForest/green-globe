@@ -3,13 +3,20 @@ import React, { useMemo } from 'react';
 
 import { AudioPlayer } from 'src/components/Buttons/AudioPlayer'
 import CircularBarChart from 'src/components/CircularBarChart'
+import CircularLineChart from 'src/components/CircularLineChart'
+import CircularMultiLineChartWithCSVLoader from 'src/components/CircularMultiLineChart'
+
 
 export const CircadianRythmn = () => {
-  const sampleData = useMemo(() => {
-    return Array.from({ length: 2000 }, (_, i) => ({
-      time: (i / 2000) * 24,
-      value: Math.floor(Math.random() * 10000),
-      frequency: Math.floor(Math.random() * 10000)
+
+  const sampleMultiData = useMemo(() => {
+    return Array.from({ length: 100 }, (_, i) => ({
+      time: (i / 100) * 24,
+      freq1: Math.random() * 100,
+      freq2: Math.random() * 1000,
+      freq3: Math.random() * 5000,
+      hi: Math.random() * 10000,
+      freq5: Math.random() * 2000
     }));
   }, []);
 
@@ -22,12 +29,11 @@ export const CircadianRythmn = () => {
 
       {SOUNDSCAPE_PATHS.map((path) => (
         <div key={path}>
-          <img
-            src={`${process.env.AWS_STORAGE}/${path}`}
-            alt={`circadian rythmn for ${path}`}
-          />
           <div style={{ width: '100%', aspectRatio: '1 / 1', maxWidth: '600px', margin: 'auto' }}>
-            <CircularBarChart data={sampleData} maxFixedValue={15000}/>
+            <CircularBarChart csvPath={`${process.env.AWS_STORAGE}/pmn/max_results_final.csv`}/>
+          </div>
+          <div style={{ width: '100%', aspectRatio: '1 / 1', maxWidth: '600px', margin: 'auto' }}>
+            <CircularMultiLineChartWithCSVLoader csvPath={`${process.env.AWS_STORAGE}/pmn/median_results_final.csv`}/>
           </div>
           <AudioPlayer
             label="Tyrant"

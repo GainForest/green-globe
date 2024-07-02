@@ -7,21 +7,12 @@ import {
   removeNamedSource,
 } from '../sourcesAndLayers/cogSourceAndLayers'
 
-// supported types: raster_tif
-
 const XprizeLayerPicker = ({ map }) => {
   const [layers, setLayers] = useState([])
   const [showLayers, setShowLayers] = useState(false)
   const [visible, setVisible] = useState(false)
 
-  // const years = [
-  //   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011,
-  //   2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
-  // ]
-
-  let layersData = []
-
-  layersData = [
+  const layersData = [
     {
       name: 'Tree Crown',
       type: 'geojson_line',
@@ -53,17 +44,26 @@ const XprizeLayerPicker = ({ map }) => {
       type: 'raster_tif',
       endpoint: 'layers/AGBD_EPSG3857-002.tif',
     },
+    {
+      name: 'NICFI Tiles',
+      type: 'raster_tif',
+      endpoint: 'data/layers/nicfi/',
+      tilePattern: 'L15-{x}E-{y}N.tif',
+      tileRange: {
+        x: { min: 677, max: 683 },
+        y: { min: 1004, max: 1008 },
+      },
+    },
   ]
 
   useEffect(() => {
     setLayers(
       layersData.map((layer) => ({
+        ...layer,
         name: layer.name
           .split('-')
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' '),
-        endpoint: layer.endpoint,
-        type: layer.type,
         isActive: false,
       }))
     )
@@ -75,15 +75,49 @@ const XprizeLayerPicker = ({ map }) => {
         if (layer.name === name) {
           const isActive = !layer.isActive
           if (isActive) {
-            addNamedSource(map, layer)
+            if (layer.name === 'NICFI Tiles') {
+              addNICFISource(map, layer)
+            } else {
+              addNamedSource(map, layer)
+            }
           } else {
-            removeNamedSource(map, layer)
+            if (layer.name === 'NICFI Tiles') {
+              removeNICFISource(map, layer)
+            } else {
+              removeNamedSource(map, layer)
+            }
           }
           return { ...layer, isActive }
         }
         return layer
       })
     )
+  }
+
+  const addNICFISource = (map, layer) => {
+    const { tileRange, tilePattern, endpoint } = layer
+    for (let x = tileRange.x.min; x <= tileRange.x.max; x++) {
+      for (let y = tileRange.y.min; y <= tileRange.y.max; y++) {
+        const tileName = tilePattern
+          .replace('{x}', x.toString().padStart(4, '0'))
+          .replace('{y}', y)
+        const tileEndpoint = `${endpoint}${tileName}`
+        addNamedSource(map, {
+          ...layer,
+          name: `NICFI_${x}_${y}`,
+          endpoint: tileEndpoint,
+        })
+      }
+    }
+  }
+
+  const removeNICFISource = (map, layer) => {
+    const { tileRange } = layer
+    for (let x = tileRange.x.min; x <= tileRange.x.max; x++) {
+      for (let y = tileRange.y.min; y <= tileRange.y.max; y++) {
+        removeNamedSource(map, { ...layer, name: `NICFI_${x}_${y}` })
+      }
+    }
   }
 
   const handleShowLayers = () => {

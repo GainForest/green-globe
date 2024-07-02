@@ -1,86 +1,10 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { scaleLinear } from 'd3-scale';
-import { csv } from 'd3-fetch';
 
-
-const parseFrequency = (frequencyString) => {
-  const parseValue = (val) => {
-    if (val.toLowerCase().endsWith('k')) {
-      return parseFloat(val) * 1000;
-    }
-    return parseFloat(val);
-  };
-
-  if (frequencyString.includes('-')) {
-    const [min, max] = frequencyString.split('-').map(parseValue);
-    return (min + max) / 2;
-  }
-  return parseValue(frequencyString);
-};
-
-export const useCSVToData = (csvPath) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [debugInfo, setDebugInfo] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const csvData = await csv(csvPath);
-
-        const headers = Object.keys(csvData[0]).filter(key => key !== '');
-
-        const convertedData = csvData.map(row => {
-          const timeValue = parseFloat(row['']);
-
-          // Find max frequency for this row
-          let maxFrequency = '';
-          let maxValue = -Infinity;
-
-          headers.forEach(header => {
-            const value = parseFloat(row[header]);
-            if (!isNaN(value) && value > maxValue) {
-              maxValue = value;
-              maxFrequency = header;
-            }
-          });
-
-          return {
-            time: timeValue / 100 * 24,
-            value: Math.floor(maxValue),
-            frequency: parseFrequency(maxFrequency)
-          };
-        });
-
-        setData(convertedData);
-        setDebugInfo({
-          headers,
-          sampleRawData: csvData.slice(0, 5),
-          sampleConvertedData: convertedData.slice(0, 5)
-        });
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching or processing CSV:', error);
-        setError(error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [csvPath]);
-
-  return { data, loading, error, debugInfo };
-};
-
-
-const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
-  const { data, loading, error } = useCSVToData(csvPath);
-
+const CircularLineChart = ({ data, maxFixedValue = null }) => {
   const [size, setSize] = useState(0);
   const containerRef = useRef(null);
-  const [hoveredBar, setHoveredBar] = useState(null);
+  const [hoveredPoint, setHoveredPoint] = useState(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -103,7 +27,6 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
   const centerY = size / 2;
   const maxRadius = size / 2 - 60;
   const innerRadius = size / 6;
-  const barWidth = (2 * Math.PI) / data.length;
 
   const frequencyExtent = useMemo(() => {
     const frequencies = data.map(d => d.frequency);
@@ -123,24 +46,16 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
     return Math.max(...data.map(item => item.value));
   }, [data, maxFixedValue]);
 
-  const bars = useMemo(() => {
-    return data.map((item, index) => {
+  const linePath = useMemo(() => {
+    const linePoints = data.map((item, index) => {
       const angle = (index / data.length) * Math.PI * 2 - Math.PI / 2;
-      const cos = Math.cos(angle);
-      const sin = Math.sin(angle);
-      const barHeight = (maxRadius - innerRadius) * (item.value / maxValue);
-
-      const path = [
-        `M ${cos * innerRadius} ${sin * innerRadius}`,
-        `L ${cos * (innerRadius + barHeight)} ${sin * (innerRadius + barHeight)}`,
-        `A ${innerRadius + barHeight} ${innerRadius + barHeight} 0 0 1 ${Math.cos(angle + barWidth) * (innerRadius + barHeight)} ${Math.sin(angle + barWidth) * (innerRadius + barHeight)}`,
-        `L ${Math.cos(angle + barWidth) * innerRadius} ${Math.sin(angle + barWidth) * innerRadius}`,
-        'Z'
-      ].join(' ');
-
-      return { path, color: rainbowColorScale(item.frequency), item };
+      const radius = innerRadius + (maxRadius - innerRadius) * (item.value / maxValue);
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+      return `${x},${y}`;
     });
-  }, [data, maxValue, innerRadius, maxRadius, barWidth, rainbowColorScale]);
+    return `M ${linePoints.join(' L ')} Z`;
+  }, [data, maxValue, innerRadius, maxRadius]);
 
   const axisLines = useMemo(() => {
     return Array.from({ length: 24 }, (_, i) => {
@@ -152,6 +67,16 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
       return { x1, y1, x2, y2 };
     });
   }, [innerRadius, maxRadius]);
+
+  const interactionPoints = useMemo(() => {
+    return data.map((item, index) => {
+      const angle = (index / data.length) * Math.PI * 2 - Math.PI / 2;
+      const radius = innerRadius + (maxRadius - innerRadius) * (item.value / maxValue);
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+      return { x, y, item };
+    });
+  }, [data, maxValue, innerRadius, maxRadius]);
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', aspectRatio: '1 / 1' }}>
@@ -174,17 +99,27 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
               />
             ))}
 
-            {/* Bars */}
-            {bars.map((bar, index) => (
-              <path
+            {/* Line chart */}
+            <path
+              d={linePath}
+              fill="none"
+              stroke="url(#rainbowGradient)"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+
+            {/* Interaction points */}
+            {interactionPoints.map((point, index) => (
+              <circle
                 key={index}
-                d={bar.path}
-                fill={bar.color}
-                stroke="none"
-                onMouseEnter={() => setHoveredBar(bar.item)}
-                onMouseLeave={() => setHoveredBar(null)}
-                style={{ transition: 'opacity 0.2s' }}
-                opacity={hoveredBar && hoveredBar !== bar.item ? 0.3 : 1}
+                cx={point.x}
+                cy={point.y}
+                r="5"
+                fill="transparent"
+                stroke="transparent"
+                onMouseEnter={() => setHoveredPoint(point.item)}
+                onMouseLeave={() => setHoveredPoint(null)}
+                style={{ cursor: 'pointer' }}
               />
             ))}
           </g>
@@ -226,12 +161,12 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
           <text x={size - 20} y={70} fontSize={size / 60} fill="#666" textAnchor="end">{frequencyExtent[1].toFixed(0)}</text>
 
           {/* Center label */}
-          <text x={centerX} y={centerY} textAnchor="middle" fontSize={size / 50} fill="#666">{maxValue.toFixed(2)}</text>
+          <text x={centerX} y={centerY} textAnchor="middle" fontSize={size / 50} fill="#666">461279</text>
 
           {/* Hover information */}
-          {hoveredBar && (
+          {hoveredPoint && (
             <text x={centerX} y={size - 20} textAnchor="middle" fontSize={size / 40}>
-              Time: {hoveredBar.time.toFixed(2)} | Value: {hoveredBar.value.toFixed(2)} | Frequency: {hoveredBar.frequency.toFixed(2)}
+              Time: {hoveredPoint.time.toFixed(2)} | Value: {hoveredPoint.value.toFixed(2)} | Frequency: {hoveredPoint.frequency.toFixed(2)}
             </text>
           )}
 
@@ -245,4 +180,4 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
   );
 };
 
-export default CircularBarChart;
+export default CircularLineChart;

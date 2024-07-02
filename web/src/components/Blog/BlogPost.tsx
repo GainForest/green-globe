@@ -1,84 +1,78 @@
-import React, { useEffect } from 'react'
-
+import Markdown from 'markdown-to-jsx'
 const BlogPost = ({ content }) => {
-  useEffect(() => {
-    const updateMediaElements = () => {
-      const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a']
-      const videoExtensions = ['.mp4', '.webm', '.ogv']
-      const anchorTags = document.querySelectorAll('a:not(.media-enhanced)')
-
-      anchorTags.forEach((anchor) => {
-        const href = anchor.href
-        const isAudio = audioExtensions.some((ext) => href.endsWith(ext))
-        const isVideo = videoExtensions.some((ext) => href.endsWith(ext))
-
-        if (!isAudio && !isVideo) {
-          return
+  const overrides = {
+    a: {
+      component: ({ children, title, href }) => {
+        const ext = href.split('.').pop()
+        switch (ext) {
+          case 'jpg':
+          case 'jpeg':
+          case 'png':
+          case 'gif':
+            return (
+              <ImageComponent href={href} title={title}>
+                {children}
+              </ImageComponent>
+            )
+          case 'mp4':
+          case 'webm':
+          case 'ogv':
+            return (
+              <VideoComponent href={href} title={title}>
+                {children}
+              </VideoComponent>
+            )
+          case 'wav':
+          case 'ogg':
+          case 'm4a':
+          case 'mp3':
+            return (
+              <AudioComponent href={href} title={title}>
+                {children}
+              </AudioComponent>
+            )
+          default:
+            return <a href={href}>{children}</a> // default case
         }
+      },
+    },
+  }
 
-        anchor.classList.add('media-enhanced')
-
-        const parent = anchor.parentElement
-        const wrapper = document.createElement('span')
-        wrapper.className = 'media-wrapper'
-        parent.insertBefore(wrapper, anchor)
-
-        const playButton = document.createElement('button')
-        playButton.className = 'g-media--playbutton'
-        playButton.innerText = '►'
-        wrapper.appendChild(playButton)
-
-        const progressBar = document.createElement('span')
-        progressBar.className = 'g-audio-content'
-        progressBar.innerText = anchor.textContent
-        wrapper.appendChild(progressBar)
-
-        anchor.style.display = 'none'
-
-        let media
-        if (isAudio) {
-          media = new Audio(href)
-          wrapper.appendChild(media)
-          setupAudioPlayer(media, progressBar)
-        }
-
-        playButton.addEventListener('click', () => {
-          if (!media && isVideo) {
-            media = document.createElement('video')
-            media.src = href
-            media.style.width = '100%'
-            media.controls = true
-            wrapper.insertBefore(media, playButton.nextSibling)
-          }
-          if (media && media.paused) {
-            media.play()
-          } else if (media) {
-            media.pause()
-          }
-        })
-      })
-    }
-
-    function setupAudioPlayer(media, progressBar) {
-      progressBar.addEventListener('click', (event) => {
-        const rect = progressBar.getBoundingClientRect()
-        const clickX = event.clientX - rect.left
-        const width = rect.width
-        const clickRatio = clickX / width
-        media.currentTime = clickRatio * media.duration
-        media.play()
-      })
-
-      media.addEventListener('timeupdate', () => {
-        const progress = (media.currentTime / media.duration) * 100
-        progressBar.style.background = `linear-gradient(to right, rgba(43, 206, 137, 1.0) ${progress}%, rgba(43, 206, 137, 0.1) ${progress}%)`
-      })
-    }
-
-    updateMediaElements()
-  }, [content])
-
-  return <div dangerouslySetInnerHTML={{ __html: content }} />
+  return <Markdown options={{ overrides }}>{content}</Markdown>
 }
 
 export default BlogPost
+
+export const ImageComponent = ({ children, href, title }) => {
+  return (
+    <>
+      <p>{children[0]}</p>
+      <img src={href} alt={title} style={{ maxWidth: '100%' }} />
+    </>
+  )
+}
+
+export const VideoComponent = ({ children, href, title }) => {
+  return (
+    <>
+      <p>{children[0]}</p>
+      <video style={{ maxWidth: '100%' }} controls title={title}>
+        <track src={title}>{title}</track>
+        <source src={href} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </>
+  )
+}
+
+export const AudioComponent = ({ children, href, title }) => {
+  return (
+    <>
+      <p>{children[0]}</p>
+      <audio caption={title} controls title={title}>
+        <source src={href} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </>
+  )
+}

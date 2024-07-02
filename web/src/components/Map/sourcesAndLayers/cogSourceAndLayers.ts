@@ -15,6 +15,7 @@ export const addNamedSource = (
     addTMSTileSourceAndLayer(map, layer)
   }
   if (!map.getLayer(layer.name) && layer.type == 'raster_tif') {
+    console.log('adding a raster tif')
     addRasterSourceAndLayer(map, layer)
   }
   map.moveLayer(layer.name, 'highlightedSiteOutline')

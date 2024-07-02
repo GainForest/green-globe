@@ -26,7 +26,7 @@ const XprizeLayerPicker = ({ map }) => {
     {
       name: 'Tumbira Drone',
       type: 'raster_tif',
-      endpoint: 'layers/competition_area_drone_cog.tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
     },
     {
       name: 'Tumbira Deforestation YOD',

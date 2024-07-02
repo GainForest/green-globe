@@ -8,7 +8,7 @@ export const addRasterSourceAndLayer = async (
     if (!map.getSource(layer.name)) {
       map.addSource(layer.name, {
         type: 'raster',
-        tiles: [`${process.env.TITILER_ENDPOINT}${layer.endpoint}`],
+        tiles: [layer.endpoint],
       })
     }
     if (!map.getLayer(layer.name)) {

@@ -8,34 +8,34 @@ import { breakpoints } from 'src/constants'
 export const ActiveSpeciesCard = ({ species, mediaSize }) => {
   const { scientificName, iucnCategory, awsUrl, info } = species
 
-  const dnaAudioRef = useRef(null)
+  // const dnaAudioRef = useRef(null)
   // const cantoAudioRef = useRef(null)
 
-  const dnaAudioUrl = `http://api.sonifyspecies.com:5000/dnamidi?taxon=${encodeURIComponent(
-    scientificName
-  )}&geo=&institutions=`
+  // const dnaAudioUrl = `http://api.sonifyspecies.com:5000/dnamidi?taxon=${encodeURIComponent(
+  //   scientificName
+  // )}&geo=&institutions=`
 
   // const cantoAudioUrl = `https://xeno-canto.org/api/2/recordings?query=${encodeURIComponent(
   //   scientificName
   // )}`
 
-  const toggleAudio = async () => {
-    const audio = dnaAudioRef.current
-    // if (type === 'canto') {
-    //   const res = await fetch(cantoAudioUrl)
-    //   const data = await res.json()
-
-    //   audio = cantoAudioRef.current
-    // }
-    console.log(audio)
-    if (audio) {
-      if (!audio.paused) {
-        audio.pause()
-      } else {
-        audio.play()
-      }
-    }
-  }
+  // const toggleAudio = async (type) => {
+  //   const audio = dnaAudioRef.current
+  //   if (type === 'canto') {
+  //     const res = await fetch(cantoAudioUrl)
+  //     const data = await res.json()
+  //     console.log(data)
+  //     audio = cantoAudioRef.current
+  //   }
+  //   console.log(audio)
+  //   if (audio) {
+  //     if (!audio.paused) {
+  //       audio.pause()
+  //     } else {
+  //       audio.play()
+  //     }
+  //   }
+  // }
 
   const backgroundColors = {
     LC: '#388E3C',
@@ -69,9 +69,9 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
       />
       <InfoContainer mediaSize={mediaSize}>
         <h3>{scientificName}</h3>
-        <StyledButton onClick={() => toggleAudio()}>
+        {/* <StyledButton onClick={() => toggleAudio('dna')}>
           {!dnaAudioRef?.current?.paused ? 'Pause' : 'Play'} DNA
-        </StyledButton>
+        </StyledButton> */}
       </InfoContainer>
       {species.info && (
         <InfoContainer mediaSize={mediaSize}>
@@ -97,7 +97,7 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
           )}
         </ObservationContainer>
       )}
-      <audio ref={dnaAudioRef} src={dnaAudioUrl} />
+      {/* <audio ref={dnaAudioRef} src={dnaAudioUrl} /> */}
     </CardContainer>
   )
 }

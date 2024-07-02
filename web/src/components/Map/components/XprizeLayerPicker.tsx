@@ -29,10 +29,9 @@ const XprizeLayerPicker = ({ map }) => {
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
     },
     {
-      name: 'Tumbira Deforestation YOD',
+      name: 'Tumbira Regrowth (Year of regrowth)',
       type: 'raster_tif',
-      endpoint:
-        'layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_Yod_w.tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_yod_w_rescaled_webmercator_cog.tif`,
     },
     {
       name: 'PM 2.5',

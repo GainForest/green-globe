@@ -81,11 +81,11 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                 } else {
                   fullName = ''
                 }
-                const profileSrc =
-                  d.profileUrl ||
-                  `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
-                    .toLowerCase()
-                    .replace(' ', '-')}.svg`
+                const profileSrc = d.profileUrl
+                  ? `${process.env.AWS_STORAGE}/${d.profileUrl}`
+                  : `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
+                      .toLowerCase()
+                      .replace(' ', '-')}.svg`
                 return (
                   <div
                     style={{ marginTop: '32px' }}

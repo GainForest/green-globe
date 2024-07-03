@@ -56,7 +56,7 @@ export const PaymentCard = ({ activeProjectData }) => {
             ...d,
             timestamp: formatFiatDate(d.timestamp),
             firstName: d.recipientName?.split(' ')[0],
-            lastName: d.recipientName?.split(' ')[1],
+            lastName: d.recipientName?.split(' ')[1] || '',
             amount: parseFloat(d.originalAmount),
             currency: d.currency,
             blockchain: 'FIAT',
@@ -386,7 +386,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                       To:
                       {payment.blockchain == 'FIAT' ? (
                         payment.firstName ? (
-                          `${payment.firstName} ${payment.lastName}`
+                          ` ${payment.firstName} ${payment.lastName}`
                         ) : (
                           payment.to
                         )

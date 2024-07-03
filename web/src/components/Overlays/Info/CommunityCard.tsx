@@ -38,7 +38,8 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
         )
         const filteredRes = res
           .filter(
-            (d) => stringDistance(d.orgName, activeProjectData.project.name) < 3
+            (d) =>
+              stringDistance(d.orgName, activeProjectData?.project.name) < 3
           )
           .map((d) => ({
             ...d,
@@ -76,6 +77,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   useEffect(() => {
     const total = {}
     const members = {}
+
     paymentData.forEach((payment) => {
       const currency = payment?.currency
       if (currency && Object.prototype.hasOwnProperty.call(total, currency)) {
@@ -84,15 +86,18 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
         total[currency] = payment.amount
       }
       const member = payment?.communityMemberId
-      if (member && Object.prototype.hasOwnProperty.call(members, member)) {
-        members[member] += payment.amount
-      } else {
-        members[member] = payment.amount
+      if (member) {
+        if (!members[member]) members[member] = {}
+        if (Object.prototype.hasOwnProperty.call(members[member], currency)) {
+          members[member][currency] += payment.amount
+        } else {
+          members[member][currency] = payment.amount
+        }
       }
     })
     setTotalPayments(total)
 
-    if (activeProjectData.project?.communityMembers) {
+    if (activeProjectData?.project?.communityMembers) {
       const membersWithPayment = [...activeProjectData.project.communityMembers]
         .map((d) => ({ ...d, fundsReceived: members[d.id] }))
         .sort((a, b) => {
@@ -105,7 +110,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
 
       setCommunityMembers(membersWithPayment)
     }
-    console.log(paymentData)
   }, [paymentData, activeProjectData])
 
   const fetchCryptoPayments = async () => {
@@ -243,10 +247,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
 
     return payments
   }
-
-  useEffect(() => {
-    console.log(communityMembers)
-  }, [communityMembers])
 
   const fetchSolanaPayments = async (recipients, memberMap) => {
     const payments = []
@@ -457,9 +457,14 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                         )}
                         <p style={{ margin: 0, color: '#808080' }}>{d.role}</p>
                         <p style={{ color: '#669629' }}>
-                          {d.fundsReceived == 0
-                            ? 'No funds received.'
-                            : '$' + d.fundsReceived}
+                          {d.fundsReceived
+                            ? Object.entries(d.fundsReceived)
+                                .map(
+                                  ([currency, amount]) =>
+                                    `${amount} ${currency}`
+                                )
+                                .join(', ')
+                            : 'No funds received.'}
                         </p>
                       </div>
                     </div>

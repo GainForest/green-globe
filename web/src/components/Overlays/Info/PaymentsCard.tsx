@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import useAxios from 'axios-hooks'
-import * as d3 from 'd3'
 import dayjs from 'dayjs'
 
 import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
-import { stringDistance } from 'src/utils/typoCheck'
 
 import { InfoTag } from '../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../Map/components/Skeleton'
@@ -13,9 +11,6 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { InfoBox } from './InfoBox'
 
 export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
-  const [showFiatMessage, setShowFiatMessage] = useState(false)
-  const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
-
   const [
     { data: attestationData, loading: attestationDataLoading },
     attestationDataCall,
@@ -87,11 +82,6 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
   return (
     <div>
       <div>
-        {showFiatMessage && (
-          <p style={{ color: '#808080' }}>
-            Fiat currencies are displayed in USD
-          </p>
-        )}
         {paymentData.length > 0 ? (
           paymentData.map((payment) => {
             let fullName

@@ -219,7 +219,7 @@ export const PaymentCard = ({ activeProjectData }) => {
 
         return {
           to: transaction.to,
-          timestamp: transaction.timeStamp,
+          timestamp: dayjs.unix(transaction.timeStamp).format('YYYY-MM-DD'),
           firstName: memberMap[currentRecipientId]['firstName'],
           lastName: memberMap[currentRecipientId]['lastName'],
           profileUrl: memberMap[currentRecipientId]['profileUrl'],
@@ -382,7 +382,7 @@ export const PaymentCard = ({ activeProjectData }) => {
                     />
                   </div>
                   <div style={{ marginLeft: '16px' }}>
-                    <h3> {dayjs(payment.timestamp).format('DD MMMM YYYY')}</h3>
+                    <h3> {dayjs(payment.timestamp).format('D MMMM YYYY')}</h3>
                     <p style={{ display: 'flex' }}>
                       {'To: '}
                       {payment.blockchain == 'FIAT' ? (

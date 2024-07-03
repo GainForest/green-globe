@@ -384,10 +384,10 @@ export const PaymentCard = ({ activeProjectData }) => {
                   <div style={{ marginLeft: '16px' }}>
                     <h3> {dayjs(payment.timestamp).format('DD MMMM YYYY')}</h3>
                     <p style={{ display: 'flex' }}>
-                      To:
+                      {'To: '}
                       {payment.blockchain == 'FIAT' ? (
                         payment.firstName ? (
-                          ` ${payment.firstName} ${payment.lastName}`
+                          `${payment.firstName} ${payment.lastName}`
                         ) : (
                           payment.to
                         )
@@ -409,8 +409,8 @@ export const PaymentCard = ({ activeProjectData }) => {
                           rel="noopener noreferrer"
                         >
                           {payment.firstName
-                            ? `${payment.firstName} ${payment.lastName}`
-                            : payment.to}
+                            ? ` ${payment.firstName} ${payment.lastName}`
+                            : ` ${payment.to}`}
                         </a>
                       )}
                     </p>

@@ -1,4 +1,8 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { useEffect, useState } from 'react'
+
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 import { useSelector } from 'react-redux'
 
 import { breakpoints } from 'src/constants'
@@ -14,20 +18,60 @@ export const WildlifeCard = ({
   setToggle,
   handleClick,
 }) => {
+  const [photoEndpoints, setPhotoEndpoints] = useState([])
+  const [videoEndpoints, setVideoEndpoints] = useState([])
   const maximized = useSelector((state: State) => state.overlays.maximized)
 
-  const photos = activeProjectData?.project?.assets?.filter(
-    (d) =>
-      (d.classification.includes('Camera Traps') ||
-        d.classification.includes('Community Photos')) &&
-      d.awsCID.includes('.jpg')
-  )
-  const photoEndpoints = photos?.map((photo) => photo.awsCID)
-  const videos = activeProjectData?.project?.assets?.filter(
-    (d) =>
-      d.classification.includes('Camera Traps') && d.awsCID.includes('.mp4')
-  )
-  const videoEndpoints = videos?.map((video) => video.awsCID || '')
+  useEffect(() => {
+    const setEndpoints = async () => {
+      let videos = []
+      let photos = []
+      if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
+        const formattedProjectName = activeProjectData.project?.name
+          ?.toLowerCase()
+          .replace(/[\s_]+/g, '-')
+        const mediaUrl = `${process.env.AWS_STORAGE}/media/${formattedProjectName}`
+        const res = await axios.get(mediaUrl)
+        const $ = cheerio.load(res.data)
+
+        $('a').each((index, element) => {
+          const href = $(element).attr('href')
+          if (
+            href.includes('.jpg') ||
+            href.includes('.jpeg') ||
+            href.includes('.png') ||
+            href.includes('.gif')
+          ) {
+            photos.push(`media/${formattedProjectName}/${href}`)
+          }
+          if (
+            href.includes('.mp4') ||
+            href.includes('.webm') ||
+            href.includes('.ogv')
+          ) {
+            videos.push(`media/${formattedProjectName}/${href}`)
+          }
+        })
+      } else {
+        const photoLinks = activeProjectData?.project?.assets?.filter(
+          (d) =>
+            (d.classification.includes('Camera Traps') ||
+              d.classification.includes('Community Photos')) &&
+            d.awsCID.includes('.jpg')
+        )
+        photos = photoLinks?.map((photo) => photo.awsCID)
+        const videoLinks = activeProjectData?.project?.assets?.filter(
+          (d) =>
+            d.classification.includes('Camera Traps') &&
+            d.awsCID.includes('.mp4')
+        )
+        videos = videoLinks?.map((video) => video.awsCID || '')
+      }
+      setPhotoEndpoints(photos)
+      setVideoEndpoints(videos)
+    }
+    setEndpoints()
+  }, [activeProjectData])
 
   return (
     <InfoBox mediaSize={mediaSize}>

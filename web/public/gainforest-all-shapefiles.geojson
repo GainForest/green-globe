@@ -48,18 +48,6 @@
         "name": "Parque das Tribos",
         "country": "BR"
       }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-60.7441948939757, -2.962967181167]
-      },
-      "properties": {
-        "projectId": "ec44008cdc22fc8a2b33db410b1581b1efdb4efbb6be79c4d6f9bfd1ea3339c0",
-        "name": "XPRIZE Finals Dry Run",
-        "country": "BR"
-      }
     }
   ]
 }

@@ -142,13 +142,14 @@ const Container = styled.div`
   overflow: hidden;
   transition: opacity 1s ease;
   max-height: calc(100vh - 52px);
+  background-color: #f5f3ef;
 `
 
 const PostList = styled.div`
   width: 220px;
-  background: transparent;
+  background: #ffffff;
   overflow-y: auto;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #e0dcd5;
 `
 
 const PostPreview = styled.div`
@@ -156,9 +157,10 @@ const PostPreview = styled.div`
   cursor: pointer;
   display: block;
   align-items: center;
-  background: ${({ selected }) => (selected ? '#999' : '#333')};
+  background: ${({ selected }) => (selected ? '#e6e2d9' : '#ffffff')};
   border-radius: 4px;
   margin: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   img {
     width: 154px;
     height: 64px;
@@ -166,14 +168,14 @@ const PostPreview = styled.div`
     object-fit: cover;
   }
   &:hover {
-    background: #555;
+    background: #f0ece5;
     transition: background 0.3s ease;
   }
 `
 
 const PreviewTitle = styled.div`
   font-size: 16px;
-  color: white;
+  color: #4a4a4a;
 `
 
 const MainContent = styled.div`
@@ -195,7 +197,7 @@ const LoadingMessage = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 24px;
-  color: #333;
+  color: #4a4a4a;
 `
 
 const Content = styled.div`
@@ -208,11 +210,12 @@ const Content = styled.div`
 
 const PostContainer = styled.div`
   margin: 40px 0 80px 0;
-  background-color: rgba(85, 85, 85, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 32px;
   width: 1000px;
   max-width: 60vw;
   border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `
 
 const PostHeader = styled.div`
@@ -221,11 +224,13 @@ const PostHeader = styled.div`
 `
 
 const PostTitle = styled.h1`
-  float: left
+  float: left;
   display: inline;
+  color: #2c2c2c;
 `
 
 const PostDate = styled.p`
   display: inline;
   float: right;
+  color: #6b6b6b;
 `

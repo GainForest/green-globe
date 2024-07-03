@@ -1,6 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
 import {
@@ -35,6 +35,7 @@ import { LandCoverLegend } from './components/LandCoverLegend'
 // import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 // import { TimeSlider } from './components/TimeSlider'
+import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
 import { fetchEDNALocations, fetchMeasuredTrees } from './mapfetch'
 import {
@@ -399,7 +400,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         landCover={landCover}
         setLandCover={setLandCover}
       /> */}
-      {/* <TimeSlider map={map} mediaSize={mediaSize} /> */}
+      <TimeSlider map={map} mediaSize={mediaSize} />
     </>
   )
 }

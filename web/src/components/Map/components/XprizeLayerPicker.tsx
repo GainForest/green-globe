@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { useThemeUI } from 'theme-ui'
+
+import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
 
 import {
   addNamedSource,
@@ -8,6 +12,11 @@ import {
 } from '../sourcesAndLayers/cogSourceAndLayers'
 
 const XprizeLayerPicker = ({ map }) => {
+  const { theme } = useThemeUI()
+  const dispatch = useDispatch()
+  const satelliteEnabled = useSelector(
+    (state: State) => state.satelliteHistory.enabled
+  )
   const [layers, setLayers] = useState([])
   const [showLayers, setShowLayers] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -139,7 +148,7 @@ const XprizeLayerPicker = ({ map }) => {
     )
   } else
     return (
-      <Container visible={visible}>
+      <Container visible={visible} theme={theme}>
         <Minimize className="material-icons-round" onClick={handleShowLayers}>
           close
         </Minimize>
@@ -150,6 +159,7 @@ const XprizeLayerPicker = ({ map }) => {
             <LayerIcon
               className="material-icons-round"
               isActive={layer.isActive}
+              theme={theme}
             >
               {layer.isActive ? 'toggle_on' : 'toggle_off'}
             </LayerIcon>
@@ -158,21 +168,55 @@ const XprizeLayerPicker = ({ map }) => {
             </LayerLabel>
           </LayerItem>
         ))}
+        <LayerItem
+          key={'satellite history'}
+          onClick={() => {
+            if (!satelliteEnabled) {
+              dispatch(setDisplaySatelliteHistory(true))
+            } else {
+              dispatch(setDisplaySatelliteHistory(false))
+            }
+          }}
+        >
+          <LayerIcon
+            className="material-icons-round"
+            isActive={satelliteEnabled}
+            theme={theme}
+          >
+            {satelliteEnabled ? 'toggle_on' : 'toggle_off'}
+          </LayerIcon>
+          <LayerLabel htmlFor={'satellite history'} isActive={satelliteEnabled}>
+            Satellite History
+          </LayerLabel>
+        </LayerItem>
       </Container>
     )
 }
 
+const LayerImage = styled.img`
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+  width: 40px;
+  object-fit: cover;
+  height: 40px;
+  background-size: cover;
+  border-radius: 4px;
+  :hover {
+    border: 2px solid #669629;
+  }
+`
 
-const Container = styled.div`
+const Container = styled.div<{ theme }>`
   position: absolute;
   bottom: 40px;
   right: 40px;
-  background-color: #1e2024cc;
-  color: white;
+  background-color: ${(props) => props.theme.colors.background};
+  color: black;
   border-radius: 4px;
   padding: 10px;
   transition: opacity 0.3s ease;
-  opacity: ${({ visible }) => (visible ? 0 : 1)};
+  opacity: ${({ visible }) => (visible ? 0 : 0.95)};
 `
 
 const Maximize = styled.button`
@@ -247,16 +291,16 @@ const LayerItem = styled.div`
 const LayerLabel = styled.label`
   margin-left: 4px;
   cursor: pointer;
-  color: ${({ isActive }) =>
-    isActive ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.6)'};
+  opacity: ${({ isActive }) => (isActive ? 1 : 0.75)};
+  color: black;
   font-size: 14px;
   transition: color 0.3s ease;
 `
 
-const LayerIcon = styled.span`
+const LayerIcon = styled.span<{ theme }>`
   font-size: 36px;
   transition: color 0.3s ease;
-  color: ${({ isActive }) => (isActive ? 'white' : 'black')};
+  color: ${({ isActive, theme }) => (isActive ? 'black' : theme.colors.hinted)};
 `
 
 export default XprizeLayerPicker

@@ -15,7 +15,7 @@ export const theme: Theme = {
     primary: '#000000',
     secondary: '#000000',
     muted: '#000000',
-    hinted: '#000000',
+    hinted: '#b9b9bb',
     skeletonHighlight: '#393a3d',
     boxShadow: '#000000',
     green: '#669629',

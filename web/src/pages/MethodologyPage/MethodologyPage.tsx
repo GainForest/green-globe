@@ -29,7 +29,7 @@ const MethodologyPage = () => {
           content: DOMpurify.sanitize(post.content),
           categories: Object.keys(post.categories),
           date: formatDate(post.date),
-          thumbnail: post.featured_image || '/biodivx-forest.jpeg',
+          thumbnail: post.featured_image || '/default.png',
         }
         return cleanObj
       })

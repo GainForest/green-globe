@@ -50,7 +50,7 @@ export const LogbookCard = ({ mediaSize }) => {
               content: content,
               categories: metadata.categories || ['Uncategorized'],
               date: formatDate(metadata.date) || '',
-              thumbnail: metadata.featured_image || '/biodivx-forest.jpeg',
+              thumbnail: `${process.env.AWS_STORAGE}/logbook/media/${metadata.featured_image}` || `${process.env.AWS_STORAGE}/logbook/media/default.png`,
             }
           })
         )

@@ -1,6 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
+import * as d3 from 'd3'
+import dayjs from 'dayjs'
 import { Tooltip } from 'react-tooltip'
+
+import { stringDistance } from 'src/utils/typoCheck'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
 import { ToggleButton } from '../../Map/components/ToggleButton'
@@ -10,6 +14,274 @@ import { PaymentCard } from './PaymentsCard'
 export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   const [toggle, setToggle] = useState<'Members' | 'Payments'>('Members')
   const [copied, setCopied] = useState(false)
+  const [paymentData, setPaymentData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [totalPayments, setTotalPayments] = useState({})
+  const [showFiatMessage, setShowFiatMessage] = useState(false)
+  const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
+
+  const formatFiatDate = (str) => {
+    const parts = str.split('/')
+    const day = parseInt(parts[0], 10)
+    const month = parseInt(parts[1], 10) - 1
+    const year = parseInt(parts[2], 10)
+
+    return new Date(year, month, day)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchFiatPayments = async () => {
+        const res = await d3.csv(
+          `${process.env.AWS_STORAGE}/transactions/fiat-transactions.csv`
+        )
+        const filteredRes = res
+          .filter(
+            (d) => stringDistance(d.orgName, activeProjectData.project.name) < 3
+          )
+          .map((d) => ({
+            ...d,
+            timestamp: formatFiatDate(d.timestamp),
+            firstName: d.recipientName?.split(' ')[0],
+            lastName: d.recipientName?.split(' ')[1] || '',
+            amount: parseFloat(d.originalAmount),
+            currency: d.currency,
+            blockchain: 'FIAT',
+          }))
+        return filteredRes
+      }
+
+      setLoading(true)
+
+      const cryptoPayments = await fetchCryptoPayments()
+      const fiatPayments = await fetchFiatPayments()
+      if (fiatPayments.length > 0) {
+        setShowFiatMessage(true)
+      }
+      const allPayments = [...cryptoPayments, ...fiatPayments]
+      setPaymentData(
+        allPayments
+          ?.sort(
+            (a, b) =>
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+          )
+          .filter((payment) => payment.amount >= 0.01)
+      )
+      setLoading(false)
+    }
+    fetchData()
+  }, [activeProjectData])
+
+  useEffect(() => {
+    const total = {}
+    paymentData.forEach((payment) => {
+      const currency = payment?.currency
+      if (currency && Object.prototype.hasOwnProperty.call(total, currency)) {
+        total[currency] += payment.amount
+      } else {
+        total[currency] = payment.amount
+      }
+    })
+    setTotalPayments(total)
+  }, [paymentData])
+
+  const fetchCryptoPayments = async () => {
+    let celoRecipients = []
+    let solanaRecipients = []
+
+    const memberMap = {}
+
+    // Get all the community members' wallet addresses
+    activeProjectData?.project?.communityMembers?.forEach((item) => {
+      if (item.Wallet && item.Wallet.CeloAccounts) {
+        celoRecipients = celoRecipients.concat(
+          item.Wallet.CeloAccounts.filter((account) => {
+            // map transaction to member for data display
+            if (account) {
+              memberMap[account] = {
+                firstName: item.firstName,
+                lastName: item.lastName,
+                profileUrl: item.profileUrl,
+              }
+            }
+            return account
+          })
+        )
+      }
+      if (item.Wallet && item.Wallet.SOLAccounts) {
+        solanaRecipients = solanaRecipients.concat(
+          item.Wallet.SOLAccounts.filter((account) => {
+            if (account) {
+              memberMap[account] = {
+                firstName: item.firstName,
+                lastName: item.lastName,
+                profileUrl: item.profileUrl,
+              }
+            }
+            return account
+          })
+        )
+      }
+    })
+
+    const allPayments = []
+    if (celoRecipients.length > 0) {
+      const celoPayments = await fetchCeloPayments(celoRecipients, memberMap)
+      if (celoPayments.length > 0) {
+        allPayments.push(...celoPayments)
+      }
+    }
+    if (solanaRecipients.length > 0) {
+      const solanaPayments = await fetchSolanaPayments(
+        solanaRecipients,
+        memberMap
+      )
+      if (solanaPayments.length > 0) {
+        allPayments.push(...solanaPayments)
+      }
+    }
+
+    return allPayments
+  }
+
+  const fetchCeloPayments = async (recipients, memberMap) => {
+    const payments = []
+    const recipientAttestationData = []
+
+    // for (let i = 0; i < recipients.length; i++) {
+    //   const recipientId = recipients[i]
+    //   const attestationsArr = await fetchAttestations(recipientId)
+
+    //   attestationsArr.forEach((ele) => {
+    //     const tempArr = JSON.parse(ele.decodedDataJson)
+
+    //     const messageObj = tempArr.find((e) => e.name === 'message')
+    //     const transactionObj = tempArr.find((e) => e.name === 'transactionId')
+
+    //     recipientAttestationData.push({
+    //       recipientId,
+    //       message: messageObj?.value?.value,
+    //       transactionId: transactionObj?.value?.value,
+    //       uid: ele.id,
+    //     })
+    //   })
+    // }
+
+    for (const address of wallets.Celo) {
+      const res = await fetch(
+        `https://explorer.celo.org/mainnet/api?module=account&action=tokentx&address=${address}`
+      )
+
+      const data = await res.json()
+      const seen = new Set()
+      let transactions = data['result'].filter((transaction) => {
+        const recipientsLowercased = [...recipients].map((e) =>
+          `${e}`.toLowerCase()
+        )
+        const isValid =
+          transaction.tokenSymbol === 'cUSD' &&
+          recipientsLowercased.includes(transaction.to)
+
+        // fetch returns duplicate transactions, so we filter them out here
+        const isNew = !seen.has(transaction.hash)
+        if (isValid && isNew) {
+          seen.add(transaction.hash)
+          return recipientsLowercased.includes(transaction.to)
+        }
+      })
+
+      transactions = transactions.map((transaction) => {
+        const attestation = recipientAttestationData.find(
+          (ele) => ele.transactionId === transaction.hash
+        )
+
+        const currentRecipientId = recipients.find(
+          (id) => `${id}`.toLowerCase() === `${transaction?.to}`.toLowerCase()
+        )
+
+        return {
+          to: transaction.to,
+          timestamp: dayjs.unix(transaction.timeStamp).format('YYYY-MM-DD'),
+          firstName: memberMap[currentRecipientId]['firstName'],
+          lastName: memberMap[currentRecipientId]['lastName'],
+          profileUrl: memberMap[currentRecipientId]['profileUrl'],
+          amount: transaction.value / 1e18,
+          currency: transaction.tokenSymbol,
+          hash: transaction.hash,
+          message: attestation ? attestation.message : undefined,
+          attestationUid: attestation ? attestation.uid : undefined,
+          blockchain: 'Celo',
+        }
+      })
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+
+    return payments
+  }
+
+  const fetchSolanaPayments = async (recipients, memberMap) => {
+    const payments = []
+    for (const address of wallets.Solana) {
+      const query = `
+            query MyQuery {
+              solana {
+                transfers(senderAddress: {is: "${address}"}) {
+                  amount
+                  currency {
+                    name
+                  }
+                  receiver {
+                    address
+                  }
+                  date {
+                    date
+                  }
+                  transaction {
+                    signature
+                  }
+                }
+              }
+            }
+    `
+      let res
+      let result
+      try {
+        res = await fetch('https://graphql.bitquery.io', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY': process.env.BITQUERY_API_KEY,
+          },
+          body: JSON.stringify({ query }),
+        })
+        result = await res.json()
+      } catch (e) {
+        console.error('Error fetching solana payments:', e)
+        return []
+      }
+      let transactions = result.data.solana.transfers.filter(
+        (transaction) =>
+          recipients.includes(transaction.receiver.address) &&
+          transaction.currency.name === 'USDC'
+      )
+      transactions = transactions.map((transaction) => ({
+        to: transaction.receiver.address,
+        timestamp: transaction.date.date,
+        firstName: memberMap[transaction.receiver.address]['firstName'],
+        lastName: memberMap[transaction.receiver.address]['lastName'],
+        profileUrl: memberMap[transaction.receiver.address]['profileUrl'],
+        amount: transaction.amount,
+        currency: 'Solana',
+        hash: transaction.transaction.signature,
+      }))
+      if (transactions.length > 0) {
+        payments.push(...transactions)
+      }
+    }
+    return payments
+  }
 
   const handleCopy = async (address) => {
     await navigator.clipboard.writeText(address)
@@ -40,13 +312,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
     )
   }
   const { project } = activeProjectData
-  const totalFundsReceived = project.communityMembers.reduce(
-    (acc, d) => acc + d.fundsReceived || 0,
-    0
-  )
-  const formatedTotalFundsReceived = totalFundsReceived
-    ? totalFundsReceived.toFixed(2)
-    : 0
 
   const communityMembers = [...project.communityMembers].sort((a, b) => {
     if (a.priority === b.priority) {
@@ -72,7 +337,9 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
           <div>
             <h2>Total Funds Received</h2>
             <p style={{ color: '#669629', fontWeight: 'bold' }}>
-              {'$' + formatedTotalFundsReceived}
+              {Object.entries(totalPayments)
+                .map(([currency, amount]) => `${amount} ${currency}`)
+                .join(', ')}
             </p>
             <div>
               <h2>People</h2>
@@ -184,7 +451,11 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
             </div>
           </div>
         ) : (
-          <PaymentCard activeProjectData={activeProjectData} />
+          <PaymentCard
+            activeProjectData={activeProjectData}
+            paymentData={paymentData}
+            loading={loading}
+          />
         )}
       </div>
     </InfoBox>

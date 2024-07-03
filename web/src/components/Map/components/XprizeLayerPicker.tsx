@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+
 import styled from 'styled-components'
+
 import {
   addNamedSource,
   removeNamedSource,
@@ -10,31 +12,41 @@ const XprizeLayerPicker = ({ map }) => {
   const [showLayers, setShowLayers] = useState(false)
   const [visible, setVisible] = useState(false)
 
-  let layersData = [
+  const layersData = [
     {
-      name: 'Tree Crown',
+      name: 'Tree Crown Delineations',
       type: 'geojson_line',
       endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
     },
     {
-      name: 'Dry run drone flight',
+      name: 'Drone flights',
       type: 'tms_tile',
       endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
     },
     {
-      name: 'Competition Area Drone',
+      name: 'Tumbira Drone',
       type: 'raster_tif',
-      endpoint: 'data/drone/1_webmercator.tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
     },
     {
-      name: 'Tumbira Deforestation YOD',
+      name: 'PM 2.5 (MK Tau)',
       type: 'raster_tif',
-      endpoint: 'data/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_Yod_w.tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
     },
     {
-      name: 'PM 2.5',
+      name: 'PM 2.5 (MK Tau 95% Confidence Level)',
       type: 'raster_tif',
-      endpoint: 'data/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_95Signif_rescaled.tif`,
+    },
+    {
+      name: 'Tumbira Regrowth (Year of regrowth)',
+      type: 'raster_tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_yod_w_rescaled_webmercator_cog.tif`,
+    },
+    {
+      name: 'AGBD',
+      type: 'raster_tif',
+      endpoint: 'layers/AGBD_EPSG3857-002.tif',
     },
     {
       name: 'NICFI Tiles',
@@ -90,9 +102,15 @@ const XprizeLayerPicker = ({ map }) => {
     const { tileRange, tilePattern, endpoint } = layer
     for (let x = tileRange.x.min; x <= tileRange.x.max; x++) {
       for (let y = tileRange.y.min; y <= tileRange.y.max; y++) {
-        const tileName = tilePattern.replace('{x}', x.toString().padStart(4, '0')).replace('{y}', y)
+        const tileName = tilePattern
+          .replace('{x}', x.toString().padStart(4, '0'))
+          .replace('{y}', y)
         const tileEndpoint = `${endpoint}${tileName}`
-        addNamedSource(map, { ...layer, name: `NICFI_${x}_${y}`, endpoint: tileEndpoint })
+        addNamedSource(map, {
+          ...layer,
+          name: `NICFI_${x}_${y}`,
+          endpoint: tileEndpoint,
+        })
       }
     }
   }

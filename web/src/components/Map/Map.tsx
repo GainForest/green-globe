@@ -113,11 +113,12 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [urlProjectId, activeProjectId])
 
   // Fetch tree data
-  useEffect(() => {
-    if (activeProjectData) {
-      fetchMeasuredTrees(activeProjectData, setActiveProjectTreesPlanted)
-    }
-  }, [activeProjectData])
+  // TODO: Bring back after xprize
+  // useEffect(() => {
+  //   if (activeProjectData) {
+  //     fetchMeasuredTrees(activeProjectData, setActiveProjectTreesPlanted)
+  //   }
+  // }, [activeProjectData])
 
   // Set initial layers on load
   useEffect(() => {

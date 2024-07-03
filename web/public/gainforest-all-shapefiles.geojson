@@ -1,0 +1,65 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-60.6392232340053, -2.9501431599559]
+      },
+      "properties": {
+        "projectId": "305a905ca8add1b2298efa0bd15eade42db038a7084b059b09bef89979517d68",
+        "name": "Ingles",
+        "country": "BR"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-58.6146605288023, -3.05325391127939]
+      },
+      "properties": {
+        "projectId": "c9c6c5f2c0388ea2fdfa3f36b6a6abfba4050245e47e61d44052812b5d8a0be6",
+        "name": "Itacotiara",
+        "country": "BR"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-60.1248883384497, -2.9567084604718]
+      },
+      "properties": {
+        "projectId": "92aa8920d2a8ca86018f0ace5066bd03e3b31c689f5ea84164c554fdab817a95",
+        "name": "Inhaã-bé",
+        "country": "BR"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-60.0726697796115, -2.98929069084586]
+      },
+      "properties": {
+        "projectId": "9fdb2f3a55ef041e12d6bff8e513cee109ada93673620ae3965dbcec8e1d154f",
+        "name": "Parque das Tribos",
+        "country": "BR"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-60.7441948939757, -2.962967181167]
+      },
+      "properties": {
+        "projectId": "ec44008cdc22fc8a2b33db410b1581b1efdb4efbb6be79c4d6f9bfd1ea3339c0",
+        "name": "XPRIZE Finals Dry Run",
+        "country": "BR"
+      }
+    }
+  ]
+}

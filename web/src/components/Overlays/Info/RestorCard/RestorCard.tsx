@@ -29,7 +29,6 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
-      console.log(siteName)
       let formattedName = siteName
         .replace(/[\s-]+/g, ' ')
         .trim()

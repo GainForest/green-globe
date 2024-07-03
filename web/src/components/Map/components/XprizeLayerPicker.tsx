@@ -46,12 +46,12 @@ const XprizeLayerPicker = ({ map }) => {
     {
       name: 'AGBD',
       type: 'raster_tif',
-      endpoint: 'layers/AGBD_EPSG3857-002.tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/AGBD_EPSG3857-002.tif`,
     },
     {
       name: 'NICFI Tiles',
       type: 'raster_tif',
-      endpoint: 'data/layers/nicfi/',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/nicfi/`,
       tilePattern: 'L15-{x}E-{y}N.tif',
       tileRange: {
         x: { min: 677, max: 683 },

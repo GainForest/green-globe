@@ -144,6 +144,7 @@ const XprizeLayerPicker = ({ map }) => {
     )
 }
 
+
 const Container = styled.div`
   position: absolute;
   bottom: 40px;

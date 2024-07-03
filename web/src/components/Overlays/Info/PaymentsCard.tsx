@@ -166,24 +166,24 @@ export const PaymentCard = ({ activeProjectData }) => {
     const payments = []
     const recipientAttestationData = []
 
-    for (let i = 0; i < recipients.length; i++) {
-      const recipientId = recipients[i]
-      const attestationsArr = await fetchAttestations(recipientId)
+    // for (let i = 0; i < recipients.length; i++) {
+    //   const recipientId = recipients[i]
+    //   const attestationsArr = await fetchAttestations(recipientId)
 
-      attestationsArr.forEach((ele) => {
-        const tempArr = JSON.parse(ele.decodedDataJson)
+    //   attestationsArr.forEach((ele) => {
+    //     const tempArr = JSON.parse(ele.decodedDataJson)
 
-        const messageObj = tempArr.find((e) => e.name === 'message')
-        const transactionObj = tempArr.find((e) => e.name === 'transactionId')
+    //     const messageObj = tempArr.find((e) => e.name === 'message')
+    //     const transactionObj = tempArr.find((e) => e.name === 'transactionId')
 
-        recipientAttestationData.push({
-          recipientId,
-          message: messageObj?.value?.value,
-          transactionId: transactionObj?.value?.value,
-          uid: ele.id,
-        })
-      })
-    }
+    //     recipientAttestationData.push({
+    //       recipientId,
+    //       message: messageObj?.value?.value,
+    //       transactionId: transactionObj?.value?.value,
+    //       uid: ele.id,
+    //     })
+    //   })
+    // }
 
     for (const address of wallets.Celo) {
       const res = await fetch(

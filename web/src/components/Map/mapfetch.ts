@@ -61,9 +61,7 @@ export const fetchGainForestCenterpoints = async (map) => {
   console.log('fetching!!')
   let gainforestCenterpoints = undefined
 
-  await fetch(
-    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
-  )
+  await fetch(`gainforest-all-shapefiles.geojson`)
     .then((response) => response.json())
     .then((res) => (gainforestCenterpoints = res))
 

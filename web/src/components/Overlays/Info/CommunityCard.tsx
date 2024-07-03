@@ -17,6 +17,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   const [paymentData, setPaymentData] = useState([])
   const [loading, setLoading] = useState(true)
   const [totalPayments, setTotalPayments] = useState({})
+  const [communityMembers, setCommunityMembers] = useState([])
   const [showFiatMessage, setShowFiatMessage] = useState(false)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
@@ -74,6 +75,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
 
   useEffect(() => {
     const total = {}
+    const members = {}
     paymentData.forEach((payment) => {
       const currency = payment?.currency
       if (currency && Object.prototype.hasOwnProperty.call(total, currency)) {
@@ -81,9 +83,30 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
       } else {
         total[currency] = payment.amount
       }
+      const member = payment?.communityMemberId
+      if (member && Object.prototype.hasOwnProperty.call(members, member)) {
+        members[member] += payment.amount
+      } else {
+        members[member] = payment.amount
+      }
     })
     setTotalPayments(total)
-  }, [paymentData])
+
+    if (activeProjectData.project?.communityMembers) {
+      const membersWithPayment = [...activeProjectData.project.communityMembers]
+        .map((d) => ({ ...d, fundsReceived: members[d.id] }))
+        .sort((a, b) => {
+          if (a.priority === b.priority) {
+            return b.fundsReceived - a.fundsReceived
+          } else {
+            return a.priority - b.priority
+          }
+        })
+
+      setCommunityMembers(membersWithPayment)
+    }
+    console.log(paymentData)
+  }, [paymentData, activeProjectData])
 
   const fetchCryptoPayments = async () => {
     let celoRecipients = []
@@ -221,6 +244,10 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
     return payments
   }
 
+  useEffect(() => {
+    console.log(communityMembers)
+  }, [communityMembers])
+
   const fetchSolanaPayments = async (recipients, memberMap) => {
     const payments = []
     for (const address of wallets.Solana) {
@@ -312,14 +339,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
     )
   }
   const { project } = activeProjectData
-
-  const communityMembers = [...project.communityMembers].sort((a, b) => {
-    if (a.priority === b.priority) {
-      return b.fundsReceived - a.fundsReceived
-    } else {
-      return a.priority - b.priority
-    }
-  })
 
   const communityMembersCount = project.communityMembers.length
   const memberOrMembers = communityMembersCount == 1 ? 'member' : 'members'

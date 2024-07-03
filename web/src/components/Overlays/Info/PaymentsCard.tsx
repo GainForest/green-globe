@@ -224,10 +224,11 @@ export const PaymentCard = ({ activeProjectData }) => {
           lastName: memberMap[currentRecipientId]['lastName'],
           profileUrl: memberMap[currentRecipientId]['profileUrl'],
           amount: transaction.value / 1e18,
-          currency: 'Celo',
+          currency: transaction.tokenSymbol,
           hash: transaction.hash,
           message: attestation ? attestation.message : undefined,
           attestationUid: attestation ? attestation.uid : undefined,
+          blockchain: 'Celo',
         }
       })
       if (transactions.length > 0) {

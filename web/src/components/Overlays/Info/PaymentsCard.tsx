@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useAxios from 'axios-hooks'
 import * as d3 from 'd3'
+import dayjs from 'dayjs'
 
 import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
 import { stringDistance } from 'src/utils/typoCheck'
@@ -56,8 +57,9 @@ export const PaymentCard = ({ activeProjectData }) => {
             timestamp: formatFiatDate(d.timestamp),
             firstName: d.recipientName?.split(' ')[0],
             lastName: d.recipientName?.split(' ')[1],
-            amount: parseFloat(d.amountInUsd),
-            currency: `Fiat: ` + d.currency,
+            amount: parseFloat(d.originalAmount),
+            currency: d.currency,
+            blockchain: 'FIAT',
           }))
         return filteredRes
       }
@@ -66,7 +68,6 @@ export const PaymentCard = ({ activeProjectData }) => {
 
       const cryptoPayments = await fetchCryptoPayments()
       const fiatPayments = await fetchFiatPayments()
-      console.log(fiatPayments)
       if (fiatPayments.length > 0) {
         setShowFiatMessage(true)
       }
@@ -299,25 +300,6 @@ export const PaymentCard = ({ activeProjectData }) => {
     return payments
   }
 
-  const formatDate = (timeStamp) => {
-    const options = {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }
-
-    const datePattern = /[-\/]/g
-
-    let dateObj
-    if (datePattern.test(timeStamp)) {
-      dateObj = new Date(timeStamp)
-    } else {
-      // Unix timestamp - convert from seconds to milliseconds
-      dateObj = new Date(parseInt(timeStamp) * 1000)
-    }
-    return dateObj.toLocaleDateString('en-GB', options)
-  }
-
   const formatAmount = (amount) => {
     if (Number.isInteger(amount)) {
       return amount.toString()
@@ -399,10 +381,10 @@ export const PaymentCard = ({ activeProjectData }) => {
                     />
                   </div>
                   <div style={{ marginLeft: '16px' }}>
-                    <h3> {formatDate(payment.timestamp)}</h3>
+                    <h3> {dayjs(payment.timestamp).format('DD MMMM YYYY')}</h3>
                     <p style={{ display: 'flex' }}>
                       To:
-                      {payment.currency.startsWith('Fiat') ? (
+                      {payment.blockchain == 'FIAT' ? (
                         payment.firstName ? (
                           `${payment.firstName} ${payment.lastName}`
                         ) : (
@@ -432,11 +414,11 @@ export const PaymentCard = ({ activeProjectData }) => {
                       )}
                     </p>
                     <p style={{ color: '#669629' }}>
-                      {formatAmount(payment.amount)}
+                      {payment.currency} {formatAmount(payment.amount)}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <InfoTag style={{ color: tagColors[payment.currency] }}>
-                        {payment.currency}
+                        {payment.blockchain}
                       </InfoTag>
                       <a
                         href={`https://celo.easscan.org/attestation/view/${payment.attestationUid}`}

@@ -129,6 +129,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                 firstName: item.firstName,
                 lastName: item.lastName,
                 profileUrl: item.profileUrl,
+                communityMemberId: item.id,
               }
             }
             return account
@@ -238,6 +239,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
           message: attestation ? attestation.message : undefined,
           attestationUid: attestation ? attestation.uid : undefined,
           blockchain: 'Celo',
+          communityMemberId: memberMap[currentRecipientId].communityMemberId,
         }
       })
       if (transactions.length > 0) {
@@ -431,7 +433,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                         </Tooltip>
                         {d.Wallet?.SOLAccounts?.length > 0 && (
                           <div>
-                            <p style={{ margin: 0 }}>Celo: </p>
+                            <p style={{ margin: 0 }}>Solana: </p>
                             {d.Wallet?.SOLAccounts?.map((address) => (
                               <button
                                 key={address}

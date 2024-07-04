@@ -81,7 +81,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
     <div>
       <div>
         {paymentData.length > 0 ? (
-          paymentData.map((payment) => {
+          paymentData.map((payment, index) => {
             let fullName
             if (payment.firstName && payment.lastName) {
               fullName = `${payment.firstName} ${payment.lastName}`
@@ -98,7 +98,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
                 .toLowerCase()
                 .replace(' ', '-')}.svg`
             return (
-              <div style={{ marginTop: '32px' }} key={payment.hash}>
+              <div style={{ marginTop: '32px' }} key={payment.hash + index}>
                 <div style={{ display: 'flex' }}>
                   <div>
                     <img

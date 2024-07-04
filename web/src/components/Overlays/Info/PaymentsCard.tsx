@@ -93,7 +93,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
               fullName = ''
             }
             const profileSrc =
-              payment.profileUrl ||
+              `${process.env.AWS_STORAGE}${payment.profileUrl}` ||
               `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
                 .toLowerCase()
                 .replace(' ', '-')}.svg`
@@ -103,7 +103,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
                   <div>
                     <img
                       alt={`${payment.name}-profile`}
-                      src={`${process.env.AWS_STORAGE}/${profileSrc}`}
+                      src={profileSrc}
                       width={100}
                       height={100}
                       style={{ borderRadius: 50, objectFit: 'cover' }}

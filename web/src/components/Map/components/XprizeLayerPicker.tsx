@@ -69,8 +69,10 @@ const XprizeLayerPicker = ({ map }) => {
       layersData
         .filter(
           (layer) =>
-            layer.name == 'NICFI Tiles' &&
-            window.location.host.includes('localhost')
+            !(
+              layer.name == 'NICFI Tiles' &&
+              !window.location.host.includes('localhost')
+            )
         )
         .map((layer) => ({
           ...layer,

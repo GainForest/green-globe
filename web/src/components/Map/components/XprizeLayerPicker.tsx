@@ -53,11 +53,6 @@ const XprizeLayerPicker = ({ map }) => {
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_yod_w_rescaled_webmercator_cog.tif`,
     },
     {
-      name: 'AGBD',
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/AGBD_EPSG3857-002.tif`,
-    },
-    {
       name: 'NICFI Tiles',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/nicfi/`,
@@ -71,14 +66,20 @@ const XprizeLayerPicker = ({ map }) => {
 
   useEffect(() => {
     setLayers(
-      layersData.map((layer) => ({
-        ...layer,
-        name: layer.name
-          .split('-')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' '),
-        isActive: false,
-      }))
+      layersData
+        .filter(
+          (layer) =>
+            layer.name == 'NICFI Tiles' &&
+            window.location.host.includes('localhost')
+        )
+        .map((layer) => ({
+          ...layer,
+          name: layer.name
+            .split('-')
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' '),
+          isActive: false,
+        }))
     )
   }, [])
 

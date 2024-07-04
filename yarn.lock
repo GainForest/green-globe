@@ -23216,7 +23216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tooltip@npm:^5.26.4":
+"react-tooltip@npm:^5.26.4, react-tooltip@npm:^5.27.1":
   version: 5.27.1
   resolution: "react-tooltip@npm:5.27.1"
   dependencies:
@@ -24011,6 +24011,7 @@ __metadata:
     react-data-table-component: ^7.6.2
     react-loading-skeleton: ^3.2.0
     react-redux: ^8.1.1
+    react-tooltip: ^5.27.1
     redis: ^4.6.12
     styled-components: ^5.3.9
     theme-ui: ^0.15.7

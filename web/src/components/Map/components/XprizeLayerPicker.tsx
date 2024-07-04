@@ -155,7 +155,7 @@ const XprizeLayerPicker = ({ map }) => {
         <Minimize className="material-icons-round" onClick={handleShowLayers}>
           close
         </Minimize>
-        <LayerTitle>Geospatial Data</LayerTitle>
+        <LayerTitle>Explore the Geospatial Data</LayerTitle>
         <br />
         {layers.map((layer, index) => (
           <LayerItem key={index} onClick={() => handleToggle(layer.name)}>

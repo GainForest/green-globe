@@ -22,13 +22,11 @@ export const CircadianRythmn = () => {
 
   return (
     <>
-      <h1>Circadian Rythmn</h1>
+      <h1>Soundscape</h1>
       <div>
-        <p> Measured activity of different frequencies in the forest. </p>
+        <p> Measured soundscape of different frequencies.</p>
       </div>
-
-      {SOUNDSCAPE_PATHS.map((path) => (
-        <div key={path}>
+        <div>
           <div style={{ width: '100%', aspectRatio: '1 / 1', maxWidth: '600px', margin: 'auto' }}>
             <CircularBarChart csvPath={`${process.env.AWS_STORAGE}/pmn/max_results_final.csv`}/>
           </div>
@@ -36,11 +34,10 @@ export const CircadianRythmn = () => {
             <CircularMultiLineChartWithCSVLoader csvPath={`${process.env.AWS_STORAGE}/pmn/median_results_final.csv`}/>
           </div>
           <AudioPlayer
-            label="Tyrant"
+            label="Sample"
             src={`${process.env.AWS_STORAGE}/audio/013-089-Tufted-Tit-Tyrant.mp3`}
           />
         </div>
-      ))}
     </>
   )
 }

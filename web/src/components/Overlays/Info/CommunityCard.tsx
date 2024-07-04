@@ -355,6 +355,17 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   const communityMembersCount = project.communityMembers.length
   const memberOrMembers = communityMembersCount == 1 ? 'member' : 'members'
 
+  if (loading) {
+    return (
+      <InfoBox mediaSize={mediaSize}>
+        <div style={{ margin: '16px 24px' }}>
+          <h1 style={{ marginBottom: '8px' }}>Community</h1>
+          <p style={{ marginTop: '32px' }}>loading...</p>
+        </div>
+      </InfoBox>
+    )
+  }
+
   return (
     <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '16px 24px' }}>

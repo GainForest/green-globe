@@ -103,7 +103,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
                   <div>
                     <img
                       alt={`${payment.name}-profile`}
-                      src={profileSrc}
+                      src={`${process.env.AWS_STORAGE}/${profileSrc}`}
                       width={100}
                       height={100}
                       style={{ borderRadius: 50, objectFit: 'cover' }}

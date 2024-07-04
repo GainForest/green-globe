@@ -104,9 +104,13 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
                     <img
                       alt={`${payment.name}-profile`}
                       src={profileSrc}
-                      width={100}
-                      height={100}
-                      style={{ borderRadius: 50, objectFit: 'cover' }}
+                      style={{
+                        borderRadius: 50,
+                        objectFit: 'cover',
+                        width: '100px',
+                        height: '100px',
+                        minWidth: '100px',
+                      }}
                     />
                   </div>
                   <div style={{ marginLeft: '16px' }}>
@@ -142,6 +146,9 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
                         </a>
                       )}
                     </p>
+                    {payment.motive && (
+                      <p style={{ display: 'flex' }}>For: {payment.motive}</p>
+                    )}
                     <p style={{ color: '#669629' }}>
                       {payment.currency} {formatAmount(payment.amount)}
                     </p>

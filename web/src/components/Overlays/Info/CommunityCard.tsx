@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import * as d3 from 'd3'
 import dayjs from 'dayjs'
+import { useSelector } from 'react-redux'
 import { Tooltip } from 'react-tooltip'
 
 import { stringDistance } from 'src/utils/typoCheck'
@@ -20,6 +21,8 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   const [communityMembers, setCommunityMembers] = useState([])
   const [showFiatMessage, setShowFiatMessage] = useState(false)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
+
+  const maximized = useSelector((state: State) => state.overlays.maximized)
 
   const formatFiatDate = (str) => {
     const parts = str.split('/')
@@ -41,15 +44,23 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
             (d) =>
               stringDistance(d.orgName, activeProjectData?.project.name) < 3
           )
-          .map((d) => ({
-            ...d,
-            timestamp: formatFiatDate(d.timestamp),
-            firstName: d.recipientName?.split(' ')[0],
-            lastName: d.recipientName?.split(' ')[1] || '',
-            amount: parseFloat(d.originalAmount),
-            currency: d.currency,
-            blockchain: 'FIAT',
-          }))
+          .map((d) => {
+            const member = activeProjectData.project.communityMembers.find(
+              (m) => m.id == d.communityMemberId
+            )
+            return {
+              ...d,
+              timestamp: formatFiatDate(d.timestamp),
+              firstName: member?.firstName || d.recipientName?.split(' ')[0],
+              lastName:
+                member?.firstName || d.recipientName?.split(' ')[1] || '',
+              amount: parseFloat(d.originalAmount),
+              currency: d.currency,
+              blockchain: 'FIAT',
+              profileUrl: member?.profileUrl,
+              motive: d.motive,
+            }
+          })
         return filteredRes
       }
 
@@ -96,7 +107,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
       }
     })
     setTotalPayments(total)
-
     if (activeProjectData?.project?.communityMembers) {
       const membersWithPayment = [...activeProjectData.project.communityMembers]
         .map((d) => ({ ...d, fundsReceived: members[d.id] }))
@@ -360,6 +370,10 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
             <p style={{ color: '#669629', fontWeight: 'bold' }}>
               {Object.entries(totalPayments)
                 .map(([currency, amount]) => `${amount} ${currency}`)
+                .sort(
+                  (a, b) =>
+                    parseFloat(b.split(' ')[0]) - parseFloat(a.split(', ')[0])
+                )
                 .join(', ')}
             </p>
             <div>
@@ -421,7 +435,9 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                                 onClick={() => handleCopy(address)}
                                 data-tooltip-id="clipTip"
                               >
-                                {address.slice(0, 20)}...
+                                {maximized
+                                  ? address
+                                  : address.slice(0, 15) + '...'}
                               </button>
                             ))}
                           </div>
@@ -452,7 +468,9 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                                     : 'click to copy to clipboard'
                                 }
                               >
-                                {address}
+                                {maximized
+                                  ? address
+                                  : address.slice(0, 15) + '...'}
                               </button>
                             ))}
                           </div>

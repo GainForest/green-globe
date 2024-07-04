@@ -92,11 +92,11 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
             } else {
               fullName = ''
             }
-            const profileSrc =
-              `${process.env.AWS_STORAGE}${payment.profileUrl}` ||
-              `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
-                .toLowerCase()
-                .replace(' ', '-')}.svg`
+            const profileSrc = payment.profileUrl
+              ? `${process.env.AWS_STORAGE}/${payment.profileUrl}`
+              : `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
+                  .toLowerCase()
+                  .replace(' ', '-')}.svg`
             return (
               <div style={{ marginTop: '32px' }} key={payment.hash + index}>
                 <div style={{ display: 'flex' }}>

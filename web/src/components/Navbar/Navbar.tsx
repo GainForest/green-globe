@@ -5,7 +5,7 @@ import { useAuth } from 'src/auth'
 import { breakpoints } from 'src/constants'
 import { showProfile } from 'src/reducers/overlaysReducer'
 
-import DonateButton from './DonateButton'
+import BiodiversityReportButton from './BiodiversityReport'
 import ProfileButton from './ProfileButton'
 
 const Navbar = ({ isAuthenticated, mediaSize }) => {
@@ -45,6 +45,7 @@ const Navbar = ({ isAuthenticated, mediaSize }) => {
           height: '100%',
         }}
       ></div> */}
+      <BiodiversityReportButton />
       {isAuthenticated && (
         <div
           style={{

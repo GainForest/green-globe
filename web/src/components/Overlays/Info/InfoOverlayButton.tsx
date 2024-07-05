@@ -1,15 +1,18 @@
 import { useSelector } from 'react-redux'
+import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
 export const InfoOverlayButton = ({
   buttonIcon,
+  description,
   position,
   active,
   mediaSize,
   onClick,
 }: {
   buttonIcon: string
+  description: string
   position: number
   active: boolean
   mediaSize?: number
@@ -24,6 +27,7 @@ export const InfoOverlayButton = ({
       position={position}
       onClick={onClick}
       maximize={maximized}
+      data-tooltip-id={`info-button-clipTip-${description}`}
     >
       <span
         className="material-icons-round"
@@ -50,6 +54,9 @@ export const InfoOverlayButton = ({
       >
         {buttonIcon}
       </span>
+      <Tooltip id={`info-button-clipTip-${description}`} delayShow={10}>
+        {description}
+      </Tooltip>
     </StyledButton>
   )
 }

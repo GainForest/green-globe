@@ -62,6 +62,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        description={'Project Info'}
         buttonIcon={'star'}
         position={1}
         active={infoOverlay == 1}
@@ -69,41 +70,47 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        buttonIcon={'pets'}
-        position={2}
-        active={infoOverlay == 2}
-        onClick={() => dispatch(setInfoOverlay(2))}
-      />
-      <InfoOverlayButton
-        mediaSize={mediaSize}
-        buttonIcon={'satellite'}
-        position={3}
-        active={infoOverlay == 3}
-        onClick={() => dispatch(setInfoOverlay(3))}
-      />
-      <InfoOverlayButton
-        mediaSize={mediaSize}
-        buttonIcon={'satellite_alt'}
-        position={4}
-        active={infoOverlay == 7}
-        onClick={() => dispatch(setInfoOverlay(7))}
-      />
-      <InfoOverlayButton
-        mediaSize={mediaSize}
-        buttonIcon={'emoji_people'}
-        position={5}
-        active={infoOverlay == 4}
-        onClick={() => dispatch(setInfoOverlay(4))}
-      />
-      <InfoOverlayButton
-        mediaSize={mediaSize}
+        description={'Who are we?'}
         buttonIcon={'chat'}
-        position={6}
+        position={2}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
+        description={'Biodiversity'}
+        buttonIcon={'pets'}
+        position={3}
+        active={infoOverlay == 2}
+        onClick={() => dispatch(setInfoOverlay(2))}
+      />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        description={'Media'}
+        buttonIcon={'satellite'}
+        position={4}
+        active={infoOverlay == 3}
+        onClick={() => dispatch(setInfoOverlay(3))}
+      />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        description={'Remote sensing analysis'}
+        buttonIcon={'satellite_alt'}
+        position={5}
+        active={infoOverlay == 7}
+        onClick={() => dispatch(setInfoOverlay(7))}
+      />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        description={'Community'}
+        buttonIcon={'emoji_people'}
+        position={6}
+        active={infoOverlay == 4}
+        onClick={() => dispatch(setInfoOverlay(4))}
+      />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        description={'Logbook'}
         buttonIcon={'book'}
         position={7}
         active={infoOverlay == 6}

@@ -5,6 +5,7 @@ const BlogPost = ({ markdownContent }) => {
   const [content, setContent] = useState('')
 
   useEffect(() => {
+    console.log(markdownContent)
     setContent(marked.parse(markdownContent))
   }, [markdownContent])
 

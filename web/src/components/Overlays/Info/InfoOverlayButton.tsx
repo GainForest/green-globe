@@ -54,7 +54,11 @@ export const InfoOverlayButton = ({
       >
         {buttonIcon}
       </span>
-      <Tooltip id={`info-button-clipTip-${description}`} delayShow={10}>
+      <Tooltip
+        id={`info-button-clipTip-${description}`}
+        delayShow={10}
+        style={{ zIndex: 1000 }}
+      >
         {description}
       </Tooltip>
     </StyledButton>

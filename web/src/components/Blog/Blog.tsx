@@ -126,7 +126,7 @@ const Blog = ({ posts, loading }) => {
                 <PostDate>{post?.date}</PostDate>
               </PostHeader>
               <PostTitle>{post?.title}</PostTitle>
-              <BlogPost content={post?.content} />
+              <BlogPost markdownContent={post?.content} />
             </PostContainer>
           ))}
         </Content>

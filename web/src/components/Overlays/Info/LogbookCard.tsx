@@ -30,30 +30,42 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
       try {
         const response = await axios.get(
           `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
-            activeProjectData.project?.name
+            activeProjectData?.project?.name
           )}/`
         )
         const filenames = parseDirectoryListing(response.data)
 
         const postsData = await Promise.all(
           filenames.map(async (filename) => {
+            const projectName = toKebabCase(activeProjectData?.project?.name)
             const postResponse = await axios.get(
-              `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
-                activeProjectData.project?.name
-              )}/${filename}`
+              `${process.env.AWS_STORAGE}/logbook/${projectName}/${filename}`
             )
-            const { content, metadata } = parseMarkdown(postResponse.data)
+
+            // Parsing the Markdown
+            let { content, metadata } = parseMarkdown(postResponse.data)
+
+            // Modifying the Markdown links to prepend the filepath
+            const basePath = `${process.env.AWS_STORAGE}/logbook/${projectName}`
+            content = content.replace(
+              /\[([^\]]+)\]\(([^)]+)\)/g,
+              (match, text, link) => {
+                // Check if the link is already a full URL or not
+                if (!link.startsWith('http')) {
+                  link = `${basePath}/${link}`
+                }
+                return `[${text}](${link})`
+              }
+            )
 
             return {
               title: metadata.title,
               content: content,
               categories: metadata.categories || ['Uncategorized'],
               date: formatDate(metadata.date) || '',
-              thumbnail:
-                `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
-                  activeProjectData.project?.name
-                )}/${metadata.featured_image}` ||
-                `${process.env.AWS_STORAGE}/logbook/default.png`,
+              thumbnail: metadata.featured_image
+                ? `${basePath}/${metadata.featured_image}`
+                : `${process.env.AWS_STORAGE}/logbook/default.png`,
             }
           })
         )

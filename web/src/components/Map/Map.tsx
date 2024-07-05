@@ -163,6 +163,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       map.on('click', 'gainforestMarkerLayer', (e) => {
         const projectId = e.features[0].properties.projectId
         setActiveProjectId(projectId)
+        dispatch(setInfoOverlay(1))
       })
 
       map.on('mouseleave', 'gainforestMarkerLayer', () => {

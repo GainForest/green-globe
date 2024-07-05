@@ -45,57 +45,17 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
 
   const bottom =
     mediaSize >= breakpoints.xl
-      ? 'calc(60vh - 16px)'
+      ? 'calc(60vh - 6px)'
       : mediaSize > breakpoints.m
-      ? 'calc(60vh - 12px)'
+      ? 'calc(60vh - 4px)'
       : mediaSize > breakpoints.s
-      ? 'calc(60vh - 8px)'
-      : 'calc(60vh - 4px)'
+      ? 'calc(60vh)'
+      : 'calc(60vh)'
 
-  const right =
-    mediaSize >= breakpoints.xl
-      ? 320
-      : mediaSize > breakpoints.m
-      ? 270
-      : mediaSize > breakpoints.s
-      ? null
-      : null
-
-  const maxedRight =
-    mediaSize >= breakpoints.xl
-      ? 700
-      : mediaSize > breakpoints.m
-      ? 660
-      : mediaSize > breakpoints.s
-      ? null
-      : null
-
-  const left =
-    mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.m
-      ? null
-      : mediaSize > breakpoints.s
-      ? '16px'
-      : '16px'
-
-  const maxedLeft =
-    mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.m
-      ? null
-      : mediaSize > breakpoints.s
-      ? '16px'
-      : '16px'
-
+  const right = mediaSize >= breakpoints.m ? 11 : 8
+  const maxedRight = 60
   const maxedTop =
-    mediaSize >= breakpoints.xl
-      ? 64
-      : mediaSize > breakpoints.m
-      ? 80
-      : mediaSize > breakpoints.s
-      ? 100
-      : 100
+    mediaSize >= breakpoints.m ? 58 : mediaSize > breakpoints.s ? 100 : 100
 
   return (
     <UnstyledButton
@@ -103,7 +63,6 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
         zIndex: 3,
         textAlign: 'center',
         right: maximized ? maxedRight : right,
-        left: maximized ? maxedLeft : left,
         bottom: maximized ? null : bottom,
         top: maximized ? maxedTop : null,
         height: height,

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
@@ -26,26 +27,33 @@ const XprizeLayerPicker = ({ map }) => {
       name: 'Tree Crown Delineations',
       type: 'geojson_line',
       endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
+      description: 'Outlines the canopy extents of individual trees.',
     },
     {
-      name: 'Drone flights',
+      name: 'Drone Flights',
       type: 'tms_tile',
       endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
+      description: 'High-resolution drone layer of the competition area',
     },
     {
-      name: 'Tumbira Drone',
+      name: 'Tumbira Drone Flights',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
+      description: 'High-resolution drone layer of the Tumbira region',
     },
     {
       name: 'PM 2.5 (MK Tau)',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
+      description:
+        'Levels of particulate matter of less than 2.5 micrometers (PM2.5). Darker colors represent increases in PM2.5 between 2001 and 2022.',
     },
     {
       name: 'PM 2.5 (MK Tau 95% Confidence Level)',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_95Signif_rescaled.tif`,
+      description:
+        'Levels of particulate matter of less than 2.5 micrometers (PM2.5) (95% confidence level). Darker colors represent increases in PM2.5 between 2001 and 2022.',
     },
     {
       name: 'Tumbira Regrowth (Year of regrowth)',
@@ -166,9 +174,22 @@ const XprizeLayerPicker = ({ map }) => {
             >
               {layer.isActive ? 'toggle_on' : 'toggle_off'}
             </LayerIcon>
-            <LayerLabel htmlFor={layer.name} isActive={layer.isActive}>
+            <LayerLabel
+              htmlFor={layer.name}
+              isActive={layer.isActive}
+              data-tooltip-id={`info-button-clipTip-${layer.name}`}
+            >
               {layer.name}
             </LayerLabel>
+            <Tooltip
+              id={`info-button-clipTip-${layer.name}`}
+              delayShow={10}
+              place={'right'}
+              opacity={1}
+              style={{ maxWidth: '300px' }}
+            >
+              {layer.description}
+            </Tooltip>
           </LayerItem>
         ))}
         <LayerItem
@@ -188,9 +209,16 @@ const XprizeLayerPicker = ({ map }) => {
           >
             {satelliteEnabled ? 'toggle_on' : 'toggle_off'}
           </LayerIcon>
-          <LayerLabel htmlFor={'satellite history'} isActive={satelliteEnabled}>
+          <LayerLabel
+            data-tooltip-id={`info-button-clipTip-satellite-history`}
+            htmlFor={'satellite history'}
+            isActive={satelliteEnabled}
+          >
             Satellite History
           </LayerLabel>
+          <Tooltip id={`info-button-clipTip-satellite-history`} delayShow={10}>
+            Historical monthly satellite data. (Tropical regions only)
+          </Tooltip>
         </LayerItem>
       </Container>
     )

@@ -55,7 +55,7 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
   const right = mediaSize >= breakpoints.m ? 11 : 8
   const maxedRight = mediaSize >= breakpoints.m ? 60 : 11
   const maxedTop =
-    mediaSize >= breakpoints.m ? 58 : mediaSize > breakpoints.s ? 100 : 100
+    mediaSize >= breakpoints.m ? 59 : mediaSize > breakpoints.s ? 100 : 100
 
   return (
     <UnstyledButton

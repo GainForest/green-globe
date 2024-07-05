@@ -33,27 +33,27 @@ const XprizeLayerPicker = ({ map }) => {
       name: 'Drone Flights',
       type: 'tms_tile',
       endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
-      description: 'High-resolution drone layer of the competition area',
+      description: 'High-resolution drone layer of the competition area.',
     },
     {
       name: 'Tumbira Drone Flights',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
-      description: 'High-resolution drone layer of the Tumbira region',
+      description: 'High-resolution drone layer of the Tumbira region.',
     },
     {
       name: 'PM 2.5 (MK Tau)',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
       description:
-        'Levels of particulate matter of less than 2.5 micrometers (PM2.5). Darker colors represent increases in PM2.5 between 2001 and 2022.',
+        'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
     },
     {
       name: 'PM 2.5 (MK Tau 95% Confidence Level)',
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_95Signif_rescaled.tif`,
       description:
-        'Levels of particulate matter of less than 2.5 micrometers (PM2.5) (95% confidence level). Darker colors represent increases in PM2.5 between 2001 and 2022.',
+        'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
     },
     {
       name: 'Tumbira Regrowth (Year of regrowth)',

@@ -18,7 +18,7 @@ const XprizeLayerPicker = ({ map }) => {
     (state: State) => state.satelliteHistory.enabled
   )
   const [layers, setLayers] = useState([])
-  const [showLayers, setShowLayers] = useState(false)
+  const [showLayers, setShowLayers] = useState(true)
   const [visible, setVisible] = useState(false)
 
   const layersData = [
@@ -146,7 +146,7 @@ const XprizeLayerPicker = ({ map }) => {
     return (
       <Maximize onClick={handleShowLayers}>
         <Icon className="material-icons-round">layers</Icon>
-        <Text>Toggle layers</Text>
+        <Text>Explore our layers</Text>
       </Maximize>
     )
   } else
@@ -212,8 +212,8 @@ const LayerImage = styled.img`
 
 const Container = styled.div<{ theme }>`
   position: absolute;
-  bottom: 40px;
-  right: 40px;
+  top: 70px;
+  left: 20px;
   background-color: ${(props) => props.theme.colors.background};
   color: black;
   border-radius: 4px;
@@ -224,15 +224,15 @@ const Container = styled.div<{ theme }>`
 
 const Maximize = styled.button`
   position: absolute;
-  bottom: 40px;
-  right: 40px;
+  top: 70px;
+  left: 20px;
   border: none;
-  font-size: 16px;
+  font-size: 14px;
   font-height: 26px;
   cursor: pointer;
   padding: 5px;
   border-radius: 4px;
-  background-color: #669629;
+  background-color: #000000;
   color: black;
   display: flex;
   width: 36px;
@@ -243,9 +243,7 @@ const Maximize = styled.button`
   display: flex;
   align-items: center;
 
-  &:hover {
-    width: 160px;
-  }
+  width: 180px;
 `
 
 const Icon = styled.span`
@@ -260,10 +258,7 @@ const Text = styled.span`
   opacity: 0;
   transition: opacity 0.3s ease;
   color: white;
-
-  ${Maximize}:hover & {
-    opacity: 1;
-  }
+  opacity: 1;
 `
 
 const Minimize = styled.button`
@@ -272,7 +267,7 @@ const Minimize = styled.button`
   right: 0;
   background: transparent;
   border: none;
-  color: white;
+  color: black;
   font-size: 24px;
   cursor: pointer;
   padding: 5px;

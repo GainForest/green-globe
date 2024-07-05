@@ -54,6 +54,9 @@ export const InfoOverlayButton = ({
   )
 }
 
+const MAX_NUMBER_OF_BUTTONS = 8 // actually 7 + 1 as the priorities are not 0 indexed.
+// to encompass the width of the card. important as we want the first card to be on the very left.
+
 const StyledButton = styled.button<{
   position: number
   active: boolean
@@ -86,7 +89,7 @@ const StyledButton = styled.button<{
       width: 28px;
       bottom: auto;
       top: 60px;
-      right: ${position * 36 - 28}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
@@ -94,7 +97,7 @@ const StyledButton = styled.button<{
       width: 24px;
       bottom: auto;
       top: 54px;
-      right: ${position * 28 - 24}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 28 - 24}px;
     }
   `
       : `
@@ -102,27 +105,27 @@ const StyledButton = styled.button<{
     height: 44px;
     width: 44px;
     bottom: calc(60vh + 44px);
-    right: ${position * 52 - 44}px;
+    right: ${(MAX_NUMBER_OF_BUTTONS - position) * 52 - 44}px;
 
     @media (max-width: ${breakpoints.xl}px) {
       height: 42px;
       width: 42px;
       bottom: calc(60vh + 42px);
-      right: ${position * 52 - 42}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 52 - 42}px;
     }
 
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
       width: 28px;
       bottom: calc(60vh + 40px);
-      right: ${position * 36 - 28}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
       height: 24px;
       width: 24px;
       bottom: calc(60vh + 40px);
-      right: ${position * 28 - 24 + 5}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 28 - 24 + 5}px;
     }
   `}
 `

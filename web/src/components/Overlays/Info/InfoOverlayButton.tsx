@@ -79,14 +79,14 @@ const StyledButton = styled.button<{
     height: 44px;
     width: 44px;
     top: ${position * 52 - 44 + 48}px;
-    left: 8px;
+    right: 8px;
 
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
       width: 28px;
       bottom: auto;
       top: 60px;
-      left: ${position * 36 - 28}px;
+      right: ${position * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
@@ -94,7 +94,7 @@ const StyledButton = styled.button<{
       width: 24px;
       bottom: auto;
       top: 54px;
-      left: ${position * 28 - 24}px;
+      right: ${position * 28 - 24}px;
     }
   `
       : `
@@ -102,27 +102,27 @@ const StyledButton = styled.button<{
     height: 44px;
     width: 44px;
     bottom: calc(60vh + 44px);
-    left: ${position * 52 - 44}px;
+    right: ${position * 52 - 44}px;
 
     @media (max-width: ${breakpoints.xl}px) {
       height: 42px;
       width: 42px;
       bottom: calc(60vh + 42px);
-      left: ${position * 52 - 42}px;
+      right: ${position * 52 - 42}px;
     }
 
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
       width: 28px;
       bottom: calc(60vh + 40px);
-      left: ${position * 36 - 28}px;
+      right: ${position * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
       height: 24px;
       width: 24px;
       bottom: calc(60vh + 40px);
-      left: ${position * 28 - 24 + 5}px;
+      right: ${position * 28 - 24 + 5}px;
     }
   `}
 `

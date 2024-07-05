@@ -57,7 +57,7 @@ export const InfoBox = ({
             : maximized && mediaSize > breakpoints.xs
             ? 80
             : 'auto',
-        left: maximized && mediaSize > breakpoints.m ? 56 : 4,
+        right: maximized && mediaSize > breakpoints.m ? 56 : 4,
         backgroundColor: theme.colors.background as string,
         color: theme.colors.text as string,
         borderRadius: '0.5em',

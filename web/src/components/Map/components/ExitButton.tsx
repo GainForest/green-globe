@@ -52,7 +52,7 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
       ? 'calc(60vh - 8px)'
       : 'calc(60vh - 4px)'
 
-  const left =
+  const right =
     mediaSize >= breakpoints.xl
       ? 320
       : mediaSize > breakpoints.m
@@ -61,7 +61,7 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
       ? null
       : null
 
-  const maxedLeft =
+  const maxedRight =
     mediaSize >= breakpoints.xl
       ? 700
       : mediaSize > breakpoints.m
@@ -70,7 +70,7 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
       ? null
       : null
 
-  const right =
+  const left =
     mediaSize >= breakpoints.xl
       ? null
       : mediaSize > breakpoints.m
@@ -79,7 +79,7 @@ export const ExitButton = ({ style, onClick, mediaSize }) => {
       ? '16px'
       : '16px'
 
-  const maxedRight =
+  const maxedLeft =
     mediaSize >= breakpoints.xl
       ? null
       : mediaSize > breakpoints.m

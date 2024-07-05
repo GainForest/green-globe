@@ -42,15 +42,12 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
               `${process.env.AWS_STORAGE}/logbook/${projectName}/${filename}`
             )
 
-            // Parsing the Markdown
             let { content, metadata } = parseMarkdown(postResponse.data)
 
-            // Modifying the Markdown links to prepend the filepath
             const basePath = `${process.env.AWS_STORAGE}/logbook/${projectName}`
             content = content.replace(
               /\[([^\]]+)\]\(([^)]+)\)/g,
               (match, text, link) => {
-                // Check if the link is already a full URL or not
                 if (!link.startsWith('http')) {
                   link = `${basePath}/${link}`
                 }
@@ -65,12 +62,11 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
               date: formatDate(metadata.date) || '',
               thumbnail: metadata.featured_image
                 ? `${basePath}/${metadata.featured_image}`
-                : `${process.env.AWS_STORAGE}/logbook/default.png`,
+                : `${process.env.AWS_STORAGE}/logbook/default.jpeg`,
             }
           })
         )
         setPosts(postsData)
-        console.log(postsData)
         setLoading(false)
       } catch (error) {
         console.error('Failed to load posts:', error)

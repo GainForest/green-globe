@@ -11,7 +11,7 @@ const BiodiversityReportButton = () => {
             top: '8px',
             borderRadius: '4px',
             cursor: 'pointer',
-            width: '160px',
+            width: '180px',
           }}
           onClick={() => ({})}
         >

@@ -312,6 +312,7 @@ const LayerItem = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  height: 28px;
 `
 
 const LayerLabel = styled.label`

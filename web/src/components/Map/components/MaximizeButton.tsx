@@ -58,7 +58,7 @@ export const MaximizeButton = ({ style, mediaSize }) => {
   const maxedRight = mediaSize > breakpoints.m ? 100 : 46
 
   const maxedTop =
-    mediaSize >= breakpoints.m ? 58 : mediaSize > breakpoints.s ? 100 : 100
+    mediaSize >= breakpoints.m ? 59 : mediaSize > breakpoints.s ? 100 : 100
 
   return (
     <UnstyledButton

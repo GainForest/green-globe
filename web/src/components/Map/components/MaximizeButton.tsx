@@ -47,64 +47,24 @@ export const MaximizeButton = ({ style, mediaSize }) => {
 
   const bottom =
     mediaSize >= breakpoints.xl
-      ? 'calc(60vh - 16px)'
+      ? 'calc(60vh - 6px)'
       : mediaSize > breakpoints.m
-      ? 'calc(60vh - 12px)'
+      ? 'calc(60vh - 4px)'
       : mediaSize > breakpoints.s
-      ? 'calc(60vh - 8px)'
-      : 'calc(60vh - 4px)'
+      ? 'calc(60vh)'
+      : 'calc(60vh)'
 
-  const right =
-    mediaSize >= breakpoints.xl
-      ? 280
-      : mediaSize > breakpoints.m
-      ? 230
-      : mediaSize > breakpoints.s
-      ? null
-      : null
-
-  const maxedRight =
-    mediaSize >= breakpoints.xl
-      ? 660
-      : mediaSize > breakpoints.m
-      ? 620
-      : mediaSize > breakpoints.s
-      ? null
-      : null
-
-  const left =
-    mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.m
-      ? null
-      : mediaSize > breakpoints.s
-      ? '56px'
-      : '52px'
-
-  const maxedLeft =
-    mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.m
-      ? null
-      : mediaSize > breakpoints.s
-      ? '56px'
-      : '56px'
+  const right = mediaSize > breakpoints.m ? 50 : 46
+  const maxedRight = mediaSize > breakpoints.m ? 100 : 46
 
   const maxedTop =
-    mediaSize >= breakpoints.xl
-      ? 64
-      : mediaSize > breakpoints.m
-      ? 80
-      : mediaSize > breakpoints.s
-      ? 100
-      : 100
+    mediaSize >= breakpoints.m ? 58 : mediaSize > breakpoints.s ? 100 : 100
 
   return (
     <UnstyledButton
       style={{
         zIndex: 3,
         textAlign: 'center',
-        left: maximized ? maxedLeft : left,
         right: maximized ? maxedRight : right,
         bottom: maximized ? null : bottom,
         top: maximized ? maxedTop : null,

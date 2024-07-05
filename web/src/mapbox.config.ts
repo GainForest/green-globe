@@ -39,6 +39,7 @@ export const initializeMapbox = (
         zoom: 2,
         center: [102, 9],
         bounds: XPRIZE_FINALS_BOUNDS_ZOOMED_OUT,
+        zoomControl: false,
       })
       map.addControl(new mapboxgl.NavigationControl())
       setMap(map)

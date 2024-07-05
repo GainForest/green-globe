@@ -1,44 +1,54 @@
-import Markdown from 'markdown-to-jsx'
+import { marked } from 'marked'
+import ReactMarkdown from 'react-markdown'
 const BlogPost = ({ content }) => {
-  const overrides = {
-    a: {
-      component: ({ children, title, href }) => {
-        const ext = href.split('.').pop()
-        switch (ext) {
-          case 'jpg':
-          case 'jpeg':
-          case 'png':
-          case 'gif':
-            return (
-              <ImageComponent href={href} title={title}>
-                {children}
-              </ImageComponent>
-            )
-          case 'mp4':
-          case 'webm':
-          case 'ogv':
-            return (
-              <VideoComponent href={href} title={title}>
-                {children}
-              </VideoComponent>
-            )
-          case 'wav':
-          case 'ogg':
-          case 'm4a':
-          case 'mp3':
-            return (
-              <AudioComponent href={href} title={title}>
-                {children}
-              </AudioComponent>
-            )
-          default:
-            return <a href={href}>{children}</a> // default case
-        }
-      },
-    },
+  const getMarkdownText = () => {
+    const rawMarkup = marked.parse(content)
+    return { __html: rawMarkup }
   }
 
-  return <Markdown options={{ overrides }}>{content}</Markdown>
+  return <div dangerouslySetInnerHTML={getMarkdownText()} />
+}
+
+const overrides = {
+  a: {
+    component: ({ children, title, href }) => {
+      console.log(children)
+      console.log(title)
+      console.log(href)
+      const ext = href?.split('.').pop()
+      switch (ext) {
+        case 'jpg':
+        case 'jpeg':
+        case 'png':
+        case 'gif':
+        case 'webp':
+          return (
+            <ImageComponent href={href} title={title}>
+              {children}
+            </ImageComponent>
+          )
+        case 'mp4':
+        case 'webm':
+        case 'ogv':
+          return (
+            <VideoComponent href={href} title={title}>
+              {children}
+            </VideoComponent>
+          )
+        case 'wav':
+        case 'ogg':
+        case 'm4a':
+        case 'mp3':
+          return (
+            <AudioComponent href={href} title={title}>
+              {children}
+            </AudioComponent>
+          )
+        default:
+          return <a href={href}>{children}</a>
+      }
+    },
+  },
 }
 
 export default BlogPost

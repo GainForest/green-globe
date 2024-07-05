@@ -5,8 +5,30 @@ const BlogPost = ({ markdownContent }) => {
   const [content, setContent] = useState('')
 
   useEffect(() => {
-    console.log(markdownContent)
-    setContent(marked.parse(markdownContent))
+    const htmlContent = marked.parse(markdownContent)
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(htmlContent, 'text/html')
+
+    const links = doc.querySelectorAll('a')
+    links.forEach((link) => {
+      const href = link.href
+      if (href.match(/\.(jpeg|jpg|gif|png|bmp|webp)$/i)) {
+        const textParagraph = document.createElement('p')
+        textParagraph.textContent = link.textContent
+
+        const img = document.createElement('img')
+        img.src = href
+        img.alt = link.textContent || 'Image'
+        link.parentNode.insertBefore(textParagraph, link)
+        link.parentNode.insertBefore(img, link.nextSibling)
+
+        link.parentNode.removeChild(link)
+      }
+    })
+
+    // Set the modified content
+    setContent(doc.body.innerHTML)
   }, [markdownContent])
 
   useEffect(() => {

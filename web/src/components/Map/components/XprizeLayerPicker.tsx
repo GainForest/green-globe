@@ -227,6 +227,8 @@ const Container = styled.div<{ theme }>`
   transition: opacity 0.3s ease;
   opacity: ${({ visible }) => (visible ? 0 : 0.95)};
   min-width: 288px;
+  max-height: 80vh;
+  overflow-y: scroll;
 `
 
 const Maximize = styled.button`

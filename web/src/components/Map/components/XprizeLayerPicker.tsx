@@ -226,6 +226,7 @@ const Container = styled.div<{ theme }>`
   padding: 10px;
   transition: opacity 0.3s ease;
   opacity: ${({ visible }) => (visible ? 0 : 0.95)};
+  min-width: 288px;
 `
 
 const Maximize = styled.button`

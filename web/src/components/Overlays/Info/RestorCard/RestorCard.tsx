@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
 import { InfoBox } from 'src/components/Overlays/Info/InfoBox'
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
 
@@ -29,19 +30,10 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
-      let formattedName = siteName
-        .replace(/[\s-]+/g, ' ')
-        .trim()
-        .toLowerCase()
-        .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
-          index === 0
-            ? match.toLowerCase()
-            : match.toUpperCase().replace(/\s+/g, '')
-        ) // Convert to camelCase
+      let formattedName = toKebabCase(siteName)
       if (formattedName == 'inhaãBé') {
-        formattedName = 'inhaaBe'
+        formattedName = 'inhaa-be'
       }
-      console.log(formattedName)
       const baseURL = `${process.env.AWS_STORAGE}/restor/chartData/${formattedName}`
       const jsonFiles = {
         carbon: 'carbon.json',

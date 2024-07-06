@@ -143,77 +143,73 @@ const XprizeLayerPicker = ({ map }) => {
             borderRadius: '4px',
           }}
         />
-        {filteredLayers.map((layer, index) => (
-          <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
+        <LayerListContainer>
+          {filteredLayers.map((layer, index) => (
+            <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
+              <LayerIcon
+                className="material-icons-round"
+                isActive={layer.isActive}
+                theme={theme}
+              >
+                {layer.isActive ? 'toggle_on' : 'toggle_off'}
+              </LayerIcon>
+              <LayerLabel
+                htmlFor={layer.name}
+                isActive={layer.isActive}
+                data-tooltip-id={`info-button-clipTip-${layer.name}`}
+              >
+                {layer.name}
+              </LayerLabel>
+              <Tooltip
+                id={`info-button-clipTip-${layer.name}`}
+                delayShow={10}
+                place={'right'}
+                opacity={1}
+                style={{ maxWidth: '300px' }}
+              >
+                {layer.description}
+              </Tooltip>
+            </LayerItem>
+          ))}
+          <LayerItem
+            key={'satellite history'}
+            onClick={() => {
+              if (!satelliteEnabled) {
+                dispatch(setDisplaySatelliteHistory(true))
+              } else {
+                dispatch(setDisplaySatelliteHistory(false))
+              }
+            }}
+          >
             <LayerIcon
               className="material-icons-round"
-              isActive={layer.isActive}
+              isActive={satelliteEnabled}
               theme={theme}
             >
-              {layer.isActive ? 'toggle_on' : 'toggle_off'}
+              {satelliteEnabled ? 'toggle_on' : 'toggle_off'}
             </LayerIcon>
             <LayerLabel
-              htmlFor={layer.name}
-              isActive={layer.isActive}
-              data-tooltip-id={`info-button-clipTip-${layer.name}`}
+              data-tooltip-id={`info-button-clipTip-satellite-history`}
+              htmlFor={'satellite history'}
+              isActive={satelliteEnabled}
             >
-              {layer.name}
+              Satellite History
             </LayerLabel>
             <Tooltip
-              id={`info-button-clipTip-${layer.name}`}
+              id={`info-button-clipTip-satellite-history`}
               delayShow={10}
-              place={'right'}
-              opacity={1}
-              style={{ maxWidth: '300px' }}
             >
-              {layer.description}
+              Historical monthly satellite data. (Tropical regions only)
             </Tooltip>
           </LayerItem>
-        ))}
-        <LayerItem
-          key={'satellite history'}
-          onClick={() => {
-            if (!satelliteEnabled) {
-              dispatch(setDisplaySatelliteHistory(true))
-            } else {
-              dispatch(setDisplaySatelliteHistory(false))
-            }
-          }}
-        >
-          <LayerIcon
-            className="material-icons-round"
-            isActive={satelliteEnabled}
-            theme={theme}
-          >
-            {satelliteEnabled ? 'toggle_on' : 'toggle_off'}
-          </LayerIcon>
-          <LayerLabel
-            data-tooltip-id={`info-button-clipTip-satellite-history`}
-            htmlFor={'satellite history'}
-            isActive={satelliteEnabled}
-          >
-            Satellite History
-          </LayerLabel>
-          <Tooltip id={`info-button-clipTip-satellite-history`} delayShow={10}>
-            Historical monthly satellite data. (Tropical regions only)
-          </Tooltip>
-        </LayerItem>
+        </LayerListContainer>
       </Container>
     )
 }
 
-const LayerImage = styled.img`
-  display: block;
-  margin: 0 auto;
-  cursor: pointer;
-  width: 40px;
-  object-fit: cover;
-  height: 40px;
-  background-size: cover;
-  border-radius: 4px;
-  :hover {
-    border: 2px solid #669629;
-  }
+const LayerListContainer = styled.div`
+  max-height: calc(80vh - 100px);
+  overflow-y: scroll;
 `
 
 const Container = styled.div<{ theme }>`
@@ -228,7 +224,6 @@ const Container = styled.div<{ theme }>`
   opacity: ${({ visible }) => (visible ? 0 : 0.95)};
   min-width: 288px;
   max-height: 80vh;
-  overflow-y: scroll;
 `
 
 const Maximize = styled.button`

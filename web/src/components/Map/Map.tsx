@@ -23,7 +23,7 @@ import XprizeLayerPicker from 'src/components/Map/components/XprizeLayerPicker'
 import { MAPBOX_FOG, initializeMapbox } from 'src/mapbox.config'
 // import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
-import { setProjectId } from 'src/reducers/projectsReducer'
+import { setProjectId, setProjectName } from 'src/reducers/projectsReducer'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
 import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
@@ -228,6 +228,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
         setActiveProjectData(result)
+        // can probably add in all the data
+        dispatch(setProjectName(result.name))
         const shapefiles = result?.project?.assets?.filter(
           (d) => d?.classification == 'Shapefiles'
         )

@@ -71,3 +71,10 @@ interface Asset {
     shortName
   }
 }
+
+interface GeospatialLayer {
+  name: string
+  type: string
+  endpoint: string
+  description?: string
+}

@@ -1,27 +1,22 @@
 import { useState, useEffect } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
-
-import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
 
 import {
   addNamedSource,
   removeNamedSource,
-} from '../sourcesAndLayers/cogSourceAndLayers'
-import { layersData } from '../sourcesAndLayers/xprizeLayers'
+} from '../../sourcesAndLayers/cogSourceAndLayers'
+import { layersData } from '../../sourcesAndLayers/xprizeLayers'
+
+import { LayerItem } from './LayerItem'
+import { LayerItemHistoricalSatellite } from './LayerItemHistoricalSatellite'
 
 const XprizeLayerPicker = ({ map }) => {
   const [layers, setLayers] = useState([])
   const [searchTerm, setSearchTerm] = useState<string>()
   const [filteredLayers, setFilteredLayers] = useState([])
   const { theme } = useThemeUI()
-  const dispatch = useDispatch()
-  const satelliteEnabled = useSelector(
-    (state: State) => state.satelliteHistory.enabled
-  )
   const [showLayers, setShowLayers] = useState(true)
   const [visible, setVisible] = useState(false)
 
@@ -49,16 +44,12 @@ const XprizeLayerPicker = ({ map }) => {
         )
         .map((layer) => ({
           ...layer,
-          name: layer.name
-            .split('-')
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' '),
           isActive: false,
         }))
     )
   }, [])
 
-  const handleToggle = (name) => {
+  const handleToggle = (name: string) => {
     setLayers((prevLayers) =>
       prevLayers.map((layer) => {
         if (layer.name === name) {
@@ -144,64 +135,14 @@ const XprizeLayerPicker = ({ map }) => {
           }}
         />
         <LayerListContainer>
-          {filteredLayers.map((layer, index) => (
-            <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
-              <LayerIcon
-                className="material-icons-round"
-                isActive={layer.isActive}
-                theme={theme}
-              >
-                {layer.isActive ? 'toggle_on' : 'toggle_off'}
-              </LayerIcon>
-              <LayerLabel
-                htmlFor={layer.name}
-                isActive={layer.isActive}
-                data-tooltip-id={`info-button-clipTip-${layer.name}`}
-              >
-                {layer.name}
-              </LayerLabel>
-              <Tooltip
-                id={`info-button-clipTip-${layer.name}`}
-                delayShow={10}
-                place={'right'}
-                opacity={1}
-                style={{ maxWidth: '300px' }}
-              >
-                {layer.description}
-              </Tooltip>
-            </LayerItem>
+          {filteredLayers.map((layer) => (
+            <LayerItem
+              layer={layer}
+              handleToggle={handleToggle}
+              key={`${layer.name}-layer-toggle`}
+            />
           ))}
-          <LayerItem
-            key={'satellite history'}
-            onClick={() => {
-              if (!satelliteEnabled) {
-                dispatch(setDisplaySatelliteHistory(true))
-              } else {
-                dispatch(setDisplaySatelliteHistory(false))
-              }
-            }}
-          >
-            <LayerIcon
-              className="material-icons-round"
-              isActive={satelliteEnabled}
-              theme={theme}
-            >
-              {satelliteEnabled ? 'toggle_on' : 'toggle_off'}
-            </LayerIcon>
-            <LayerLabel
-              data-tooltip-id={`info-button-clipTip-satellite-history`}
-              htmlFor={'satellite history'}
-              isActive={satelliteEnabled}
-            >
-              Satellite History
-            </LayerLabel>
-            <Tooltip
-              id={`info-button-clipTip-satellite-history`}
-              delayShow={10}
-            >
-              Historical monthly satellite data. (Tropical regions only)
-            </Tooltip>
-          </LayerItem>
+          <LayerItemHistoricalSatellite />
         </LayerListContainer>
       </Container>
     )
@@ -282,28 +223,6 @@ const Minimize = styled.button`
 
 const LayerTitle = styled.div`
   height: 10px;
-`
-
-const LayerItem = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  height: 28px;
-`
-
-const LayerLabel = styled.label`
-  margin-left: 4px;
-  cursor: pointer;
-  opacity: ${({ isActive }) => (isActive ? 1 : 0.75)};
-  color: black;
-  font-size: 14px;
-  transition: color 0.3s ease;
-`
-
-const LayerIcon = styled.span<{ theme }>`
-  font-size: 36px;
-  transition: color 0.3s ease;
-  color: ${({ isActive, theme }) => (isActive ? 'black' : theme.colors.hinted)};
 `
 
 export default XprizeLayerPicker

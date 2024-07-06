@@ -1,11 +1,4 @@
-type Layer = {
-  name: string
-  type: string
-  endpoint: string
-  description?: string
-}
-
-const hardcodedLayers: Layer[] = [
+const hardcodedLayers: GeospatialLayer[] = [
   {
     name: 'Global Human Modification',
     type: 'raster_tif',
@@ -120,7 +113,7 @@ const hardcodedLayers: Layer[] = [
   },
 ]
 
-const tumbiraDeforestationData = (): Layer[] => {
+const tumbiraDeforestationData = (): GeospatialLayer[] => {
   const tumbiraTifArray = []
   for (let year = 1985; year <= 2023; year++) {
     tumbiraTifArray.push({
@@ -133,7 +126,7 @@ const tumbiraDeforestationData = (): Layer[] => {
   return tumbiraTifArray
 }
 
-const tumbiraRegrowthData = (): Layer[] => {
+const tumbiraRegrowthData = (): GeospatialLayer[] => {
   const tumbiraTifArray = []
   for (let year = 1985; year <= 2023; year++) {
     tumbiraTifArray.push({
@@ -146,7 +139,7 @@ const tumbiraRegrowthData = (): Layer[] => {
   return tumbiraTifArray
 }
 
-export const layersData: Layer[] = [
+export const layersData: GeospatialLayer[] = [
   ...hardcodedLayers,
   ...tumbiraDeforestationData(),
   ...tumbiraRegrowthData(),

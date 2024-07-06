@@ -38,22 +38,18 @@ const hardcodedLayers: Layer[] = [
     description:
       'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
   },
-  {
-    name: 'Tumbira Regrowth (Year of regrowth)',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/tumbira_deforestation/tumbira_deforestation_yod.tif`,
-  },
-  {
-    name: 'Temperature of Warmest Month',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/global_ecological_layers/CHELSA_BIO_Annual_Mean_Temperature_webmercator.tif`,
-    description: 'Source: CHELSA BIO',
-  },
-  {
-    name: 'Annual Precipitation',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/global_ecological_layers/CHELSA_BIO_Annual_Precipitation.tif`,
-  },
+  // These need to be converted.
+  // {
+  //   name: 'Temperature of Warmest Month',
+  //   type: 'raster_tif',
+  //   endpoint: `${process.env.TITILER_ENDPOINT}/layers/global_ecological_layers/CHELSA_BIO_Annual_Mean_Temperature_webmercator.tif`,
+  //   description: 'Source: CHELSA BIO',
+  // },
+  // {
+  //   name: 'Annual Precipitation',
+  //   type: 'raster_tif',
+  //   endpoint: `${process.env.TITILER_ENDPOINT}/layers/global_ecological_layers/CHELSA_BIO_Annual_Precipitation.tif`,
+  // },
   {
     name: 'NICFI Tiles',
     type: 'raster_tif',
@@ -73,6 +69,7 @@ const tumbiraDeforestationData = (): Layer[] => {
       name: `Tumbira Deforestation ${year}`,
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/tumbira_deforestation/tumbira_deforestation_yod_${year}.tif`,
+      description: `Areas of deforestation in ${year}`,
     })
   }
   return tumbiraTifArray
@@ -85,6 +82,7 @@ const tumbiraRegrowthData = (): Layer[] => {
       name: `Tumbira Regrowth ${year}`,
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/tumbira_regrowth/tumbira_regrowth_yod_${year}.tif`,
+      description: `Areas of regrowth in ${year}`,
     })
   }
   return tumbiraTifArray

@@ -51,9 +51,8 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
             return {
               ...d,
               timestamp: formatFiatDate(d.timestamp),
-              firstName: member?.firstName || d.recipientName?.split(' ')[0],
-              lastName:
-                member?.firstName || d.recipientName?.split(' ')[1] || '',
+              firstName: member?.firstName,
+              lastName: member?.lastName,
               amount: parseFloat(d.originalAmount),
               currency: d.currency,
               blockchain: 'FIAT',

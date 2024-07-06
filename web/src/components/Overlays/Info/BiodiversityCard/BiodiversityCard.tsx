@@ -25,7 +25,7 @@ export const BiodiversityCard = ({
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
   const [toggle, setToggle] = useState<'Predictions' | 'Observations'>(
-    'Predictions'
+    'Observations'
   )
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')

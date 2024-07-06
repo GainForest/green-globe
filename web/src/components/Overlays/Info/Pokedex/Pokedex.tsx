@@ -111,7 +111,7 @@ export const Pokedex = ({ mediaSize }) => {
             ))}
           </div>
         ) : (
-          <p>No species found</p>
+          <p>No species found.</p>
         )}
       </div>
       <Modal

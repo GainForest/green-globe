@@ -78,7 +78,7 @@ export const Pokedex = ({ mediaSize }) => {
   return (
     <>
       <div>
-        <h1>Observations</h1>
+        <h2>All observations</h2>
         <p> All species recorded in this project.</p>
         {loading ? (
           <p>Loading...</p>

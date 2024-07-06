@@ -8,11 +8,13 @@ import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
 
+import { Info } from 'lucide-react'
+
 import { CarbonChart } from './CarbonChart'
 import { TreeCoverChart } from './TreeCoverChart'
 import { WaterChart } from './WaterChart'
 export const RestorCard = ({ mediaSize, activeProjectData }) => {
-  const [displayedInsight, setDisplayedInsight] = useState('biodiversity')
+  const [displayedInsight, setDisplayedInsight] = useState('carbon')
   const [allData, setAllData] = useState({
     carbon: {},
     biodiversity: {},
@@ -66,13 +68,20 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
   }, [activeProjectData])
   return (
     <InfoBox mediaSize={mediaSize}>
-      <h1 style={{ marginLeft: '16px', marginBottom: '8px' }}>Remote Sensing Analysis</h1>
+      <div style={{ marginLeft: '16px', marginBottom: '8px' }}><h1>Remote Sensing Analysis</h1>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
+          <p style={{ marginTop: '10px' }}>
+            Remote Sensing Analysis queried through Restor.
+          </p>
+        </div>
+      </div>
       <IconBar>
-        <IconButton
+        {/* <IconButton
           buttonIcon={'eco'}
           active={displayedInsight == 'biodiversity'}
           onClick={() => setDisplayedInsight('biodiversity')}
-        />
+        /> */}
         <IconButton
           buttonIcon={'co2'}
           active={displayedInsight == 'carbon'}

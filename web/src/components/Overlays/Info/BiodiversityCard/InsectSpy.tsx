@@ -23,7 +23,7 @@ export const InsectSpy = () => {
   if (individuals.length) {
     return (
       <div>
-        <h1> Insects Spotted </h1>
+        <h2> Insect trap </h2>
         <p> Insects detected by our insect trap. </p>
         {individuals.map((d) => (
           <div key={d.class}>

@@ -22,7 +22,7 @@ export const CircadianRythmn = () => {
 
   return (
     <>
-      <h1>Soundscape</h1>
+      <h2>Soundscape</h2>
       <div>
         <p> Measured soundscape of different frequencies.</p>
       </div>

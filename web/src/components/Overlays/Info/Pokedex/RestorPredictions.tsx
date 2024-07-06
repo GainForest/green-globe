@@ -77,7 +77,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
 
   return (
     <div>
-      <div style={{ margin: '16px' }}>
+      <div>
         <h2>Plant Predictions</h2>
 
         {loading ? (
@@ -85,7 +85,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
         ) : speciesList.length > 0 ? (
           <div>
             <KingdomList
-              speciesList={speciesList.slice(0, 3)}
+              speciesList={speciesList.slice(0, 4)}
               mediaSize={mediaSize}
             />
             <button

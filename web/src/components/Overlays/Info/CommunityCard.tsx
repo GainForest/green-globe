@@ -358,7 +358,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   if (loading) {
     return (
       <InfoBox mediaSize={mediaSize}>
-        <div style={{ margin: '16px 24px' }}>
+        <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
           <h1 style={{ marginBottom: '8px' }}>Community</h1>
           <p style={{ marginTop: '32px' }}>loading...</p>
         </div>
@@ -368,7 +368,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
 
   return (
     <InfoBox mediaSize={mediaSize}>
-      <div style={{ margin: '16px 24px' }}>
+      <div style={{ marginLeft: '16px', marginBottom: '8px'  }}>
         <h1 style={{ marginBottom: '8px' }}>Community</h1>
         <ToggleButton
           active={toggle}

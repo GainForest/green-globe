@@ -70,7 +70,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        description={'Who are we?'}
+        description={'AI Assistant'}
         buttonIcon={'chat'}
         position={2}
         active={infoOverlay == 5}

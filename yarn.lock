@@ -19877,6 +19877,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.400.0":
+  version: 0.400.0
+  resolution: "lucide-react@npm:0.400.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 06bdb0c0f4195a225cf4fe2b4b473837a14fda51ce4e24c6ab08e89160fa39315315bd20efe516b71e09192bc5eefff42693e8131ebae316df373aa935e5a5b4
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -24638,6 +24647,7 @@ __metadata:
     dayjs: ^1.11.7
     geojson2h3: ^1.2.0
     h3-js: ^4.1.0
+    lucide-react: ^0.400.0
     mapbox-gl: ^2.13.0
     papaparse: ^5.4.1
     react-data-table-component: ^7.6.2

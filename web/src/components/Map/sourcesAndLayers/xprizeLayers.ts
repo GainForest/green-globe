@@ -8,6 +8,8 @@ const hardcodedLayers: GeospatialLayer[] = [
     name: 'Global Tree Canopy Height',
     type: 'raster_tif',
     endpoint: `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/a2b0f58bcf25eecaca86b49ea36b08f9-1a4c9f052c2cbc5b0790782d8585e1fa/tiles/{z}/{x}/{y}`,
+    description:
+      'Tree canopy height, with a resolution of 1m per pixel. Estimates are based on a self-supervised model trained on Maxar imagery from 2017 to 2020, with model validation via use of aerial lidar maps.',
   },
   {
     name: 'Soil PH',

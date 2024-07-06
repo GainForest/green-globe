@@ -1,9 +1,13 @@
 import styled from 'styled-components'
 
-export const IconButton = ({ buttonIcon, active, onClick }) => {
+export const IconButton = ({ buttonIcon, active, onClick, dataTooltipId }) => {
   if (buttonIcon?.includes('/')) {
     return (
-      <IconButtonContainer active={active} onClick={onClick}>
+      <IconButtonContainer
+        active={active}
+        onClick={onClick}
+        data-tooltip-id={dataTooltipId}
+      >
         <img
           alt={'dendogram-icon'}
           style={{
@@ -19,7 +23,11 @@ export const IconButton = ({ buttonIcon, active, onClick }) => {
     )
   } else {
     return (
-      <IconButtonContainer active={active} onClick={onClick}>
+      <IconButtonContainer
+        active={active}
+        onClick={onClick}
+        data-tooltip-id={dataTooltipId}
+      >
         <span
           className="material-icons-round"
           style={{

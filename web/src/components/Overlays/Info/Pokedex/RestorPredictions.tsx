@@ -78,7 +78,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   return (
     <div>
       <div>
-        <h2>Plant Predictions</h2>
+        <h2>Predicted Plants</h2>
 
         {loading ? (
           <p>Loading...</p>
@@ -104,7 +104,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
             </button>
           </div>
         ) : (
-          <p>No species found</p>
+          <p>No species found.</p>
         )}
       </div>
       <Modal

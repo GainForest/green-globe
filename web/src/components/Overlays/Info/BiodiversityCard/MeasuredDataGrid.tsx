@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
@@ -29,30 +30,40 @@ export const MeasuredDataGrid = ({
     <div>
       <IconBar>
         <IconButton
+          buttonIcon={'search'}
+          active={displayedInsight == 'pokedex'}
+          onClick={() => setDisplayedInsight('pokedex')}
+          dataTooltipId={'biodiversity-pokedex-insight'}
+        />
+        <Tooltip id="biodiversity-pokedex-insight">All Observations</Tooltip>
+        <IconButton
+          buttonIcon={'/icons/dendogram_small'}
+          active={displayedInsight == 'dendogram'}
+          onClick={() => setDisplayedInsight('dendogram')}
+          dataTooltipId={'biodiversity-dendogram-insight'}
+        />
+        <Tooltip id="biodiversity-dendogram-insight">Species Dendogram</Tooltip>
+        <IconButton
           buttonIcon={'music_note'}
           active={displayedInsight == 'circadian'}
           onClick={() => setDisplayedInsight('circadian')}
+          dataTooltipId={'biodiversity-circadian-rhythm-insight'}
         />
+        <Tooltip id="biodiversity-circadian-rhythm-insight" place="top">
+          Circadian Rhythm
+        </Tooltip>
         <IconButton
           buttonIcon={'bug_report'}
           active={displayedInsight == 'insectspy'}
           onClick={() => setDisplayedInsight('insectspy')}
+          dataTooltipId={'biodiversity-insectspy-insight'}
         />
+        <Tooltip id="biodiversity-insectspy-insight">InsectSpy</Tooltip>
         {/* <IconButton
           buttonIcon={'park'}
           active={displayedInsight == 'trees'}
           onClick={() => setDisplayedInsight('trees')}
         /> */}
-        <IconButton
-          buttonIcon={'/icons/dendogram_small'}
-          active={displayedInsight == 'dendogram'}
-          onClick={() => setDisplayedInsight('dendogram')}
-        />
-        <IconButton
-          buttonIcon={'search'}
-          active={displayedInsight == 'pokedex'}
-          onClick={() => setDisplayedInsight('pokedex')}
-        />
       </IconBar>
       {displayedInsight == 'circadian' && <CircadianRythmn />}
       {displayedInsight == 'insectspy' && <InsectSpy />}

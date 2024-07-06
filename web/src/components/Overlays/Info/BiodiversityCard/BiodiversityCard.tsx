@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Info } from 'lucide-react'
+import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
@@ -133,12 +134,16 @@ export const BiodiversityCard = ({
             buttonIcon={'eco'}
             active={displayedInsight === 'plants'}
             onClick={() => setDisplayedInsight('plants')}
+            dataTooltipId={'biodiversity-plants-insight'}
           />
+          <Tooltip id="biodiversity-plants-insight">Plants</Tooltip>
           <IconButton
             buttonIcon={'pets'}
             active={displayedInsight === 'birds'}
             onClick={() => setDisplayedInsight('birds')}
+            dataTooltipId={'biodiversity-birds-insight'}
           />
+          <Tooltip id="biodiversity-birds-insight">Animals</Tooltip>
         </IconBar>
       )}
       <div style={{ marginLeft: '16px', marginBottom: '8px' }}>

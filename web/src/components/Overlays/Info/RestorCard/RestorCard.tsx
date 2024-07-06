@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { Info } from 'lucide-react'
+import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
@@ -7,8 +9,6 @@ import { InfoBox } from 'src/components/Overlays/Info/InfoBox'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
-
-import { Info } from 'lucide-react'
 
 import { CarbonChart } from './CarbonChart'
 import { TreeCoverChart } from './TreeCoverChart'
@@ -68,8 +68,15 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
   }, [activeProjectData])
   return (
     <InfoBox mediaSize={mediaSize}>
-      <div style={{ marginLeft: '16px', marginBottom: '8px' }}><h1>Remote Sensing Analysis</h1>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+      <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
+        <h1>Remote Sensing Analysis</h1>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '10px',
+          }}
+        >
           <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
           <p style={{ marginTop: '10px' }}>
             Remote Sensing Analysis queried through Restor.
@@ -82,22 +89,32 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
           active={displayedInsight == 'biodiversity'}
           onClick={() => setDisplayedInsight('biodiversity')}
         /> */}
+
+        <IconButton
+          buttonIcon={'forest'}
+          active={displayedInsight == 'treeCover'}
+          onClick={() => setDisplayedInsight('treeCover')}
+          dataTooltipId={'remote-sensing-cover-insight'}
+        />
+        <Tooltip id="remote-sensing-cover-insight">Land and Tree Cover</Tooltip>
+
         <IconButton
           buttonIcon={'co2'}
           active={displayedInsight == 'carbon'}
           onClick={() => setDisplayedInsight('carbon')}
+          dataTooltipId={'remote-sensing-carbon-insight'}
         />
+        <Tooltip id="remote-sensing-carbon-insight">Carbon</Tooltip>
 
         <IconButton
           buttonIcon={'water_drop'}
           active={displayedInsight == 'water'}
           onClick={() => setDisplayedInsight('water')}
+          dataTooltipId={'remote-sensing-evapotranspiration-insight'}
         />
-        <IconButton
-          buttonIcon={'forest'}
-          active={displayedInsight == 'treeCover'}
-          onClick={() => setDisplayedInsight('treeCover')}
-        />
+        <Tooltip id="remote-sensing-evapotranspiration-insight">
+          Evapotranspiration
+        </Tooltip>
       </IconBar>
       {displayedInsight == 'biodiversity' && (
         <RestorPredictions

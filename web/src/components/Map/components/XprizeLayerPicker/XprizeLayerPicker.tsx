@@ -20,6 +20,14 @@ const XprizeLayerPicker = ({ map }) => {
   const [showLayers, setShowLayers] = useState(true)
   const [visible, setVisible] = useState(false)
 
+  const groupedData = filteredLayers.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = []
+    }
+    acc[item.category].push(item)
+    return acc
+  }, {})
+
   useEffect(() => {
     if (layers) {
       const filteredLayers = layers.filter((item) =>
@@ -135,14 +143,29 @@ const XprizeLayerPicker = ({ map }) => {
           }}
         />
         <LayerListContainer>
-          {filteredLayers.map((layer) => (
-            <LayerItem
-              layer={layer}
-              handleToggle={handleToggle}
-              key={`${layer.name}-layer-toggle`}
-            />
+          {Object.entries(groupedData).map(([category]) => (
+            <div style={{ marginBottom: '12px' }} key={`${category}-category`}>
+              <div
+                style={{
+                  fontSize: '14px',
+                  textTransform: 'capitalize',
+                  fontWeight: 'bolder',
+                }}
+              >
+                {category}
+              </div>
+              {category == 'global' && <LayerItemHistoricalSatellite />}
+              {filteredLayers
+                .filter((layer) => layer.category == category)
+                .map((layer) => (
+                  <LayerItem
+                    layer={layer}
+                    handleToggle={handleToggle}
+                    key={`${layer.name}-layer-toggle`}
+                  />
+                ))}
+            </div>
           ))}
-          <LayerItemHistoricalSatellite />
         </LayerListContainer>
       </Container>
     )

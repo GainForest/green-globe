@@ -76,5 +76,6 @@ interface GeospatialLayer {
   name: string
   type: string
   endpoint: string
+  category: string
   description?: string
 }

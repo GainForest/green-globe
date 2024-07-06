@@ -430,26 +430,30 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                         </h3>
                         {d.Wallet?.CeloAccounts?.length > 0 && (
                           <div>
-                            <p style={{ margin: 0 }}>Celo: </p>
-                            {d.Wallet?.CeloAccounts?.map((address) => (
-                              <button
-                                key={address}
-                                style={{
-                                  background: 'transparent',
-                                  border: 'none',
-                                  cursor: 'pointer',
-                                  margin: 0,
-                                  color: 'gray',
-                                  fontSize: '16px',
-                                }}
-                                onClick={() => handleCopy(address)}
-                                data-tooltip-id="clipTip"
-                              >
-                                {maximized
-                                  ? address
-                                  : address.slice(0, 15) + '...'}
-                              </button>
-                            ))}
+                            <p style={{ margin: 0 }}>
+                              Celo:
+                              {d.Wallet?.CeloAccounts?.map((address) => (
+                                <button
+                                  key={address}
+                                  style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    margin: 0,
+                                    color: 'gray',
+                                    fontSize: '16px',
+                                  }}
+                                  onClick={() => handleCopy(address)}
+                                  data-tooltip-id="clipTip"
+                                >
+                                  {maximized
+                                    ? address
+                                    : `${address.slice(0, 8)}...${address.slice(
+                                        -4
+                                      )}`}
+                                </button>
+                              ))}
+                            </p>
                           </div>
                         )}
                         <Tooltip id="clipTip" delayShow={200} delayHide={500}>
@@ -480,7 +484,9 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                               >
                                 {maximized
                                   ? address
-                                  : address.slice(0, 15) + '...'}
+                                  : `${address.slice(0, 8)}...${address.slice(
+                                      -4
+                                    )}`}
                               </button>
                             ))}
                           </div>

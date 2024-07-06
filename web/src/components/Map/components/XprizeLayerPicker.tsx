@@ -11,72 +11,37 @@ import {
   addNamedSource,
   removeNamedSource,
 } from '../sourcesAndLayers/cogSourceAndLayers'
+import { layersData } from '../sourcesAndLayers/xprizeLayers'
 
 const XprizeLayerPicker = ({ map }) => {
+  const [layers, setLayers] = useState([])
+  const [searchTerm, setSearchTerm] = useState<string>()
+  const [filteredLayers, setFilteredLayers] = useState([])
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
   const satelliteEnabled = useSelector(
     (state: State) => state.satelliteHistory.enabled
   )
-  const [layers, setLayers] = useState([])
   const [showLayers, setShowLayers] = useState(true)
   const [visible, setVisible] = useState(false)
 
-  const layersData = [
-    {
-      name: 'Tree Crown Delineations',
-      type: 'geojson_line',
-      endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
-      description: 'Outlines the canopy extents of individual trees.',
-    },
-    {
-      name: 'Drone Flights',
-      type: 'tms_tile',
-      endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
-      description: 'High-resolution drone layer of the competition area.',
-    },
-    {
-      name: 'Tumbira Drone Flights',
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
-      description: 'High-resolution drone layer of the Tumbira region.',
-    },
-    {
-      name: 'PM 2.5 (MK Tau)',
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
-      description:
-        'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
-    },
-    {
-      name: 'PM 2.5 (MK Tau 95% Confidence Level)',
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_95Signif_rescaled.tif`,
-      description:
-        'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
-    },
-    {
-      name: 'Tumbira Regrowth (Year of regrowth)',
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_yod_w_rescaled_webmercator_cog.tif`,
-    },
-    {
-      name: 'NICFI Tiles',
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/nicfi/`,
-      tilePattern: 'L15-{x}E-{y}N.tif',
-      tileRange: {
-        x: { min: 677, max: 683 },
-        y: { min: 1004, max: 1008 },
-      },
-    },
-  ]
+  useEffect(() => {
+    if (layers) {
+      const filteredLayers = layers.filter((item) =>
+        searchTerm
+          ? item.name.toLowerCase().includes(searchTerm.toLowerCase())
+          : true
+      )
+      setFilteredLayers(filteredLayers)
+    }
+  }, [searchTerm, layers])
 
   useEffect(() => {
     setLayers(
       layersData
         .filter(
           (layer) =>
+            // Don't show nicfi tiles when you're offline
             !(
               layer.name == 'NICFI Tiles' &&
               !window.location.host.includes('localhost')
@@ -165,7 +130,20 @@ const XprizeLayerPicker = ({ map }) => {
         </Minimize>
         <LayerTitle>Explore the Geospatial Data</LayerTitle>
         <br />
-        {layers.map((layer, index) => (
+        <input
+          type="text"
+          placeholder="Search for layers..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '0.5rem',
+            marginBottom: '1rem',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+          }}
+        />
+        {filteredLayers.map((layer, index) => (
           <LayerItem key={index} onClick={() => handleToggle(layer.name)}>
             <LayerIcon
               className="material-icons-round"

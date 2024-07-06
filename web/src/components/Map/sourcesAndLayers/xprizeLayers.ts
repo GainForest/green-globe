@@ -70,9 +70,21 @@ const tumbiraDeforestationData = (): Layer[] => {
   const tumbiraTifArray = []
   for (let year = 1985; year <= 2023; year++) {
     tumbiraTifArray.push({
-      name: `Tumbira Regrowth ${year}`,
+      name: `Tumbira Deforestation ${year}`,
       type: 'raster_tif',
       endpoint: `${process.env.TITILER_ENDPOINT}/layers/tumbira_deforestation/tumbira_deforestation_yod_${year}.tif`,
+    })
+  }
+  return tumbiraTifArray
+}
+
+const tumbiraRegrowthData = (): Layer[] => {
+  const tumbiraTifArray = []
+  for (let year = 1985; year <= 2023; year++) {
+    tumbiraTifArray.push({
+      name: `Tumbira Regrowth ${year}`,
+      type: 'raster_tif',
+      endpoint: `${process.env.TITILER_ENDPOINT}/layers/tumbira_regrowth/tumbira_regrowth_yod_${year}.tif`,
     })
   }
   return tumbiraTifArray
@@ -81,4 +93,5 @@ const tumbiraDeforestationData = (): Layer[] => {
 export const layersData: Layer[] = [
   ...hardcodedLayers,
   ...tumbiraDeforestationData(),
+  ...tumbiraRegrowthData(),
 ]

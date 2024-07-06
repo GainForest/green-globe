@@ -40,6 +40,30 @@ const hardcodedLayers: Layer[] = [
       'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/b28ea9733a2e920a4f92001e8f2881f5-3cd18280a31996613d07da494f665322/tiles/{z}/{x}/{y}',
   },
   {
+    name: 'Global Tree Cover 2010',
+    type: 'raster_tif',
+    endpoint:
+      'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/1a5b8e6c753abc03057f6e9dac95f437-a09624926c5f0fa19c92d050c08e652a/tiles/{z}/{x}/{y}',
+  },
+  {
+    name: 'Global tree cover loss',
+    type: 'raster_tif',
+    endpoint:
+      'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/a1f192b54ff7e80ec7bd0e0f163a2331-05d989540683b8e9df2692ab37cb204e/tiles/{z}/{x}/{y}',
+  },
+  {
+    name: 'Global Tree Cover Potential',
+    type: 'raster_tif',
+    endpoint:
+      'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/61656cc4ddd685befa6e87be32c46ac8-b4b2e20bd42e43dcf431d358945ade33/tiles/{z}/{x}/{y}',
+  },
+  {
+    name: 'Annual mean precipitation',
+    type: 'raster_tif',
+    endpoint:
+      'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/06c576906eb5958ce74f8e75d490071b-480987b94fb03851e5c9d18d5c3c4043/tiles/{z}/{x}/{y}',
+  },
+  {
     name: 'Tree Crown Delineations',
     type: 'geojson_line',
     endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
@@ -55,7 +79,8 @@ const hardcodedLayers: Layer[] = [
     name: 'Tumbira SkySat April 14th',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
-    description: 'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
+    description:
+      'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
   },
   {
     name: 'PM 2.5 (MK Tau)',

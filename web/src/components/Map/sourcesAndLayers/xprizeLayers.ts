@@ -7,6 +7,39 @@ type Layer = {
 
 const hardcodedLayers: Layer[] = [
   {
+    name: 'Global Human Modification',
+    type: 'raster_tif',
+    endpoint: `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/4f0a229d75c380f0d7f8e5f13304ab42-c97ef1b26c39d1c0d1eb1d0d8869c288/tiles/{z}/{x}/{y}`,
+  },
+  {
+    name: 'Global Tree Canopy Height',
+    type: 'raster_tif',
+    endpoint: `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/a2b0f58bcf25eecaca86b49ea36b08f9-1a4c9f052c2cbc5b0790782d8585e1fa/tiles/{z}/{x}/{y}`,
+  },
+  {
+    name: 'Soil PH',
+    type: 'raster_tif',
+    endpoint: `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/002161bbe9484ced930786c91ce240cb-61cd82b619f9286bcb3eeed71449e978/tiles/{z}/{x}/{y}`,
+  },
+  {
+    name: 'Annual mean temperature',
+    type: 'raster_tif',
+    endpoint:
+      'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/b44bc50a4ca22ddd5b0e761bc8f10db2-9213a54b93af54401407faa0cc954759/tiles/{z}/{x}/{y}',
+  },
+  {
+    name: 'Population Density',
+    type: 'raster_tif',
+    endpoint:
+      'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/7a5e5a6cbaae392790f5dc919e875b16-397f63f41861b69276955d3efb29006a/tiles/{z}/{x}/{y}',
+  },
+  {
+    name: 'Total plant species',
+    type: 'raster_tif',
+    endpoint:
+      'https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/b28ea9733a2e920a4f92001e8f2881f5-3cd18280a31996613d07da494f665322/tiles/{z}/{x}/{y}',
+  },
+  {
     name: 'Tree Crown Delineations',
     type: 'geojson_line',
     endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,

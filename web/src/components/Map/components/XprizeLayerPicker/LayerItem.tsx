@@ -1,3 +1,4 @@
+import { Tooltip } from 'react-tooltip'
 import { useThemeUI } from 'theme-ui'
 
 import { LayerItemContainer, LayerIcon, LayerLabel } from './LayerItemStyles'

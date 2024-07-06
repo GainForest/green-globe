@@ -7,8 +7,8 @@ import { useDispatch } from 'react-redux'
 import Blog from 'src/components/Blog/Blog'
 import { ExitButton } from 'src/components/Map/components/ExitButton'
 import { setInfoOverlay, setMaximized } from 'src/reducers/overlaysReducer'
-
-export const LogbookCard = ({ mediaSize }) => {
+import { toKebabCase } from 'src/utils/toKebabCase'
+export const LogbookCard = ({ activeProjectData, mediaSize }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
@@ -29,20 +29,30 @@ export const LogbookCard = ({ mediaSize }) => {
     const getPosts = async () => {
       try {
         const response = await axios.get(
-          `${process.env.AWS_STORAGE}/logbook/posts/`
+          `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
+            activeProjectData?.project?.name
+          )}/`
         )
         const filenames = parseDirectoryListing(response.data)
+
         const postsData = await Promise.all(
           filenames.map(async (filename) => {
+            const projectName = toKebabCase(activeProjectData?.project?.name)
             const postResponse = await axios.get(
-              `${process.env.AWS_STORAGE}/logbook/posts/${filename}`
+              `${process.env.AWS_STORAGE}/logbook/${projectName}/${filename}`
             )
+
             let { content, metadata } = parseMarkdown(postResponse.data)
 
-            // update relative path
+            const basePath = `${process.env.AWS_STORAGE}/logbook/${projectName}`
             content = content.replace(
-              /\]\((?!http)(.+?)\)/g,
-              (match, p1) => `](${process.env.AWS_STORAGE}/logbook/media/${p1})`
+              /\[([^\]]+)\]\(([^)]+)\)/g,
+              (match, text, link) => {
+                if (!link.startsWith('http')) {
+                  link = `${basePath}/${link}`
+                }
+                return `[${text}](${link})`
+              }
             )
 
             return {
@@ -50,7 +60,9 @@ export const LogbookCard = ({ mediaSize }) => {
               content: content,
               categories: metadata.categories || ['Uncategorized'],
               date: formatDate(metadata.date) || '',
-              thumbnail: `${process.env.AWS_STORAGE}/logbook/media/${metadata.featured_image}` || `${process.env.AWS_STORAGE}/logbook/media/default.png`,
+              thumbnail: metadata.featured_image
+                ? `${basePath}/${metadata.featured_image}`
+                : `${process.env.AWS_STORAGE}/logbook/default.jpeg`,
             }
           })
         )
@@ -69,7 +81,9 @@ export const LogbookCard = ({ mediaSize }) => {
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, 'text/html')
     const links = doc.querySelectorAll('ul li a')
-    return Array.from(links).map((link) => link.textContent.trim())
+    return Array.from(links)
+      .map((link) => link.textContent.trim())
+      .filter((filename) => filename.endsWith('.md'))
   }
 
   const parseMarkdown = (markdown) => {

@@ -126,7 +126,7 @@ const Blog = ({ posts, loading }) => {
                 <PostDate>{post?.date}</PostDate>
               </PostHeader>
               <PostTitle>{post?.title}</PostTitle>
-              <BlogPost content={post?.content} />
+              <BlogPost markdownContent={post?.content} />
             </PostContainer>
           ))}
         </Content>
@@ -201,6 +201,8 @@ const LoadingMessage = styled.div`
 `
 
 const Content = styled.div`
+  display: flex;
+  flex-direction: column;
   max-height: calc(100vh - 52px);
   overflow-y: auto;
   padding: 0 16px;
@@ -209,6 +211,8 @@ const Content = styled.div`
 `
 
 const PostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 40px 0 80px 0;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 32px;
@@ -227,6 +231,7 @@ const PostTitle = styled.h1`
   float: left;
   display: inline;
   color: #2c2c2c;
+  margin-bottom: 32px;
 `
 
 const PostDate = styled.p`

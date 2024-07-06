@@ -1,21 +1,18 @@
-/* eslint-disable jsx-a11y/media-has-caption */
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
-
+import { IconButton } from 'src/components/Buttons/IconButton'
 import { InfoBox } from '../InfoBox'
+import { Info } from 'lucide-react'
 
-import { AnimalPhoto } from './AnimalPhoto'
+import { RestorPredictions } from '../Pokedex/RestorPredictions'
+import { PredictedBirds } from './PredictedBirds'
+import { MeasuredDataGrid } from './MeasuredDataGrid'
 import {
   fetchTreePlantings,
   processBiodiversityData,
 } from './biodiversityCardHelpers'
-import { MeasuredDataGrid } from './MeasuredDataGrid'
-import { PredictedBirds } from './PredictedBirds'
-import { RestorPredictions } from '../Pokedex/RestorPredictions'
-
-import { Info } from 'lucide-react'
-
 
 export const BiodiversityCard = ({
   activeProjectData,
@@ -25,9 +22,10 @@ export const BiodiversityCard = ({
 }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
-  const [toggle, setToggle] = useState<'Predicted' | 'Measured'>('Predicted')
+  const [toggle, setToggle] = useState<'Predictions' | 'Observations'>('Predictions')
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
+  const [displayedInsight, setDisplayedInsight] = useState('plants')
 
   useEffect(() => {
     if (!activeProjectData) {
@@ -41,7 +39,6 @@ export const BiodiversityCard = ({
           const biodiversity = json.map(processBiodiversityData)
           const treePlantingsEndpoint = `${project.name
             .toLowerCase()
-            //removes whitespace and underscores
             .split(/[\s_]+/)
             .join('-')}-all-tree-plantings.geojson`
 
@@ -77,8 +74,6 @@ export const BiodiversityCard = ({
     }
   }, [sortBy])
 
-  // checks for typos between instances
-
   const handleSpeciesClick = (species) => {
     if (selectedSpecies === species) {
       setSelectedSpecies(null)
@@ -96,30 +91,47 @@ export const BiodiversityCard = ({
         <ToggleButton
           active={toggle}
           setToggle={setToggle}
-          options={['Predicted', 'Measured']}
+          options={['Predictions', 'Observations']}
         />
-        {toggle === 'Predicted' ? (
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
-          <p style={{ marginTop: '10px' }}>
-            Species that have been predicted for this site using species distribution models.
-          </p>
-        </div>
+        {toggle === 'Predictions' ? (
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
+            <p style={{ marginTop: '10px' }}>
+              Species that have been predicted for this site using species distribution models.
+            </p>
+          </div>
         ) : (
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
-          <p style={{ marginTop: '10px' }}>
-            Species that have been detected and measured for this site using observation data.
-          </p>
-        </div>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
+            <p style={{ marginTop: '10px' }}>
+              Species that have been detected and measured for this site using observation data.
+            </p>
+          </div>
         )}
       </div>
-      <div style={{ marginLeft: '16px', marginBottom: '8px'  }}>
-        {toggle === 'Predicted' ? (
+      {toggle === 'Predictions' && (
+        <IconBar>
+          <IconButton
+            buttonIcon={'eco'}
+            active={displayedInsight === 'plants'}
+            onClick={() => setDisplayedInsight('plants')}
+          />
+          <IconButton
+            buttonIcon={'pets'}
+            active={displayedInsight === 'birds'}
+            onClick={() => setDisplayedInsight('birds')}
+          />
+        </IconBar>
+      )}
+      <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
+        {toggle === 'Predictions' ? (
           <div>
-            <RestorPredictions mediaSize={mediaSize} activeProjectData={activeProjectData}/>
-            <PredictedBirds mediaSize={mediaSize} />
-            <PredictedAnimalsGrid biodiversity={biodiversity} />
+            {displayedInsight === 'plants' && (
+              <RestorPredictions mediaSize={mediaSize} activeProjectData={activeProjectData} />
+            )}
+            {displayedInsight === 'birds' && (
+              <PredictedBirds mediaSize={mediaSize} />
+            )}
           </div>
         ) : (
           <div>
@@ -140,23 +152,11 @@ export const BiodiversityCard = ({
   )
 }
 
-const PredictedAnimalsGrid = ({ biodiversity }) => {
-  if (biodiversity.length) {
-    return (
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {biodiversity.map((biodiversityGroup, idx) => (
-          <div key={biodiversityGroup.title + idx} style={{ flex: '1 1 50%' }}>
-            <h3>Predicted {biodiversityGroup.title}</h3>
-            {biodiversityGroup.threatened.map((species) => (
-              <div key={species.scientificname}>
-                <AnimalPhoto species={species} taxa={biodiversityGroup.title} />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    )
-  } else {
-    return <></>
-  }
-}
+const IconBar = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  gap: 6px;
+  margin-left: 16px;
+  margin-bottom: 16px;
+`

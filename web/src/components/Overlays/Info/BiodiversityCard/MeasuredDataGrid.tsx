@@ -29,7 +29,7 @@ export const MeasuredDataGrid = ({
     <div>
       <IconBar>
         <IconButton
-          buttonIcon={'schedule'}
+          buttonIcon={'music_note'}
           active={displayedInsight == 'circadian'}
           onClick={() => setDisplayedInsight('circadian')}
         />

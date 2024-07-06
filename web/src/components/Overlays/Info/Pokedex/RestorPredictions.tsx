@@ -85,7 +85,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
         ) : speciesList.length > 0 ? (
           <div>
             <KingdomList
-              speciesList={speciesList.slice(0, 3)}
+              speciesList={speciesList.slice(0, 4)}
               mediaSize={mediaSize}
             />
             <button

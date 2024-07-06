@@ -12,6 +12,10 @@ import {
 } from './biodiversityCardHelpers'
 import { MeasuredDataGrid } from './MeasuredDataGrid'
 import { PredictedBirds } from './PredictedBirds'
+import { RestorPredictions } from '../Pokedex/RestorPredictions'
+
+import { Info } from 'lucide-react'
+
 
 export const BiodiversityCard = ({
   activeProjectData,
@@ -85,7 +89,7 @@ export const BiodiversityCard = ({
 
   return (
     <InfoBox mediaSize={mediaSize}>
-      <div style={{ margin: '16px 24px' }}>
+      <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
         <h1 style={{ wordWrap: 'normal', width: '80%', marginBottom: '8px' }}>
           Biodiversity
         </h1>
@@ -95,20 +99,25 @@ export const BiodiversityCard = ({
           options={['Predicted', 'Measured']}
         />
         {toggle === 'Predicted' ? (
-          <div></div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
+          <p style={{ marginTop: '10px' }}>
+            Species that have been predicted for this site using species distribution models.
+          </p>
+        </div>
         ) : (
-          <div>
-            <h2>Measured Biodiversity</h2>
-            <p>
-              Species that have been measured for all the sites in this
-              organization.
-            </p>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
+          <p style={{ marginTop: '10px' }}>
+            Species that have been detected and measured for this site using observation data.
+          </p>
+        </div>
         )}
       </div>
-      <div style={{ margin: '16px 24px' }}>
+      <div style={{ marginLeft: '16px', marginBottom: '8px'  }}>
         {toggle === 'Predicted' ? (
           <div>
+            <RestorPredictions mediaSize={mediaSize} activeProjectData={activeProjectData}/>
             <PredictedBirds mediaSize={mediaSize} />
             <PredictedAnimalsGrid biodiversity={biodiversity} />
           </div>

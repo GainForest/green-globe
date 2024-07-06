@@ -13,16 +13,16 @@ const hardcodedLayers: Layer[] = [
     description: 'Outlines the canopy extents of individual trees.',
   },
   {
-    name: 'Drone Flights',
+    name: 'Toca do Tatu Drone Flights',
     type: 'tms_tile',
     endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
     description: 'High-resolution drone layer of the competition area.',
   },
   {
-    name: 'Tumbira Drone Flights',
+    name: 'Tumbira SkySat April 14th',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
-    description: 'High-resolution drone layer of the Tumbira region.',
+    description: 'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
   },
   {
     name: 'PM 2.5 (MK Tau)',

@@ -75,8 +75,8 @@ export const WildlifeCard = ({
 
   return (
     <InfoBox mediaSize={mediaSize}>
-      <div style={{ margin: '16px 24px' }}>
-        <h1 style={{ marginBottom: '8px' }}>Images & Sounds</h1>
+      <div style={{ marginLeft: '16px', marginBottom: '8px'  }}>
+        <h1 style={{ marginBottom: '8px' }}>Images & Videos</h1>
         <ToggleButton
           active={toggle}
           setToggle={setToggle}

@@ -20,6 +20,7 @@ interface State {
   }
   project: {
     id: string
+    name: string
   }
   fullscreenOverlay: {
     active: boolean

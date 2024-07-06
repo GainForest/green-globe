@@ -229,7 +229,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         const result = await fetchProjectInfo(activeProjectId)
         setActiveProjectData(result)
         // can probably add in all the data
-        dispatch(setProjectName(result.name))
+        dispatch(setProjectName(result?.project?.name))
         const shapefiles = result?.project?.assets?.filter(
           (d) => d?.classification == 'Shapefiles'
         )

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const projectSlice = createSlice({
-  name: 'counter',
+  name: 'project',
   initialState: {
     id: undefined,
     name: undefined,

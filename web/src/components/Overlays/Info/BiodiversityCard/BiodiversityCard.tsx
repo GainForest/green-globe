@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react'
+
+import { Info } from 'lucide-react'
 import styled from 'styled-components'
 
-import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 import { IconButton } from 'src/components/Buttons/IconButton'
-import { InfoBox } from '../InfoBox'
-import { Info } from 'lucide-react'
+import { ToggleButton } from 'src/components/Map/components/ToggleButton'
 
+import { InfoBox } from '../InfoBox'
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
-import { PredictedBirds } from './PredictedBirds'
-import { MeasuredDataGrid } from './MeasuredDataGrid'
+
 import {
   fetchTreePlantings,
   processBiodiversityData,
 } from './biodiversityCardHelpers'
+import { MeasuredDataGrid } from './MeasuredDataGrid'
+import { PredictedBirds } from './PredictedBirds'
 
 export const BiodiversityCard = ({
   activeProjectData,
@@ -22,7 +24,9 @@ export const BiodiversityCard = ({
 }) => {
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
-  const [toggle, setToggle] = useState<'Predictions' | 'Observations'>('Predictions')
+  const [toggle, setToggle] = useState<'Predictions' | 'Observations'>(
+    'Predictions'
+  )
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
   const [displayedInsight, setDisplayedInsight] = useState('plants')
@@ -94,17 +98,31 @@ export const BiodiversityCard = ({
           options={['Predictions', 'Observations']}
         />
         {toggle === 'Predictions' ? (
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '10px',
+            }}
+          >
             <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
             <p style={{ marginTop: '10px' }}>
-              Species that have been predicted for this site using species distribution models.
+              Species that have been predicted for this site using species
+              distribution models.
             </p>
           </div>
         ) : (
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '10px',
+            }}
+          >
             <Info size={20} style={{ marginRight: '8px', color: '#669629' }} />
             <p style={{ marginTop: '10px' }}>
-              Species that have been detected and measured for this site using observation data.
+              Species that have been detected and measured for this site using
+              observation data.
             </p>
           </div>
         )}
@@ -127,7 +145,10 @@ export const BiodiversityCard = ({
         {toggle === 'Predictions' ? (
           <div>
             {displayedInsight === 'plants' && (
-              <RestorPredictions mediaSize={mediaSize} activeProjectData={activeProjectData} />
+              <RestorPredictions
+                mediaSize={mediaSize}
+                activeProjectData={activeProjectData}
+              />
             )}
             {displayedInsight === 'birds' && (
               <PredictedBirds mediaSize={mediaSize} />

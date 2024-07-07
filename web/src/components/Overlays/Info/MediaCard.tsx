@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react'
 
 import axios from 'axios'
 import * as cheerio from 'cheerio'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { breakpoints } from 'src/constants'
+import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
@@ -16,7 +17,6 @@ export const MediaCard = ({
   mediaSize,
   toggle,
   setToggle,
-  handleClick,
 }) => {
   const [photoEndpoints, setPhotoEndpoints] = useState([])
   const [videoEndpoints, setVideoEndpoints] = useState([])
@@ -97,7 +97,6 @@ export const MediaCard = ({
               <PhotoCard
                 key={photo}
                 photoEndpoint={photo}
-                handleClick={handleClick}
                 mediaSize={mediaSize}
                 maximize={maximized}
               />
@@ -113,7 +112,6 @@ export const MediaCard = ({
               <VideoCard
                 key={video}
                 videoEndpoint={video}
-                handleClick={handleClick}
                 mediaSize={mediaSize}
                 maximize={maximized}
               />
@@ -128,7 +126,9 @@ export const MediaCard = ({
   )
 }
 
-const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
+const PhotoCard = ({ photoEndpoint, mediaSize, maximize }) => {
+  const dispatch = useDispatch()
+
   return (
     <div className="community-photo">
       <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
@@ -140,7 +140,11 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
           cursor: 'pointer',
           width: '100%',
         }}
-        onClick={() => handleClick(photoEndpoint)}
+        onClick={() => {
+          dispatch(
+            setFullscreenOverlay({ source: photoEndpoint, active: true })
+          )
+        }}
       >
         <img
           alt="Wildlife camera still"
@@ -170,12 +174,7 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   )
 }
 
-export const VideoCard = ({
-  videoEndpoint,
-  handleClick,
-  mediaSize,
-  maximize,
-}) => {
+export const VideoCard = ({ videoEndpoint, mediaSize, maximize }) => {
   return (
     <div className="community-photo">
       <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
@@ -187,7 +186,6 @@ export const VideoCard = ({
           cursor: 'pointer',
           width: '100%',
         }}
-        onClick={() => handleClick(videoEndpoint)}
       >
         <video
           src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}

@@ -48,7 +48,6 @@ export const InfoOverlay = ({
         <ImageOverlay
           toggle={toggle}
           endpoint={source}
-          handleClick={handleClick}
           fileType={type}
           contentProps={props}
           ContentComponent={component}
@@ -148,7 +147,6 @@ export const InfoOverlay = ({
         <MediaCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
-          handleClick={handleClick}
           toggle={toggle}
           setToggle={setToggle}
         />
@@ -187,17 +185,17 @@ export const InfoOverlay = ({
 export const ImageOverlay = ({
   toggle,
   endpoint,
-  handleClick,
   fileType,
   ContentComponent,
   contentProps,
 }) => {
+  const dispatch = useDispatch()
   if (fileType === 'component' && ContentComponent) {
     if (ContentComponent == 'KingdomList') {
       return (
         <div className="overlay" style={{ zIndex: 4 }}>
           <button
-            onClick={handleClick}
+            onClick={() => dispatch(toggleFullscreenOverlay())}
             style={{
               position: 'absolute',
               top: '10px',
@@ -226,7 +224,11 @@ export const ImageOverlay = ({
     }
   }
   return (
-    <div className="overlay" onClick={handleClick} style={{ zIndex: 4 }}>
+    <div
+      className="overlay"
+      style={{ zIndex: 4 }}
+      onClick={() => dispatch(toggleFullscreenOverlay())}
+    >
       {fileType !== 'video' && toggle == 'Photos' ? (
         <img
           src={`${process.env.AWS_STORAGE}/${endpoint}`}

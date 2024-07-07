@@ -149,7 +149,6 @@ const ProjectNameCountryAndArea = ({ activeProjectData, mediaSize, theme }) => (
       <ProjectLogo project={activeProjectData?.project} theme={theme} />
       <h1
         style={{
-          marginTop: '32px',
           fontSize:
             mediaSize >= breakpoints.xl
               ? 24

@@ -75,7 +75,7 @@ export const useCSVToData = (csvPath) => {
 }
 
 const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
-  const { data, loading, error } = useCSVToData(csvPath)
+  const { data, error } = useCSVToData(csvPath)
 
   const [size, setSize] = useState(0)
   const containerRef = useRef(null)
@@ -160,6 +160,10 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
     })
   }, [innerRadius, maxRadius])
 
+  if (maxValue == -Infinity || error) {
+    // pretty bad but !data.length doesn't work
+    return <p>No soundscape detected in this project.</p>
+  }
   return (
     <div
       ref={containerRef}

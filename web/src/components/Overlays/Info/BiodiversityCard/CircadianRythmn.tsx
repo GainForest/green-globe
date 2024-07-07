@@ -1,60 +1,55 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
+import axios from 'axios'
 import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 
 import { AudioPlayer } from 'src/components/Buttons/AudioPlayer'
-import CircularBarChart from 'src/components/CircularBarChart'
-import CircularLineChart from 'src/components/CircularLineChart'
-import CircularMultiLineChartWithCSVLoader from 'src/components/CircularMultiLineChart'
+import { toKebabCase } from 'src/utils/toKebabCase'
+
+import {
+  MaximumCircadianRhythmChart,
+  MedianCircadianRhythmChart,
+} from './CircadianRythmnChart'
 
 export const CircadianRythmn = () => {
-  const sampleMultiData = useMemo(() => {
-    return Array.from({ length: 100 }, (_, i) => ({
-      time: (i / 100) * 24,
-      freq1: Math.random() * 100,
-      freq2: Math.random() * 1000,
-      freq3: Math.random() * 5000,
-      hi: Math.random() * 10000,
-      freq5: Math.random() * 2000,
-    }))
-  }, [])
+  const projectName = useSelector((state: State) => state.project.name)
+  const [kebabCasedProjectName, setKebabCasedProjectName] = useState<string>()
 
-  return (
-    <>
-      <h2>Soundscape</h2>
-      <div>
-        <p> Measured soundscape of different frequencies.</p>
-      </div>
-      <div>
-        <div
-          style={{
-            width: '100%',
-            aspectRatio: '1 / 1',
-            maxWidth: '600px',
-            margin: 'auto',
-          }}
-        >
-          <CircularBarChart
-            csvPath={`${process.env.AWS_STORAGE}/pmn/max_results_final.csv`}
-          />
+  useEffect(() => {
+    if (projectName) {
+      const kebabCasedProjectName = toKebabCase(projectName)
+      setKebabCasedProjectName('hoho')
+    }
+  }, [projectName])
+
+  if (!kebabCasedProjectName) {
+    return (
+      <CircadianContainer>Searching for the soundscape...</CircadianContainer>
+    )
+  } else {
+    return (
+      <>
+        <div style={{ marginBottom: '16px' }}>
+          <h2>Soundscape</h2>
+          <p> Measured soundscape of different frequencies.</p>
         </div>
-        <div
-          style={{
-            width: '100%',
-            aspectRatio: '1 / 1',
-            maxWidth: '600px',
-            margin: 'auto',
-          }}
-        >
-          <CircularMultiLineChartWithCSVLoader
-            csvPath={`${process.env.AWS_STORAGE}/pmn/median_results_final.csv`}
-          />
-        </div>
+        <MaximumCircadianRhythmChart
+          csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final.csv`}
+        />
+        <MedianCircadianRhythmChart
+          csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/median_results_final.csv`}
+        />
         <AudioPlayer
           label="Sample"
           src={`${process.env.AWS_STORAGE}/audio/013-089-Tufted-Tit-Tyrant.mp3`}
         />
-      </div>
-    </>
-  )
+      </>
+    )
+  }
 }
+
+const CircadianContainer = styled.div`
+  margin: 16px 0px;
+`

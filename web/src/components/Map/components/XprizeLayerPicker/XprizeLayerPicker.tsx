@@ -258,6 +258,7 @@ const Minimize = styled.button`
 
 const LayerTitle = styled.div`
   height: 10px;
+  font-weight: bolder;
 `
 
 export default XprizeLayerPicker

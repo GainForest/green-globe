@@ -160,7 +160,7 @@ const CircularBarChart = ({ csvPath, maxFixedValue = null }) => {
     })
   }, [innerRadius, maxRadius])
 
-  if (maxValue == -Infinity || error) {
+  if (error) {
     // pretty bad but !data.length doesn't work
     return <p>No soundscape detected in this project.</p>
   }

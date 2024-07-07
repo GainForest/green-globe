@@ -34,7 +34,6 @@ import Button from './components/Button'
 import { LandCoverLegend } from './components/LandCoverLegend'
 // import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
-// import { TimeSlider } from './components/TimeSlider'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
 import { fetchEDNALocations, fetchMeasuredTrees } from './mapfetch'
@@ -49,11 +48,7 @@ import {
 } from './mapfetch'
 // import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
-import {
-  addAllSourcesAndLayers,
-  addClickableMarkers,
-  getTreeInformation,
-} from './maputils'
+import { addAllSourcesAndLayers, getTreeInformation } from './maputils'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
@@ -384,14 +379,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           Project Info
         </Button>
       )}
-      {/* <ProjectSeriesPickerOverlay
-        map={map}
-        markers={markers}
-        setDisplayOverlay={setDisplayOverlay}
-        setActiveProject={setActiveProjectId}
-        projectPolygons={gainforestCenterpoints}
-        setMarkers={setMarkers}
-      /> */}
       {landCover && <LandCoverLegend mediaSize={mediaSize} />}
       <XprizeLayerPicker map={map} />
       {/* <LayerPickerOverlay

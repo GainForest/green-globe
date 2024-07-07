@@ -39,7 +39,7 @@ export const LayerItemHistoricalSatellite = () => {
         htmlFor={'satellite history'}
         isActive={satelliteEnabled}
       >
-        Historical Monthly Satellite
+        Historical Satellite
       </LayerLabel>
       <Tooltip id={`info-button-clipTip-satellite-history`} delayShow={10}>
         Historical monthly satellite data. (Tropical regions only)

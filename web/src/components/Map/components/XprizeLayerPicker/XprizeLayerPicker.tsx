@@ -143,6 +143,19 @@ const XprizeLayerPicker = ({ map }) => {
           }}
         />
         <LayerListContainer>
+          <div style={{ marginBottom: '12px' }}>
+            <div
+              key={'monthly-satellite-cateogry'}
+              style={{
+                fontSize: '14px',
+                textTransform: 'capitalize',
+                fontWeight: 'bolder',
+              }}
+            >
+              Monthly Satellite Layer
+            </div>
+            {<LayerItemHistoricalSatellite />}
+          </div>
           {Object.entries(groupedData).map(([category]) => (
             <div style={{ marginBottom: '12px' }} key={`${category}-category`}>
               <div
@@ -154,7 +167,6 @@ const XprizeLayerPicker = ({ map }) => {
               >
                 {category}
               </div>
-              {category == 'global' && <LayerItemHistoricalSatellite />}
               {filteredLayers
                 .filter((layer) => layer.category == category)
                 .map((layer) => (

@@ -11,7 +11,7 @@ import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
-export const WildlifeCard = ({
+export const MediaCard = ({
   activeProjectData,
   mediaSize,
   toggle,
@@ -35,7 +35,7 @@ export const WildlifeCard = ({
         const $ = cheerio.load(res.data)
 
         $('a').each((index, element) => {
-          const href = $(element).attr('href').toLowerCase()
+          const href = $(element).attr('href')
           if (
             href.includes('.jpg') ||
             href.includes('.jpeg') ||
@@ -75,7 +75,7 @@ export const WildlifeCard = ({
 
   return (
     <InfoBox mediaSize={mediaSize}>
-      <div style={{ marginLeft: '16px', marginBottom: '8px'  }}>
+      <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
         <h1 style={{ marginBottom: '8px' }}>Images & Videos</h1>
         <ToggleButton
           active={toggle}

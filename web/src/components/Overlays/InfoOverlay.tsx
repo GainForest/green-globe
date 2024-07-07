@@ -14,11 +14,11 @@ import { CommunityCard } from './Info/CommunityCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
 import { LogbookCard } from './Info/LogbookCard'
+import { MediaCard } from './Info/MediaCard'
 import { ActiveSpeciesCard } from './Info/Pokedex/ActiveSpeciesCard'
 import { KingdomList } from './Info/Pokedex/KingdomList'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
 import { RestorCard } from './Info/RestorCard/RestorCard'
-import { WildlifeCard } from './Info/WildlifeCard'
 
 export const InfoOverlay = ({
   activeProjectData,
@@ -145,7 +145,7 @@ export const InfoOverlay = ({
         />
       )}
       {infoOverlay == 3 && (
-        <WildlifeCard
+        <MediaCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           handleClick={handleClick}

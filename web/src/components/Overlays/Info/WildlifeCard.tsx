@@ -57,7 +57,7 @@ export const WildlifeCard = ({
           (d) =>
             (d.classification.includes('Camera Traps') ||
               d.classification.includes('Community Photos')) &&
-            d.awsCID.includes('.jpg')
+            (d.awsCID.includes('.jpg') || d.awsCID.includes('.JPG'))
         )
         photos = photoLinks?.map((photo) => photo.awsCID)
         const videoLinks = activeProjectData?.project?.assets?.filter(

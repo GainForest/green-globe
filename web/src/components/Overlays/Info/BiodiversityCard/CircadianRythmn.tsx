@@ -1,7 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import axios from 'axios'
-import { SOUNDSCAPE_PATHS } from 'config/soundscape_paths.js'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
@@ -20,7 +18,7 @@ export const CircadianRythmn = () => {
   useEffect(() => {
     if (projectName) {
       const kebabCasedProjectName = toKebabCase(projectName)
-      setKebabCasedProjectName('hoho')
+      setKebabCasedProjectName(kebabCasedProjectName)
     }
   }, [projectName])
 

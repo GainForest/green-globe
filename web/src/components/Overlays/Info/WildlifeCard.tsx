@@ -35,7 +35,7 @@ export const WildlifeCard = ({
         const $ = cheerio.load(res.data)
 
         $('a').each((index, element) => {
-          const href = $(element).attr('href')
+          const href = $(element).attr('href').toLowerCase()
           if (
             href.includes('.jpg') ||
             href.includes('.jpeg') ||

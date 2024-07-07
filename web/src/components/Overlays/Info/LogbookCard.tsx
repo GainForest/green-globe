@@ -48,7 +48,8 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
             content = content.replace(
               /\[([^\]]+)\]\(([^)]+)\)/g,
               (match, text, link) => {
-                if (!link.startsWith('http')) {
+                console.log('link:', link)
+                if (!link.startsWith('https')) {
                   link = `${basePath}/${link}`
                 }
                 return `[${text}](${link})`

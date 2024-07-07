@@ -32,10 +32,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
-      let formattedName = toKebabCase(siteName)
-      if (formattedName == 'inhaãBé') {
-        formattedName = 'inhaa-be'
-      }
+      const formattedName = toKebabCase(siteName)
       const baseURL = `${process.env.AWS_STORAGE}/restor/chartData/${formattedName}`
       const jsonFiles = {
         carbon: 'carbon.json',

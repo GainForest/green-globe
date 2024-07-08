@@ -11,21 +11,25 @@ export const Legend = () => {
     (state: State) => state.overlays.legendName
   )
 
-  return (
-    <div
-      style={{
-        width: '400px',
-        position: 'absolute',
-        height: '200px',
-        bottom: '16px',
-        backgroundColor: theme.colors.background as string,
-        left: '20px',
-      }}
-    >
-      <h3>Legend</h3>
-      <DynamicLegend legendName={legendName} />
-    </div>
-  )
+  if (legendName) {
+    return (
+      <div
+        style={{
+          width: '400px',
+          position: 'absolute',
+          height: '200px',
+          bottom: '16px',
+          backgroundColor: theme.colors.background as string,
+          left: '20px',
+        }}
+      >
+        <h3>Legend</h3>
+        <DynamicLegend legendName={legendName} />
+      </div>
+    )
+  } else {
+    return null
+  }
 }
 
 const DynamicLegend = ({ legendName }) => {

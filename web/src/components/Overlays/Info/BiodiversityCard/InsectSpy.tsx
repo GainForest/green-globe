@@ -1,67 +1,163 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage';
+import { toKebabCase } from 'src/utils/toKebabCase';
+import { FileText } from 'lucide-react';
 
-import * as d3 from 'd3'
-import { useSelector } from 'react-redux'
-import styled from 'styled-components'
-
-import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage'
-import { toKebabCase } from 'src/utils/toKebabCase'
-
-// These are taken from the XPRIZE observations table
 interface Individual {
-  'Filename/Run': string //imageUrl
-  class: string
+  'Filename/Run': string;
+  class: string;
 }
+
+interface PdfStatus {
+  filename: string;
+  exists: boolean;
+}
+
+const PDF_FILES = [
+  'biomass_plot.pdf',
+  'embeddings_plot.pdf',
+  'order_composition_plot.pdf',
+  'rarefaction_plot.pdf',
+  'size_distribution_plot.pdf',
+  'spatial_plot.pdf',
+  'temporal_plot.pdf'
+];
 
 export const InsectSpy = () => {
-  const [individuals, setIndividuals] = useState<Individual[]>([])
+  const [individuals, setIndividuals] = useState<Individual[]>([]);
+  const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([]);
   const kebabCasedProjectName = useSelector((state: State) =>
     toKebabCase(state.project.name)
-  )
+  );
 
-  // Fetch the finals_new.csv, and display each individual in the insect spy.
   useEffect(() => {
     if (kebabCasedProjectName) {
+      // Fetch individuals data
       d3.csv(
         `${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/individuals.csv`
-      ).then(setIndividuals)
+      ).then(setIndividuals);
+
+      // Check each PDF file
+      Promise.all(PDF_FILES.map(file =>
+        fetch(`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${file}`)
+          .then(response => ({ filename: file, exists: response.ok }))
+          .catch(() => ({ filename: file, exists: false }))
+      )).then(setPdfStatuses);
     }
-  }, [kebabCasedProjectName])
+  }, [kebabCasedProjectName]);
 
   if (!kebabCasedProjectName) {
-    return <Loading />
+    return <Loading />;
   }
-  if (individuals.length) {
-    return (
-      <div>
-        <h2> Insect trap </h2>
-        <p> Insects detected by our insect trap. </p>
-        {individuals.map((d) => (
-          <div key={d.class}>
-            <HexagonalImage
-              key={d.class}
-              alt={d.class}
-              src={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${d['Filename/Run']}`}
-            />
-            {d.class}
-          </div>
-        ))}
-      </div>
-    )
-  } else {
-    return (
-      <InsectContainer>
-        <h2> Insect Trap </h2>
-        An insect trap has not been set up in this region.
-      </InsectContainer>
-    )
-  }
-}
+
+  const availablePdfs = pdfStatuses.filter(status => status.exists);
+
+  return (
+    <InsectContainer>
+      <h2>Insect trap</h2>
+      {individuals.length ? (
+        <>
+          <p>Insects detected by our insect trap.</p>
+          {individuals.map((d) => (
+            <div key={d['Filename/Run']}>
+              <HexagonalImage
+                alt={d.class}
+                src={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${d['Filename/Run']}`}
+              />
+              {d.class}
+            </div>
+          ))}
+        </>
+      ) : (
+        <p>An insect trap has not been set up in this region.</p>
+      )}
+
+      <h2>Analysis Plots</h2>
+      {availablePdfs.length > 0 ? (
+        <PdfContainer>
+          {availablePdfs.map(({ filename }) => (
+            <PdfItem key={filename}>
+              <iframe
+                src={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${filename}`}
+                width="100%"
+                height="500px"
+                title={filename}
+              />
+              <a
+                href={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${filename}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open {filename.replace('_', ' ').replace('.pdf', '')}
+              </a>
+            </PdfItem>
+          ))}
+        </PdfContainer>
+      ) : (
+        <PlaceholderContainer>
+          <FileText size={48} />
+          <p>No analysis plots are available yet. Check back later!</p>
+        </PlaceholderContainer>
+      )}
+    </InsectContainer>
+  );
+};
 
 const Loading = () => (
-  <InsectContainer>Searching for insects...</InsectContainer>
-)
+  <InsectContainer>Loading insect data and analysis plots...</InsectContainer>
+);
 
 const InsectContainer = styled.div`
   margin: 16px 0px;
-`
+`;
+
+const PdfContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+`;
+
+const PdfItem = styled.div`
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+
+  iframe {
+    border: none;
+    margin-bottom: 8px;
+  }
+
+  a {
+    color: #0066cc;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const PlaceholderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  text-align: center;
+
+  svg {
+    margin-bottom: 16px;
+    color: #999;
+  }
+
+  p {
+    color: #666;
+    font-size: 18px;
+  }
+`;

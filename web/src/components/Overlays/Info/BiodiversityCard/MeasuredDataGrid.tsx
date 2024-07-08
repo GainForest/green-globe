@@ -24,7 +24,7 @@ export const MeasuredDataGrid = ({
 }) => {
   const [displayedInsight, setDisplayedInsight] = useState<
     'circadian' | 'trees' | 'insectspy' | 'pokedex' | 'dendogram'
-  >('circadian')
+  >('pokedex')
 
   return (
     <div>

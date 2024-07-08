@@ -41,8 +41,8 @@ export const BiodiversityChart = ({ chartData }) => {
     indexAxis: 'y',
     layout: {
       padding: {
-        top: 0, // Reduces the space at the top of the chart
-        bottom: 10, // Reduces the space at the bottom
+        top: 0,
+        bottom: 10,
         left: 0,
         right: 0,
       },
@@ -131,7 +131,6 @@ export const BarChartContainer = styled.div`
 
 export const Container = styled.div`
   margin-top: 24px;
-  padding: 20px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;

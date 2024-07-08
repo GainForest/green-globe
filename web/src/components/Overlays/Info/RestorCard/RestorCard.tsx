@@ -126,6 +126,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         <TreeCoverChart
           treeData={allData?.treeCover}
           ecosystemsData={allData?.ecosystems}
+          scientificMonitoring={allData?.scientificMonitoring}
         />
       )}
     </InfoBox>

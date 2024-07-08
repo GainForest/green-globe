@@ -15,24 +15,23 @@ interface Individual {
 
 export const InsectSpy = () => {
   const [individuals, setIndividuals] = useState<Individual[]>([])
-  const projectName = useSelector((state: State) => state.project.name)
+  const kebabCasedProjectName = useSelector((state: State) =>
+    toKebabCase(state.project.name)
+  )
 
   // Fetch the finals_new.csv, and display each individual in the insect spy.
   useEffect(() => {
-    // Check if the project exists
-    if (projectName) {
-      const kebabCasedProjectName = toKebabCase(projectName)
+    if (kebabCasedProjectName) {
       d3.csv(
         `${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/individuals.csv`
       ).then(setIndividuals)
     }
-  }, [projectName])
+  }, [kebabCasedProjectName])
 
-  if (!projectName) {
+  if (!kebabCasedProjectName) {
     return <Loading />
   }
   if (individuals.length) {
-    const kebabCasedProjectName = toKebabCase(projectName)
     return (
       <div>
         <h2> Insect trap </h2>

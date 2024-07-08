@@ -13,7 +13,7 @@ export const Dendogram = () => {
 
   useEffect(() => {
     const img = new Image()
-    img.src = `${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}dendogram.svg`
+    img.src = `${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}-dendogram.svg`
     img.onload = () => setImageExists(true)
     img.onerror = () => setImageExists(false)
   }, [kebabCasedProjectName])

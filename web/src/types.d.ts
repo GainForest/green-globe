@@ -82,4 +82,5 @@ interface GeospatialLayer {
   endpoint: string
   category: string
   description?: string
+  legend?: LegendName
 }

@@ -1,5 +1,7 @@
 import mapboxgl from 'mapbox-gl'
+import { useDispatch } from 'react-redux'
 
+import { setLegendName } from 'src/reducers/overlaysReducer'
 import { GeospatialLayer } from 'src/types'
 
 import { addChoroplethSourceAndLayers } from './choropleth'
@@ -8,6 +10,8 @@ import { addRasterSourceAndLayer } from './raster'
 import { addTMSTileSourceAndLayer } from './tmsTile'
 
 export const addNamedSource = (map: mapboxgl.Map, layer: GeospatialLayer) => {
+  const dispatch = useDispatch()
+
   if (!map.getSource(layer.name) && layer.type == 'geojson_line') {
     addGeojsonLineSourceAndLayer(map, layer)
   }
@@ -22,14 +26,22 @@ export const addNamedSource = (map: mapboxgl.Map, layer: GeospatialLayer) => {
   }
   map.moveLayer(layer.name, 'highlightedSiteOutline')
   map.moveLayer('highlightedSiteOutline', 'gainforestMarkerLayer')
+  if (layer.legend) {
+    dispatch(setLegendName(layer.legend))
+  }
 }
 
 export const removeNamedSource = (
   map: mapboxgl.Map,
-  layer: { name: string }
+  layer: GeospatialLayer
 ) => {
+  const dispatch = useDispatch()
+
   if (map.getSource(layer.name)) {
     map.removeLayer(layer.name)
     map.removeSource(layer.name)
+  }
+  if (layer.legend) {
+    dispatch(setLegendName(undefined))
   }
 }

@@ -8,6 +8,7 @@ const hardcodedLayers: GeospatialLayer[] = [
     description:
       'Choropleth layer detailing the level of species richness for each grid.',
     category: 'tumbira',
+    legend: 'species_richness',
   },
   {
     name: 'Global Tree Canopy Height',

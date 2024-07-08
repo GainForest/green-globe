@@ -36,8 +36,8 @@ export const overlaysSlice = createSlice({
     hideProfile: (state) => {
       state.profile = false
     },
-    legendName: (state, action) => {
-      state.legend = action.payload
+    setLegendName: (state, action) => {
+      state.legendName = action.payload
     },
   },
 })
@@ -52,6 +52,7 @@ export const {
   hideInfoOverlay,
   showProfile,
   hideProfile,
+  setLegendName,
 } = overlaysSlice.actions
 
 export default overlaysSlice.reducer

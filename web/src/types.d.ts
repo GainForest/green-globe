@@ -3,7 +3,6 @@ import { LegendName } from './components/Map/legends/legendMap'
 interface State {
   satelliteHistory: {
     enabled: boolean
-    displayedDate: any //dayjs.Date
   }
   shop: {
     basket: number

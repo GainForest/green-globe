@@ -6,6 +6,7 @@ import { Tooltip } from 'react-tooltip'
 import { useThemeUI } from 'theme-ui'
 
 import { setDisplaySatelliteHistory } from 'src/reducers/satelliteHistoryReducer'
+import { State } from 'src/types'
 
 import { LayerIcon, LayerItemContainer, LayerLabel } from './LayerItemStyles'
 

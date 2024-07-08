@@ -23,7 +23,9 @@ export const TimeSlider = ({ map, mediaSize }) => {
 
   useEffect(() => {
     if (map && !isSatelliteHistoryEnabled) {
-      map.setLayoutProperty(`planetLayer${currentDate}`, 'visibility', 'none')
+      if (map.getLayer(`planetLayer${currentDate}`)) {
+        map.setLayoutProperty(`planetLayer${currentDate}`, 'visibility', 'none')
+      }
     }
   }, [isSatelliteHistoryEnabled, currentDate, map])
 

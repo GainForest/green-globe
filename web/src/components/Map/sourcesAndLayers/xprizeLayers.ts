@@ -287,6 +287,30 @@ const hardcodedLayers: GeospatialLayer[] = [
   //   endpoint: `${process.env.TITILER_ENDPOINT}/layers/global_ecological_layers/CHELSA_BIO_Annual_Precipitation.tif`,
   // },
   {
+    name: 'Spectral Diversity (Combined Sum)',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/spectral_diversity/CV_combined_sum_rescaled.tif`,
+    description:
+      'Mean Coefficient of variation across bands. The CV was calculated by extracting for each band the mean and standard deviation of reflectance on a circular moving kernel of 10 m radius. Areas with higher values have higher spectral variability.',
+    category: 'tumbira',
+  },
+  {
+    name: 'Spectral Diversity (Mean 10m Avg)',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/spectral_diversity/CV_planet_Mean10m_avg_rescaled.tif`,
+    description:
+      'Mean Coefficient of variation across bands. The CV was calculated by extracting for each band the mean and standard deviation of reflectance on a circular moving kernel of 10 m radius. Areas with higher values have higher spectral variability.',
+    category: 'tumbira',
+  },
+  {
+    name: 'Spectral Diversity (p12 Sum 10m)',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/spectral_diversity/CV_p12_sum10m-msk_mercator_rescaled.tif`,
+    description:
+      'Mean Coefficient of variation across bands. The CV was calculated by extracting for each band the mean and standard deviation of reflectance on a circular moving kernel of 10 m radius. Areas with higher values have higher spectral variability.',
+    category: 'tumbira',
+  },
+  {
     name: 'NICFI Tiles',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/layers/nicfi/`,

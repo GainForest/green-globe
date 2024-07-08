@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
 import Modal from 'react-modal'
+import { useSelector } from 'react-redux'
+
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { KingdomList } from './KingdomList'
 
@@ -9,8 +12,10 @@ export const Pokedex = ({ mediaSize }) => {
   const [allKingdoms, setAllKingdoms] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
-  const [loading, setLoading] = useState(true)
   const [modalWidth, setModalWidth] = useState(0)
+  const kebabCasedProjectName = useSelector((state: State) =>
+    toKebabCase(state.project.name)
+  )
 
   Modal.setAppElement('#redwood-app')
 
@@ -28,7 +33,7 @@ export const Pokedex = ({ mediaSize }) => {
   useEffect(() => {
     const getCsv = async () => {
       const data = await d3.csv(
-        `${process.env.AWS_STORAGE}/observations/semifinals.csv`
+        `${process.env.AWS_STORAGE}/observations/${kebabCasedProjectName}.csv`
       )
       const kingdoms = {}
 
@@ -50,10 +55,9 @@ export const Pokedex = ({ mediaSize }) => {
         data,
       }))
       setAllKingdoms(kingdomsArray)
-      setLoading(false)
     }
     getCsv()
-  }, [])
+  }, [kebabCasedProjectName])
 
   const customStyles = {
     content: {
@@ -75,14 +79,19 @@ export const Pokedex = ({ mediaSize }) => {
     },
   }
 
+  if (!kebabCasedProjectName) {
+    return <p>Loading....</p>
+  }
   return (
     <>
       <div>
         <h2>All observations</h2>
-        <p> All species recorded in this project.</p>
-        {loading ? (
-          <p>Loading...</p>
-        ) : allKingdoms.length > 0 ? (
+        <p style={{ fontSize: '14px' }}>
+          All species recorded in this project. Species are observed using
+          various technologies, such as from eDNA samplings, audiomoth
+          recordings, or insect photo traps.
+        </p>
+        {allKingdoms.length > 0 ? (
           <div>
             {allKingdoms.map((kingdom) => (
               <div key={kingdom.name}>
@@ -111,7 +120,9 @@ export const Pokedex = ({ mediaSize }) => {
             ))}
           </div>
         ) : (
-          <p>No species found.</p>
+          <p style={{ textAlign: 'center', marginTop: '16px' }}>
+            No species found.
+          </p>
         )}
       </div>
       <Modal

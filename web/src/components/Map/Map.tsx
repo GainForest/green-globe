@@ -32,6 +32,7 @@ import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
 import Button from './components/Button'
 import { LandCoverLegend } from './components/LandCoverLegend'
+import { Legend as LayerLegend } from './components/Legend'
 // import { LayerPickerOverlay } from './components/LayerPickerOverlay'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
@@ -392,6 +393,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         setLandCover={setLandCover}
       /> */}
       <TimeSlider map={map} mediaSize={mediaSize} />
+      <LayerLegend />
     </>
   )
 }

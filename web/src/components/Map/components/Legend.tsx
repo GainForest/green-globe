@@ -1,42 +1,20 @@
-import { InfoBox } from '../../Overlays/Info/InfoBox'
+import { useThemeUI } from 'theme-ui'
 
-import ThemedSkeleton from './Skeleton'
+export const Legend = () => {
+  const { theme } = useThemeUI()
 
-export const DiscordCard = ({ activeProjectData }) => {
-  if (
-    !activeProjectData ||
-    !activeProjectData?.project ||
-    !activeProjectData?.project?.discordId
-  ) {
-    return (
-      <InfoBox>
-        <ThemedSkeleton height={250} />
-        <div style={{ margin: '8px 24px' }}>
-          <h1>
-            <ThemedSkeleton width={'80%'} />
-          </h1>
-          <p>
-            <ThemedSkeleton width={'100px'} />
-          </p>
-          <p>
-            <ThemedSkeleton count={3.5} />
-          </p>
-        </div>
-      </InfoBox>
-    )
-  }
   return (
-    <InfoBox style={{ overflowY: 'none' }}>
-      <iframe
-        title={activeProjectData?.project?.discordId}
-        src={
-          'https://e.widgetbot.io/channels/919685113799925800/' +
-          activeProjectData?.project?.discordId
-        }
-        style={{ borderWidth: 0, borderRadius: '0.5em' }}
-        width="100%"
-        height="500px"
-      ></iframe>
-    </InfoBox>
+    <div
+      style={{
+        width: '400px',
+        position: 'absolute',
+        height: '200px',
+        bottom: '16px',
+        backgroundColor: theme.colors.background as string,
+        left: '20px',
+      }}
+    >
+      <h3>Legend</h3>
+    </div>
   )
 }

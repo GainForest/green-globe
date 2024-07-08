@@ -184,7 +184,7 @@ const XprizeLayerPicker = ({ map }) => {
 }
 
 const LayerListContainer = styled.div`
-  max-height: calc(80vh - 100px);
+  max-height: calc(60vh - 100px);
   overflow-y: scroll;
 `
 
@@ -199,7 +199,7 @@ const Container = styled.div<{ theme }>`
   transition: opacity 0.3s ease;
   opacity: ${({ visible }) => (visible ? 0 : 0.95)};
   min-width: 288px;
-  max-height: 80vh;
+  max-height: 60vh;
 `
 
 const Maximize = styled.button`

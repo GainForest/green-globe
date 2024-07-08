@@ -93,7 +93,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        description={'Remote sensing analysis'}
+        description={'Remote Sensing Analysis'}
         buttonIcon={'satellite_alt'}
         position={5}
         active={infoOverlay == 7}
@@ -101,7 +101,7 @@ export const InfoOverlay = ({
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        description={'Community'}
+        description={'Community Payments'}
         buttonIcon={'emoji_people'}
         position={6}
         active={infoOverlay == 4}

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
 import { breakpoints } from 'src/constants'
+import { State } from 'src/types'
 
 export const TimeSlider = ({ map, mediaSize }) => {
   const minDate = dayjs('2020-09-01')
@@ -19,6 +20,12 @@ export const TimeSlider = ({ map, mediaSize }) => {
     maxDate.format('YYYY-MM')
   )
   const [showTooltip, setShowTooltip] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (map && !isSatelliteHistoryEnabled) {
+      map.setLayoutProperty(`planetLayer${currentDate}`, 'visibility', 'none')
+    }
+  }, [isSatelliteHistoryEnabled, currentDate, map])
 
   useEffect(() => {
     const showLatestLayer = () => {

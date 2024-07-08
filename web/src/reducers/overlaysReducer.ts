@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+import { State } from 'src/types'
+
 export const overlaysSlice = createSlice({
   name: 'counter',
   initialState: {
@@ -7,7 +9,8 @@ export const overlaysSlice = createSlice({
     basket: false,
     profile: false,
     maximized: false,
-  },
+    legendName: undefined,
+  } as State['overlays'],
   reducers: {
     showBasket: (state) => {
       state.basket = true
@@ -32,6 +35,9 @@ export const overlaysSlice = createSlice({
     },
     hideProfile: (state) => {
       state.profile = false
+    },
+    legendName: (state, action) => {
+      state.legend = action.payload
     },
   },
 })

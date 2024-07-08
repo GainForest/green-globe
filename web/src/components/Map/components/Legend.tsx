@@ -1,7 +1,15 @@
+import { useSelector } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
+
+import { State } from 'src/types'
+
+import { LegendName, legendMap } from '../legends/legendMap'
 
 export const Legend = () => {
   const { theme } = useThemeUI()
+  const legendName: LegendName = useSelector(
+    (state: State) => state.overlays.legendName
+  )
 
   return (
     <div
@@ -15,6 +23,12 @@ export const Legend = () => {
       }}
     >
       <h3>Legend</h3>
+      <DynamicLegend legendName={legendName} />
     </div>
   )
+}
+
+const DynamicLegend = ({ legendName }) => {
+  const Component = legendMap[legendName]
+  return Component ? <Component /> : null
 }

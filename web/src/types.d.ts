@@ -1,3 +1,5 @@
+import { LegendName } from './components/Map/legends/legendMap'
+
 interface State {
   satelliteHistory: {
     enabled: boolean
@@ -11,6 +13,7 @@ interface State {
     basket: boolean
     profile: boolean
     maximized: boolean
+    legendName: LegendName | undefined
   }
   display: {
     clickedCoordinates: {

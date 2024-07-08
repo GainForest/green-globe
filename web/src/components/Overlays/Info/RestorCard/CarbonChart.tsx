@@ -1,7 +1,6 @@
 import { SmallChart } from './SmallChart'
 
 export const CarbonChart = ({ chartData }) => {
-  console.log(chartData)
   const carbonData = {
     labels: [
       'Above Ground Woody Carbon',

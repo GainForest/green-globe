@@ -11,7 +11,6 @@ import {
 } from './maptreeutils'
 import { addAmazonBasinSourceAndLayer } from './sourcesAndLayers/amazonBasin'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
-import { addChoroplethSourceAndLayers } from './sourcesAndLayers/choropleth'
 import { addEDNASourceAndLayers } from './sourcesAndLayers/edna'
 import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
@@ -39,7 +38,6 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   // addFlightPathSourceAndLayer(map)
   addAmazonBasinSourceAndLayer(map)
   addProjectMarkers(map)
-  addChoroplethSourceAndLayers(map)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0

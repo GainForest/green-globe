@@ -78,7 +78,7 @@ interface Asset {
 
 interface GeospatialLayer {
   name: string
-  type: string
+  type: 'choropleth' | 'raster_tif' | 'tms_tile' | 'geojson_line'
   endpoint: string
   category: string
   description?: string

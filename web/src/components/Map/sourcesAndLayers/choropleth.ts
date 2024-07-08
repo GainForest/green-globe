@@ -1,23 +1,27 @@
 import mapboxgl from 'mapbox-gl'
 
-export const addChoroplethSourceAndLayers = (map: mapboxgl.Map) => {
-  if (!map.getSource('choropleth'))
-    map.addSource('choropleth', {
+import { GeospatialLayer } from 'src/types'
+
+export const addChoroplethSourceAndLayers = (
+  map: mapboxgl.Map,
+  layer: GeospatialLayer
+) => {
+  if (!map.getSource(layer.name))
+    map.addSource(layer.name, {
       type: 'geojson',
       data: `${process.env.AWS_STORAGE}/layers/species_richness/example-project.geojson`,
     })
 
-  if (!map.getLayer('choropleth')) {
+  if (!map.getLayer(layer.name)) {
     map.addLayer({
-      id: 'choropleth',
+      id: layer.name,
       type: 'fill',
-      source: 'choropleth',
-      layout: {},
+      source: layer.name,
       paint: {
         'fill-color': [
           'interpolate',
           ['linear'],
-          ['get', 'species_richness'],
+          ['get', 'species_richness'], // hardcoded for now
           0,
           '#471064',
           10,

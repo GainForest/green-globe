@@ -6,12 +6,15 @@ import { GeospatialLayer } from 'src/types'
 
 import { addChoroplethSourceAndLayers } from './choropleth'
 import { addGeojsonLineSourceAndLayer } from './geojsonLine'
+import { addGeojsonPointSourceAndLayer } from './geojsonPoints'
 import { addRasterSourceAndLayer } from './raster'
 import { addTMSTileSourceAndLayer } from './tmsTile'
 
 export const addNamedSource = (map: mapboxgl.Map, layer: GeospatialLayer) => {
   const dispatch = useDispatch()
-
+  if (!map.getSource(layer.name) && layer.type == 'geojson_points') {
+    addGeojsonPointSourceAndLayer(map, layer)
+  }
   if (!map.getSource(layer.name) && layer.type == 'geojson_line') {
     addGeojsonLineSourceAndLayer(map, layer)
   }
@@ -24,6 +27,7 @@ export const addNamedSource = (map: mapboxgl.Map, layer: GeospatialLayer) => {
   if (!map.getSource(layer.name) && layer.type == 'choropleth') {
     addChoroplethSourceAndLayers(map, layer)
   }
+
   map.moveLayer(layer.name, 'highlightedSiteOutline')
   map.moveLayer('highlightedSiteOutline', 'gainforestMarkerLayer')
   if (layer.legend) {

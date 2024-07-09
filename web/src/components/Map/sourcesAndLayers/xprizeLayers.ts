@@ -2,6 +2,20 @@ import { GeospatialLayer } from 'src/types'
 
 const hardcodedLayers: GeospatialLayer[] = [
   {
+    name: 'Illegal mining',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/illegal-mining.geojson`,
+    description: 'Source: Earthrise Media',
+    category: 'Illegal Activity',
+  },
+  {
+    name: 'Illegal Airstrips',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/illegal-airstrips-nyt-intercept-public.geojson`,
+    description: 'Source: Earthrise Media',
+    category: 'Illegal Activity',
+  },
+  {
     name: 'Species Richness',
     type: 'choropleth',
     endpoint: `${process.env.AWS_STORAGE}/layers/species_richness/example-project.geojson`,

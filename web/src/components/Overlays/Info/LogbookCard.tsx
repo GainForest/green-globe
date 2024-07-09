@@ -27,16 +27,38 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
 
   useEffect(() => {
     const getPosts = async () => {
+      let filenames
       try {
-        const response = await axios.get(
-          `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
-            activeProjectData?.project?.name
-          )}/`
-        )
-        const filenames = parseDirectoryListing(response.data)
-
+        if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
+          try {
+            const response = await axios.get(
+              `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
+                activeProjectData?.project?.name
+              )}/`
+            )
+            filenames = parseDirectoryListing(response.data)
+          } catch (e) {
+            console.log('cannot fetch from local server: ', e)
+          }
+        } else {
+          try {
+            const response = await fetch(
+              `/api/listS3Objects?folder=logbook&projectName=${toKebabCase(
+                activeProjectData?.project?.name
+              )}`
+            )
+            const data = await response.json()
+            filenames = data.filter((name) => name.endsWith('.md'))
+          } catch (e) {
+            console.log('cannot fetch from AWS :', e)
+          }
+        }
+        if (!filenames) {
+          setLoading(false)
+          return
+        }
         const postsData = await Promise.all(
-          filenames.map(async (filename) => {
+          filenames?.map(async (filename) => {
             const projectName = toKebabCase(activeProjectData?.project?.name)
             const postResponse = await axios.get(
               `${process.env.AWS_STORAGE}/logbook/${projectName}/${filename}`
@@ -48,7 +70,6 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
             content = content.replace(
               /\[([^\]]+)\]\(([^)]+)\)/g,
               (match, text, link) => {
-                console.log('link:', link)
                 if (!link.startsWith('https')) {
                   link = `${basePath}/${link}`
                 }

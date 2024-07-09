@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
+
+import { setLegendName } from 'src/reducers/overlaysReducer'
 
 import {
   addNamedSource,
@@ -13,6 +16,7 @@ import { LayerItem } from './LayerItem'
 import { LayerItemHistoricalSatellite } from './LayerItemHistoricalSatellite'
 
 const XprizeLayerPicker = ({ map }) => {
+  const dispatch = useDispatch()
   const [layers, setLayers] = useState([])
   const [searchTerm, setSearchTerm] = useState<string>()
   const [filteredLayers, setFilteredLayers] = useState([])
@@ -68,11 +72,17 @@ const XprizeLayerPicker = ({ map }) => {
             } else {
               addNamedSource(map, layer)
             }
+            if (layer.legend) {
+              dispatch(setLegendName(layer.legend))
+            }
           } else {
             if (layer.name === 'NICFI Tiles') {
               removeNICFISource(map, layer)
             } else {
               removeNamedSource(map, layer)
+            }
+            if (layer.legend) {
+              dispatch(setLegendName(undefined))
             }
           }
           return { ...layer, isActive }

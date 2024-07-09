@@ -311,6 +311,22 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'tumbira',
   },
   {
+    name: 'Orthomosaic Inhaã-bé (Feb 2024)',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/drone/inhaa-be/2024-02-23/orthophoto.tif`,
+    description:
+      'Inhaã-bé drone image from 2024-02-23',
+    category: 'Inhaã-bé',
+  },
+  {
+    name: 'Orthomosaic Parque das Tribos (Feb 2024)',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/drone/parque-das-tribos/2024-02-06/orthophoto.tif`,
+    description:
+      'Parque das Tribos drone image from 2024-02-06',
+    category: 'Parque das Tribos',
+  },
+  {
     name: 'NICFI Tiles',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/layers/nicfi/`,

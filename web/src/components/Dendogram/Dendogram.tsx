@@ -13,7 +13,7 @@ export const Dendogram = () => {
 
   useEffect(() => {
     const img = new Image()
-    img.src = `${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}dendogram.svg`
+    img.src = `${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}_dendogram.svg`
     img.onload = () => setImageExists(true)
     img.onerror = () => setImageExists(false)
   }, [kebabCasedProjectName])
@@ -30,7 +30,7 @@ export const Dendogram = () => {
       <h2> Species dendogram</h2>
       <p>All species recorded in this project.</p>
       <img
-        src={`${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}-dendogram.svg`}
+        src={`${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}_dendogram.svg`}
         alt={'species dendogram'}
         style={{ margin: '20px 0px', backgroundColor: 'white' }}
       />

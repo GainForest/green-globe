@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-
 import { csv } from 'd3-fetch'
 import { scaleLinear } from 'd3-scale'
 
-const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
+const CircularMultiLineChart = ({ data, maxFixedValue = null, frequencies }) => {
   const [size, setSize] = useState(0)
   const containerRef = useRef(null)
   const [hoveredPoint, setHoveredPoint] = useState(null)
@@ -29,10 +28,6 @@ const CircularMultiLineChart = ({ data, maxFixedValue = null }) => {
   const centerY = size / 2
   const maxRadius = size / 2 - 60
   const innerRadius = size / 6
-
-  const frequencies = useMemo(() => {
-    return ['low', 'medium', 'high', '20000', '60000']
-  }, [])
 
   const colorScale = scaleLinear()
     .domain([0, frequencies.length - 1])
@@ -203,16 +198,20 @@ const CircularMultiLineChartWithCSVLoader = ({
 }) => {
   const [data, setData] = useState([])
 
+  const frequencies = useMemo(() => {
+    return ['0-1500', '1500-5000', '5000-10000', '10k-20000', '20k-60000']
+  }, [])
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const csvData = await csv(csvPath, (d) => ({
           time: +d.time,
-          low: +d.low,
-          medium: +d.medium,
-          high: +d.high,
-          '20000': +d['20000'],
-          '60000': +d['60000'],
+          '0-1500': +d['0-1500'],
+          '1500-5000': +d['1500-5000'],
+          '5000-10000': +d['5000-10000'],
+          '10k-20000': +d['10k-20000'],
+          '20k-60000': +d['20k-60000'],
         }))
         setData(csvData)
       } catch (error) {
@@ -223,11 +222,17 @@ const CircularMultiLineChartWithCSVLoader = ({
     fetchData()
   }, [csvPath])
 
-  if (data.length) {
-    return <CircularMultiLineChart data={data} maxFixedValue={maxFixedValue} />
-  } else {
-    return <p>No soundscape detected in this project.</p>
+  if (data.length === 0) {
+    return <p>Loading data...</p>
   }
+
+  return (
+    <CircularMultiLineChart
+      data={data}
+      maxFixedValue={maxFixedValue}
+      frequencies={frequencies}
+    />
+  )
 }
 
 export default CircularMultiLineChartWithCSVLoader

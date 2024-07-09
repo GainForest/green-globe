@@ -7,8 +7,8 @@ import { AudioPlayer } from 'src/components/Buttons/AudioPlayer'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
 import {
-  MaximumCircadianRhythmChart,
-  MedianCircadianRhythmChart,
+  BarCircadianRhythmChart,
+  LineCircadianRhythmChart,
 } from './CircadianRythmnChart'
 
 export const CircadianRythmn = () => {
@@ -33,15 +33,27 @@ export const CircadianRythmn = () => {
           <h2>Soundscape</h2>
           <p> Measured soundscape of different frequencies.</p>
         </div>
-        <MaximumCircadianRhythmChart
-          csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final.csv`}
-        />
-        <MedianCircadianRhythmChart
-          csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/median_results_final.csv`}
-        />
+        <h3>Soundscape (Maximum)</h3>
+        <div>
+          <BarCircadianRhythmChart
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final.csv`}
+          />
+          <LineCircadianRhythmChart
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final.csv`}
+          />
+        </div>
+        <h3>Soundscape (Median)</h3>
+        <div>
+          <BarCircadianRhythmChart
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/median_results_final.csv`}
+          />
+          <LineCircadianRhythmChart
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/median_results_final.csv`}
+          />
+        </div>
         <AudioPlayer
           label="Sample"
-          src={`${process.env.AWS_STORAGE}/audio/013-089-Tufted-Tit-Tyrant.mp3`}
+          src={`${process.env.AWS_STORAGE}/audio/${kebabCasedProjectName}/sample.mp3`}
         />
       </>
     )

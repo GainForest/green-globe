@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import * as d3 from 'd3';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage';
-import { toKebabCase } from 'src/utils/toKebabCase';
 import { FileText } from 'lucide-react';
-
-interface Individual {
-  'Filename/Run': string;
-  class: string;
-}
-
-interface PdfStatus {
-  filename: string;
-  exists: boolean;
-}
+import { toKebabCase } from 'src/utils/toKebabCase';
 
 const PDF_FILES = [
   'biomass_plot.pdf',
@@ -26,23 +14,22 @@ const PDF_FILES = [
   'temporal_plot.pdf'
 ];
 
-export const InsectSpy = () => {
-  const [individuals, setIndividuals] = useState<Individual[]>([]);
+interface PdfStatus {
+  filename: string;
+  exists: boolean;
+}
+
+export const GeneticInsights = () => {
   const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([]);
-  const kebabCasedProjectName = useSelector((state: State) =>
+  const kebabCasedProjectName = useSelector((state: any) =>
     toKebabCase(state.project.name)
   );
 
   useEffect(() => {
     if (kebabCasedProjectName) {
-      // Fetch individuals data
-      d3.csv(
-        `${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/individuals.csv`
-      ).then(setIndividuals);
-
       // Check each PDF file
       Promise.all(PDF_FILES.map(file =>
-        fetch(`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${file}`)
+        fetch(`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${file}`)
           .then(response => ({ filename: file, exists: response.ok }))
           .catch(() => ({ filename: file, exists: false }))
       )).then(setPdfStatuses);
@@ -56,26 +43,8 @@ export const InsectSpy = () => {
   const availablePdfs = pdfStatuses.filter(status => status.exists);
 
   return (
-    <InsectContainer>
-      <h2>Insect trap</h2>
-      {individuals.length ? (
-        <>
-          <p>Insects detected by our insect trap.</p>
-          {individuals.map((d) => (
-            <div key={d['Filename/Run']}>
-              <HexagonalImage
-                alt={d.class}
-                src={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${d['Filename/Run']}`}
-              />
-              {d.class}
-            </div>
-          ))}
-        </>
-      ) : (
-        <p>An insect trap has not been set up in this region.</p>
-      )}
-
-      <h2>Analysis Plots</h2>
+    <Container>
+      <h2>eDNA Analysis Plots</h2>
       {availablePdfs.length > 0 ? (
         <PdfContainer>
           {availablePdfs.map(({ filename }) => (
@@ -99,18 +68,18 @@ export const InsectSpy = () => {
       ) : (
         <PlaceholderContainer>
           <FileText size={48} />
-          <p>No analysis plots are available yet. Check back later!</p>
+          <p>No eDNA analysis plots are available yet. Check back later!</p>
         </PlaceholderContainer>
       )}
-    </InsectContainer>
+    </Container>
   );
 };
 
 const Loading = () => (
-  <InsectContainer>Loading insect data and analysis plots...</InsectContainer>
+  <Container>Loading eDNA analysis plots...</Container>
 );
 
-const InsectContainer = styled.div`
+const Container = styled.div`
   margin: 16px 0px;
 `;
 

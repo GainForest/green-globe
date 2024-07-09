@@ -9,7 +9,7 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'deforestation related layers',
   },
   {
-    name: 'Amazon Airstrips',
+    name: 'Detected Airstrips in Amazon',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-airstrips-nyt-intercept-public.geojson`,
     description: 'Source: Earthrise Media',

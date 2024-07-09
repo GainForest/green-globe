@@ -15,15 +15,19 @@ export const Legend = () => {
     return (
       <div
         style={{
-          width: '400px',
+          width: '380px',
           position: 'absolute',
-          height: '200px',
+          height: '140px',
           bottom: '16px',
           backgroundColor: theme.colors.background as string,
           left: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <h3>Legend</h3>
+        <h3 style={{ width: '100%', textAlign: 'left' }}>Legend</h3>
         <DynamicLegend legendName={legendName} />
       </div>
     )

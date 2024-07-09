@@ -261,18 +261,20 @@ const hardcodedLayers: GeospatialLayer[] = [
   {
     name: 'PM 2.5 (MK Tau)',
     type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled.tif`,
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_rescaled_recolored.tif`,
     description:
       'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
     category: 'tumbira',
+    legend: 'pm2.5',
   },
   {
     name: 'PM 2.5 (MK Tau 95% Confidence Level)',
     type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_95Signif_rescaled.tif`,
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/pm2.5/FinalSite_RescaleAOD_01-22_MK_tau_95Signif_rescaled_recolored.tif`,
     description:
       'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
     category: 'tumbira',
+    legend: 'pm2.5',
   },
   // These need to be converted.
   // {
@@ -314,16 +316,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     name: 'Orthomosaic Inhaã-bé (Feb 2024)',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/drone/inhaa-be/2024-02-23/orthophoto.tif`,
-    description:
-      'Inhaã-bé drone image from 2024-02-23',
+    description: 'Inhaã-bé drone image from 2024-02-23',
     category: 'Inhaã-bé',
   },
   {
     name: 'Orthomosaic Parque das Tribos (Feb 2024)',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/drone/parque-das-tribos/2024-02-06/orthophoto.tif`,
-    description:
-      'Parque das Tribos drone image from 2024-02-06',
+    description: 'Parque das Tribos drone image from 2024-02-06',
     category: 'Parque das Tribos',
   },
   {

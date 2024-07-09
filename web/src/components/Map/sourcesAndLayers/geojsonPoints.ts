@@ -27,7 +27,7 @@ export const addGeojsonPointSourceAndLayer = async (
       filter: ['!', ['has', 'point_count']],
       paint: {
         'circle-color': '#FB281D',
-        'circle-radius': 10,
+        'circle-radius': 5,
         'circle-stroke-color': '#623c74',
         'circle-stroke-width': 1,
       },

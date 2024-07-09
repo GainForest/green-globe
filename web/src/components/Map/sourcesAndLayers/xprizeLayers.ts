@@ -25,6 +25,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     legend: 'species_richness',
   },
   {
+    name: 'False Color Composite',
+    type: 'raster_tif',
+    endpoint: `${process.env.AWS_STORAGE}/layers/false_color_composite/RGB_bare-veg-moisture.tif`,
+    description:
+      'A false color composite made of 3 indices that highlight vegetation, bare and moisture.',
+    category: 'tumbira',
+  },
+  {
     name: 'Global Tree Canopy Height',
     type: 'raster_tif',
     endpoint:

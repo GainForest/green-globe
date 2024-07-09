@@ -14,9 +14,9 @@ export const addGeojsonPointSourceAndLayer = async (
     map.addSource(layer.name, {
       type: 'geojson',
       data: pointsGeojson || EMPTY_GEOJSON,
-      cluster: true,
-      clusterMaxZoom: 15, // Max zoom to cluster points on
-      clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+      // cluster: true,
+      // clusterMaxZoom: 15, // Max zoom to cluster points on
+      // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
     })
   }
   if (!map.getLayer(`unclustered-${layer.name}`)) {

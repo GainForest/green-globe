@@ -19,9 +19,9 @@ export const addGeojsonPointSourceAndLayer = async (
       // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
     })
   }
-  if (!map.getLayer(`unclustered-${layer.name}`)) {
+  if (!map.getLayer(`${layer.name}`)) {
     map.addLayer({
-      id: `unclustered-${layer.name}`,
+      id: `${layer.name}`,
       type: 'circle',
       source: layer.name,
       filter: ['!', ['has', 'point_count']],

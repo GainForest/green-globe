@@ -11,6 +11,8 @@ import { Pokedex } from '../Pokedex/Pokedex'
 import { CircadianRythmn } from './CircadianRythmn'
 import { InsectSpy } from './InsectSpy'
 import { MeasuredTreesGrid } from './MeasuredTreesGrid'
+import { GeneticInsights } from 'src/components/GeneticInsights/GeneticInsights'
+import { CanopyInsights } from 'src/components/CanopyInsights/CanopyInsights'
 
 export const MeasuredDataGrid = ({
   mediaSize,
@@ -23,7 +25,7 @@ export const MeasuredDataGrid = ({
   selectedSpecies,
 }) => {
   const [displayedInsight, setDisplayedInsight] = useState<
-    'circadian' | 'trees' | 'insectspy' | 'pokedex' | 'dendogram'
+    'circadian' | 'trees' | 'insectspy' | 'pokedex' | 'dendogram' | 'eDNA'
   >('pokedex')
 
   return (
@@ -50,7 +52,16 @@ export const MeasuredDataGrid = ({
           dataTooltipId={'biodiversity-circadian-rhythm-insight'}
         />
         <Tooltip id="biodiversity-circadian-rhythm-insight" place="top">
-          Circadian Rhythm
+          Soundscape Insights
+        </Tooltip>
+        <IconButton
+          buttonIcon={'park'}
+          active={displayedInsight == 'trees'}
+          onClick={() => setDisplayedInsight('trees')}
+          dataTooltipId={'biodiversity-trees-insight'}
+        />
+        <Tooltip id="biodiversity-trees-insight" place="top">
+          Canopy Insights
         </Tooltip>
         <IconButton
           buttonIcon={'bug_report'}
@@ -58,27 +69,35 @@ export const MeasuredDataGrid = ({
           onClick={() => setDisplayedInsight('insectspy')}
           dataTooltipId={'biodiversity-insectspy-insight'}
         />
-        <Tooltip id="biodiversity-insectspy-insight">InsectSpy</Tooltip>
-        {/* <IconButton
-          buttonIcon={'park'}
-          active={displayedInsight == 'trees'}
-          onClick={() => setDisplayedInsight('trees')}
-        /> */}
+        <Tooltip id="biodiversity-insectspy-insight">
+          Insect Insights
+        </Tooltip>
+        <IconButton
+          buttonIcon={'biotech'}
+          active={displayedInsight == 'eDNA'}
+          onClick={() => setDisplayedInsight('eDNA')}
+          dataTooltipId={'biodiversity-eDNA-insight'}
+        />
+        <Tooltip id="biodiversity-eDNA-insight">
+          Environmental DNA Insights
+        </Tooltip>
       </IconBar>
       {displayedInsight == 'circadian' && <CircadianRythmn />}
       {displayedInsight == 'insectspy' && <InsectSpy />}
       {displayedInsight == 'trees' && (
-        <MeasuredTreesGrid
-          measuredData={measuredData}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          loading={loading}
-          handleSpeciesClick={handleSpeciesClick}
-          selectedSpecies={selectedSpecies}
-        />
+        // <MeasuredTreesGrid
+        //   measuredData={measuredData}
+        //   sortBy={sortBy}
+        //   setSortBy={setSortBy}
+        //   loading={loading}
+        //   handleSpeciesClick={handleSpeciesClick}
+        //   selectedSpecies={selectedSpecies}
+        // />
+        <CanopyInsights />
       )}
       {displayedInsight == 'dendogram' && <Dendogram />}
       {displayedInsight == 'pokedex' && <Pokedex mediaSize={mediaSize} />}
+      {displayedInsight == 'eDNA' && <GeneticInsights />}
     </div>
   )
 }

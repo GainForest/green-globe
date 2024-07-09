@@ -90,6 +90,14 @@ const Blog = ({ posts, loading }) => {
     }, 0)
   }
 
+  if (!loading && !posts) {
+    return (
+      <Container loading={loading}>
+        <h2>There are no logs for this project yet.</h2>
+      </Container>
+    )
+  }
+
   return (
     <Container loading={loading}>
       <PostList>

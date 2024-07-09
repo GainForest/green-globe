@@ -18,6 +18,7 @@
     "@redwoodjs/forms": "4.3.1",
     "@redwoodjs/router": "4.3.1",
     "@redwoodjs/web": "4.3.1",
+    "aws-sdk": "^2.1657.0",
     "axios-hooks": "^5.0.2",
     "chart.js": "^4.4.3",
     "d3-geo": "^3.1.1",

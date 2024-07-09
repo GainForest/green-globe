@@ -1,6 +1,6 @@
 import { SmallChart } from './SmallChart'
-import { SpacialResolution } from './SpacialResolution'
-export const NdviChart = ({ ndviData }) => {
+import { SpatialResolution } from './SpatialResolution'
+export const NdviChart = ({ ndviData, projectArea }) => {
   if (!ndviData?.ndviPerYear?.data) return
   const { values, years } = ndviData.ndviPerYear.data
 
@@ -67,7 +67,7 @@ export const NdviChart = ({ ndviData }) => {
     <div style={{ width: '100%', height: '400px' }}>
       <h2>Annual NDVI</h2>
       <SmallChart type="line" data={data} options={options} />
-      <SpacialResolution siteSize={1636734} componentResolution={300} />
+      <SpatialResolution projectArea={projectArea} componentResolution={300} />
     </div>
   )
 }

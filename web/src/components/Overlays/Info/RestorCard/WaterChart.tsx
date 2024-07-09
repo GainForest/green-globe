@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { SmallChart } from './SmallChart'
-export const WaterChart = ({ chartData }) => {
+import { SpatialResolution } from './SpatialResolution'
+export const WaterChart = ({ chartData, projectArea }) => {
   if (!chartData?.evotranspirationPerYear) {
     return null
   }
@@ -57,6 +58,7 @@ export const WaterChart = ({ chartData }) => {
     <div style={{ margin: '16px' }}>
       <h2>Total annual evapotranspiration</h2>
       <SmallChart type="line" data={data} options={options} />
+      <SpatialResolution projectArea={projectArea} componentResolution={500} />
     </div>
   )
 }

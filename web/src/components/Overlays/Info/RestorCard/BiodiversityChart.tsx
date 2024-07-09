@@ -3,7 +3,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { SmallChart } from './SmallChart'
-export const BiodiversityChart = ({ chartData }) => {
+import { SpatialResolution } from './SpatialResolution'
+export const BiodiversityChart = ({ chartData, projectArea }) => {
   const icons = {
     Plant: '🌿',
     Amphibian: '🐸',
@@ -100,6 +101,10 @@ export const BiodiversityChart = ({ chartData }) => {
             <p style={{ fontSize: '.8em' }}>Mammal species</p>
           </SpeciesBox>
         </SpeciesContainer>
+        <SpatialResolution
+          projectArea={projectArea}
+          componentResolution={10000}
+        />
       </Container>
       <BarChartContainer>
         <p style={{ marginLeft: '16px' }}>Ecoregions</p>

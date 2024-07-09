@@ -27,7 +27,8 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
 
   useEffect(() => {
     console.log(allData)
-  }, [allData])
+    console.log(activeProjectData)
+  }, [allData, activeProjectData])
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
@@ -116,14 +117,26 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         </Tooltip>
       </IconBar>
       {displayedInsight == 'biodiversity' && (
-        <BiodiversityChart chartData={allData} />
+        <BiodiversityChart
+          projectArea={activeProjectData?.project?.area}
+          chartData={allData}
+        />
       )}
       {displayedInsight == 'carbon' && (
-        <CarbonChart chartData={allData?.carbon} />
+        <CarbonChart
+          projectArea={activeProjectData?.project?.area}
+          chartData={allData?.carbon}
+        />
       )}
-      {displayedInsight == 'water' && <WaterChart chartData={allData?.water} />}
+      {displayedInsight == 'water' && (
+        <WaterChart
+          projectArea={activeProjectData?.project?.area}
+          chartData={allData?.water}
+        />
+      )}
       {displayedInsight == 'treeCover' && (
         <TreeCoverChart
+          projectArea={activeProjectData?.project?.area}
           treeData={allData?.treeCover}
           ecosystemsData={allData?.ecosystems}
           scientificMonitoring={allData?.scientificMonitoring}

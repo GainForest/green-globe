@@ -1,6 +1,6 @@
 import { SmallChart } from './SmallChart'
-
-export const CarbonChart = ({ chartData }) => {
+import { SpatialResolution } from './SpatialResolution'
+export const CarbonChart = ({ chartData, projectArea }) => {
   const carbonData = {
     labels: [
       'Above Ground Woody Carbon',
@@ -117,6 +117,10 @@ export const CarbonChart = ({ chartData }) => {
       <div>
         <h2>Carbon</h2>
         <SmallChart type="bar" data={carbonData} options={carbonOptions} />
+        <SpatialResolution
+          projectArea={projectArea}
+          componentResolution={500}
+        />
       </div>
       <CarbonDetails chartData={chartData} />
       <div>
@@ -125,6 +129,10 @@ export const CarbonChart = ({ chartData }) => {
           type="line"
           data={productivityData}
           options={productivityOptions}
+        />
+        <SpatialResolution
+          projectArea={projectArea}
+          componentResolution={500}
         />
       </div>
     </div>

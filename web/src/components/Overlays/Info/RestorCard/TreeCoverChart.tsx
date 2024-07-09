@@ -4,11 +4,13 @@ import styled from 'styled-components'
 
 import { NdviChart } from './NdviChart'
 import { SmallChart } from './SmallChart'
+import { SpatialResolution } from './SpatialResolution'
 
 export const TreeCoverChart = ({
   treeData,
   ecosystemsData,
   scientificMonitoring,
+  projectArea,
 }) => {
   const displayTreeData = !!treeData?.lossPerYear
   const displayEcosystemsData =
@@ -148,7 +150,7 @@ export const TreeCoverChart = ({
   }
 
   const LegendContainer = styled.div`
-    background-color: #f2f2f2; // Adjust color as needed
+    background-color: #f2f2f2;
     border-radius: 10px;
     padding: 10px;
     margin-top: 10px;
@@ -255,6 +257,10 @@ export const TreeCoverChart = ({
                 )
             )}
           </LegendContainer>
+          <SpatialResolution
+            projectArea={projectArea}
+            componentResolution={10}
+          />
         </div>
       )}
 
@@ -288,11 +294,15 @@ export const TreeCoverChart = ({
                 options={chartOptions}
                 type="bar"
               />
+              <SpatialResolution
+                projectArea={projectArea}
+                componentResolution={30}
+              />
             </div>
           ))}
         </div>
       </div>
-      <NdviChart ndviData={scientificMonitoring} />
+      <NdviChart ndviData={scientificMonitoring} projectArea={projectArea} />
     </div>
   )
 }

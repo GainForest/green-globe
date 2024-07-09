@@ -12,15 +12,13 @@ export const BiodiversityChart = ({ chartData }) => {
   }
 
   const { ecoregions, biomes } = chartData['ecoregionsBiomes']
-  console.log(ecoregions)
-  console.log(biomes)
 
   const ecoregionsData = {
     labels: ecoregions.data.values.map((entry) => entry.label),
     datasets: ecoregions.data.values.map((entry) => ({
       label: entry.label,
       backgroundColor: entry.color,
-      data: [entry.area],
+      data: [(entry.area * 100).toFixed(2)],
       borderRadius: 8,
       maxBarThickness: 32,
     })),
@@ -85,6 +83,8 @@ export const BiodiversityChart = ({ chartData }) => {
             </CountBox>
             <p style={{ fontSize: '.8em' }}>Amphibian species</p>
           </SpeciesBox>
+        </SpeciesContainer>
+        <SpeciesContainer>
           <SpeciesBox>
             <CountBox>
               <span style={{ marginRight: '8px' }}>{icons.Bird}</span>

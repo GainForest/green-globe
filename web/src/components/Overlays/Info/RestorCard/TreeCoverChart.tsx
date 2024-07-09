@@ -177,6 +177,59 @@ export const TreeCoverChart = ({
     font-size: 0.8em;
   `
 
+  const { total, total2010, totalLoss, potential } = treeData
+  const treeMetrics = [
+    { label: 'Total Loss 2001-2020', value: totalLoss?.data },
+    { label: 'Tree Cover, 2000', value: total?.data },
+    { label: 'Tree Cover, 2010', value: total2010?.data },
+    { label: 'Potential tree cover', value: potential?.data },
+  ]
+
+  const chartsData = treeMetrics.map((metric) => {
+    const remainingArea = siteSurfaceArea - metric.value
+    return {
+      labels: [metric.label],
+      datasets: [
+        {
+          label: metric.label,
+          data: [metric.value],
+          backgroundColor: ['#4caf50'],
+          borderRadius: 10,
+          maxBarThickness: 24,
+        },
+        {
+          label: 'total',
+          data: [remainingArea],
+          backgroundColor: ['#c8e6c9'],
+          borderRadius: 10,
+          maxBarThickness: 24,
+        },
+      ],
+    }
+  })
+
+  const chartOptions = {
+    indexAxis: 'y',
+    scales: {
+      x: {
+        stacked: true,
+        display: false,
+        beginAtZero: true,
+      },
+      y: {
+        stacked: true,
+        display: false,
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    maintainAspectRatio: false,
+  }
+
   return (
     <div style={{ margin: '16px' }}>
       {displayTreeData && (
@@ -213,6 +266,30 @@ export const TreeCoverChart = ({
             data={treeLossData}
             options={treeLossOptions}
           />
+        </div>
+        <div>
+          {chartsData.map((item) => (
+            <div
+              style={{
+                backgroundColor: '#f2ede3',
+                margin: '16px 0',
+                borderRadius: '8px',
+                padding: '4px 8px 16px 8px',
+              }}
+              key={item.labels[0]}
+            >
+              <p>{item.labels[0]}</p>
+              <p
+                style={{ fontSize: '.8em', float: 'right' }}
+              >{`${item?.datasets[0]?.data[0]?.toFixed(2)} ha`}</p>
+              <SmallChart
+                styles={{ height: '80px' }}
+                data={item}
+                options={chartOptions}
+                type="bar"
+              />
+            </div>
+          ))}
         </div>
       </div>
       <NdviChart ndviData={scientificMonitoring} />

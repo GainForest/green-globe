@@ -1,6 +1,6 @@
 import { SmallChart } from './SmallChart'
-
-export const CarbonChart = ({ chartData }) => {
+import { SpatialResolution } from './SpatialResolution'
+export const CarbonChart = ({ chartData, projectArea }) => {
   const carbonData = {
     labels: [
       'Above Ground Woody Carbon',
@@ -21,9 +21,12 @@ export const CarbonChart = ({ chartData }) => {
       {
         label: 'Potential',
         data: [
-          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_AGB,
-          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB,
-          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC,
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_AGB -
+            chartData?.walker?.data.carbon.carbonPerType.CURRENT_AGB,
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB -
+            chartData?.walker?.data.carbon.carbonPerType.CURRENT_BGB,
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC -
+            chartData?.walker?.data.carbon.carbonPerType.CURRENT_SOC,
         ],
         backgroundColor: ['#244542', '#43453a', '#31342f'],
         borderRadius: 8,
@@ -58,6 +61,7 @@ export const CarbonChart = ({ chartData }) => {
   if (!years || !values) {
     return null
   }
+
   const productivityData = {
     labels: chartData?.productivityPerYear?.data.years,
     datasets: [
@@ -113,7 +117,12 @@ export const CarbonChart = ({ chartData }) => {
       <div>
         <h2>Carbon</h2>
         <SmallChart type="bar" data={carbonData} options={carbonOptions} />
+        <SpatialResolution
+          projectArea={projectArea}
+          componentResolution={500}
+        />
       </div>
+      <CarbonDetails chartData={chartData} />
       <div>
         <h2>Net primary productivity</h2>
         <SmallChart
@@ -121,7 +130,76 @@ export const CarbonChart = ({ chartData }) => {
           data={productivityData}
           options={productivityOptions}
         />
+        <SpatialResolution
+          projectArea={projectArea}
+          componentResolution={500}
+        />
       </div>
+    </div>
+  )
+}
+
+export const CarbonDetails = ({ chartData }) => {
+  const detailData = [
+    {
+      type: 'Above Ground Woody Carbon',
+      color: '#66c2a4',
+      current: chartData?.walker?.data.carbon.carbonPerType.CURRENT_AGB,
+      potential: chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_AGB,
+      unrealized: Math.round(
+        ((chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_AGB -
+          chartData?.walker?.data.carbon.carbonPerType.CURRENT_AGB) /
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_AGB) *
+          100
+      ),
+    },
+    {
+      type: 'Below Ground Woody Carbon',
+      color: '#fec47b',
+      current: chartData?.walker?.data.carbon.carbonPerType.CURRENT_BGB,
+      potential: chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB,
+      unrealized: Math.round(
+        ((chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB -
+          chartData?.walker?.data.carbon.carbonPerType.CURRENT_BGB) /
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_BGB) *
+          100
+      ),
+    },
+    {
+      type: 'Soil Organic Carbon',
+      color: '#a36f45',
+      current: chartData?.walker?.data.carbon.carbonPerType.CURRENT_SOC,
+      potential: chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC,
+      unrealized: Math.round(
+        ((chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC -
+          chartData?.walker?.data.carbon.carbonPerType.CURRENT_SOC) /
+          chartData?.walker?.data.carbon.carbonPerType.POTENTIAL_SOC) *
+          100
+      ),
+    },
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {detailData.map((item, index) => (
+        <div key={index} style={{ marginBottom: '10px' }}>
+          <div style={{ color: item.color, fontWeight: 'bold' }}>
+            {item.type}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Current:</span>
+            <span>{parseInt(item.current).toLocaleString()} Tonnes</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Potential:</span>
+            <span>{parseInt(item.potential).toLocaleString()} Tonnes</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Unrealized:</span>
+            <span>{item.unrealized} %</span>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

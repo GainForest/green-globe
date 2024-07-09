@@ -8,8 +8,7 @@ import { IconButton } from 'src/components/Buttons/IconButton'
 import { InfoBox } from 'src/components/Overlays/Info/InfoBox'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
-import { RestorPredictions } from '../Pokedex/RestorPredictions'
-
+import { BiodiversityChart } from './BiodiversityChart'
 import { CarbonChart } from './CarbonChart'
 import { TreeCoverChart } from './TreeCoverChart'
 import { WaterChart } from './WaterChart'
@@ -28,7 +27,8 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
 
   useEffect(() => {
     console.log(allData)
-  }, [allData])
+    console.log(activeProjectData)
+  }, [allData, activeProjectData])
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
@@ -81,12 +81,15 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         </div>
       </div>
       <IconBar>
-        {/* <IconButton
-          buttonIcon={'eco'}
+        <IconButton
+          buttonIcon={'pets'}
           active={displayedInsight == 'biodiversity'}
           onClick={() => setDisplayedInsight('biodiversity')}
-        /> */}
-
+          dataTooltipId={'remote-sensing-biodiversity-insight'}
+        />
+        <Tooltip id="remote-sensing-evapotranspiration-insight">
+          Biodiversity
+        </Tooltip>
         <IconButton
           buttonIcon={'forest'}
           active={displayedInsight == 'treeCover'}
@@ -114,19 +117,29 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         </Tooltip>
       </IconBar>
       {displayedInsight == 'biodiversity' && (
-        <RestorPredictions
-          activeProjectData={activeProjectData}
-          mediaSize={mediaSize}
+        <BiodiversityChart
+          projectArea={activeProjectData?.project?.area}
+          chartData={allData}
         />
       )}
       {displayedInsight == 'carbon' && (
-        <CarbonChart chartData={allData?.carbon} />
+        <CarbonChart
+          projectArea={activeProjectData?.project?.area}
+          chartData={allData?.carbon}
+        />
       )}
-      {displayedInsight == 'water' && <WaterChart chartData={allData?.water} />}
+      {displayedInsight == 'water' && (
+        <WaterChart
+          projectArea={activeProjectData?.project?.area}
+          chartData={allData?.water}
+        />
+      )}
       {displayedInsight == 'treeCover' && (
         <TreeCoverChart
+          projectArea={activeProjectData?.project?.area}
           treeData={allData?.treeCover}
           ecosystemsData={allData?.ecosystems}
+          scientificMonitoring={allData?.scientificMonitoring}
         />
       )}
     </InfoBox>

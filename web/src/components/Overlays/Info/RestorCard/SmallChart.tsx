@@ -8,7 +8,7 @@ const chartComponents = {
   bar: Bar,
 }
 
-export const SmallChart = ({ type, data, options }) => {
+export const SmallChart = ({ type, data, options, styles = null }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   Modal.setAppElement('#redwood-app')
 
@@ -42,7 +42,10 @@ export const SmallChart = ({ type, data, options }) => {
   }
 
   return (
-    <div onClick={handleClick} style={{ height: '300px', pointer: 'cursor' }}>
+    <div
+      onClick={handleClick}
+      style={{ height: styles?.height || '300px', pointer: 'cursor' }}
+    >
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}

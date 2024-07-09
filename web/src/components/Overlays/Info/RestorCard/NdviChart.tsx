@@ -1,37 +1,40 @@
-import React from 'react'
-
 import { SmallChart } from './SmallChart'
 import { SpatialResolution } from './SpatialResolution'
-export const WaterChart = ({ chartData, projectArea }) => {
-  if (!chartData?.evotranspirationPerYear) {
-    return null
-  }
+export const NdviChart = ({ ndviData, projectArea }) => {
+  if (!ndviData?.ndviPerYear?.data) return
+  const { values, years } = ndviData.ndviPerYear.data
+
   const data = {
-    labels: chartData?.evotranspirationPerYear?.data.years,
+    labels: years,
     datasets: [
       {
-        label: 'Total annual evapotranspiration',
-        data: chartData?.evotranspirationPerYear?.data.values,
-        backgroundColor: '#4e7edf',
-        borderColor: '#4e7edf',
+        label: 'Annual NDVI',
+        data: values,
         fill: false,
-        tension: 0.1,
+        borderColor: '#b9eec2',
+        backgroundColor: '#b9eec2',
+        tension: 0.4,
       },
     ],
   }
+
   const options = {
     scales: {
       y: {
+        beginAtZero: false,
         title: {
           display: true,
-          text: 'kg/m² per annum',
+          text: 'NDVI',
         },
-        beginAtZero: false,
       },
       x: {
         title: {
           display: true,
           text: 'Years',
+        },
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 20,
         },
       },
     },
@@ -41,8 +44,14 @@ export const WaterChart = ({ chartData, projectArea }) => {
         position: 'top',
       },
       tooltip: {
+        enabled: true,
         mode: 'index',
         intersect: false,
+        callbacks: {
+          label: function (context) {
+            return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}`
+          },
+        },
       },
     },
     responsive: true,
@@ -55,10 +64,10 @@ export const WaterChart = ({ chartData, projectArea }) => {
     },
   }
   return (
-    <div style={{ margin: '16px' }}>
-      <h2>Total annual evapotranspiration</h2>
+    <div style={{ width: '100%', height: '400px' }}>
+      <h2>Annual NDVI</h2>
       <SmallChart type="line" data={data} options={options} />
-      <SpatialResolution projectArea={projectArea} componentResolution={500} />
+      <SpatialResolution projectArea={projectArea} componentResolution={300} />
     </div>
   )
 }

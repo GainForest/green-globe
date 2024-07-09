@@ -2,14 +2,14 @@ import { GeospatialLayer } from 'src/types'
 
 const hardcodedLayers: GeospatialLayer[] = [
   {
-    name: 'Illegal mining',
+    name: 'Amazon Mining Watch',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-mining.geojson`,
     description: 'Source: Earthrise Media',
     category: 'Illegal Activity',
   },
   {
-    name: 'Illegal Airstrips',
+    name: 'Amazon Airstrips',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-airstrips-nyt-intercept-public.geojson`,
     description: 'Source: Earthrise Media',

@@ -253,40 +253,7 @@ const hardcodedLayers: GeospatialLayer[] = [
   {
     name: 'Tumbira SkySat April 14th',
     type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/competition_area_drone_cog.tif`,
-    description:
-      'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
-    category: 'tumbira',
-  },
-
-  {
-    name: 'Tumbira SkySat April 14th 2',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/drone/tumbira/20240414_2_webmercator.tif`,
-    description:
-      'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
-    category: 'tumbira',
-  },
-  {
-    name: 'Tumbira SkySat April 14th 3',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/drone/tumbira/20240414_3_webmercator.tif`,
-    description:
-      'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
-    category: 'tumbira',
-  },
-  {
-    name: 'Tumbira SkySat April 14th 4',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/drone/tumbira/20240414_4_webmercator.tif`,
-    description:
-      'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
-    category: 'tumbira',
-  },
-  {
-    name: 'Tumbira SkySat April 14th 5',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/drone/tumbira/20240414_5_webmercator.tif`,
+    endpoint: `${process.env.TITILER_ENDPOINT}/drone/tumbira/20240414_stitched.tif`,
     description:
       'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
     category: 'tumbira',

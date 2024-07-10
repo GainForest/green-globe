@@ -18,16 +18,9 @@ const hardcodedLayers: GeospatialLayer[] = [
   {
     name: 'Indigenous Lands in Brazil',
     type: 'geojson_line',
-    endpoint: `${process.env.AWS_STORAGE}/layers/tis-poligonais.geojson`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/tis-poligonais-light.geojson`,
     description: 'Source: FUNAI',
     category: 'land cover related data layers',
-  },
-  {
-    name: 'Test Plot',
-    type: 'geojson_line',
-    endpoint: `${process.env.AWS_STORAGE}/layers/test.geojson`,
-    description: 'Source: XPRIZE',
-    category: 'XPRIZE related data layers',
   },
   {
     name: 'Species Richness',
@@ -39,11 +32,11 @@ const hardcodedLayers: GeospatialLayer[] = [
     legend: 'species_richness',
   },
   {
-    name: 'False Color Composite',
+    name: 'Digital Elevation Map',
     type: 'raster_tif',
-    endpoint: `${process.env.AWS_STORAGE}/layers/false_color_composite/RGB_bare-veg-moisture.tif`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/dsm_colored_webmercator.tif`,
     description:
-      'A false color composite made of 3 indices that highlight vegetation, bare and moisture.',
+      'A digital elevation map.',
     category: 'tumbira',
   },
   {

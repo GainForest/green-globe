@@ -27,10 +27,12 @@ export const MediaCard = ({
       let videos = []
       let photos = []
       if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
+        console.log('fetching media from local server')
         const formattedProjectName = activeProjectData.project?.name
           ?.toLowerCase()
           .replace(/[\s_]+/g, '-')
         const mediaUrl = `${process.env.AWS_STORAGE}/media/${formattedProjectName}`
+        console.log(mediaUrl)
         const res = await axios.get(mediaUrl)
         const $ = cheerio.load(res.data)
 

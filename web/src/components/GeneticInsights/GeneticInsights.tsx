@@ -14,6 +14,8 @@ const PDF_FILES = [
   'temporal_plot.pdf'
 ];
 
+const HTML_FILE = 'pie_charts.html';
+
 interface PdfStatus {
   filename: string;
   exists: boolean;
@@ -21,6 +23,7 @@ interface PdfStatus {
 
 export const GeneticInsights = () => {
   const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([]);
+  const [htmlExists, setHtmlExists] = useState(false);
   const kebabCasedProjectName = useSelector((state: any) =>
     toKebabCase(state.project.name)
   );
@@ -33,6 +36,11 @@ export const GeneticInsights = () => {
           .then(response => ({ filename: file, exists: response.ok }))
           .catch(() => ({ filename: file, exists: false }))
       )).then(setPdfStatuses);
+
+      // Check HTML file
+      fetch(`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${HTML_FILE}`)
+        .then(response => setHtmlExists(response.ok))
+        .catch(() => setHtmlExists(false));
     }
   }, [kebabCasedProjectName]);
 
@@ -45,26 +53,41 @@ export const GeneticInsights = () => {
   return (
     <Container>
       <h2>eDNA Analysis Plots</h2>
-      {availablePdfs.length > 0 ? (
-        <PdfContainer>
-          {availablePdfs.map(({ filename }) => (
-            <PdfItem key={filename}>
+      {(availablePdfs.length > 0 || htmlExists) ? (
+        <>
+          {htmlExists && (
+            <HtmlItem>
               <iframe
-                src={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${filename}`}
-                width="100%"
-                height="500px"
-                title={filename}
+                src={`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${HTML_FILE}`}
+                title="Pie Charts"
               />
               <a
-                href={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${filename}`}
+                href={`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${HTML_FILE}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Open {filename.replace('_', ' ').replace('.pdf', '')}
+                Open Pie Charts
               </a>
-            </PdfItem>
-          ))}
-        </PdfContainer>
+            </HtmlItem>
+          )}
+          <PdfContainer>
+            {availablePdfs.map(({ filename }) => (
+              <PdfItem key={filename}>
+                <iframe
+                  src={`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${filename}`}
+                  title={filename}
+                />
+                <a
+                  href={`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${filename}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open {filename.replace('_', ' ').replace('.pdf', '')}
+                </a>
+              </PdfItem>
+            ))}
+          </PdfContainer>
+        </>
       ) : (
         <PlaceholderContainer>
           <FileText size={48} />
@@ -81,13 +104,54 @@ const Loading = () => (
 
 const Container = styled.div`
   margin: 16px 0px;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
 `;
 
 const PdfContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
   margin-top: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const HtmlItem = styled.div`
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+
+  iframe {
+    border: none;
+    width: 100%;
+    height: 600px;
+  }
+
+  a {
+    display: block;
+    color: #0066cc;
+    text-decoration: none;
+    padding: 12px;
+    background-color: #f0f0f0;
+    text-align: center;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #e0e0e0;
+      text-decoration: underline;
+    }
+  }
+
+  @media (max-width: 600px) {
+    iframe {
+      height: 400px;
+    }
+  }
 `;
 
 const PdfItem = styled.div`
@@ -95,17 +159,35 @@ const PdfItem = styled.div`
   border: 1px solid #ddd;
   border-radius: 4px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   iframe {
     border: none;
+    width: 100%;
+    height: 400px;
     margin-bottom: 8px;
+    flex-grow: 1;
   }
 
   a {
     color: #0066cc;
     text-decoration: none;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-top: auto;
+
     &:hover {
+      background-color: #e0e0e0;
       text-decoration: underline;
+    }
+  }
+
+  @media (max-width: 600px) {
+    iframe {
+      height: 300px;
     }
   }
 `;
@@ -128,5 +210,13 @@ const PlaceholderContainer = styled.div`
   p {
     color: #666;
     font-size: 18px;
+  }
+
+  @media (max-width: 600px) {
+    padding: 16px;
+
+    p {
+      font-size: 16px;
+    }
   }
 `;

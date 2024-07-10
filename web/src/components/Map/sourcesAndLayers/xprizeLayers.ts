@@ -6,14 +6,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-mining.geojson`,
     description: 'Source: Earthrise Media',
-    category: 'deforestation related layers',
+    category: 'deforestation related data layers',
   },
   {
     name: 'Detected Airstrips in Amazon',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-airstrips-nyt-intercept-public.geojson`,
     description: 'Source: Earthrise Media',
-    category: 'deforestation related layers',
+    category: 'deforestation related data layers',
   },
   {
     name: 'Indigenous Lands in Brazil',
@@ -21,6 +21,13 @@ const hardcodedLayers: GeospatialLayer[] = [
     endpoint: `${process.env.AWS_STORAGE}/layers/tis-poligonais.geojson`,
     description: 'Source: FUNAI',
     category: 'land cover related data layers',
+  },
+  {
+    name: 'Test Plot',
+    type: 'geojson_line',
+    endpoint: `${process.env.AWS_STORAGE}/layers/test.geojson`,
+    description: 'Source: XPRIZE',
+    category: 'XPRIZE related data layers',
   },
   {
     name: 'Species Richness',

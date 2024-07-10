@@ -349,36 +349,24 @@ const hardcodedLayers: GeospatialLayer[] = [
   },
 ]
 
-const tumbiraDeforestationData = (): GeospatialLayer[] => {
-  const tumbiraTifArray: GeospatialLayer[] = []
-  for (let year = 1985; year <= 2023; year++) {
-    tumbiraTifArray.push({
-      name: `Tumbira Deforestation ${year}`,
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/tumbira_deforestation/tumbira_deforestation_yod_${year}.tif`,
-      description: `Areas of deforestation in ${year}`,
-      category: 'tumbira',
-    })
-  }
-  return tumbiraTifArray
-}
-
-const tumbiraRegrowthData = (): GeospatialLayer[] => {
-  const tumbiraTifArray: GeospatialLayer[] = []
-  for (let year = 1985; year <= 2023; year++) {
-    tumbiraTifArray.push({
-      name: `Tumbira Regrowth ${year}`,
-      type: 'raster_tif',
-      endpoint: `${process.env.TITILER_ENDPOINT}/layers/tumbira_regrowth/tumbira_regrowth_yod_${year}.tif`,
-      description: `Areas of regrowth in ${year}`,
-      category: 'tumbira',
-    })
-  }
-  return tumbiraTifArray
-}
+const tumbiraLayers: GeospatialLayer[] = [
+  {
+    name: 'Tumbira Deforestation',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_dur_w_rescaled_webmercator_cog.tif`,
+    description: 'Duration of deforestation events in the Tumbira region',
+    category: 'tumbira',
+  },
+  {
+    name: 'Tumbira Regrowth',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_dur_w_rescaled_webmercator_cog.tif`,
+    description: 'Duration of regrowth events in the Tumbira region',
+    category: 'tumbira',
+  },
+]
 
 export const layersData: GeospatialLayer[] = [
   ...hardcodedLayers,
-  ...tumbiraDeforestationData(),
-  ...tumbiraRegrowthData(),
+  ...tumbiraLayers,
 ]

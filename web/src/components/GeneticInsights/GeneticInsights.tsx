@@ -6,6 +6,8 @@ import styled from 'styled-components'
 
 import { toKebabCase } from 'src/utils/toKebabCase'
 
+import { ModalWrapper } from '../ModalWrapper/ModalWrapper'
+
 const PDF_FILES = [
   'biomass_plot.pdf',
   'embeddings_plot.pdf',
@@ -113,13 +115,17 @@ export const GeneticInsights = () => {
               </PdfItem>
             ))}
           </PdfContainer>
+          {availablePngs && <h2>Gamma Heatmaps</h2>}
           {availablePngs.map(({ filename }) => (
-            <div key={filename}>
-              <img
-                src={`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${filename}`}
-                alt={filename}
-              />
-            </div>
+            <ModalWrapper
+              key={filename}
+              FirstComponent={() => (
+                <img
+                  src={`${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${filename}`}
+                  alt={filename}
+                />
+              )}
+            />
           ))}
         </>
       ) : (

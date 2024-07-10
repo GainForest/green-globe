@@ -16,8 +16,8 @@ export const ModalWrapper = ({
     content: {
       top: '50%',
       left: '50%',
-      maxWidth: '80vw',
-      maxHeight: '80vh',
+      minWidth: '80vw',
+      minHeight: '80vh',
       transform: 'translate(-50%, -50%)',
       border: '1px solid #ccc',
       borderRadius: '10px',

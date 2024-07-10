@@ -28,7 +28,8 @@ export const SpeciesCard = ({
   };
 
   const formatScientificName = (name: string) => {
-    return name.replace(/\s+/g, '-').toLowerCase();
+    const formatted = name.replace(/\s+/g, '-').toLowerCase();
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
   };
 
   const loadMidi = useCallback(async () => {

@@ -9320,6 +9320,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"adsr@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "adsr@npm:1.0.1"
+  checksum: e2aed7ab6272f6db4c59eea39566d78d807271c185469aa98a0f50282331385dd93f17a89c90b64161d81aea18425e6a1ca31800b990dc28ebcba062fd187e3d
+  languageName: node
+  linkType: hard
+
 "agent-base@npm:6":
   version: 6.0.2
   resolution: "agent-base@npm:6.0.2"
@@ -10172,6 +10179,13 @@ __metadata:
   version: 1.0.0
   resolution: "atomic-sleep@npm:1.0.0"
   checksum: e329a6665512736a9bbb073e1761b4ec102f7926cce35037753146a9db9c8104f5044c1662e4a863576ce544fb8be27cd2be6bc8c1a40147d03f31eb1cfb6e8a
+  languageName: node
+  linkType: hard
+
+"audio-loader@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "audio-loader@npm:0.5.0"
+  checksum: 363dc649383a838776d96c8b0c46461042fa8ba190580a7c26a46dba3ad17ccdc068a5449a56769c1cd5a8555b164d5d0d131f1372288863ed43eccb384b8e38
   languageName: node
   linkType: hard
 
@@ -20682,6 +20696,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"midi-player-js@npm:^2.0.16":
+  version: 2.0.16
+  resolution: "midi-player-js@npm:2.0.16"
+  checksum: c63e1246b1d87fe4d7cec9a30e48f64539fe0140e9df8c24c5a555d2f16697ac56144111e813288a8a907ffed064e0fee7b8741725ad0e7a5a9bdbd8f4accf48
+  languageName: node
+  linkType: hard
+
+"midimessage@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "midimessage@npm:1.0.5"
+  checksum: f7c3a125cd1803d624ebb65da3b4dded6a7a38112202d7e50b0eba5b10ee0f9c3c700ad2487d32766083f3981179746dce56ab0469a9750d0d1bfd3e6981910a
+  languageName: node
+  linkType: hard
+
 "miller-rabin@npm:^4.0.0":
   version: 4.0.1
   resolution: "miller-rabin@npm:4.0.1"
@@ -21434,6 +21462,20 @@ __metadata:
   version: 6.1.0
   resolution: "normalize-url@npm:6.1.0"
   checksum: 95d948f9bdd2cfde91aa786d1816ae40f8262946e13700bf6628105994fe0ff361662c20af3961161c38a119dc977adeb41fc0b41b1745eb77edaaf9cb22db23
+  languageName: node
+  linkType: hard
+
+"note-parser@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "note-parser@npm:1.1.0"
+  checksum: e88acbd4661b378f1026bed3fd516621bbd75d42b9c2cce0bde103c062b6cafb7ae7fcf84659490ffabddb3f7ae9d878149b88d2c8b051fd3f86da12acc424b0
+  languageName: node
+  linkType: hard
+
+"note-parser@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "note-parser@npm:2.0.1"
+  checksum: 8d0ef55879a7a1ac03deaf3bd1798a9ccef528a104c2d59360489dcc0e6f5b43f88587a3dad451949806ef341df3894095b77b4ba7cd59f615664182ea8b8373
   languageName: node
   linkType: hard
 
@@ -24702,12 +24744,14 @@ __metadata:
     h3-js: ^4.1.0
     lucide-react: ^0.400.0
     mapbox-gl: ^2.13.0
+    midi-player-js: ^2.0.16
     papaparse: ^5.4.1
     react-data-table-component: ^7.6.2
     react-loading-skeleton: ^3.2.0
     react-redux: ^8.1.1
     react-tooltip: ^5.27.1
     redis: ^4.6.12
+    soundfont-player: ^0.12.0
     styled-components: ^5.3.9
     theme-ui: ^0.15.7
     web: "workspace:^"
@@ -24836,6 +24880,17 @@ __metadata:
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: 7e3c8b2e88a1841c9671094bbaeebd94448111dd90a81a1f606f3f67708a6ec57763b3b47f06da09fc6054193e0e6709e77325415dc8422b04497a8070fa02d4
+  languageName: node
+  linkType: hard
+
+"sample-player@npm:^0.5.5":
+  version: 0.5.5
+  resolution: "sample-player@npm:0.5.5"
+  dependencies:
+    adsr: ^1.0.0
+    midimessage: ^1.0.5
+    note-parser: ^1.1.0
+  checksum: 52e74ac6c5347aff095431c9ae22caa57b0517c96d69123ddeaf73b2eaef24b41bd7ab83014c5fb9bae2dea43e95aa42a909915f5b72ac9f6e2dd19134ba35e7
   languageName: node
   linkType: hard
 
@@ -25477,6 +25532,17 @@ __metadata:
   dependencies:
     atomic-sleep: ^1.0.0
   checksum: 9bf338f86147db50e116484f74f2e29a321a12733e0cefab3087c80dd32bf4df3d7407dbcafc13bc39ac269d9dd61dd6ef952354b9503392d4e1e7414f8e360e
+  languageName: node
+  linkType: hard
+
+"soundfont-player@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "soundfont-player@npm:0.12.0"
+  dependencies:
+    audio-loader: ^0.5.0
+    note-parser: ^2.0.0
+    sample-player: ^0.5.5
+  checksum: 5c70b6e86162f7f5a94549dc23907aba1bc513b373cbf80717882ac1c7967286047ad558fab1f6d48edae8ef8698d74234e1c32ac6e9e585366125e17bc2be9b
   languageName: node
   linkType: hard
 

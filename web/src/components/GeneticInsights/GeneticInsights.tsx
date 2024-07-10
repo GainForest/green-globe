@@ -19,9 +19,9 @@ const PDF_FILES = [
 ]
 
 const PNG_FILES = [
-  'overall-jaccard-heatmap.png',
-  'overall-shannon-heatmap.png',
-  'overall-richness-heatmap.png',
+  'jaccard-heatmap.png',
+  'shannon-heatmap.png',
+  'richness-heatmap.png',
 ]
 
 const HTML_FILE = 'pie_charts.html'
@@ -58,17 +58,49 @@ export const GeneticInsights = () => {
       )
         .then((response) => setHtmlExists(response.ok))
         .catch(() => setHtmlExists(false))
-
-      Promise.all(
-        PNG_FILES.map((file) =>
-          fetch(
-            `${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${file}`
-          )
-            .then((response) => ({ filename: file, exists: response.ok }))
-            .catch(() => ({ filename: file, exists: false }))
-        )
-      ).then(setPngStatuses)
     }
+  }, [kebabCasedProjectName])
+
+  useEffect(() => {
+    const getPngs = async () => {
+      const downloadFiles = async (prefix) => {
+        const files = await Promise.all(
+          PNG_FILES.map(async (filename) => {
+            const res = await fetch(
+              `${process.env.AWS_STORAGE}/edna/${kebabCasedProjectName}/${prefix}-${filename}`
+            )
+            if (res.ok) {
+              return { filename: `${prefix}-${filename}`, exists: true }
+            } else {
+              return { filename: `${prefix}-${filename}`, exists: false }
+            }
+          })
+        )
+        return files.filter((file) => file.exists)
+      }
+
+      // Get plots with all species
+      let files = []
+      const overallResult = await downloadFiles('overall')
+      if (overallResult.length > 0) {
+        files = [...files, ...overallResult]
+      }
+
+      // Get plots by phylum for as many as there are
+      let stillValid = true
+      let i = 1
+      while (stillValid) {
+        const result = await downloadFiles(`${i}-phylum`)
+        if (result.length > 0) {
+          files = [...files, ...result]
+          i += 1
+        } else {
+          stillValid = false
+        }
+      }
+      setPngStatuses(files)
+    }
+    getPngs()
   }, [kebabCasedProjectName])
 
   if (!kebabCasedProjectName) {
@@ -115,7 +147,7 @@ export const GeneticInsights = () => {
               </PdfItem>
             ))}
           </PdfContainer>
-          {availablePngs && <h2>Gamma Heatmaps</h2>}
+          {availablePngs && <h2>Heatmaps</h2>}
           {availablePngs.map(({ filename }) => (
             <ModalWrapper
               key={filename}

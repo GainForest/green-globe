@@ -35,9 +35,9 @@ const hardcodedLayers: GeospatialLayer[] = [
     name: 'Digital Elevation Map',
     type: 'raster_tif',
     endpoint: `${process.env.AWS_STORAGE}/layers/dsm_colored_webmercator.tif`,
-    description:
-      'A digital elevation map.',
+    description: 'A digital elevation map.',
     category: 'tumbira',
+    legend: 'digital_elevation',
   },
   {
     name: 'Global Tree Canopy Height',

@@ -5,6 +5,18 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
+        "coordinates": [-60.73935519637556, -2.96004893385034]
+      },
+      "properties": {
+        "projectId": "f47ac10b58cc4372a5670e02b2c3d479f47ac10b58cc4372a5670e02b2c3d479",
+        "name": "XPRIZE Rainforest",
+        "country": "BR"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
         "coordinates": [-60.6392232340053, -2.9501431599559]
       },
       "properties": {
@@ -21,7 +33,7 @@
       },
       "properties": {
         "projectId": "c9c6c5f2c0388ea2fdfa3f36b6a6abfba4050245e47e61d44052812b5d8a0be6",
-        "name": "Itacotiara",
+        "name": "Precious Forests",
         "country": "BR"
       }
     },

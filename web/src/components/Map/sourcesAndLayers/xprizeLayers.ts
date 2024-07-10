@@ -23,13 +23,6 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'land cover related data layers',
   },
   {
-    name: 'Test Plot',
-    type: 'geojson_line',
-    endpoint: `${process.env.AWS_STORAGE}/layers/test.geojson`,
-    description: 'Source: XPRIZE',
-    category: 'XPRIZE related data layers',
-  },
-  {
     name: 'Species Richness',
     type: 'choropleth',
     endpoint: `${process.env.AWS_STORAGE}/layers/species_richness/example-project.geojson`,
@@ -312,6 +305,13 @@ const hardcodedLayers: GeospatialLayer[] = [
       'Measures increased pollution. Darker colors represent increases in levels of PM2.5 (particulate matter of less than 2.5 micrometers) between 2001 and 2022.',
     category: 'tumbira',
     legend: 'pm2.5',
+  },
+  {
+    name: 'Elevation Map',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/dsm_colored_webmercator.tif`,
+    description: 'Elevation of the tumbira area.',
+    category: 'tumbira',
   },
   {
     name: 'Spectral Diversity (Mean 10m Avg)',

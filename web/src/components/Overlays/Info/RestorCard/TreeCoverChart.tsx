@@ -11,7 +11,15 @@ export const TreeCoverChart = ({
   ecosystemsData,
   scientificMonitoring,
   projectArea,
+  loading,
 }) => {
+  if (loading) {
+    return <div style={{ margin: '16px' }}>Loading...</div>
+  }
+
+  if (!treeData?.lossPerYear?.data) {
+    return <div style={{ margin: '16px' }}>No data found.</div>
+  }
   const displayTreeData = !!treeData?.lossPerYear
   const displayEcosystemsData =
     !!ecosystemsData?.landCover?.data?.areaPerLandType

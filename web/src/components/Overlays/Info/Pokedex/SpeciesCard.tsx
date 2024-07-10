@@ -118,7 +118,7 @@ export const SpeciesCard = ({
       {(hasMidi || isLoading) && (
         <MidiIndicator>
           <Volume2 size={16} />
-          <span>MIDI</span>
+          <span>DNA of Music</span>
         </MidiIndicator>
       )}
     </CardContainer>

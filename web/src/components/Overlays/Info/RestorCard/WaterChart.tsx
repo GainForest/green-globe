@@ -2,9 +2,13 @@ import React from 'react'
 
 import { SmallChart } from './SmallChart'
 import { SpatialResolution } from './SpatialResolution'
-export const WaterChart = ({ chartData, projectArea }) => {
+export const WaterChart = ({ chartData, projectArea, loading }) => {
+  if (loading) {
+    return <div style={{ margin: '16px' }}>Loading...</div>
+  }
+
   if (!chartData?.evotranspirationPerYear) {
-    return null
+    return <div style={{ margin: '16px' }}>No data found.</div>
   }
   const data = {
     labels: chartData?.evotranspirationPerYear?.data.years,

@@ -1,7 +1,7 @@
 import { SmallChart } from './SmallChart'
 import { SpatialResolution } from './SpatialResolution'
 export const NdviChart = ({ ndviData, projectArea }) => {
-  if (!ndviData?.ndviPerYear?.data) return
+  if (!ndviData?.ndviPerYear?.data) return {}
   const { values, years } = ndviData.ndviPerYear.data
 
   const data = {

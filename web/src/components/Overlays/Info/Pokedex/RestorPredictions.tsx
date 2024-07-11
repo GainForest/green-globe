@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import Modal from 'react-modal'
-import { KingdomList } from './KingdomList'
 
+import Modal from 'react-modal'
+
+import { KingdomList } from './KingdomList'
 export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   const [loading, setLoading] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)

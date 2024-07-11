@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { FileText } from 'lucide-react';
-import { toKebabCase } from 'src/utils/toKebabCase';
+import React, { useState, useEffect } from 'react'
+
+import { FileText } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 const PDF_FILES = [
   'biomass_plot.pdf',
@@ -11,36 +13,40 @@ const PDF_FILES = [
   'rarefaction_plot.pdf',
   'size_distribution_plot.pdf',
   'spatial_plot.pdf',
-  'temporal_plot.pdf'
-];
+  'temporal_plot.pdf',
+]
 
 interface PdfStatus {
-  filename: string;
-  exists: boolean;
+  filename: string
+  exists: boolean
 }
 
 export const CanopyInsights = () => {
-  const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([]);
+  const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([])
   const kebabCasedProjectName = useSelector((state: any) =>
     toKebabCase(state.project.name)
-  );
+  )
 
   useEffect(() => {
     if (kebabCasedProjectName) {
       // Check each PDF file
-      Promise.all(PDF_FILES.map(file =>
-        fetch(`${process.env.AWS_STORAGE}/canopy/${kebabCasedProjectName}/${file}`)
-          .then(response => ({ filename: file, exists: response.ok }))
-          .catch(() => ({ filename: file, exists: false }))
-      )).then(setPdfStatuses);
+      Promise.all(
+        PDF_FILES.map((file) =>
+          fetch(
+            `${process.env.AWS_STORAGE}/canopy/${kebabCasedProjectName}/${file}`
+          )
+            .then((response) => ({ filename: file, exists: response.ok }))
+            .catch(() => ({ filename: file, exists: false }))
+        )
+      ).then(setPdfStatuses)
     }
-  }, [kebabCasedProjectName]);
+  }, [kebabCasedProjectName])
 
   if (!kebabCasedProjectName) {
-    return <Loading />;
+    return <Loading />
   }
 
-  const availablePdfs = pdfStatuses.filter(status => status.exists);
+  const availablePdfs = pdfStatuses.filter((status) => status.exists)
 
   return (
     <Container>
@@ -72,23 +78,21 @@ export const CanopyInsights = () => {
         </PlaceholderContainer>
       )}
     </Container>
-  );
-};
+  )
+}
 
-const Loading = () => (
-  <Container>Loading Canopy analysis plots...</Container>
-);
+const Loading = () => <Container>Loading Canopy analysis plots...</Container>
 
 const Container = styled.div`
   margin: 16px 0px;
-`;
+`
 
 const PdfContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
   margin-top: 16px;
-`;
+`
 
 const PdfItem = styled.div`
   padding: 8px;
@@ -108,7 +112,7 @@ const PdfItem = styled.div`
       text-decoration: underline;
     }
   }
-`;
+`
 
 const PlaceholderContainer = styled.div`
   display: flex;
@@ -129,4 +133,4 @@ const PlaceholderContainer = styled.div`
     color: #666;
     font-size: 18px;
   }
-`;
+`

@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { breakpoints } from 'src/constants'
 
 export const ActiveSpeciesCard = ({ species, mediaSize }) => {
+  console.log(species)
   const { scientificName, iucnCategory, awsUrl, info } = species
 
   // const dnaAudioRef = useRef(null)

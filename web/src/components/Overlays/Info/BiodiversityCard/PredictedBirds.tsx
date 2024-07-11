@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
-import Modal from 'react-modal'
 import { useSelector } from 'react-redux'
 
 import { toKebabCase } from 'src/utils/toKebabCase'
@@ -12,20 +11,10 @@ export const PredictedBirds = ({ mediaSize }) => {
   // const [predictedBirds, setPredictedBirds] = useState([])
   const [predictions, setPredictions] = useState([])
   const [loading, setLoading] = useState(true)
-  const [species, setSpecies] = useState([])
 
   const kebabCasedProjectName = useSelector((state: any) =>
     toKebabCase(state.project.name)
   )
-
-  Modal.setAppElement('#redwood-app')
-
-  const openModal = (speciesList) => {
-    setSpecies(speciesList)
-    setModalIsOpen(true)
-  }
-
-  Modal.setAppElement('#redwood-app')
 
   useEffect(() => {
     const getCsv = async () => {
@@ -36,9 +25,15 @@ export const PredictedBirds = ({ mediaSize }) => {
       data.forEach((d) => {
         const kingdom = d.Type
         if (kingdom in kingdoms) {
-          kingdoms[kingdom].push({ ...d, category: kingdom })
+          kingdoms[kingdom].push({
+            ...d,
+            category: kingdom,
+            scientificName: d['Species'],
+          })
         } else {
-          kingdoms[kingdom] = [{ ...d, category: kingdom }]
+          kingdoms[kingdom] = [
+            { ...d, category: kingdom, scientificName: d['Species'] },
+          ]
         }
       })
       const kingdomsArray = Object.entries(kingdoms).map(([name, data]) => ({

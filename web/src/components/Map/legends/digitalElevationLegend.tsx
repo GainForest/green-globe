@@ -48,7 +48,7 @@ const DigitalElevationLegend = () => {
       .range([margin.left, width - margin.right])
 
     // Create and call the axis
-    const axis = d3.axisBottom(axisScale).ticks(5)
+    const axis = d3.axisBottom(axisScale).ticks(6)
 
     svg
       .append('g')
@@ -62,7 +62,7 @@ const DigitalElevationLegend = () => {
       .attr('y', height - 5)
       .attr('text-anchor', 'middle')
       .style('font-size', '14px')
-      .text('Values are in meters above sea level')
+      .text('Values are in meters above sea level. min: 0, max: 188')
   }, [])
 
   return <svg ref={svgRef}></svg>

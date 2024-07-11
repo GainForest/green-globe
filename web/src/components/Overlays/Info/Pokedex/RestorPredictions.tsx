@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-
 import Modal from 'react-modal'
-
 import { KingdomList } from './KingdomList'
+
 export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   const [loading, setLoading] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -84,6 +83,9 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
           <p>Loading...</p>
         ) : speciesList.length > 0 ? (
           <div>
+            <p className="text-lg font-semibold mb-2">
+              🌿 Total plants predicted: {speciesList.length}
+            </p>
             <KingdomList
               speciesList={speciesList.slice(0, 4)}
               mediaSize={mediaSize}

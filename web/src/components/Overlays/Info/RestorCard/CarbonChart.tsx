@@ -1,6 +1,13 @@
 import { SmallChart } from './SmallChart'
 import { SpatialResolution } from './SpatialResolution'
-export const CarbonChart = ({ chartData, projectArea }) => {
+export const CarbonChart = ({ chartData, projectArea, loading }) => {
+  if (loading) {
+    return <div style={{ margin: '16px' }}>Loading...</div>
+  }
+  if (!chartData?.walker?.data?.carbon?.carbonPerType) {
+    return <div style={{ margin: '16px' }}>No data found.</div>
+  }
+
   const carbonData = {
     labels: [
       'Above Ground Woody Carbon',

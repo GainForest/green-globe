@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { SmallChart } from './SmallChart'
 import { SpatialResolution } from './SpatialResolution'
-export const BiodiversityChart = ({ chartData, projectArea }) => {
+export const BiodiversityChart = ({ chartData, projectArea, loading }) => {
   const icons = {
     Plant: '🌿',
     Amphibian: '🐸',
@@ -12,7 +12,14 @@ export const BiodiversityChart = ({ chartData, projectArea }) => {
     Bird: '🐦',
   }
 
+  if (loading) {
+    return <div style={{ margin: '16px' }}>Loading...</div>
+  }
   const { ecoregions, biomes } = chartData['ecoregionsBiomes']
+
+  if (!ecoregions?.data?.values?.length) {
+    return <div style={{ margin: '16px' }}>No data found.</div>
+  }
 
   const ecoregionsData = {
     labels: ecoregions.data.values.map((entry) => entry.label),

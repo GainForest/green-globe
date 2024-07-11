@@ -53,6 +53,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'land cover related data layers',
   },
   {
+    name: 'XPRIZE Rafts',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/rafts.geojson`,
+    description:
+      'Canopy rafts deployed by ETH BiodivX',
+    category: 'tumbira',
+  },
+  {
     name: 'Global Tree Canopy Height',
     type: 'raster_tif',
     endpoint: `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/a2b0f58bcf25eecaca86b49ea36b08f9-${RESTOR_KEYS.GLOBAL_CANOPY_HEIGHT}/tiles/{z}/{x}/{y}`,
@@ -260,6 +268,13 @@ const hardcodedLayers: GeospatialLayer[] = [
     description: 'Outlines the canopy extents of individual trees.',
     category: 'tumbira',
   },
+  // {
+  //   name: 'XPRIZE Finals',
+  //   type: 'geojson_line',
+  //   endpoint: `${process.env.AWS_STORAGE}/layers/test.geojson`,
+  //   description: 'Outlines of the XPRIZE final site.',
+  //   category: 'XPRIZE finals',
+  // },
   {
     name: 'Toca do Tatu Drone Flights',
     type: 'tms_tile',

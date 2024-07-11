@@ -83,6 +83,7 @@ interface GeospatialLayer {
     | 'tms_tile'
     | 'geojson_line' // eg shapefiles
     | 'geojson_points'
+    | 'vector_tile'
   endpoint: string
   category: string
   description?: string

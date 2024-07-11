@@ -7,7 +7,7 @@ import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { KingdomList } from '../Pokedex/KingdomList'
 
-export const PredictedBirds = ({ mediaSize }) => {
+export const PredictedAnimals = ({ mediaSize }) => {
   // const [predictedBirds, setPredictedBirds] = useState([])
   const [predictions, setPredictions] = useState([])
   const [loading, setLoading] = useState(true)

@@ -15,7 +15,7 @@ import {
   processBiodiversityData,
 } from './biodiversityCardHelpers'
 import { MeasuredDataGrid } from './MeasuredDataGrid'
-import { PredictedBirds } from './PredictedBirds'
+import { PredictedAnimals } from './PredictedAnimals'
 
 export const BiodiversityCard = ({
   activeProjectData,
@@ -156,7 +156,7 @@ export const BiodiversityCard = ({
               />
             )}
             {displayedInsight === 'birds' && (
-              <PredictedBirds mediaSize={mediaSize} />
+              <PredictedAnimals mediaSize={mediaSize} />
             )}
           </div>
         ) : (

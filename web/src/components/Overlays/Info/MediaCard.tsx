@@ -59,7 +59,11 @@ export const MediaCard = ({
           (d) =>
             (d.classification.includes('Camera Traps') ||
               d.classification.includes('Community Photos')) &&
-            (d.awsCID.includes('.jpg') || d.awsCID.includes('.JPG'))
+            (d.awsCID.includes('.jpg') ||
+              d.awsCID.includes('.JPG') ||
+              d.awsCID.includes('.jpeg') ||
+              d.awsCID.includes('.png') ||
+              d.awsCID.includes('.gif'))
         )
         photos = photoLinks?.map((photo) => photo.awsCID)
         const videoLinks = activeProjectData?.project?.assets?.filter(

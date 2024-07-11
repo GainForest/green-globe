@@ -53,14 +53,6 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'land cover related data layers',
   },
   {
-    name: 'Digital Elevation Map',
-    type: 'raster_tif',
-    endpoint: `${process.env.AWS_STORAGE}/layers/dsm_colored_webmercator.tif`,
-    description: 'A digital elevation map.',
-    category: 'tumbira',
-    legend: 'digital_elevation',
-  },
-  {
     name: 'Global Tree Canopy Height',
     type: 'raster_tif',
     endpoint: `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/a2b0f58bcf25eecaca86b49ea36b08f9-${RESTOR_KEYS.GLOBAL_CANOPY_HEIGHT}/tiles/{z}/{x}/{y}`,
@@ -285,6 +277,7 @@ const hardcodedLayers: GeospatialLayer[] = [
     endpoint: `${process.env.TITILER_ENDPOINT}/layers/dsm_colored_webmercator.tif`,
     description: 'Elevation of the tumbira area.',
     category: 'tumbira',
+    legend: 'digital_elevation'
   },
   {
     name: 'Spectral Diversity (Mean 10m Avg)',

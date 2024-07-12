@@ -50,13 +50,13 @@ export const CanopyInsights = () => {
           {availablePdfs.map(({ filename }) => (
             <PdfItem key={filename}>
               <iframe
-                src={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${filename}`}
+                src={`${process.env.AWS_STORAGE}/canopy/${kebabCasedProjectName}/${filename}`}
                 width="100%"
                 height="500px"
                 title={filename}
               />
               <a
-                href={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${filename}`}
+                href={`${process.env.AWS_STORAGE}/canopy/${kebabCasedProjectName}/${filename}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

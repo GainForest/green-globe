@@ -268,9 +268,25 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'XPRIZE',
   },
   {
-    name: 'XPRIZE Rafts',
+    name: 'BiodivX Raft Deployment',
     type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/rafts.geojson`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/rafts.geojson`,
+    description:
+      'Canopy rafts deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (11 July)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_surface.geojson`,
+    description:
+      'Canopy rafts deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Water DNA Sampling (11 July)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_water.geojson`,
     description:
       'Canopy rafts deployed by ETH BiodivX',
     category: 'XPRIZE',

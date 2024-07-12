@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-
 import { FileText } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-
 import { toKebabCase } from 'src/utils/toKebabCase'
 
 const PDF_FILES = [
   'canopy_sizes.pdf',
 ]
+
+const MAP_URL = 'https://andrewcottam.github.io/web_apps/mapboxGL/finals.html'
 
 interface PdfStatus {
   filename: string
@@ -23,7 +23,6 @@ export const CanopyInsights = () => {
 
   useEffect(() => {
     if (kebabCasedProjectName) {
-      // Check each PDF file
       Promise.all(
         PDF_FILES.map((file) =>
           fetch(
@@ -44,7 +43,20 @@ export const CanopyInsights = () => {
 
   return (
     <Container>
-      <h2>Canopy Analysis Plots</h2>
+      <h2>Canopy Analysis Insights</h2>
+
+      <MapContainer>
+        <h3>Interactive Canopy Map</h3>
+        <iframe
+          src={MAP_URL}
+          title="Canopy Map"
+          width="100%"
+          height="500px"
+          frameBorder="0"
+        />
+      </MapContainer>
+
+      <h3>Canopy Analysis Plots</h3>
       {availablePdfs.length > 0 ? (
         <PdfContainer>
           {availablePdfs.map(({ filename }) => (
@@ -75,10 +87,27 @@ export const CanopyInsights = () => {
   )
 }
 
-const Loading = () => <Container>Loading Canopy analysis plots...</Container>
+const Loading = () => <Container>Loading Canopy analysis insights...</Container>
 
 const Container = styled.div`
   margin: 16px 0px;
+`
+
+const MapContainer = styled.div`
+  margin-bottom: 24px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+
+  h3 {
+    padding: 12px;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+
+  iframe {
+    border: none;
+  }
 `
 
 const PdfContainer = styled.div`

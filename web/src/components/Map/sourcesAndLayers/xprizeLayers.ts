@@ -268,6 +268,13 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'XPRIZE',
   },
   {
+    name: 'XPRIZE Finals Site',
+    type: 'geojson_line',
+    endpoint: `${process.env.AWS_STORAGE}/layers/test.geojson`,
+    description: 'Test Site for the XPRIZE Rainforest Finals',
+    category: 'XPRIZE',
+  },
+  {
     name: 'BiodivX Raft Deployment',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/rafts.geojson`,

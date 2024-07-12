@@ -7,13 +7,7 @@ import styled from 'styled-components'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
 const PDF_FILES = [
-  'biomass_plot.pdf',
-  'embeddings_plot.pdf',
-  'order_composition_plot.pdf',
-  'rarefaction_plot.pdf',
-  'size_distribution_plot.pdf',
-  'spatial_plot.pdf',
-  'temporal_plot.pdf',
+  'canopy_sizes.pdf',
 ]
 
 interface PdfStatus {

@@ -37,7 +37,7 @@ export const addGeojsonPointSourceAndLayer = async (
         emoji = '🏔️'
         break
       case layerNameLower.includes('raft'):
-        color = '#39CCCC' // 🛶 Raft: Teal
+        color = '#000000' // 🛶 Raft: Teal
         emoji = '🛶'
         break
     }

@@ -46,7 +46,6 @@ export const CanopyInsights = () => {
   return (
     <Container>
       <h2>Canopy Analysis Insights</h2>
-
       <MapContainer>
         <h3>Interactive Canopy Map</h3>
         <iframe

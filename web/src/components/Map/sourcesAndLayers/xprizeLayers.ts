@@ -58,23 +58,119 @@ const hardcodedLayers: GeospatialLayer[] = [
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/rafts.geojson`,
     description:
-      'Canopy rafts deployed by ETH BiodivX',
+      'Rafts deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
-    name: 'BiodivX Surface DNA Sampling (11 & 12 July)',
+    name: 'BiodivX Surface DNA Sampling (S_002)',
     type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_surface.geojson`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_002.json`,
     description:
-      'Canopy rafts deployed by ETH BiodivX',
+      'Sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
-    name: 'BiodivX Water DNA Sampling (11 July)',
+    name: 'BiodivX Surface DNA Sampling (S_004)',
     type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_water.geojson`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_004.json`,
     description:
-      'Canopy rafts deployed by ETH BiodivX',
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_005)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_005.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_006)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_006.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_007)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_007.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_008)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_008.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_0010)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_010.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_011)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_011.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_012)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_012.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (S_002)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_002.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Water DNA Sampling (W_004)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Water DNA Sampling (W_005)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Water DNA Sampling (W_007)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Water DNA Sampling (W_008)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
+    description:
+      'Sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {

@@ -14,11 +14,12 @@ interface State {
     maximized: boolean
     legendName: LegendName | undefined
   }
-  display: {
+  map: {
     clickedCoordinates: {
       lat: number
       lon: number
     }
+    hoveredInformation: any
   }
   project: {
     id: string

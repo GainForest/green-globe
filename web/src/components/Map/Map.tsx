@@ -22,6 +22,7 @@ import { navigate } from '@redwoodjs/router'
 import XprizeLayerPicker from 'src/components/Map/components/XprizeLayerPicker'
 import { MAPBOX_FOG, initializeMapbox } from 'src/mapbox.config'
 // import { setClickedCoordinates } from 'src/reducers/displayReducer'
+import { setHoveredInformation } from 'src/reducers/mapReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { setProjectId, setProjectName } from 'src/reducers/projectsReducer'
 
@@ -68,6 +69,9 @@ ChartJS.register(
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
+  const hoveredInformation = useSelector(
+    (state: State) => state.map.hoveredInformation
+  )
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
@@ -80,7 +84,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
-  const [treeData, setTreeData] = useState({})
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>()
   const [selectedSpecies, setSelectedSpecies] = useState('')
@@ -219,7 +222,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
-      setTreeData({})
+      setHoveredInformation({})
       setSelectedSpecies('')
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
@@ -312,7 +315,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       const onMouseMoveUnclusteredTrees = (e) => {
         if (e.features.length > 0) {
           const treeInformation = getTreeInformation(e, activeProjectId)
-          setTreeData(treeInformation)
+          setHoveredInformation(treeInformation)
           if (hoveredTreeId !== null) {
             map.setFeatureState(
               { source: 'trees', id: hoveredTreeId },
@@ -351,12 +354,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       /> */}
       {/* <BackToGlobe map={map} /> */}
 
-      {Object.values(treeData)?.length > 0 && (
-        <TreeInfoBox
-          treeData={treeData}
-          setTreeData={setTreeData}
-          mediaSize={mediaSize}
-        />
+      {Object.values(hoveredInformation)?.length > 0 && (
+        <TreeInfoBox mediaSize={mediaSize} />
       )}
       {infoOverlay && (
         <>

@@ -6,6 +6,7 @@ import { toKebabCase } from 'src/utils/toKebabCase'
 
 const PDF_FILES = [
   'canopy_sizes.pdf',
+  'umap_projections.pdf'
 ]
 
 const MAP_URL = 'https://andrewcottam.github.io/web_apps/mapboxGL/finals.html'

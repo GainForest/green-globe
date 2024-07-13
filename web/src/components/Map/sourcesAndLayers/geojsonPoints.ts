@@ -40,6 +40,10 @@ export const addGeojsonPointSourceAndLayer = async (
         color = '#000000' // 🛶 Raft: Teal
         emoji = '🛶'
         break
+      case layerNameLower.includes('basecamp'):
+          color = '#2bce89'
+          emoji = ''
+          break
     }
 
     console.log(`Adding layer: ${emoji} ${layer.name} (${color})`)

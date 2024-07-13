@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage';
 import { toKebabCase } from 'src/utils/toKebabCase';
-import { FileText } from 'lucide-react';
+import { FileText, Video } from 'lucide-react';
 
 interface Individual {
   'Filename/Run': string;
@@ -58,22 +58,19 @@ export const InsectSpy = () => {
   return (
     <InsectContainer>
       <h2>Insect trap</h2>
-      {individuals.length ? (
-        <>
-          <p>Insects detected by our insect trap.</p>
-          {individuals.map((d) => (
-            <div key={d['Filename/Run']}>
-              <HexagonalImage
-                alt={d.class}
-                src={`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${d['Filename/Run']}`}
-              />
-              {d.class}
-            </div>
-          ))}
-        </>
-      ) : (
-        <p>An insect trap has not been set up in this region.</p>
-      )}
+
+      <h2>Video Showcase</h2>
+      <VideoContainer>
+        <iframe
+          width="100%"
+          height="315"
+          src="https://www.youtube.com/embed/mw0Jtz9roDs"
+          title="Insect Trap Video"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </VideoContainer>
 
       <h2>Analysis Plots</h2>
       {availablePdfs.length > 0 ? (
@@ -112,6 +109,10 @@ const Loading = () => (
 
 const InsectContainer = styled.div`
   margin: 16px 0px;
+`;
+
+const VideoContainer = styled.div`
+  margin-bottom: 24px;
 `;
 
 const PdfContainer = styled.div`

@@ -32,12 +32,6 @@ const RESTOR_KEYS = {
 
 const hardcodedLayers: GeospatialLayer[] = [
   {
-    name: 'Canopy Photos',
-    type: 'geojson_points_trees',
-    endpoint: `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/gps_data.geojson`,
-    category: 'tumbira',
-  },
-  {
     name: 'Amazon Mining Watch',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-mining.geojson`,
@@ -264,7 +258,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     type: 'geojson_line',
     endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
     description: 'Outlines the canopy extents of individual trees.',
-    category: 'tumbira',
+    category: 'Toca do Tatu',
+  },
+  {
+    name: 'Canopy Photos',
+    type: 'geojson_points_trees',
+    endpoint: `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/gps_data.geojson`,
+    description: 'High resolution close up images of the canopy from DJI drones.',
+    category: 'XPRIZE',
   },
   {
     name: 'XPRIZE Finals Orthomosaic Map',
@@ -318,7 +319,7 @@ const hardcodedLayers: GeospatialLayer[] = [
     type: 'tms_tile',
     endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,
     description: 'High-resolution drone layer of the competition area.',
-    category: 'tumbira',
+    category: 'Toca do Tatu',
   },
   {
     name: 'Tumbira SkySat April 14th',
@@ -326,7 +327,7 @@ const hardcodedLayers: GeospatialLayer[] = [
     endpoint: `${process.env.TITILER_ENDPOINT}/drone/tumbira/20240414_stitched.tif`,
     description:
       'High-resolution PlanetLabs SkySat layer of the Tumbira region.',
-    category: 'tumbira',
+    category: 'Tumbira',
   },
   {
     name: 'PM 2.5 (MK Tau)',
@@ -391,20 +392,20 @@ const hardcodedLayers: GeospatialLayer[] = [
 ]
 
 const tumbiraLayers: GeospatialLayer[] = [
-  {
-    name: 'Tumbira Deforestation',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_dur_w_rescaled_webmercator_cog.tif`,
-    description: 'Duration of deforestation events in the Tumbira region',
-    category: 'tumbira',
-  },
-  {
-    name: 'Tumbira Regrowth',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_dur_w_rescaled_webmercator_cog.tif`,
-    description: 'Duration of regrowth events in the Tumbira region',
-    category: 'tumbira',
-  },
+  // {
+  //   name: 'Tumbira Deforestation',
+  //   type: 'raster_tif',
+  //   endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_deforestation_dur_w_rescaled_webmercator_cog.tif`,
+  //   description: 'Duration of deforestation events in the Tumbira region',
+  //   category: 'tumbira',
+  // },
+  // {
+  //   name: 'Tumbira Regrowth',
+  //   type: 'raster_tif',
+  //   endpoint: `${process.env.TITILER_ENDPOINT}/layers/deforestation_regeneration/Tumbira_lt-gee_regrowth_map_dur_w_rescaled_webmercator_cog.tif`,
+  //   description: 'Duration of regrowth events in the Tumbira region',
+  //   category: 'tumbira',
+  // },
 ]
 
 export const layersData: GeospatialLayer[] = [

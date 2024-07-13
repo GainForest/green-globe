@@ -110,6 +110,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'XPRIZE',
   },
   {
+    name: 'BiodivX Surface DNA Sampling (S_009)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_009.json`,
+    description:
+      'Surface sampling deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
     name: 'BiodivX Surface DNA Sampling (S_0010)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_010.json`,

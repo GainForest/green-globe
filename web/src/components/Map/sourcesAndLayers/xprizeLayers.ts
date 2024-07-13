@@ -62,14 +62,6 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'XPRIZE',
   },
   {
-    name: 'BiodivX Surface DNA Sampling (S_002)',
-    type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_002.json`,
-    description:
-      'Sampling deployed by ETH BiodivX',
-    category: 'XPRIZE',
-  },
-  {
     name: 'BiodivX Surface DNA Sampling (S_004)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_004.json`,
@@ -152,7 +144,7 @@ const hardcodedLayers: GeospatialLayer[] = [
   {
     name: 'BiodivX Water DNA Sampling (W_005)',
     type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_005.json`,
     description:
       'Sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
@@ -160,7 +152,7 @@ const hardcodedLayers: GeospatialLayer[] = [
   {
     name: 'BiodivX Water DNA Sampling (W_007)',
     type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_007.json`,
     description:
       'Sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
@@ -168,7 +160,7 @@ const hardcodedLayers: GeospatialLayer[] = [
   {
     name: 'BiodivX Water DNA Sampling (W_008)',
     type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_008.json`,
     description:
       'Sampling deployed by ETH BiodivX',
     category: 'XPRIZE',

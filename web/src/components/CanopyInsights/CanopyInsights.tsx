@@ -10,6 +10,7 @@ const PDF_FILES = [
 ]
 
 const MAP_URL = 'https://andrewcottam.github.io/web_apps/mapboxGL/finals.html'
+const LABEL_URL = 'https://andrewcottam.github.io/web_apps/openlayers/label_crowns/dist/index.html'
 
 interface PdfStatus {
   filename: string
@@ -51,6 +52,17 @@ export const CanopyInsights = () => {
         <iframe
           src={MAP_URL}
           title="Canopy Map"
+          width="100%"
+          height="500px"
+          frameBorder="0"
+        />
+      </MapContainer>
+
+      <MapContainer>
+        <h3>Interactive Labeling Tool</h3>
+        <iframe
+          src={LABEL_URL}
+          title="Labelling Tool"
           width="100%"
           height="500px"
           frameBorder="0"

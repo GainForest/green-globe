@@ -7,7 +7,7 @@ export const fetchMeasuredTrees = (
   const projectName = activeProjectData?.project?.name
   const dashedProjectName = projectName?.toLowerCase().replaceAll(' ', '-')
   if (dashedProjectName) {
-    const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
+    const treesEndpoint = `canopy/${dashedProjectName}.geojson`
     const fetchData = async () => {
       await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
     }

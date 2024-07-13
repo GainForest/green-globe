@@ -21,7 +21,6 @@ import { navigate } from '@redwoodjs/router'
 
 import XprizeLayerPicker from 'src/components/Map/components/XprizeLayerPicker'
 import { MAPBOX_FOG, initializeMapbox } from 'src/mapbox.config'
-// import { setClickedCoordinates } from 'src/reducers/displayReducer'
 import { setHoveredInformation } from 'src/reducers/mapReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { setProjectId, setProjectName } from 'src/reducers/projectsReducer'
@@ -38,10 +37,9 @@ import { Legend as LayerLegend } from './components/Legend'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
-import { fetchEDNALocations, fetchMeasuredTrees } from './mapfetch'
+import { fetchEDNALocations } from './mapfetch'
 import {
   fetchProjectInfo,
-  fetchTreeShapefile,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
   fetchAllSiteData,
@@ -50,7 +48,7 @@ import {
 } from './mapfetch'
 // import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
-import { addAllSourcesAndLayers, getTreeInformation } from './maputils'
+import { addAllSourcesAndLayers } from './maputils'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
@@ -110,14 +108,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       dispatch(setProjectId(urlProjectId))
     }
   }, [urlProjectId, activeProjectId])
-
-  // Fetch tree data
-  // TODO: Bring back after xprize
-  // useEffect(() => {
-  //   if (activeProjectData) {
-  //     fetchMeasuredTrees(activeProjectData, setActiveProjectTreesPlanted)
-  //   }
-  // }, [activeProjectData])
 
   // Set initial layers on load
   useEffect(() => {
@@ -314,17 +304,23 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
       const onMouseMoveUnclusteredTrees = (e) => {
         if (e.features.length > 0) {
-          const treeInformation = getTreeInformation(e, activeProjectId)
-          setHoveredInformation(treeInformation)
+          // const treeInformation = getTreeInformation(e, activeProjectId)
+          dispatch(
+            setHoveredInformation({
+              treePhotos: [
+                `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/trees-measured/${e.features[0].properties.filename}`,
+              ],
+            })
+          )
           if (hoveredTreeId !== null) {
             map.setFeatureState(
-              { source: 'trees', id: hoveredTreeId },
+              { source: 'Canopy Photos', id: hoveredTreeId },
               { hover: false }
             )
           }
-          hoveredTreeId = e.features[0].id
+          hoveredTreeId = e.features[0].properties.filename
           map.setFeatureState(
-            { source: 'trees', id: hoveredTreeId },
+            { source: 'Canopy Photos', id: hoveredTreeId }, // Hardcoded source for now
             { hover: true }
           )
         }

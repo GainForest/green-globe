@@ -220,7 +220,7 @@ margin-top: 4px;
 }
 
 .tree-photo {
-  border-radius: 0px 0px 8px 8px;
+  border-radius: 8px;
   top: 230px;
   max-height: 320px;
 }

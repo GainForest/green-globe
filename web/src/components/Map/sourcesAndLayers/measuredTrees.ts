@@ -1,29 +1,32 @@
 import mapboxgl from 'mapbox-gl'
 
-export const addMeasuredTreesSourceAndLayer = (map: mapboxgl.Map) => {
-  if (!map.getSource('trees')) {
-    map.addSource(
-      'trees',
-      treesSource({
-        type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            geometry: null,
-          },
-        ],
-      })
-    )
+import { GeospatialLayer } from 'src/types'
+
+export const addMeasuredTreesSourceAndLayer = (
+  map: mapboxgl.Map,
+  layer: GeospatialLayer
+) => {
+  if (!map.getSource(layer.name)) {
+    map.addSource(layer.name, treesSource(layer.endpoint))
   }
-  if (!map.getLayer('clusteredTrees')) {
-    map.addLayer(clusteredTreesLayer)
+  if (!map.getLayer(`clusteredTrees`)) {
+    map.addLayer(clusteredTreesLayer(layer.name))
   }
-  if (!map.getLayer('clusteredTreesCountText')) {
-    map.addLayer(clusteredTreesCountTextLayer)
+  if (!map.getLayer(`clusteredTreesCountText`)) {
+    map.addLayer(clusteredTreesCountTextLayer(layer.name))
   }
-  if (!map.getLayer('unclusteredTrees')) {
-    map.addLayer(unclusteredTreesLayer)
+  if (!map.getLayer(`unclusteredTrees`)) {
+    map.addLayer(unclusteredTreesLayer(layer.name))
   }
+}
+
+export const removeMeasuredTreesSourceAndLayer = (
+  map: mapboxgl.Map,
+  layer: GeospatialLayer
+) => {
+  map.removeLayer(`clusteredTrees`)
+  map.removeLayer(`clusteredTreesCountText`)
+  map.removeLayer(`unclusteredTrees`)
 }
 
 export const toggleMeasuredTreesLayer = (
@@ -41,18 +44,18 @@ export const toggleMeasuredTreesLayer = (
   }
 }
 
-export const treesSource = (treesGeoJson) => ({
+export const treesSource = (layerEndpoint: string) => ({
   type: 'geojson',
-  data: treesGeoJson,
-  cluster: true,
-  clusterMaxZoom: 15, // Max zoom to cluster points on
-  clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+  data: layerEndpoint,
+  // cluster: true,
+  // clusterMaxZoom: 15, // Max zoom to cluster points on
+  // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
 })
 
-export const clusteredTreesLayer = {
-  id: 'clusteredTrees',
+export const clusteredTreesLayer = (layerName: string) => ({
+  id: `clusteredTrees`,
   type: 'circle',
-  source: 'trees',
+  source: layerName,
   filter: ['has', 'point_count'],
   paint: {
     'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
@@ -61,39 +64,29 @@ export const clusteredTreesLayer = {
     'circle-stroke-color': '#ff77c1',
     'circle-stroke-opacity': 1,
   },
-}
+})
 
-export const clusteredTreesCountTextLayer = {
-  id: 'clusteredTreesCountText',
+export const clusteredTreesCountTextLayer = (layerName: string) => ({
+  id: `clusteredTreesCountText`,
   type: 'symbol',
-  source: 'trees',
+  source: layerName,
   filter: ['has', 'point_count'],
   layout: {
     'text-field': '{point_count_abbreviated}',
     'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
     'text-size': 12,
   },
-}
+})
 
-export const unclusteredTreesLayer = {
-  id: 'unclusteredTrees',
+export const unclusteredTreesLayer = (layerName: string) => ({
+  id: `unclusteredTrees`,
   type: 'circle',
-  source: 'trees',
+  source: layerName,
   filter: ['!', ['has', 'point_count']],
   paint: {
-    'circle-color': [
-      'case',
-      ['boolean', ['feature-state', 'hover'], false],
-      '#0883fe',
-      '#ff77c1',
-    ],
-    'circle-radius': [
-      'case',
-      ['boolean', ['feature-state', 'hover'], false],
-      8,
-      4,
-    ],
-    'circle-stroke-width': 1,
-    'circle-stroke-color': '#000000',
+    'circle-color': '#47BC85',
+    'circle-radius': 2,
+    'circle-stroke-color': '#47BC85',
+    'circle-stroke-width': 2,
   },
-}
+})

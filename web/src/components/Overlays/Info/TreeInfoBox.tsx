@@ -1,11 +1,8 @@
 import { useState } from 'react'
 
-import { useDispatch } from 'react-redux'
-import { useThemeUI } from 'theme-ui'
+import { useSelector } from 'react-redux'
 
-import { CloseButton } from 'src/components/Buttons/Close'
 import { breakpoints } from 'src/constants'
-import { setHoveredInformation } from 'src/reducers/mapReducer'
 import { State } from 'src/types'
 
 interface TreeData {
@@ -13,16 +10,15 @@ interface TreeData {
   treeHeight: string
   treeDBH: string
   dateOfMeasurement: string
-  treePhotos: string[] // string of aws endpoints
+  treePhotos: string[]
+  fileName: string[] // string of aws endpoints
 }
 
 export const TreeInfoBox = ({ mediaSize }) => {
-  const dispatch = useDispatch()
-
-  const hoveredInformation: TreeData = useState(
+  const hoveredInformation: TreeData = useSelector(
     (state: State) => state.map.hoveredInformation
   )
-  const { theme } = useThemeUI()
+
   const [photoIndex, setPhotoIndex] = useState(0)
   if (
     hoveredInformation.treePhotos[photoIndex]?.endsWith('mov') ||
@@ -44,10 +40,10 @@ export const TreeInfoBox = ({ mediaSize }) => {
         </video>
       </div>
     )
-  else
+  else {
     return (
       <>
-        <div
+        {/* <div
           className="tree-info"
           style={{
             boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
@@ -96,7 +92,8 @@ export const TreeInfoBox = ({ mediaSize }) => {
               }}
             />
           </div>
-        </div>
+        </div> */}
+
         {!hoveredInformation.treePhotos[0].endsWith('taxa_plants.png') && (
           <div>
             <img
@@ -182,4 +179,5 @@ export const TreeInfoBox = ({ mediaSize }) => {
         )}
       </>
     )
+  }
 }

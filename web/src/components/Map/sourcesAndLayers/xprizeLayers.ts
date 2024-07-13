@@ -32,6 +32,12 @@ const RESTOR_KEYS = {
 
 const hardcodedLayers: GeospatialLayer[] = [
   {
+    name: 'Canopy Photos',
+    type: 'geojson_points_trees',
+    endpoint: `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/gps_data.geojson`,
+    category: 'tumbira',
+  },
+  {
     name: 'Amazon Mining Watch',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-mining.geojson`,
@@ -264,7 +270,8 @@ const hardcodedLayers: GeospatialLayer[] = [
     name: 'XPRIZE Finals Orthomosaic Map',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/layers/finals/ortho_25_cog_3857.tif`,
-    description: 'High resolution orthomosaic map of the XPRIZE finals testing site by ETH BiodivX. Downsized for web display.',
+    description:
+      'High resolution orthomosaic map of the XPRIZE finals testing site by ETH BiodivX. Downsized for web display.',
     category: 'XPRIZE',
   },
   {

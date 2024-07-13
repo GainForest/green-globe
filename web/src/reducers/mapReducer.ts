@@ -29,7 +29,7 @@ export const displaySlice = createSlice({
       }
     },
     setHoveredInformation: (state, action) => {
-      state.hoveredInformation = action.payload.hoveredInformation
+      state.hoveredInformation = action.payload
     },
   },
 })

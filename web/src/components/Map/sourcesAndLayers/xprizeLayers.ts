@@ -32,6 +32,60 @@ const RESTOR_KEYS = {
 
 const hardcodedLayers: GeospatialLayer[] = [
   {
+    name: 'Canopy Photos',
+    type: 'geojson_points_trees',
+    endpoint: `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/gps_data.geojson`,
+    description: 'High resolution close up images of the canopy from DJI drones.',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'XPRIZE Finals Orthomosaic Map',
+    type: 'raster_tif',
+    endpoint: `${process.env.TITILER_ENDPOINT}/layers/finals/ortho_25_cog_3857.tif`,
+    description:
+      'High resolution orthomosaic map of the XPRIZE finals testing site by ETH BiodivX. Downsized for web display.',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'XPRIZE Finals Site',
+    type: 'geojson_line',
+    endpoint: `${process.env.AWS_STORAGE}/layers/test.geojson`,
+    description: 'Test Site for the XPRIZE Rainforest Finals',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Raft Deployment',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/rafts.geojson`,
+    description:
+      'Canopy rafts deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Surface DNA Sampling (11 & 12 July)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_surface.geojson`,
+    description:
+      'Canopy rafts deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'BiodivX Water DNA Sampling (11 July)',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_water.geojson`,
+    description:
+      'Canopy rafts deployed by ETH BiodivX',
+    category: 'XPRIZE',
+  },
+  {
+    name: 'XPRIZE Basecamp',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/basecamp.geojson`,
+    description:
+      'Basecamp location of the XPRIZE Rainforest Finals',
+    category: 'XPRIZE',
+  },
+  {
     name: 'Amazon Mining Watch',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/illegal-mining.geojson`,
@@ -259,60 +313,6 @@ const hardcodedLayers: GeospatialLayer[] = [
     endpoint: `${process.env.AWS_STORAGE}/layers/tree_crowns.geojson`,
     description: 'Outlines the canopy extents of individual trees.',
     category: 'Toca do Tatu',
-  },
-  {
-    name: 'Canopy Photos',
-    type: 'geojson_points_trees',
-    endpoint: `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/gps_data.geojson`,
-    description: 'High resolution close up images of the canopy from DJI drones.',
-    category: 'XPRIZE',
-  },
-  {
-    name: 'XPRIZE Finals Orthomosaic Map',
-    type: 'raster_tif',
-    endpoint: `${process.env.TITILER_ENDPOINT}/layers/finals/ortho_25_cog_3857.tif`,
-    description:
-      'High resolution orthomosaic map of the XPRIZE finals testing site by ETH BiodivX. Downsized for web display.',
-    category: 'XPRIZE',
-  },
-  {
-    name: 'XPRIZE Finals Site',
-    type: 'geojson_line',
-    endpoint: `${process.env.AWS_STORAGE}/layers/test.geojson`,
-    description: 'Test Site for the XPRIZE Rainforest Finals',
-    category: 'XPRIZE',
-  },
-  {
-    name: 'BiodivX Raft Deployment',
-    type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/rafts.geojson`,
-    description:
-      'Canopy rafts deployed by ETH BiodivX',
-    category: 'XPRIZE',
-  },
-  {
-    name: 'BiodivX Surface DNA Sampling (11 & 12 July)',
-    type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_surface.geojson`,
-    description:
-      'Canopy rafts deployed by ETH BiodivX',
-    category: 'XPRIZE',
-  },
-  {
-    name: 'BiodivX Water DNA Sampling (11 July)',
-    type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/dna_water.geojson`,
-    description:
-      'Canopy rafts deployed by ETH BiodivX',
-    category: 'XPRIZE',
-  },
-  {
-    name: 'XPRIZE Basecamp',
-    type: 'geojson_points',
-    endpoint: `${process.env.AWS_STORAGE}/layers/finals/basecamp.geojson`,
-    description:
-      'Basecamp location of the XPRIZE Rainforest Finals',
-    category: 'XPRIZE',
   },
   {
     name: 'Toca do Tatu Drone Flights',

@@ -299,6 +299,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     category: 'XPRIZE',
   },
   {
+    name: 'XPRIZE Basecamp',
+    type: 'geojson_points',
+    endpoint: `${process.env.AWS_STORAGE}/layers/finals/basecamp.geojson`,
+    description:
+      'Basecamp location of the XPRIZE Rainforest Finals',
+    category: 'XPRIZE',
+  },
+  {
     name: 'Toca do Tatu Drone Flights',
     type: 'tms_tile',
     endpoint: `${process.env.AWS_STORAGE}/layers/tms_tiles/{z}/{x}/{y}.png`,

@@ -45,7 +45,7 @@ const Navbar = ({ isAuthenticated, mediaSize }) => {
           height: '100%',
         }}
       ></div> */}
-      <BiodiversityReportButton />
+      {/* <BiodiversityReportButton /> */}
       {isAuthenticated && (
         <div
           style={{

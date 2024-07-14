@@ -35,8 +35,17 @@ const hardcodedLayers: GeospatialLayer[] = [
     name: 'Canopy Photos',
     type: 'geojson_points_trees',
     endpoint: `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/gps_data.geojson`,
-    description: 'High resolution close up images of the canopy from DJI drones.',
+    description:
+      'High resolution close up images of the canopy from DJI drones.',
     category: 'XPRIZE',
+  },
+  {
+    name: 'Overall Species Richness',
+    type: 'choropleth',
+    endpoint: `${process.env.AWS_STORAGE}/layers/edna_species_richness.geojson`,
+    description: 'The number of species found in each sample area.',
+    category: 'XPRIZE',
+    legend: 'species_richness',
   },
   {
     name: 'XPRIZE Finals Orthomosaic Map',

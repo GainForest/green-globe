@@ -6,11 +6,13 @@ export const addChoroplethSourceAndLayers = (
   map: mapboxgl.Map,
   layer: GeospatialLayer
 ) => {
-  if (!map.getSource(layer.name))
+  console.log('layer endpoint', layer.endpoint)
+  if (!map.getSource(layer.name)) {
     map.addSource(layer.name, {
       type: 'geojson',
-      data: `${process.env.AWS_STORAGE}/layers/species_richness/example-project.geojson`,
+      data: layer.endpoint,
     })
+  }
 
   if (!map.getLayer(layer.name)) {
     map.addLayer({

@@ -26,6 +26,36 @@ const PDF_FILES = [
   'temporal_plot.pdf'
 ];
 
+const VideoContainer = styled.div`
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+`;
+
+const VideoTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  padding: 16px;
+  background-color: #f7fafc;
+  margin: 0;
+`;
+
+const VideoWrapper = styled.div`
+  position: relative;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+`;
+
+const StyledIframe = styled.iframe`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+`;
+
 export const InsectSpy = () => {
   const [individuals, setIndividuals] = useState<Individual[]>([]);
   const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([]);
@@ -61,29 +91,39 @@ export const InsectSpy = () => {
 
       <h2>Video Showcase</h2>
       <VideoContainer>
-        <h2>Timelapse on Raft 2</h2>
-        <iframe
-          width="100%"
-          height="315"
-          src="https://www.youtube.com/embed/mw0Jtz9roDs"
-          title="Insect Trap Video"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        <VideoTitle>Timelapse on Raft 1</VideoTitle>
+        <VideoWrapper>
+          <StyledIframe
+            src="https://youtube.com/embed/it2942twV8o"
+            title="Insect Trap Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></StyledIframe>
+        </VideoWrapper>
       </VideoContainer>
 
       <VideoContainer>
-        <h2>Timelapse on Raft 3</h2>
-        <iframe
-          width="100%"
-          height="315"
-          src="https://www.youtube.com/embed/ndPckbi3Evw"
-          title="Insect Trap Video"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        <VideoTitle>Timelapse on Raft 2</VideoTitle>
+        <VideoWrapper>
+          <StyledIframe
+            src="https://www.youtube.com/embed/mw0Jtz9roDs"
+            title="Insect Trap Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></StyledIframe>
+        </VideoWrapper>
+      </VideoContainer>
+
+      <VideoContainer>
+        <VideoTitle>Timelapse on Raft 3</VideoTitle>
+        <VideoWrapper>
+          <StyledIframe
+            src="https://www.youtube.com/embed/ndPckbi3Evw"
+            title="Insect Trap Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></StyledIframe>
+        </VideoWrapper>
       </VideoContainer>
 
       <h2>Analysis Plots</h2>
@@ -125,10 +165,6 @@ const InsectContainer = styled.div`
   margin: 16px 0px;
 `;
 
-const VideoContainer = styled.div`
-  margin-bottom: 24px;
-`;
-
 const PdfContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -138,9 +174,16 @@ const PdfContainer = styled.div`
 
 const PdfItem = styled.div`
   padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   text-align: center;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
 
   iframe {
     border: none;
@@ -150,6 +193,7 @@ const PdfItem = styled.div`
   a {
     color: #0066cc;
     text-decoration: none;
+    font-weight: 500;
     &:hover {
       text-decoration: underline;
     }
@@ -162,17 +206,18 @@ const PlaceholderContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 32px;
-  background-color: #f5f5f5;
+  background-color: #f7fafc;
   border-radius: 8px;
   text-align: center;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 
   svg {
     margin-bottom: 16px;
-    color: #999;
+    color: #a0aec0;
   }
 
   p {
-    color: #666;
+    color: #4a5568;
     font-size: 18px;
   }
 `;

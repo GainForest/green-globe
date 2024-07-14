@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
+import Modal from 'react-modal'
 import { useSelector } from 'react-redux'
 
 import { toKebabCase } from 'src/utils/toKebabCase'
@@ -11,10 +12,43 @@ export const PredictedAnimals = ({ mediaSize }) => {
   // const [predictedBirds, setPredictedBirds] = useState([])
   const [predictions, setPredictions] = useState([])
   const [loading, setLoading] = useState(true)
-
+  const [modalWidth, setModalWidth] = useState(0)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [category, setCategory] = useState([])
   const kebabCasedProjectName = useSelector((state: any) =>
     toKebabCase(state.project.name)
   )
+
+  const openModal = (speciesList) => {
+    setCategory(speciesList)
+    setModalIsOpen(true)
+  }
+
+  useEffect(() => {
+    // 144 is the width of the species card, 4 is the margin, and 78 is the width of the modal border
+    const itemsPerRow = Math.floor(mediaSize / (144 + 4))
+    setModalWidth(itemsPerRow * (144 + 4) - 4 - 78)
+  }, [mediaSize])
+
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      width: `${modalWidth}px`,
+      height: '80%',
+      right: 'auto',
+      bottom: 'auto',
+      transform: 'translate(-50%, -50%)',
+      borderRadius: '10px',
+      padding: '20px',
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      scrollbarWidth: 'none',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      zIndex: 3,
+    },
+  }
 
   useEffect(() => {
     const getCsv = async () => {
@@ -119,6 +153,14 @@ export const PredictedAnimals = ({ mediaSize }) => {
                 See more {predictions[type].name}s
               </button>
             </div>
+            <Modal
+              key={modalWidth}
+              isOpen={modalIsOpen}
+              onRequestClose={() => setModalIsOpen(false)}
+              style={customStyles}
+            >
+              <KingdomList speciesList={category} mediaSize={mediaSize} />
+            </Modal>
           </div>
         ))}
     </div>

@@ -61,6 +61,19 @@ export const InsectSpy = () => {
 
       <h2>Video Showcase</h2>
       <VideoContainer>
+        <h2>Timelapse on Raft 1</h2>
+        <iframe
+          width="100%"
+          height="315"
+          src="https://youtube.com/embed/it2942twV8o"
+          title="Insect Trap Video"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </VideoContainer>
+
+      <VideoContainer>
         <h2>Timelapse on Raft 2</h2>
         <iframe
           width="100%"

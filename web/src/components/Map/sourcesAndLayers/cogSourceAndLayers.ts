@@ -12,6 +12,7 @@ import {
   removeMeasuredTreesSourceAndLayer,
 } from './measuredTrees'
 import { addRasterSourceAndLayer } from './raster'
+import { addShannonChoroplethSourceAndLayers } from './shannonChoropleth'
 import { addTMSTileSourceAndLayer } from './tmsTile'
 
 export const addNamedSource = (map: mapboxgl.Map, layer: GeospatialLayer) => {
@@ -29,6 +30,9 @@ export const addNamedSource = (map: mapboxgl.Map, layer: GeospatialLayer) => {
   }
   if (!map.getSource(layer.name) && layer.type == 'choropleth') {
     addChoroplethSourceAndLayers(map, layer)
+  }
+  if (!map.getSource(layer.name) && layer.type == 'choropleth_shannon') {
+    addShannonChoroplethSourceAndLayers(map, layer)
   }
   if (!map.getSource(layer.name) && layer.type == 'geojson_points_trees') {
     addMeasuredTreesSourceAndLayer(map, layer)

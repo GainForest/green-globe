@@ -80,6 +80,7 @@ interface GeospatialLayer {
   name: string
   type:
     | 'choropleth'
+    | 'choropleth_shannon'
     | 'raster_tif'
     | 'tms_tile'
     | 'geojson_line' // eg shapefiles

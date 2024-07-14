@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl'
 
 import { GeospatialLayer } from 'src/types'
 
-export const addChoroplethSourceAndLayers = (
+export const addShannonChoroplethSourceAndLayers = (
   map: mapboxgl.Map,
   layer: GeospatialLayer
 ) => {
@@ -22,18 +22,18 @@ export const addChoroplethSourceAndLayers = (
         'fill-color': [
           'interpolate',
           ['linear'],
-          ['get', 'species_richness'], // hardcoded for now
+          ['get', 'shannon_index'], // hardcoded for now
           0,
           '#471064',
-          10,
+          1,
           '#306D8E',
-          20,
+          2,
           '#219F86',
-          30,
+          3,
           '#68CB5C',
-          40,
+          4,
           '#71CE55',
-          50,
+          5,
           '#FDE724',
         ],
         'fill-opacity': 1,

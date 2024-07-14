@@ -48,6 +48,14 @@ const hardcodedLayers: GeospatialLayer[] = [
     legend: 'species_richness',
   },
   {
+    name: 'Shannon Index',
+    type: 'choropleth_shannon',
+    endpoint: `${process.env.AWS_STORAGE}/layers/edna_shannon_index.geojson`,
+    description: 'The shannon index of each sample area.',
+    category: 'XPRIZE',
+    legend: 'shannon_index',
+  },
+  {
     name: 'XPRIZE Finals Orthomosaic Map',
     type: 'raster_tif',
     endpoint: `${process.env.TITILER_ENDPOINT}/layers/finals/ortho_25_cog_3857.tif`,

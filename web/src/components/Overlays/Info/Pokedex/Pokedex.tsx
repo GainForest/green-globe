@@ -37,13 +37,20 @@ export const Pokedex = ({ mediaSize }) => {
       )
       const kingdoms = {}
 
-      data.forEach((d) => {
+      const uniqueSpecies = Object.values(
+        data.reduce((acc, item) => {
+          acc[item.scientificName] = item
+          return acc
+        }, {})
+      )
+
+      uniqueSpecies.forEach((d) => {
         let kingdom
         if (d.kingdom === 'Plantae') {
           kingdom = 'Plant'
         } else if (d.phylum === 'Arthropoda') {
           kingdom = 'Insect'
-        } else kingdom = 'Bird'
+        } else kingdom = 'Animal'
 
         if (!kingdoms[kingdom]) {
           kingdoms[kingdom] = []

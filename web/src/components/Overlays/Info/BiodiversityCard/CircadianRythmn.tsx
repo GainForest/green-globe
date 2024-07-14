@@ -42,7 +42,7 @@ export const CircadianRythmn = () => {
         <h3>Raft 2 (Maximum)</h3>
         <div>
           <BarCircadianRhythmChart
-            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/median_results_final_r2.csv`}
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final_r2.csv`}
           />
         </div>
         <h3>Raft 3 (Maximum)</h3>

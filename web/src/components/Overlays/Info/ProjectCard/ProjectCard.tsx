@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react'
-
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
-
 import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
-
 import { InfoTag } from '../../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoBox } from '../InfoBox'
-
 import { ProjectSiteButtons } from './ProjectSiteButtons'
+
+const fetchProjectNumbers = async (projectId) => {
+  try {
+    const response = await fetch(`${process.env.AWS_STORAGE}/summary${projectId}.json`)
+    if (!response.ok) throw new Error('Failed to fetch project numbers')
+    return await response.json()
+  } catch (error) {
+    console.error('Error fetching project numbers:', error)
+    return null
+  }
+}
 
 export const ProjectCard = ({
   activeProjectData,
@@ -20,37 +27,22 @@ export const ProjectCard = ({
   handleClick,
 }) => {
   const [promoVideo, setPromoVideo] = useState('')
-
+  const [projectNumbers, setProjectNumbers] = useState(null)
   const { theme } = useThemeUI()
 
   useEffect(() => {
     const video = activeProjectData?.project?.assets?.find(
-      (d) => d.classification == 'Promotional Video'
+      (d) => d.classification === 'Promotional Video'
     )
-    if (video) {
-      setPromoVideo(video.awsCID)
-    } else {
-      setPromoVideo('')
+    setPromoVideo(video?.awsCID || '')
+
+    if (activeProjectData?.project?.id) {
+      fetchProjectNumbers(activeProjectData.project.id).then(setProjectNumbers)
     }
   }, [activeProjectData])
 
   if (!activeProjectData) {
-    return (
-      <InfoBox mediaSize={mediaSize}>
-        <ThemedSkeleton height={250} />
-        <div style={{ margin: '8px 24px' }}>
-          <h1>
-            <ThemedSkeleton width={'80%'} />
-          </h1>
-          <p>
-            <ThemedSkeleton width={'100px'} />
-          </p>
-          <p>
-            <ThemedSkeleton count={3.5} />
-          </p>
-        </div>
-      </InfoBox>
-    )
+    return <ProjectCardSkeleton mediaSize={mediaSize} />
   }
 
   return (
@@ -60,8 +52,8 @@ export const ProjectCard = ({
         promoVideo={promoVideo}
         handleClick={handleClick}
       />
-      <TextContainer>
-        <ProjectNameCountryAndArea
+      <ContentContainer>
+        <ProjectHeader
           activeProjectData={activeProjectData}
           mediaSize={mediaSize}
           theme={theme}
@@ -73,158 +65,117 @@ export const ProjectCard = ({
         />
         <Description activeProjectData={activeProjectData} />
         <Objectives activeProjectData={activeProjectData} />
-      </TextContainer>
+        {projectNumbers && <SummaryStatistics numbers={projectNumbers} />}
+      </ContentContainer>
     </InfoBox>
   )
 }
 
-const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
-  const splash = activeProjectData?.project?.assets?.filter((d) =>
-    d.classification?.includes('Splash')
-  )[0]?.awsCID
+const ProjectCardSkeleton = ({ mediaSize }) => (
+  <InfoBox mediaSize={mediaSize}>
+    <ThemedSkeleton height={250} />
+    <ContentContainer>
+      <h1><ThemedSkeleton width="80%" /></h1>
+      <p><ThemedSkeleton width="100px" /></p>
+      <p><ThemedSkeleton count={3.5} /></p>
+    </ContentContainer>
+  </InfoBox>
+)
 
-  if (splash) {
-    return (
-      <div
-        className={promoVideo && 'community-photo'}
-        style={{ width: '100%', height: '250px' }}
-      >
-        <button
-          style={{
-            background: 'none',
-            border: 'none',
-            padding: 0,
-            cursor: 'pointer',
-            width: '100%',
-            height: '250px',
-          }}
-          onClick={() => promoVideo && handleClick(promoVideo, 'video')}
-        >
-          <img
-            style={{
-              width: '100%',
-              height: '250px',
-              objectFit: 'cover',
-              borderTopLeftRadius: '8px',
-              borderTopRightRadius: '8px',
-            }}
-            src={`${process.env.AWS_STORAGE}/${splash}`}
-            alt="Project Splash"
-          />
-          {promoVideo && (
-            <img
-              style={{
-                width: '24px',
-                height: '24px',
-                position: 'absolute',
-                left: '16px',
-                top: '208px',
-                opacity: '75%',
-              }}
-              src={'/play.png'}
-              alt="play"
-            />
-          )}
-        </button>
-      </div>
-    )
-  } else {
-    return (
-      <img
-        src={`${process.env.AWS_STORAGE}/project-splash/default-project-splash.png`}
-        style={{ width: '100%', height: '250px', objectFit: 'cover' }}
-        alt={'default project splash'}
+const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
+  const splash = activeProjectData?.project?.assets?.find(d =>
+    d.classification?.includes('Splash'))?.awsCID
+
+  return (
+    <SplashContainer>
+      <SplashImage
+        src={splash ? `${process.env.AWS_STORAGE}/${splash}` : `${process.env.AWS_STORAGE}/project-splash/default-project-splash.png`}
+        alt={splash ? "Project Splash" : "Default project splash"}
       />
-    )
-  }
+      {promoVideo && (
+        <PlayButton onClick={() => handleClick(promoVideo, 'video')}>
+          <PlayIcon src="/play.png" alt="play" />
+        </PlayButton>
+      )}
+    </SplashContainer>
+  )
 }
 
-const ProjectNameCountryAndArea = ({ activeProjectData, mediaSize, theme }) => (
-  <div>
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <ProjectLogo project={activeProjectData?.project} theme={theme} />
-      <h1
-        style={{
-          fontSize:
-            mediaSize >= breakpoints.xl
-              ? 24
-              : mediaSize > breakpoints.m
-              ? 22
-              : mediaSize > breakpoints.s
-              ? 18
-              : 16,
-        }}
-      >
+const ProjectHeader = ({ activeProjectData, mediaSize, theme }) => (
+  <HeaderContainer>
+    <ProjectLogo project={activeProjectData?.project} theme={theme} />
+    <div>
+      <ProjectTitle mediaSize={mediaSize}>
         {activeProjectData?.project?.name || ''}
-      </h1>
+      </ProjectTitle>
+      <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
     </div>
-    <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
-  </div>
+  </HeaderContainer>
 )
 
 const CountryAndArea = ({ activeProjectData, theme }) => {
   const area = Math.round(activeProjectData?.project?.area / 10000)
+  const country = countryToEmoji[activeProjectData?.project?.country]
+
   return (
-    <p style={{ fontSize: '0.75rem' }}>
-      {`${countryToEmoji[activeProjectData?.project?.country]?.emoji}
-${countryToEmoji[activeProjectData?.project?.country]?.name}`}
+    <CountryAreaText>
+      {`${country?.emoji} ${country?.name}`}
       {area > 0 && (
         <>
-          <span
-            style={{
-              margin: '0 8px',
-              color: theme.colors.secondary as string,
-            }}
-          >
-            {'|'}
-          </span>
-          {area} {area == 1 ? 'hectare' : 'hectares'}
+          <Separator theme={theme}>|</Separator>
+          {area} {area === 1 ? 'hectare' : 'hectares'}
         </>
       )}
-    </p>
+    </CountryAreaText>
   )
 }
 
 const Description = ({ activeProjectData }) => (
-  <div>
+  <Section>
     <h3>Description</h3>
-    <p style={{ fontSize: '0.875rem', whiteSpace: 'pre-line' }}>
+    <DescriptionText>
       {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
-    </p>
-  </div>
+    </DescriptionText>
+  </Section>
 )
 
 const Objectives = ({ activeProjectData }) => {
   const objectives = activeProjectData.project?.objective
     ?.split(',')
-    ?.filter((d) => d) // The filter is to remove empty strings
-  if (objectives?.length) {
-    return (
-      <>
-        <h3>Objective</h3>
-        <ObjectivesContainer style={{ margin: '2px' }}>
-          {objectives.map((d) => (
-            <InfoTag key={`infotag-${d}`} style={{ color: '#00000' }}>
-              {d}
-            </InfoTag>
-          ))}
-        </ObjectivesContainer>
-      </>
-    )
-  } else {
-    return null
-  }
+    ?.filter(Boolean)
+
+  if (!objectives?.length) return null
+
+  return (
+    <Section>
+      <h3>Objective</h3>
+      <ObjectivesContainer>
+        {objectives.map((objective) => (
+          <InfoTag key={`infotag-${objective}`}>{objective}</InfoTag>
+        ))}
+      </ObjectivesContainer>
+    </Section>
+  )
 }
+
+const SummaryStatistics = ({ numbers }) => (
+  <Section>
+    <h3>Project Summary</h3>
+    <StatisticsGrid>
+      {Object.entries(numbers).map(([key, value]) => (
+        <StatItem key={key}>
+          <StatValue>{value}</StatValue>
+          <StatLabel>{key.replace(/([A-Z])/g, ' $1').trim()}</StatLabel>
+        </StatItem>
+      ))}
+    </StatisticsGrid>
+  </Section>
+)
 
 const ProjectLogo = ({ theme, project }) => {
   const [logoAspectRatio, setLogoAspectRatio] = useState(1)
-  const logo =
-    project?.assets?.find((d) => d.classification == 'Logo')?.awsCID ||
-    undefined
+  const logo = project?.assets?.find((d) => d.classification === 'Logo')?.awsCID
+
   useEffect(() => {
     if (logo) {
       const img = new Image()
@@ -235,48 +186,126 @@ const ProjectLogo = ({ theme, project }) => {
     }
   }, [logo])
 
+  if (!logo) return null
+
   const isLogoCircular = Math.abs(logoAspectRatio - 1) < 0.1
 
-  return logo ? (
+  return (
     <LogoContainer theme={theme} isCircular={isLogoCircular}>
-      <Logo src={`${process.env.AWS_STORAGE}/${logo}`} alt={'Logo'} />
+      <Logo src={`${process.env.AWS_STORAGE}/${logo}`} alt="Logo" />
     </LogoContainer>
-  ) : null
+  )
 }
 
-const LogoContainer = styled.div<{ theme }>`
-  height: 80px;
-  width: 80px;
-  margin-top: 16px;
-  margin-right: 24px;
-  background-color: ${(props) => props.theme.colors.hinted};
-  border-radius: ${(props) => (props.isCircular ? '50%' : '0')};
-`
-
-const Logo = styled.img`
-  min-height: 80px;
-  min-width: 80px;
-  height: 80px;
-  width: 80px;
-
-  @media (max-width: ${breakpoints.m}px) {
-    height: 60px;
-    width: 60px;
-  }
-`
-const ObjectivesContainer = styled.div`
-  display: flex;
-  & > * {
-    margin: 8px 0;
-  }
-  & > *:not(:first-child) {
-    margin: 8px;
-  }
-`
-
-const TextContainer = styled.div`
-  margin: 0 24px;
+const ContentContainer = styled.div`
+  margin: 24px;
   & > *:not(:first-child) {
     margin-top: 20px;
   }
+`
+
+const SplashContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 250px;
+`
+
+const SplashImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+`
+
+const PlayButton = styled.button`
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+`
+
+const PlayIcon = styled.img`
+  width: 24px;
+  height: 24px;
+  opacity: 0.75;
+`
+
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const ProjectTitle = styled.h1`
+  font-size: ${({ mediaSize }) =>
+    mediaSize >= breakpoints.xl
+      ? '24px'
+      : mediaSize > breakpoints.m
+      ? '22px'
+      : mediaSize > breakpoints.s
+      ? '18px'
+      : '16px'};
+`
+
+const CountryAreaText = styled.p`
+  font-size: 0.75rem;
+`
+
+const Separator = styled.span`
+  margin: 0 8px;
+  color: ${({ theme }) => theme.colors.secondary};
+`
+
+const Section = styled.div`
+  margin-top: 20px;
+`
+
+const DescriptionText = styled.p`
+  font-size: 0.875rem;
+  white-space: pre-line;
+`
+
+const ObjectivesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`
+
+const LogoContainer = styled.div`
+  height: 80px;
+  width: 80px;
+  margin-right: 24px;
+  background-color: ${({ theme }) => theme.colors.hinted};
+  border-radius: ${({ isCircular }) => (isCircular ? '50%' : '0')};
+  overflow: hidden;
+`
+
+const Logo = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`
+
+const StatisticsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+`
+
+const StatItem = styled.div`
+  text-align: center;
+`
+
+const StatValue = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.primary};
+`
+
+const StatLabel = styled.div`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.text};
 `

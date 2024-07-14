@@ -43,7 +43,7 @@ export const Pokedex = ({ mediaSize }) => {
           kingdom = 'Plant'
         } else if (d.phylum === 'Arthropoda') {
           kingdom = 'Insect'
-        } else kingdom = 'Bird'
+        } else kingdom = 'Animal'
 
         if (!kingdoms[kingdom]) {
           kingdoms[kingdom] = []

@@ -9,13 +9,7 @@ import { toKebabCase } from 'src/utils/toKebabCase'
 import { ModalWrapper } from '../ModalWrapper/ModalWrapper'
 
 const PDF_FILES = [
-  'biomass_plot.pdf',
-  'embeddings_plot.pdf',
-  'order_composition_plot.pdf',
-  'rarefaction_plot.pdf',
-  'size_distribution_plot.pdf',
-  'spatial_plot.pdf',
-  'temporal_plot.pdf',
+  'OTU_richness.pdf',
 ]
 
 const PNG_FILES = [

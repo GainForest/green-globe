@@ -140,7 +140,7 @@ const PDFViewer = ({ projectId }) => {
         src={`${process.env.AWS_STORAGE}/dendogram/${projectId}.pdf`}
         title="PDF Viewer"
         width="100%"
-        height="100%"
+        height="500px"
         style={{ border: 'none' }}
       />
     </div>

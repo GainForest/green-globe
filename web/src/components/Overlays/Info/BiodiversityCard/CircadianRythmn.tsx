@@ -33,22 +33,28 @@ export const CircadianRythmn = () => {
           <h2>Soundscape</h2>
           <p> Measured soundscape of different frequencies.</p>
         </div>
-        <h3>Soundscape (Maximum)</h3>
+        <h3>Raft 1 (Maximum)</h3>
         <div>
           <BarCircadianRhythmChart
-            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final.csv`}
-          />
-          <LineCircadianRhythmChart
-            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final.csv`}
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final_r1.csv`}
           />
         </div>
-        <h3>Soundscape (Median)</h3>
+        <h3>Raft 2 (Maximum)</h3>
         <div>
           <BarCircadianRhythmChart
-            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/median_results_final.csv`}
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final_r2.csv`}
           />
-          <LineCircadianRhythmChart
-            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/median_results_final.csv`}
+        </div>
+        <h3>Raft 3 (Maximum)</h3>
+        <div>
+          <BarCircadianRhythmChart
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final_r3.csv`}
+          />
+        </div>
+        <h3>Raft Communication (Maximum)</h3>
+        <div>
+          <BarCircadianRhythmChart
+            csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final_rc.csv`}
           />
         </div>
         <AudioPlayer

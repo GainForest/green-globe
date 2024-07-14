@@ -8,6 +8,7 @@ const Dendogram = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [showPDF, setShowPDF] = useState(false);
   const containerRef = useRef(null);
 
   const kebabCasedProjectName = useSelector((state) =>
@@ -61,6 +62,10 @@ const Dendogram = () => {
     };
   }, [handleMouseMove, handleMouseUp]);
 
+  const toggleView = () => {
+    setShowPDF(!showPDF);
+  };
+
   if (!kebabCasedProjectName) {
     return <Loading />;
   }
@@ -79,31 +84,38 @@ const Dendogram = () => {
           <button onClick={handleZoomIn} className="px-4 py-2 bg-blue-500 text-white rounded">Zoom In</button>
           <button onClick={handleZoomOut} className="px-4 py-2 bg-blue-500 text-white rounded">Zoom Out</button>
           <button onClick={handleReset} className="px-4 py-2 bg-blue-500 text-white rounded">Reset</button>
+          <button onClick={toggleView} className="px-4 py-2 bg-green-500 text-white rounded">
+            {showPDF ? 'Show Dendrogram' : 'Show PDF'}
+          </button>
         </div>
-        <div
-          ref={containerRef}
-          className="overflow-hidden"
-          style={{
-            width: '100%',
-            height: '500px',
-            cursor: isDragging ? 'grabbing' : 'grab'
-          }}
-          onMouseDown={handleMouseDown}
-        >
+        {showPDF ? (
+          <PDFViewer projectId={kebabCasedProjectName} />
+        ) : (
           <div
+            ref={containerRef}
+            className="overflow-hidden"
             style={{
-              transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
-              transformOrigin: '0 0',
-              transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+              width: '100%',
+              height: '500px',
+              cursor: isDragging ? 'grabbing' : 'grab'
             }}
+            onMouseDown={handleMouseDown}
           >
-            <img
-              src={`${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}_dendogram.svg`}
-              alt="Species dendrogram"
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
+            <div
+              style={{
+                transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
+                transformOrigin: '0 0',
+                transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+              }}
+            >
+              <img
+                src={`${process.env.AWS_STORAGE}/dendogram/${kebabCasedProjectName}_dendogram.svg`}
+                alt="Species dendrogram"
+                style={{ maxWidth: '100%', height: 'auto' }}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -120,5 +132,19 @@ const NoData = () => (
     <p className="text-center text-gray-600">No species dendrogram has been generated for this project.</p>
   </div>
 );
+
+const PDFViewer = ({ projectId }) => {
+  return (
+    <div className="w-full h-[500px]">
+      <iframe
+        src={`${process.env.AWS_STORAGE}/dendogram/${projectId}.pdf`}
+        title="PDF Viewer"
+        width="100%"
+        height="500px"
+        style={{ border: 'none' }}
+      />
+    </div>
+  );
+};
 
 export default Dendogram;

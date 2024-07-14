@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { FileText } from 'lucide-react'
+
+import { CircleHelp, FileText } from 'lucide-react'
 import { useSelector } from 'react-redux'
+import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
+
 import { toKebabCase } from 'src/utils/toKebabCase'
 
-const PDF_FILES = [
-  'canopy_sizes.pdf',
-  'umap_projections.pdf'
-]
+const PDF_FILES = ['canopy_sizes.pdf', 'umap_projections.pdf']
 
 const MAP_URL = 'https://andrewcottam.github.io/web_apps/mapboxGL/finals.html'
-const LABEL_URL = 'https://andrewcottam.github.io/web_apps/openlayers/label_crowns/dist/index.html'
+const LABEL_URL =
+  'https://andrewcottam.github.io/web_apps/openlayers/label_crowns/dist/index.html'
 
 interface PdfStatus {
   filename: string
@@ -73,7 +74,6 @@ export const CanopyInsights = () => {
           frameBorder="0"
         />
       </MapContainer>
-
       <MapContainer>
         <h3>Interactive Labeling Tool</h3>
         <iframe

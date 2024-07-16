@@ -32,12 +32,12 @@ import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
 import Button from './components/Button'
 import { LandCoverLegend } from './components/LandCoverLegend'
-import { Legend as LayerLegend } from './components/Legend'
 // import { LayerPickerOverlay } from './components/LayerPickerOverlay'
+import { Legend as LayerLegend } from './components/Legend'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
-import { fetchEDNALocations } from './mapfetch'
+import { fetchEDNALocations, fetchMeasuredTrees } from './mapfetch'
 import {
   fetchProjectInfo,
   fetchGainForestCenterpoints,
@@ -48,7 +48,7 @@ import {
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
-import { addAllSourcesAndLayers } from './maputils'
+import { addAllSourcesAndLayers, getTreeInformation } from './maputils'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
@@ -262,6 +262,20 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [map, activeProjectMosaic])
 
   useEffect(() => {
+    if (activeProjectData) {
+      const projectName = activeProjectData?.project?.name
+      const dashedProjectName = projectName.toLowerCase().replaceAll(' ', '-')
+      if (dashedProjectName) {
+        const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
+        const fetchData = async () => {
+          await fetchMeasuredTrees(treesEndpoint, setActiveProjectTreesPlanted)
+        }
+        fetchData().catch(console.error)
+      }
+    }
+  }, [activeProjectData])
+
+  useEffect(() => {
     if (!map) return
     const isMounted = true
     if (map && activeProjectTreesPlanted && isMounted) {
@@ -302,14 +316,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
       const onMouseMoveUnclusteredTrees = (e) => {
         if (e.features.length > 0) {
-          // const treeInformation = getTreeInformation(e, activeProjectId)
-          dispatch(
-            setHoveredInformation({
-              treePhotos: [
-                `${process.env.AWS_STORAGE}/canopy/xprize-rainforest-finals/trees-measured/${e.features[0].properties.filename}`,
-              ],
-            })
-          )
+          const treeInformation = getTreeInformation(e, activeProjectId)
+          dispatch(setHoveredInformation(treeInformation))
           if (hoveredTreeId !== null) {
             map.setFeatureState(
               { source: 'Canopy Photos', id: hoveredTreeId },

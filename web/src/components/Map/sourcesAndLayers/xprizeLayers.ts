@@ -1,33 +1,33 @@
 import { GeospatialLayer } from 'src/types'
 
 const RESTOR_KEYS = {
-  "GLOBAL_CANOPY_HEIGHT": "2b0818037a480c08d879178ff259268e",
-  "FOREST_CARBON_POTENTIAL": "49a11bc8da66f2b43196b13ece11cd61",
-  "CARBON_WALKER_AGB_CURRENT": "3bc81acf4902ec294adbbe7fb1cdaf66",
-  "CARBON_WALKER_BGB_CURRENT": "fb831160dc69bc3ce116ad8c55c02b58",
-  "CARBON_WALKER_SOC_CURRENT": "077de02af03a5976e1c28e2b0d93a555",
-  "CARBON_WALKER_AGB_POTENTIAL": "8e9dfee966ee8c1efe5d1d4c3ad312dc",
-  "CARBON_WALKER_BGB_POTENTIAL": "3e0775b7adbc6c2e6d990f49759b425b",
-  "CARBON_WALKER_SOC_POTENTIAL": "8b13d3a39381593c1c7450af2064de27",
-  "CARBON_PRODUCTIVITY": "9665d91ba337e89f28fceea1dc22c7bd",
-  "BIODIVERSITY": "39e1e4872a0c940605e4f7e198df655c",
-  "BIODIVERSITY_MAMMALS": "532cd9a7f511c62e9465b306ecb57be9",
-  "BIODIVERSITY_BIRDS": "717540596530bcf7f8613156ec14fcfc",
-  "BIODIVERSITY_AMPHIBIANS": "c5175847b19f6c0c9d95d3ed64362ff7",
-  "LAND_COVER": "41f7fa855a479038d3c11f46f5464620",
-  "TREE_COVER": "68807f694820361ed8011ecc9599671e",
-  "TREE_COVER_2010": "48404038ed2748b8890cba74852b6e29",
-  "TREE_COVER_LOSS": "0c327d5a222e78bc1f7cef437d8b4344",
-  "TREE_COVER_POTENTIAL": "45ff4be99e7d32710f9a8d01d16fa6f7",
-  "WETLANDS": "8856076205be8540d17b9206020a29ca",
-  "ANNUAL_PRECIPITATION": "92ff063acd6d2ab805df4afda115ece3",
-  "DEPTH_TO_WATER": "3978bdcfac32fc367683a703f71fa769",
-  "SOIL_PH": "7415d76f3edb8480c8524ee3d194f4fd",
-  "ANNUAL_MEAN_TEMPERATURE": "aeafa337aa7d17435d0021ac9caeaffc",
-  "ARIDITY_INDEX": "5e6fa972da26c840f21e605465946a31",
-  "POPULATION_DENSITY": "6256cfd07a8083c0e4fd7369bfc6a5a2",
-  "ELEVATION": "1d15954440935993d1e4e7081f853b51",
-  "HUMAN_MODIFICATION": "92398acf0fce66d1737b462b97ff2fd1"
+  GLOBAL_CANOPY_HEIGHT: '2b0818037a480c08d879178ff259268e',
+  FOREST_CARBON_POTENTIAL: '49a11bc8da66f2b43196b13ece11cd61',
+  CARBON_WALKER_AGB_CURRENT: '3bc81acf4902ec294adbbe7fb1cdaf66',
+  CARBON_WALKER_BGB_CURRENT: 'fb831160dc69bc3ce116ad8c55c02b58',
+  CARBON_WALKER_SOC_CURRENT: '077de02af03a5976e1c28e2b0d93a555',
+  CARBON_WALKER_AGB_POTENTIAL: '8e9dfee966ee8c1efe5d1d4c3ad312dc',
+  CARBON_WALKER_BGB_POTENTIAL: '3e0775b7adbc6c2e6d990f49759b425b',
+  CARBON_WALKER_SOC_POTENTIAL: '8b13d3a39381593c1c7450af2064de27',
+  CARBON_PRODUCTIVITY: '9665d91ba337e89f28fceea1dc22c7bd',
+  BIODIVERSITY: '39e1e4872a0c940605e4f7e198df655c',
+  BIODIVERSITY_MAMMALS: '532cd9a7f511c62e9465b306ecb57be9',
+  BIODIVERSITY_BIRDS: '717540596530bcf7f8613156ec14fcfc',
+  BIODIVERSITY_AMPHIBIANS: 'c5175847b19f6c0c9d95d3ed64362ff7',
+  LAND_COVER: '41f7fa855a479038d3c11f46f5464620',
+  TREE_COVER: '68807f694820361ed8011ecc9599671e',
+  TREE_COVER_2010: '48404038ed2748b8890cba74852b6e29',
+  TREE_COVER_LOSS: '0c327d5a222e78bc1f7cef437d8b4344',
+  TREE_COVER_POTENTIAL: '45ff4be99e7d32710f9a8d01d16fa6f7',
+  WETLANDS: '8856076205be8540d17b9206020a29ca',
+  ANNUAL_PRECIPITATION: '92ff063acd6d2ab805df4afda115ece3',
+  DEPTH_TO_WATER: '3978bdcfac32fc367683a703f71fa769',
+  SOIL_PH: '7415d76f3edb8480c8524ee3d194f4fd',
+  ANNUAL_MEAN_TEMPERATURE: 'aeafa337aa7d17435d0021ac9caeaffc',
+  ARIDITY_INDEX: '5e6fa972da26c840f21e605465946a31',
+  POPULATION_DENSITY: '6256cfd07a8083c0e4fd7369bfc6a5a2',
+  ELEVATION: '1d15954440935993d1e4e7081f853b51',
+  HUMAN_MODIFICATION: '92398acf0fce66d1737b462b97ff2fd1',
 }
 
 const hardcodedLayers: GeospatialLayer[] = [
@@ -74,128 +74,112 @@ const hardcodedLayers: GeospatialLayer[] = [
     name: 'BiodivX Raft Deployment',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/rafts.geojson`,
-    description:
-      'Rafts deployed by ETH BiodivX',
+    description: 'Rafts deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_002)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_002.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_004)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_004.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_005)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_005.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_006)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_006.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_007)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_007.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_008)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_008.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_009)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_009.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_0010)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_010.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_011)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_011.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Surface DNA Sampling (S_012)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/S_012.json`,
-    description:
-      'Surface sampling deployed by ETH BiodivX',
+    description: 'Surface sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Water DNA Sampling (W_004)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_004.json`,
-    description:
-      'Water sampling deployed by ETH BiodivX',
+    description: 'Water sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Water DNA Sampling (W_005)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_005.json`,
-    description:
-      'Water sampling deployed by ETH BiodivX',
+    description: 'Water sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Water DNA Sampling (W_007)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_007.json`,
-    description:
-      'Water sampling deployed by ETH BiodivX',
+    description: 'Water sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'BiodivX Water DNA Sampling (W_008)',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/sampling/W_008.json`,
-    description:
-      'Water sampling deployed by ETH BiodivX',
+    description: 'Water sampling deployed by ETH BiodivX',
     category: 'XPRIZE',
   },
   {
     name: 'XPRIZE Basecamp',
     type: 'geojson_points',
     endpoint: `${process.env.AWS_STORAGE}/layers/finals/basecamp.geojson`,
-    description:
-      'Basecamp location of the XPRIZE Rainforest Finals',
+    description: 'Basecamp location of the XPRIZE Rainforest Finals',
     category: 'XPRIZE',
   },
   {

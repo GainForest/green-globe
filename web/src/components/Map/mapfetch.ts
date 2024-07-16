@@ -174,6 +174,7 @@ export const fetchTreeShapefile = async (
     }))
     result.features = indexedFeatures
     setActiveProjectTreesPlanted(result)
+    console.log(result)
     return response
   } else {
     setActiveProjectTreesPlanted(null)

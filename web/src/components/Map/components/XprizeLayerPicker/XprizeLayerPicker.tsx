@@ -21,7 +21,7 @@ const XprizeLayerPicker = ({ map }) => {
   const [searchTerm, setSearchTerm] = useState<string>()
   const [filteredLayers, setFilteredLayers] = useState([])
   const { theme } = useThemeUI()
-  const [showLayers, setShowLayers] = useState(true)
+  const [showLayers, setShowLayers] = useState(false)
   const [visible, setVisible] = useState(false)
 
   const groupedData = filteredLayers.reduce((acc, item) => {

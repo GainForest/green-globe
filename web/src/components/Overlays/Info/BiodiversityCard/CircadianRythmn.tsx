@@ -57,10 +57,10 @@ export const CircadianRythmn = () => {
             csvPath={`${process.env.AWS_STORAGE}/pmn/${kebabCasedProjectName}/max_results_final_rc.csv`}
           />
         </div>
-        <AudioPlayer
+        {/* <AudioPlayer
           label="Sample"
           src={`${process.env.AWS_STORAGE}/audio/${kebabCasedProjectName}/sample.mp3`}
-        />
+        /> */}
       </>
     )
   }

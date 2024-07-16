@@ -7,7 +7,7 @@ export const InfoTag = ({ style, children, ...props }) => {
         textAlign: 'center',
         userSelect: 'none',
         border: `1px solid`,
-        borderColor: style.color,
+        borderColor: style?.color,
         padding: '4px 8px',
         ...style,
       }}
@@ -17,7 +17,7 @@ export const InfoTag = ({ style, children, ...props }) => {
         style={{
           letterSpacing: '0.02em',
           fontSize: '0.75rem',
-          color: style.color,
+          color: style?.color,
         }}
       >
         {children}

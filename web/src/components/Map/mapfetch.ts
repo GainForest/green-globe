@@ -68,12 +68,7 @@ export const fetchGainForestCenterpoints = async (map) => {
 }
 
 export const fetchProjectInfo = async (projectId) => {
-  let endpoint = ''
-  if (window.location.host.includes('localhost')) {
-    endpoint = `${process.env.GAINFOREST_ENDPOINT}/graphql`
-  } else {
-    endpoint = `${process.env.GAINFOREST_ENDPOINT}/api/graphql`
-  }
+  const endpoint = `${process.env.GAINFOREST_ENDPOINT}/api/graphql`
 
   const response = fetch(endpoint, {
     method: 'POST',

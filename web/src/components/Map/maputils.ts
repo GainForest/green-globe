@@ -11,10 +11,7 @@ import {
 } from './maptreeutils'
 import { addAmazonBasinSourceAndLayer } from './sourcesAndLayers/amazonBasin'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
-import { addEDNASourceAndLayers } from './sourcesAndLayers/edna'
-import { addFlightPathSourceAndLayer } from './sourcesAndLayers/flightPath'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
-import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
 import {
   addMeasuredTreesSourceAndLayer,
   toggleMeasuredTreesLayer,
@@ -24,7 +21,6 @@ import {
   addAllSitesSourceAndLayer,
   addHighlightedSiteSourceAndLayer,
 } from './sourcesAndLayers/projectSites'
-import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   // addEDNASourceAndLayers(map)
@@ -33,11 +29,10 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   // addTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
   addHighlightedSiteSourceAndLayer(map)
-  // addHiveSourceAndLayers(map)
-  // addMeasuredTreesSourceAndLayer(map)
-  // addFlightPathSourceAndLayer(map)
   addAmazonBasinSourceAndLayer(map)
   addProjectMarkers(map)
+  addHiveSourceAndLayers(map)
+  addMeasuredTreesSourceAndLayer(map)
 }
 
 // https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
@@ -46,6 +41,85 @@ export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {
   if (map.getLayer('orthomosaic')) {
     map.setLayoutProperty('orthomosaic', 'visibility', visibility)
   }
+}
+
+export const addClickableMarkers = (
+  map: mapboxgl.Map,
+  dispatch,
+  geoJson: mapboxgl.geoJson,
+  markerType: string,
+  setActiveProject
+) => {
+  const markers = []
+  for (const feature of geoJson.features) {
+    // create the marker HTML element
+    const el = document.createElement('div')
+    el.className = `${markerType}-map-marker`
+
+    // display a popup with the project name on hover
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 20,
+      anchor: 'left',
+      className: 'default',
+    })
+      .setLngLat(feature.geometry.coordinates)
+      .setText(feature.properties.name)
+
+    el.addEventListener('mouseenter', () => popup.addTo(map))
+    el.addEventListener('mouseleave', () => popup.remove())
+
+    el.addEventListener('click', () => {
+      setActiveProject(feature?.properties?.projectId)
+      dispatch(setInfoOverlay(1))
+      toggleMeasuredTreesLayer(map, 'visible')
+    })
+
+    // finally, add the marker to the map
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat(feature.geometry.coordinates)
+      .addTo(map)
+
+    markers.push(marker)
+  }
+
+  return markers
+}
+
+export const addMarkers = (
+  map: mapboxgl.Map,
+  geoJson: mapboxgl.geoJson,
+  markerType: string
+) => {
+  const markers = []
+  for (const feature of geoJson.features) {
+    // create the marker HTML element
+    const el = document.createElement('div')
+    el.className = `${markerType}-map-marker`
+
+    // display a popup with the project name on hover
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 20,
+      anchor: 'left',
+      className: 'default',
+    })
+      .setLngLat(feature.geometry.coordinates)
+      .setText(feature.properties.name)
+
+    el.addEventListener('mouseenter', () => popup.addTo(map))
+    el.addEventListener('mouseleave', () => popup.remove())
+
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat(feature.geometry.coordinates)
+      .addTo(map)
+
+    markers.push(marker)
+  }
+
+  return markers
 }
 
 export const popup = new mapboxgl.Popup({

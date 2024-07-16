@@ -24,6 +24,7 @@ import { initializeMapbox } from 'src/mapbox.config'
 import { setHoveredInformation } from 'src/reducers/mapReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { setProjectId, setProjectName } from 'src/reducers/projectsReducer'
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
 import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
@@ -37,7 +38,7 @@ import { Legend as LayerLegend } from './components/Legend'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
-import { fetchEDNALocations, fetchMeasuredTrees } from './mapfetch'
+import { fetchEDNALocations, fetchTreeShapefile } from './mapfetch'
 import {
   fetchProjectInfo,
   fetchGainForestCenterpoints,
@@ -76,6 +77,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] =
     useState<boolean>(false)
 
+  const kebabCasedProjectName = useSelector((state: any) =>
+    toKebabCase(state.project.name)
+  )
   // const [hexagons, setHexagons] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
   const [allSitePolygons, setAllSitePolygons] = useState()
@@ -262,18 +266,15 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [map, activeProjectMosaic])
 
   useEffect(() => {
-    if (activeProjectData) {
-      const projectName = activeProjectData?.project?.name
-      const dashedProjectName = projectName.toLowerCase().replaceAll(' ', '-')
-      if (dashedProjectName) {
-        const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
-        const fetchData = async () => {
-          await fetchMeasuredTrees(treesEndpoint, setActiveProjectTreesPlanted)
-        }
-        fetchData().catch(console.error)
+    if (kebabCasedProjectName) {
+      const treesEndpoint = `shapefiles/${kebabCasedProjectName}-all-tree-plantings.geojson`
+      const fetchData = async () => {
+        await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
       }
+
+      fetchData().catch(console.error)
     }
-  }, [activeProjectData])
+  }, [kebabCasedProjectName])
 
   useEffect(() => {
     if (!map) return
@@ -320,13 +321,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           dispatch(setHoveredInformation(treeInformation))
           if (hoveredTreeId !== null) {
             map.setFeatureState(
-              { source: 'Canopy Photos', id: hoveredTreeId },
+              { source: 'trees', id: hoveredTreeId },
               { hover: false }
             )
           }
-          hoveredTreeId = e.features[0].properties.filename
+          hoveredTreeId = e.features[0].id
           map.setFeatureState(
-            { source: 'Canopy Photos', id: hoveredTreeId }, // Hardcoded source for now
+            { source: 'trees', id: hoveredTreeId },
             { hover: true }
           )
         }

@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { navigate } from '@redwoodjs/router'
 
 import XprizeLayerPicker from 'src/components/Map/components/XprizeLayerPicker'
-import { MAPBOX_FOG, initializeMapbox } from 'src/mapbox.config'
+import { initializeMapbox } from 'src/mapbox.config'
 import { setHoveredInformation } from 'src/reducers/mapReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { setProjectId, setProjectName } from 'src/reducers/projectsReducer'
@@ -46,7 +46,7 @@ import {
   // fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
-// import { spinGlobe } from './maprotate'
+import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
 import { addAllSourcesAndLayers } from './maputils'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
@@ -98,7 +98,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (sourcesAndLayersLoaded) {
       fetchGainForestCenterpoints(map)
-      fetchEDNALocations(map)
+      // fetchEDNALocations(map)
       fetchHiveLocations(map, activeProjectId)
     }
   }, [map, activeProjectId, sourcesAndLayersLoaded])
@@ -113,13 +113,11 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (map) {
       const onLoad = () => {
-        map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
         setSourcesAndLayersLoaded(true)
       }
 
       const onStyleData = () => {
-        map.setFog(MAPBOX_FOG)
         addAllSourcesAndLayers(map)
       }
       map.on('load', onLoad)
@@ -166,38 +164,38 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map])
 
-  // // Rotate the globe
-  // useEffect(() => {
-  //   if (map) {
-  //     // Start the spin
-  //     let isGlobeSpinning = true
-  //     spinGlobe(map, isGlobeSpinning)
+  // Rotate the globe
+  useEffect(() => {
+    if (map) {
+      // Start the spin
+      let isGlobeSpinning = true
+      spinGlobe(map, isGlobeSpinning)
 
-  //     // Spin again once the animation is complete
-  //     const onMoveEnd = () => {
-  //       spinGlobe(map, isGlobeSpinning)
-  //     }
-  //     map.on('moveend', onMoveEnd)
+      // Spin again once the animation is complete
+      const onMoveEnd = () => {
+        spinGlobe(map, isGlobeSpinning)
+      }
+      map.on('moveend', onMoveEnd)
 
-  //     const onMouseDown = () => {
-  //       isGlobeSpinning = false
-  //     }
-  //     map.on('mousedown', onMouseDown)
+      const onMouseDown = () => {
+        isGlobeSpinning = false
+      }
+      map.on('mousedown', onMouseDown)
 
-  //     const onTouchStart = () => {
-  //       isGlobeSpinning = false
-  //     }
-  //     map.on('touchstart', onTouchStart)
+      const onTouchStart = () => {
+        isGlobeSpinning = false
+      }
+      map.on('touchstart', onTouchStart)
 
-  //     return () => {
-  //       if (map) {
-  //         map.off('moveend', onMoveEnd)
-  //         map.off('mousedown', onMouseDown)
-  //         map.off('touchstart', onTouchStart)
-  //       }
-  //     }
-  //   }
-  // }, [map])
+      return () => {
+        if (map) {
+          map.off('moveend', onMoveEnd)
+          map.off('mousedown', onMouseDown)
+          map.off('touchstart', onTouchStart)
+        }
+      }
+    }
+  }, [map])
 
   useEffect(() => {
     if (map && allSitePolygons) {

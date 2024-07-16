@@ -19939,6 +19939,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.408.0":
+  version: 0.408.0
+  resolution: "lucide-react@npm:0.408.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: b79f17a4748c1cd17aa260dc5d226b64c50304b187b922f09ac4d4cb02304b2837f553eb8e75d151cde3957ebe1b3f7b120a324104835c1bcf82e5b401dedd6f
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -28195,11 +28204,12 @@ __metadata:
     aws-sdk: ^2.1657.0
     axios-hooks: ^5.0.2
     chart.js: ^4.4.3
+    d3: ^7.9.0
     d3-geo: ^3.1.1
     d3-shape: ^3.2.0
     dompurify: ^3.1.2
     js-yaml: ^4.1.0
-    lucide-react: ^0.400.0
+    lucide-react: ^0.408.0
     markdown-to-jsx: ^7.4.7
     marked: ^13.0.2
     prop-types: 15.8.1

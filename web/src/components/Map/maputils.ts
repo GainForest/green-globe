@@ -9,7 +9,6 @@ import {
   getTreeHeight,
   getTreePhotos,
 } from './maptreeutils'
-import { addAmazonBasinSourceAndLayer } from './sourcesAndLayers/amazonBasin'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
 import {
@@ -29,7 +28,6 @@ export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
   // addTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
   addHighlightedSiteSourceAndLayer(map)
-  addAmazonBasinSourceAndLayer(map)
   addProjectMarkers(map)
   addHiveSourceAndLayers(map)
   addMeasuredTreesSourceAndLayer(map)

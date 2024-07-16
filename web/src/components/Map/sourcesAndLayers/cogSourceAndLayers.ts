@@ -9,7 +9,7 @@ import { addGeojsonLineSourceAndLayer } from './geojsonLine'
 import { addGeojsonPointSourceAndLayer } from './geojsonPoints'
 import {
   addMeasuredTreesSourceAndLayer,
-  removeMeasuredTreesSourceAndLayer,
+  // removeMeasuredTreesSourceAndLayer,
 } from './measuredTrees'
 import { addRasterSourceAndLayer } from './raster'
 import { addShannonChoroplethSourceAndLayers } from './shannonChoropleth'
@@ -47,7 +47,7 @@ export const removeNamedSource = (
 ) => {
   const dispatch = useDispatch()
   if (map.getSource(layer.name) && layer.type == 'geojson_points_trees') {
-    removeMeasuredTreesSourceAndLayer(map, layer)
+    // removeMeasuredTreesSourceAndLayer(map, layer)
     dispatch(setHoveredInformation({}))
   }
   if (map.getSource(layer.name)) {

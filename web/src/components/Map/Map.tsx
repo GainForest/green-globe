@@ -77,8 +77,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] =
     useState<boolean>(false)
 
-  const kebabCasedProjectName = useSelector((state: any) =>
-    toKebabCase(state.project.name)
+  const kebabCasedProjectName = useSelector((state: State) =>
+    toKebabCase(state.project?.name)
   )
   // const [hexagons, setHexagons] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site

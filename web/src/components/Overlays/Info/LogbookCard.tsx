@@ -27,7 +27,7 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
 
   useEffect(() => {
     const getPosts = async () => {
-      let filenames
+      let filenames = []
       try {
         if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
           try {
@@ -53,7 +53,7 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
             console.log('cannot fetch from AWS :', e)
           }
         }
-        if (!filenames) {
+        if (filenames.length == 0) {
           setLoading(false)
           return
         }

@@ -10,7 +10,7 @@ import { KingdomList } from '../Pokedex/KingdomList'
 
 export const PredictedAnimals = ({ mediaSize }) => {
   // const [predictedBirds, setPredictedBirds] = useState([])
-  const [predictions, setPredictions] = useState([])
+  const [predictions, setPredictions] = useState({})
   const [loading, setLoading] = useState(true)
   const [modalWidth, setModalWidth] = useState(0)
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -52,33 +52,37 @@ export const PredictedAnimals = ({ mediaSize }) => {
 
   useEffect(() => {
     const getCsv = async () => {
-      const data = await d3.csv(
-        `${process.env.AWS_STORAGE}/predictions/${kebabCasedProjectName}.csv`
-      )
-      const kingdoms = {}
-      data.forEach((d) => {
-        const kingdom = d.Type
-        if (kingdom in kingdoms) {
-          kingdoms[kingdom].push({
-            ...d,
-            category: kingdom,
-            scientificName: d['Species'],
-          })
-        } else {
-          kingdoms[kingdom] = [
-            { ...d, category: kingdom, scientificName: d['Species'] },
-          ]
-        }
-      })
-      const kingdomsArray = Object.entries(kingdoms).map(([name, data]) => ({
-        name,
-        data,
-      }))
-      setPredictions(kingdomsArray)
-      setLoading(false)
+      let data
+      try {
+        data = await d3.csv(
+          `${process.env.AWS_STORAGE}/predictions/${kebabCasedProjectName}.csv`
+        )
+        const kingdoms = {}
+        data.forEach((d) => {
+          const kingdom = d.Type
+          if (kingdom in kingdoms) {
+            kingdoms[kingdom].push({
+              ...d,
+              category: kingdom,
+              scientificName: d['Species'],
+            })
+          } else {
+            kingdoms[kingdom] = [
+              { ...d, category: kingdom, scientificName: d['Species'] },
+            ]
+          }
+        })
+        const kingdomsArray = Object.entries(kingdoms).map(([name, data]) => ({
+          name,
+          data,
+        }))
+        setPredictions(kingdomsArray)
+      } finally {
+        setLoading(false)
+      }
     }
     getCsv()
-  }, [])
+  }, [kebabCasedProjectName])
 
   if (loading) {
     return (
@@ -91,7 +95,7 @@ export const PredictedAnimals = ({ mediaSize }) => {
   if (Object.keys(predictions).length == 0) {
     return (
       <div>
-        <p>No data found.</p>
+        <p>No species found.</p>
       </div>
     )
   }

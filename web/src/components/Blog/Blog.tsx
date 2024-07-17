@@ -90,16 +90,16 @@ const Blog = ({ posts, loading }) => {
     }, 0)
   }
 
-  if (!loading && !posts) {
+  if (!loading && posts.length == 0) {
     return (
-      <Container loading={loading}>
-        <h2>There are no logs for this project yet.</h2>
+      <Container>
+        <NoDataMessage>There are no logs for this project yet.</NoDataMessage>
       </Container>
     )
   }
 
   return (
-    <Container loading={loading}>
+    <Container>
       <PostList>
         {posts.map((post, index) => (
           <PostPreview
@@ -199,6 +199,16 @@ const MainContent = styled.div`
 
 const LoadingMessage = styled.div`
   opacity: ${(props) => (props.loading ? 1 : 0)};
+  transition: opacity 1s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #4a4a4a;
+`
+
+const NoDataMessage = styled.div`
   transition: opacity 1s ease;
   position: absolute;
   top: 50%;

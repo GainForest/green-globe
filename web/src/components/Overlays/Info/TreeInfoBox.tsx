@@ -21,7 +21,7 @@ export const TreeInfoBox = ({ mediaSize }) => {
     (state: State) => state.map.hoveredInformation
   )
   const { theme } = useThemeUI()
-  const { dispatch } = useDispatch()
+  const dispatch = useDispatch()
   const [photoIndex, setPhotoIndex] = useState(0)
   if (
     hoveredInformation.treePhotos[photoIndex]?.endsWith('mov') ||

@@ -22,13 +22,14 @@ export const fetchHiveLocations = async (map, activeProjectId) => {
   ) {
     let hiveLocations = undefined
 
-    fetch(
+    await fetch(
       `${process.env.AWS_STORAGE}/points-of-interest/hive-locations.geojson`
     )
       .then((response) => response.json())
       .then((res) => {
         hiveLocations = res
       })
+    console.log(hiveLocations)
     map.getSource('hiveSource')?.setData(hiveLocations)
   }
 }

@@ -10,6 +10,7 @@ import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { BiodiversityChart } from './BiodiversityChart'
 import { CarbonChart } from './CarbonChart'
+import { EnvironmentChart } from './EnvironmentChart'
 import { TreeCoverChart } from './TreeCoverChart'
 import { WaterChart } from './WaterChart'
 
@@ -44,6 +45,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
     ecosystems: {},
     scientificMonitoring: {},
     treeCover: {},
+    socioEconomic: {},
   })
 
   useEffect(() => {
@@ -59,6 +61,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         ecosystems: 'ecosystems.json',
         scientificMonitoring: 'scientific_monitoring.json',
         treeCover: 'tree_cover.json',
+        socioEconomic: 'socio_economic.json',
       }
       try {
         const dataPromises = Object.entries(jsonFiles).map(([key, file]) =>
@@ -72,6 +75,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
           {}
         )
         setAllData(combinedData)
+        console.log(combinedData)
       } catch (error) {
         console.error('Error loading JSON files:', error)
       }
@@ -131,6 +135,13 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         <Tooltip id="remote-sensing-evapotranspiration-insight">
           Evapotranspiration
         </Tooltip>
+        <IconButton
+          buttonIcon={'emoji_people'}
+          active={displayedInsight === 'environment'}
+          onClick={() => setDisplayedInsight('environment')}
+          dataTooltipId={'remote-sensing-environment-insight'}
+        />
+        <Tooltip id="remote-sensing-environment-insight">Environment</Tooltip>
       </IconBar>
       {displayedInsight === 'biodiversity' && (
         <BiodiversityChart
@@ -159,6 +170,14 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
           treeData={allData?.treeCover}
           ecosystemsData={allData?.ecosystems}
           scientificMonitoring={allData?.scientificMonitoring}
+          loading={loading}
+        />
+      )}
+      {displayedInsight === 'environment' && (
+        <EnvironmentChart
+          projectArea={activeProjectData?.project?.area}
+          environmentData={allData.environment}
+          socioEconomicData={allData.socioEconomic}
           loading={loading}
         />
       )}

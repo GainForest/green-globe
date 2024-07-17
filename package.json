@@ -35,6 +35,7 @@
     "dayjs": "^1.11.7",
     "geojson2h3": "^1.2.0",
     "h3-js": "^4.1.0",
+    "lru-cache": "^11.0.0",
     "lucide-react": "^0.400.0",
     "mapbox-gl": "^2.13.0",
     "midi-player-js": "^2.0.16",

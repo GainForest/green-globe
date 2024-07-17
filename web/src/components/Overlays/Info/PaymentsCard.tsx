@@ -93,7 +93,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
               fullName = ''
             }
             const profileSrc = payment.profileUrl
-              ? `${process.env.AWS_STORAGE}/${payment.profileUrl}`
+              ? `${payment.profileUrl}`
               : `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
                   .toLowerCase()
                   .replace(' ', '-')}.svg`
@@ -133,7 +133,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
                             overflowWrap: 'break-word',
                           }}
                           href={
-                            payment.blockchain.toLowerCase() === 'celo'
+                            payment.blockchain?.toLowerCase() === 'celo'
                               ? `https://explorer.celo.org/mainnet/tx/${payment.hash}`
                               : `https://explorer.solana.com/tx/${payment.hash}`
                           }

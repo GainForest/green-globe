@@ -36,31 +36,40 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchFiatPayments = async () => {
-        const res = await d3.csv(
-          `${process.env.AWS_STORAGE}/transactions/fiat-transactions.csv`
+        const res = await fetch(
+          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `
+        query {
+          fiatTransactionsByProjectId(id:"${activeProjectData.project.id}") {
+            amountInUsd
+            timestamp
+            currency
+            motive
+            originalAmount
+            firstName
+            lastName
+            profileUrl
+          }
+        }
+      `,
+            }),
+          }
         )
-        const filteredRes = res
-          .filter(
-            (d) =>
-              stringDistance(d.orgName, activeProjectData?.project.name) < 3
-          )
-          .map((d) => {
-            const member = activeProjectData.project.communityMembers.find(
-              (m) => m.id == d.communityMemberId
-            )
-            return {
-              ...d,
-              timestamp: formatFiatDate(d.timestamp),
-              firstName: member?.firstName,
-              lastName: member?.lastName,
-              amount: parseFloat(d.originalAmount),
-              currency: d.currency,
-              blockchain: 'FIAT',
-              profileUrl: member?.profileUrl,
-              motive: d.motive,
-            }
-          })
-        return filteredRes
+        const result = await res.json()
+        return result.data.fiatTransactionsByProjectId.map((payment) => {
+          return {
+            ...payment,
+            amount: payment.originalAmount,
+            currency: `(${payment.currency})`,
+            blockchain: 'Fiat',
+          }
+        })
       }
 
       setLoading(true)
@@ -110,10 +119,22 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
       const membersWithPayment = [...activeProjectData.project.communityMembers]
         .map((d) => ({ ...d, fundsReceived: members[d.id] }))
         .sort((a, b) => {
-          if (a.priority === b.priority) {
-            return b.fundsReceived - a.fundsReceived
+          const priorityA = a.priority || 0
+          const priorityB = b.priority || 0
+
+          const sumFunds = (funds) => {
+            return Object.values(funds).reduce(
+              (acc, curr) => acc + (curr || 0),
+              0
+            )
+          }
+
+          if (priorityA === priorityB) {
+            const totalFundsA = a.fundsReceived ? sumFunds(a.fundsReceived) : 0
+            const totalFundsB = b.fundsReceived ? sumFunds(b.fundsReceived) : 0
+            return totalFundsB - totalFundsA
           } else {
-            return a.priority - b.priority
+            return priorityA - priorityB
           }
         })
 
@@ -350,7 +371,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
     )
   }
   const { project } = activeProjectData
-
   const communityMembersCount = project.communityMembers.length
   const memberOrMembers = communityMembersCount == 1 ? 'member' : 'members'
 
@@ -367,7 +387,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
 
   return (
     <InfoBox mediaSize={mediaSize}>
-      <div style={{ marginLeft: '16px', marginBottom: '8px'  }}>
+      <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
         <h1 style={{ marginBottom: '8px' }}>Community</h1>
         <ToggleButton
           active={toggle}
@@ -405,7 +425,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                   fullName = ''
                 }
                 const profileSrc = d.profileUrl
-                  ? `${process.env.AWS_STORAGE}/${d.profileUrl}`
+                  ? `${d.profileUrl}`
                   : `https://api.dicebear.com/7.x/initials/svg?seed=${fullName
                       .toLowerCase()
                       .replace(' ', '-')}.svg`
@@ -417,7 +437,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                     <div style={{ display: 'flex' }}>
                       <div>
                         <img
-                          alt={`${d.name}-profile`}
+                          alt={`${d.fullName}-profile`}
                           src={profileSrc}
                           width={100}
                           height={100}

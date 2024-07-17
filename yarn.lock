@@ -19904,6 +19904,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "lru-cache@npm:11.0.0"
+  checksum: 827ff0e0739f9b0f30f92f5a5fc97c6a2bd3ae32c0452bc58cb7411d6c589d49536073027293f2d1f02d0c2e72b63b162f238df7e9ff6f4cc0345f92afec4d1d
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^5.1.1":
   version: 5.1.1
   resolution: "lru-cache@npm:5.1.1"
@@ -24751,6 +24758,7 @@ __metadata:
     dayjs: ^1.11.7
     geojson2h3: ^1.2.0
     h3-js: ^4.1.0
+    lru-cache: ^11.0.0
     lucide-react: ^0.400.0
     mapbox-gl: ^2.13.0
     midi-player-js: ^2.0.16

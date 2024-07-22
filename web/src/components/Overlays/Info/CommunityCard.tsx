@@ -19,7 +19,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   const [loading, setLoading] = useState(true)
   const [totalPayments, setTotalPayments] = useState({})
   const [communityMembers, setCommunityMembers] = useState([])
-  const [showFiatMessage, setShowFiatMessage] = useState(false)
   const wallets = JSON.parse(process.env.GAINFOREST_WALLETS)
 
   const maximized = useSelector((state: State) => state.overlays.maximized)
@@ -36,49 +35,37 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchFiatPayments = async () => {
-        const res = await fetch(
-          `${process.env.GAINFOREST_ENDPOINT}/api/graphql`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: `
-        query {
-          fiatTransactionsByProjectId(id:"${activeProjectData.project.id}") {
-            amountInUsd
-            timestamp
-            currency
-            motive
-            originalAmount
-            firstName
-            lastName
-            profileUrl
-          }
-        }
-      `,
-            }),
-          }
+        const res = await d3.csv(
+          `${process.env.AWS_STORAGE}/transactions/fiat-transactions.csv`
         )
-        const result = await res.json()
-        return result.data.fiatTransactionsByProjectId.map((payment) => {
-          return {
-            ...payment,
-            amount: payment.originalAmount,
-            currency: `(${payment.currency})`,
-            blockchain: 'Fiat',
-          }
-        })
+        const filteredRes = res
+          .filter(
+            (d) =>
+              stringDistance(d.orgName, activeProjectData?.project.name) < 3
+          )
+          .map((d) => {
+            const member = activeProjectData.project.communityMembers.find(
+              (m) => m.id == d.communityMemberId
+            )
+            return {
+              ...d,
+              timestamp: formatFiatDate(d.timestamp),
+              firstName: member?.firstName,
+              lastName: member?.lastName,
+              amount: parseFloat(d.originalAmount),
+              currency: d.currency,
+              blockchain: 'FIAT',
+              profileUrl: member?.profileUrl,
+              motive: d.motive,
+            }
+          })
+        return filteredRes
       }
-
       setLoading(true)
 
       const cryptoPayments = await fetchCryptoPayments()
       const fiatPayments = await fetchFiatPayments()
-      if (fiatPayments.length > 0) {
-        setShowFiatMessage(true)
-      }
+
       const allPayments = [...cryptoPayments, ...fiatPayments]
       setPaymentData(
         allPayments
@@ -119,8 +106,8 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
       const membersWithPayment = [...activeProjectData.project.communityMembers]
         .map((d) => ({ ...d, fundsReceived: members[d.id] }))
         .sort((a, b) => {
-          const priorityA = a.priority || 0
-          const priorityB = b.priority || 0
+          const priorityA = a.priority || 999
+          const priorityB = b.priority || 999
 
           const sumFunds = (funds) => {
             return Object.values(funds).reduce(
@@ -137,7 +124,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
             return priorityA - priorityB
           }
         })
-
       setCommunityMembers(membersWithPayment)
     }
   }, [paymentData, activeProjectData])

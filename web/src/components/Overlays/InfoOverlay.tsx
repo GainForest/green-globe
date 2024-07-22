@@ -63,18 +63,18 @@ export const InfoOverlay = ({
         mediaSize={mediaSize}
         description={'Project Info'}
         buttonIcon={'star'}
-        position={1}
+        position={2}
         active={infoOverlay == 1}
         onClick={() => dispatch(setInfoOverlay(1))}
       />
-      <InfoOverlayButton
+      {/* <InfoOverlayButton
         mediaSize={mediaSize}
         description={'AI Assistant'}
         buttonIcon={'chat'}
         position={2}
         active={infoOverlay == 5}
         onClick={() => dispatch(setInfoOverlay(5))}
-      />
+      /> */}
       <InfoOverlayButton
         mediaSize={mediaSize}
         description={'Biodiversity'}

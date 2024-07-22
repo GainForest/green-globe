@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import * as d3 from 'd3';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage';
-import { toKebabCase } from 'src/utils/toKebabCase';
-import { FileText, Video } from 'lucide-react';
+import React, { useState, useEffect } from 'react'
+
+import * as d3 from 'd3'
+import { FileText, Video } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+
+import { HexagonalImage } from 'src/components/HexagonalImage/HexagonalImage'
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 interface Individual {
-  'Filename/Run': string;
-  class: string;
+  'Filename/Run': string
+  class: string
 }
 
 interface PdfStatus {
-  filename: string;
-  exists: boolean;
+  filename: string
+  exists: boolean
 }
 
 const PDF_FILES = [
@@ -23,8 +25,8 @@ const PDF_FILES = [
   'rarefaction_plot.pdf',
   'size_distribution_plot.pdf',
   'spatial_plot.pdf',
-  'temporal_plot.pdf'
-];
+  'temporal_plot.pdf',
+]
 
 const VideoContainer = styled.div`
   margin-bottom: 24px;
@@ -32,7 +34,7 @@ const VideoContainer = styled.div`
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-`;
+`
 
 const VideoTitle = styled.h3`
   font-size: 18px;
@@ -40,12 +42,12 @@ const VideoTitle = styled.h3`
   padding: 16px;
   background-color: #f7fafc;
   margin: 0;
-`;
+`
 
 const VideoWrapper = styled.div`
   position: relative;
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
-`;
+`
 
 const StyledIframe = styled.iframe`
   position: absolute;
@@ -54,36 +56,44 @@ const StyledIframe = styled.iframe`
   width: 100%;
   height: 100%;
   border: none;
-`;
+`
 
 export const InsectSpy = () => {
-  const [individuals, setIndividuals] = useState<Individual[]>([]);
-  const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([]);
+  const [individuals, setIndividuals] = useState<Individual[]>([])
+  const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([])
   const kebabCasedProjectName = useSelector((state: State) =>
     toKebabCase(state.project.name)
-  );
+  )
 
   useEffect(() => {
     if (kebabCasedProjectName) {
       // Fetch individuals data
       d3.csv(
         `${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/individuals.csv`
-      ).then(setIndividuals);
+      ).then(setIndividuals)
 
       // Check each PDF file
-      Promise.all(PDF_FILES.map(file =>
-        fetch(`${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${file}`)
-          .then(response => ({ filename: file, exists: response.ok }))
-          .catch(() => ({ filename: file, exists: false }))
-      )).then(setPdfStatuses);
+      Promise.all(
+        PDF_FILES.map((file) =>
+          fetch(
+            `${process.env.AWS_STORAGE}/insectspy/${kebabCasedProjectName}/${file}`
+          )
+            .then((response) => ({ filename: file, exists: response.ok }))
+            .catch(() => ({ filename: file, exists: false }))
+        )
+      ).then(setPdfStatuses)
     }
-  }, [kebabCasedProjectName]);
+  }, [kebabCasedProjectName])
 
   if (!kebabCasedProjectName) {
-    return <Loading />;
+    return <Loading />
   }
 
-  const availablePdfs = pdfStatuses.filter(status => status.exists);
+  const availablePdfs = pdfStatuses.filter((status) => status.exists)
+
+  if (availablePdfs.length == 0) {
+    return <NoData />
+  }
 
   return (
     <InsectContainer>
@@ -154,23 +164,29 @@ export const InsectSpy = () => {
         </PlaceholderContainer>
       )}
     </InsectContainer>
-  );
-};
+  )
+}
 
 const Loading = () => (
   <InsectContainer>Loading insect data and analysis plots...</InsectContainer>
-);
+)
+
+const NoData = () => (
+  <InsectContainer>
+    No Insect data has been collected for this project.
+  </InsectContainer>
+)
 
 const InsectContainer = styled.div`
   margin: 16px 0px;
-`;
+`
 
 const PdfContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
   margin-top: 16px;
-`;
+`
 
 const PdfItem = styled.div`
   padding: 8px;
@@ -182,7 +198,8 @@ const PdfItem = styled.div`
   transition: all 0.3s ease;
 
   &:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   iframe {
@@ -198,7 +215,7 @@ const PdfItem = styled.div`
       text-decoration: underline;
     }
   }
-`;
+`
 
 const PlaceholderContainer = styled.div`
   display: flex;
@@ -220,4 +237,4 @@ const PlaceholderContainer = styled.div`
     color: #4a5568;
     font-size: 18px;
   }
-`;
+`

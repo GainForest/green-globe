@@ -38,11 +38,18 @@ export const CanopyInsights = () => {
     }
   }, [kebabCasedProjectName])
 
+  useEffect(() => {
+    console.log(pdfStatuses)
+  }, [pdfStatuses])
   if (!kebabCasedProjectName) {
     return <Loading />
   }
 
   const availablePdfs = pdfStatuses.filter((status) => status.exists)
+
+  if (availablePdfs?.length == 0) {
+    return <NoData />
+  }
 
   return (
     <Container>
@@ -116,6 +123,12 @@ export const CanopyInsights = () => {
 }
 
 const Loading = () => <Container>Loading Canopy analysis insights...</Container>
+
+const NoData = () => (
+  <Container>
+    No canopy insights have been generated for this project.
+  </Container>
+)
 
 const Container = styled.div`
   margin: 16px 0px;

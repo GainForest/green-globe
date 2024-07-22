@@ -14,6 +14,7 @@ import {
 export const CircadianRythmn = () => {
   const projectName = useSelector((state: State) => state.project.name)
   const [kebabCasedProjectName, setKebabCasedProjectName] = useState<string>()
+  const [filesExist, setFilesExist] = useState(false)
 
   useEffect(() => {
     if (projectName) {
@@ -22,9 +23,34 @@ export const CircadianRythmn = () => {
     }
   }, [projectName])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `/api/listS3Objects?folder=pmn&projectName=${kebabCasedProjectName}`
+        )
+        const data = await response.json()
+        if (data.length > 0) {
+          setFilesExist(true)
+        }
+      } catch (e) {
+        console.log('cannot fetch from AWS :', e)
+      }
+    }
+    if (kebabCasedProjectName) {
+      fetchData()
+    }
+  }, [kebabCasedProjectName])
+
   if (!kebabCasedProjectName) {
     return (
       <CircadianContainer>Searching for the soundscape...</CircadianContainer>
+    )
+  } else if (!filesExist) {
+    return (
+      <CircadianContainer>
+        No soundscape has been generated for this project.
+      </CircadianContainer>
     )
   } else {
     return (

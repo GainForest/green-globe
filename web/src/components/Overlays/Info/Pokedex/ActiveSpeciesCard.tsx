@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useRef } from 'react'
-
+import { Info } from 'lucide-react'
 import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
-
+import { camelCaseToTitleCase } from 'src/utils/camelCaseToTitleCase'
 export const ActiveSpeciesCard = ({ species, mediaSize }) => {
   console.log(species)
   const { scientificName, iucnCategory, awsUrl, info } = species
@@ -69,7 +68,9 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
         mediaSize={mediaSize}
       />
       <InfoContainer mediaSize={mediaSize}>
-        <h3>{scientificName}</h3>
+        <h2 style={{ marginTop: '0', marginBottom: '16px' }}>
+          {scientificName}
+        </h2>
         {/* <StyledButton onClick={() => toggleAudio('dna')}>
           {!dnaAudioRef?.current?.paused ? 'Pause' : 'Play'} DNA
         </StyledButton> */}
@@ -78,6 +79,24 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
         <InfoContainer mediaSize={mediaSize}>
           <p>{info}</p>
         </InfoContainer>
+      )}
+      {species.traits &&
+        Object.keys(species.traits).map((trait) => (
+          <InfoContainer key={trait} mediaSize={mediaSize}>
+            <p style={{ margin: '4px' }}>
+              {camelCaseToTitleCase(trait)}: {species.traits[trait]}
+            </p>
+          </InfoContainer>
+        ))}
+      {species.edibleParts?.length > 0 && (
+        <div>
+          <h3 style={{ margin: '8px' }}>Edible Parts:</h3>
+          {species.edibleParts.map((part) => (
+            <InfoContainer key={part}>
+              <p>{part}</p>
+            </InfoContainer>
+          ))}
+        </div>
       )}
       {species.eventDate && (
         <ObservationContainer mediaSize={mediaSize}>
@@ -120,7 +139,7 @@ const CardContainer = styled.div`
       return '300px'
     }
   }};
-  height: ${(props) => (props.mediaSize > breakpoints.m ? 'auto' : '300px')};
+  height: ${(props) => (props.mediaSize > breakpoints.m ? '600px' : '400px')};
   z-index: 4;
   top: 20vh;
   left: 30vw;
@@ -147,10 +166,9 @@ const StyledImage = styled.img`
 
 const InfoContainer = styled.div`
   display: flex;
-  height: 72px;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px 24px 8px;
+  padding: 0 8px;
 `
 const Observation = styled.p`
   margin: 0;

@@ -43,7 +43,7 @@ export const KingdomList = ({
           : '300px',
       height:
         mediaSize > breakpoints.xl || mediaSize > breakpoints.m
-          ? '300px'
+          ? '500px'
           : '300px',
 
       transform: 'translate(-50%, -50%)',

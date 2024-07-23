@@ -79,11 +79,6 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
     }
   }, [activeProjectData, kebabCasedProjectName])
 
-  useEffect(() => {
-    console.log(treeList)
-    console.log(herbList)
-  }, [treeList, herbList])
-
   Modal.setAppElement('#redwood-app')
 
   const customStyles = {

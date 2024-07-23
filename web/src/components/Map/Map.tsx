@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { navigate } from '@redwoodjs/router'
 
-import XprizeLayerPicker from 'src/components/Map/components/XprizeLayerPicker'
+import LayerPicker from 'src/components/Map/components/LayerPicker'
 import { initializeMapbox } from 'src/mapbox.config'
 import { setHoveredInformation } from 'src/reducers/mapReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
@@ -96,6 +96,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     // fetchHexagons(setHexagons)
     initializeMapbox('map-container', setMap)
   }, [])
+
+  useEffect(() => {
+    console.log(kebabCasedProjectName)
+  }, [kebabCasedProjectName])
 
   // Fetch all other data that can be fetched after the map is
   // loaded.
@@ -383,7 +387,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         </Button>
       )}
       {landCover && <LandCoverLegend mediaSize={mediaSize} />}
-      <XprizeLayerPicker map={map} />
+      <LayerPicker map={map} />
       {/* <LayerPickerOverlay
         map={map}
         activeProjectMosaic={activeProjectMosaic}

@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
 import { setLegendName } from 'src/reducers/overlaysReducer'
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 import {
   addNamedSource,
   removeNamedSource,
 } from '../../sourcesAndLayers/cogSourceAndLayers'
-import { layersData } from '../../sourcesAndLayers/xprizeLayers'
 
 import { LayerItem } from './LayerItem'
 import { LayerItemHistoricalSatellite } from './LayerItemHistoricalSatellite'
 
-const XprizeLayerPicker = ({ map }) => {
+const LayerPicker = ({ map }) => {
   const dispatch = useDispatch()
   const [layers, setLayers] = useState([])
   const [searchTerm, setSearchTerm] = useState<string>()
@@ -23,6 +23,10 @@ const XprizeLayerPicker = ({ map }) => {
   const { theme } = useThemeUI()
   const [showLayers, setShowLayers] = useState(false)
   const [visible, setVisible] = useState(false)
+
+  const kebabCasedProjectName = useSelector((state: any) =>
+    toKebabCase(state.project.name)
+  )
 
   const groupedData = filteredLayers.reduce((acc, item) => {
     if (!acc[item.category]) {
@@ -44,22 +48,29 @@ const XprizeLayerPicker = ({ map }) => {
   }, [searchTerm, layers])
 
   useEffect(() => {
-    setLayers(
-      layersData
-        .filter(
-          (layer) =>
-            // Don't show nicfi tiles when you're offline
-            !(
-              layer.name == 'NICFI Tiles' &&
-              !window.location.host.includes('localhost')
-            )
+    const getLayers = async () => {
+      let layersData = []
+      const globalRes = await fetch(
+        `${process.env.AWS_STORAGE}/layers/global/layerData.json`
+      )
+      const globalLayers = await globalRes.json()
+      layersData = globalLayers.layers
+      if (kebabCasedProjectName) {
+        const projectRes = await fetch(
+          `${process.env.AWS_STORAGE}/layers/${kebabCasedProjectName}/layerData.json`
         )
-        .map((layer) => ({
+        const projectLayers = await projectRes.json()
+        layersData = [...layersData, ...projectLayers.layers]
+      }
+      setLayers(
+        layersData.map((layer) => ({
           ...layer,
           isActive: false,
         }))
-    )
-  }, [])
+      )
+    }
+    getLayers()
+  }, [kebabCasedProjectName])
 
   const handleToggle = (name: string) => {
     setLayers((prevLayers) =>
@@ -271,4 +282,4 @@ const LayerTitle = styled.div`
   font-weight: bolder;
 `
 
-export default XprizeLayerPicker
+export default LayerPicker

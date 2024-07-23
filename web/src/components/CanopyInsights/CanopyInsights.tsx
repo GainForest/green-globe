@@ -38,9 +38,6 @@ export const CanopyInsights = () => {
     }
   }, [kebabCasedProjectName])
 
-  useEffect(() => {
-    console.log(pdfStatuses)
-  }, [pdfStatuses])
   if (!kebabCasedProjectName) {
     return <Loading />
   }

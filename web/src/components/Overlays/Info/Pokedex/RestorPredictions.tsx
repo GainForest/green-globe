@@ -1,18 +1,45 @@
 import { useEffect, useState } from 'react'
 
 import Modal from 'react-modal'
+import { useSelector } from 'react-redux'
+
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { KingdomList } from './KingdomList'
+
+interface Trait {
+  barkThickness: number
+  rootDepth: number
+  stemConduitDiameter: number
+  stemDiameter: number
+  treeHeight: number
+  woodDensity: number
+}
+interface Plant {
+  key: string
+  scientificName: string
+  iucnTaxonId: number
+  iucnCategory: string
+  group: string
+  edibleParts: string[]
+  traits: Trait[]
+}
+
 export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   const [loading, setLoading] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [speciesList, setSpecies] = useState([])
+  const [treeList, setTreeList] = useState<Plant[]>([])
+  const [herbList, setHerbList] = useState<Plant[]>([])
   const [modalWidth, setModalWidth] = useState(0)
+  const [modalList, setModalList] = useState<Plant[]>([])
 
+  const kebabCasedProjectName = useSelector((state: any) =>
+    toKebabCase(state.project.name)
+  )
   Modal.setAppElement('#redwood-app')
 
   const openModal = (speciesList) => {
-    setSpecies(speciesList)
+    setModalList(speciesList)
     setModalIsOpen(true)
   }
 
@@ -23,11 +50,9 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   }, [mediaSize])
 
   useEffect(() => {
-    const getPlantsList = async () => {
+    const getPlantsList = async (type, setter) => {
       try {
-        const filename =
-          activeProjectData.project.name.split(' ').join('-').toLowerCase() +
-          '.json'
+        const filename = `${kebabCasedProjectName}-${type}.json`
         const response = await fetch(
           `${process.env.AWS_STORAGE}/restor/${filename}`
         )
@@ -41,17 +66,23 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
             }
             return hasImage(a) ? -1 : 1
           })
-          .map((d) => ({ ...d, category: 'Plant' }))
-        setSpecies(plantList)
+          .map((d) => ({ ...d, category: type }))
+        setter(plantList)
       } catch (e) {
         console.log(e)
         setLoading(false)
       }
     }
     if (activeProjectData) {
-      getPlantsList()
+      getPlantsList('trees', setTreeList)
+      getPlantsList('herbs', setHerbList)
     }
-  }, [activeProjectData])
+  }, [activeProjectData, kebabCasedProjectName])
+
+  useEffect(() => {
+    console.log(treeList)
+    console.log(herbList)
+  }, [treeList, herbList])
 
   Modal.setAppElement('#redwood-app')
 
@@ -75,17 +106,17 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
     },
   }
 
-  return (
+  const Prediction = ({ type, speciesList }) => (
     <div>
       <div>
-        <h2>Predicted Plants</h2>
+        <h2>Predicted {type}</h2>
 
         {loading ? (
           <p>Loading...</p>
-        ) : speciesList.length > 0 ? (
+        ) : speciesList?.length > 0 ? (
           <div>
             <p className="text-lg font-semibold mb-2">
-              🌿 Total plants predicted: {speciesList.length}
+              🌿 Total {type} predicted: {speciesList.length}
             </p>
             <KingdomList
               speciesList={speciesList.slice(0, 4)}
@@ -115,8 +146,18 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
         onRequestClose={() => setModalIsOpen(false)}
         style={customStyles}
       >
-        <KingdomList speciesList={speciesList} mediaSize={mediaSize} />
+        <KingdomList speciesList={modalList} mediaSize={mediaSize} />
       </Modal>
+    </div>
+  )
+  return (
+    <div>
+      {treeList?.length > 0 && (
+        <Prediction speciesList={treeList} type="trees" />
+      )}
+      {herbList?.length > 0 && (
+        <Prediction speciesList={herbList} type="herbs" />
+      )}
     </div>
   )
 }

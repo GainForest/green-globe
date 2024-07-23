@@ -29,7 +29,6 @@ export const fetchHiveLocations = async (map, activeProjectId) => {
       .then((res) => {
         hiveLocations = res
       })
-    console.log(hiveLocations)
     map.getSource('hiveSource')?.setData(hiveLocations)
   }
 }

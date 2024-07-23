@@ -50,25 +50,41 @@ const LayerPicker = ({ map }) => {
   useEffect(() => {
     const getLayers = async () => {
       let layersData = []
+      const awsStorage = process.env.AWS_STORAGE
+      const titilerEndpoint = process.env.TITILER_ENDPOINT
+
       const globalRes = await fetch(
-        `${process.env.AWS_STORAGE}/layers/global/layerData.json`
+        `${awsStorage}/layers/global/layerData.json`
       )
       const globalLayers = await globalRes.json()
       layersData = globalLayers.layers
+
       if (kebabCasedProjectName) {
         const projectRes = await fetch(
-          `${process.env.AWS_STORAGE}/layers/${kebabCasedProjectName}/layerData.json`
+          `${awsStorage}/layers/${kebabCasedProjectName}/layerData.json`
         )
         const projectLayers = await projectRes.json()
         layersData = [...layersData, ...projectLayers.layers]
       }
+
       setLayers(
-        layersData.map((layer) => ({
-          ...layer,
-          isActive: false,
-        }))
+        layersData.map((layer) => {
+          layer.endpoint = layer.endpoint.replace(
+            '${process.env.AWS_STORAGE}',
+            awsStorage
+          )
+          layer.endpoint = layer.endpoint.replace(
+            '${process.env.TITILER_ENDPOINT}',
+            titilerEndpoint
+          )
+          return {
+            ...layer,
+            isActive: false,
+          }
+        })
       )
     }
+
     getLayers()
   }, [kebabCasedProjectName])
 

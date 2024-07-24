@@ -354,7 +354,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       <BasketDetails />
       <SearchOverlay
         map={map}
-        allCenterpoints={[]}
         mediaSize={mediaSize}
         searchInput={searchInput}
         setSearchInput={setSearchInput}

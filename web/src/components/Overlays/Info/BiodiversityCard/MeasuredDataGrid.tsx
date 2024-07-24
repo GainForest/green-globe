@@ -4,15 +4,15 @@ import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
+import { CanopyInsights } from 'src/components/CanopyInsights/CanopyInsights'
 import Dendogram from 'src/components/Dendogram/Dendogram'
+import { GeneticInsights } from 'src/components/GeneticInsights/GeneticInsights'
 
 import { Pokedex } from '../Pokedex/Pokedex'
 
 import { CircadianRythmn } from './CircadianRythmn'
 import { InsectSpy } from './InsectSpy'
 import { MeasuredTreesGrid } from './MeasuredTreesGrid'
-import { GeneticInsights } from 'src/components/GeneticInsights/GeneticInsights'
-import { CanopyInsights } from 'src/components/CanopyInsights/CanopyInsights'
 
 export const MeasuredDataGrid = ({
   mediaSize,
@@ -69,9 +69,7 @@ export const MeasuredDataGrid = ({
           onClick={() => setDisplayedInsight('insectspy')}
           dataTooltipId={'biodiversity-insectspy-insight'}
         />
-        <Tooltip id="biodiversity-insectspy-insight">
-          Insect Insights
-        </Tooltip>
+        <Tooltip id="biodiversity-insectspy-insight">Insect Insights</Tooltip>
         <IconButton
           buttonIcon={'biotech'}
           active={displayedInsight == 'eDNA'}

@@ -17,7 +17,7 @@ export const IconButton = ({ buttonIcon, active, onClick, dataTooltipId }) => {
             color: active ? '#ffffff' : '#000000',
             width: '28px',
           }}
-          src={`${process.env.AWS_STORAGE}${buttonIcon}_black.svg`}
+          src={`/dendogram_small_black.svg`}
         />
       </IconButtonContainer>
     )

@@ -1,11 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Info, SpeechIcon } from 'lucide-react'
 import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
 import { camelCaseToTitleCase } from 'src/utils/camelCaseToTitleCase'
 export const ActiveSpeciesCard = ({ species, mediaSize }) => {
-  console.log(species)
   const { scientificName, iucnCategory, awsUrl, info } = species
 
   // const dnaAudioRef = useRef(null)
@@ -56,8 +54,6 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
     if (str === 'eDNA') return str
     return str.replace(/([A-Z])/g, ' $1').trim()
   }
-
-  console.log(species)
 
   return (
     <CardContainer mediaSize={mediaSize}>

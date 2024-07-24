@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Info } from 'lucide-react'
+import { Info, SpeechIcon } from 'lucide-react'
 import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
@@ -57,47 +57,59 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
     return str.replace(/([A-Z])/g, ' $1').trim()
   }
 
+  console.log(species)
+
   return (
-    <CardContainer
-      backgroundColor={backgroundColors[iucnCategory] || '#6e6e6e'}
-      mediaSize={mediaSize}
-    >
+    <CardContainer mediaSize={mediaSize}>
       <StyledImage
         src={awsUrl?.length ? awsUrl : `/placeholder${species.category}.png`}
         alt={scientificName}
         mediaSize={mediaSize}
       />
-      <InfoContainer mediaSize={mediaSize}>
-        <h2 style={{ marginTop: '0', marginBottom: '16px' }}>
+      <TextContainer mediaSize={mediaSize}>
+        <CardTitle
+          invasive={species.group == 'INVASIVE'}
+          backgroundColor={backgroundColors[iucnCategory] || '#6e6e6e'}
+        >
           {scientificName}
-        </h2>
-        {/* <StyledButton onClick={() => toggleAudio('dna')}>
-          {!dnaAudioRef?.current?.paused ? 'Pause' : 'Play'} DNA
-        </StyledButton> */}
-      </InfoContainer>
+        </CardTitle>
+      </TextContainer>
       {species.info && (
-        <InfoContainer mediaSize={mediaSize}>
+        <TextContainer mediaSize={mediaSize}>
           <p>{info}</p>
-        </InfoContainer>
+        </TextContainer>
       )}
-      {species.traits &&
-        Object.keys(species.traits).map((trait) => (
-          <InfoContainer key={trait} mediaSize={mediaSize}>
-            <p style={{ margin: '4px' }}>
-              {camelCaseToTitleCase(trait)}: {species.traits[trait]}
-            </p>
-          </InfoContainer>
-        ))}
-      {species.edibleParts?.length > 0 && (
+      {species.group == 'INVASIVE' && (
+        <InvasiveBar>Invasive Species</InvasiveBar>
+      )}
+      <InfoGrid>
         <div>
-          <h3 style={{ margin: '8px' }}>Edible Parts:</h3>
-          {species.edibleParts.map((part) => (
-            <InfoContainer key={part}>
-              <p>{part}</p>
-            </InfoContainer>
-          ))}
+          {species.traits && (
+            <>
+              <h3 style={{ margin: '8px 12px' }}>Traits:</h3>
+              {Object.keys(species.traits).map((trait) => (
+                <TextContainer key={trait} mediaSize={mediaSize}>
+                  <p style={{ margin: '0 4px', fontSize: '14px' }}>
+                    {camelCaseToTitleCase(trait)}: {species.traits[trait]}
+                  </p>
+                </TextContainer>
+              ))}
+            </>
+          )}
         </div>
-      )}
+        <div>
+          {species.edibleParts?.length > 0 && (
+            <>
+              <h3 style={{ margin: '8px 12px' }}>Edible Parts:</h3>
+              {species.edibleParts.map((part) => (
+                <TextContainer key={part}>
+                  <p style={{ margin: '0 4px', fontSize: '14px' }}>{part}</p>
+                </TextContainer>
+              ))}
+            </>
+          )}
+        </div>
+      </InfoGrid>
       {species.eventDate && (
         <ObservationContainer mediaSize={mediaSize}>
           <Observation>
@@ -117,19 +129,17 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
           )}
         </ObservationContainer>
       )}
-      {/* <audio ref={dnaAudioRef} src={dnaAudioUrl} /> */}
     </CardContainer>
   )
 }
 
 const CardContainer = styled.div`
-  background-color: ${(props) => props.backgroundColor};
+  background-color: #f5f3ef;
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
   padding-bottom: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  color: #fff;
   width: ${(props) => {
     if (props.mediaSize > breakpoints.xl) {
       return '500px'
@@ -145,26 +155,41 @@ const CardContainer = styled.div`
   left: 30vw;
 `
 
-const StyledButton = styled.button`
-  padding: ${(props) =>
-    props.mediaSize > breakpoints.xl ? '5px 10px' : '2px 4px'};
-  margin: 4px;
-  border: 1px solid black;
+const CardTitle = styled.div`
+  background-color: ${(props) => props.backgroundColor};
+  color: #fff;
+  font-size: 24px;
+  padding: 4px;
+  margin-bottom: ${(props) => (props.invasive ? '2px' : '8px')};
+  width: 100%;
+  text-align: center;
   border-radius: 4px;
-  cursor: pointer;
-  color: black;
-  background: transparent;
-  max-height: ${(props) =>
-    props.mediaSize > breakpoints.xl ? '64px' : '32px'};
+`
+
+const InvasiveBar = styled.div`
+  background-color: red;
+  font-size: 20px;
+  padding: 4px;
+  margin: 0 8px 8px 8px;
+  width: 100%;
+  text-align: center;
+  border-radius: 4px;
+`
+
+const InfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr; // Two equal columns
+  gap: 20px; // Optional, adds some space between the columns
+  align-items: start; // Aligns items at the start of each grid cell
 `
 
 const StyledImage = styled.img`
   width: 100%;
-  height: ${(props) => (props.mediaSize > breakpoints.m ? '160px' : '120px')};
+  height: ${(props) => (props.mediaSize > breakpoints.m ? '280px' : '160px')};
   object-fit: cover;
 `
 
-const InfoContainer = styled.div`
+const TextContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

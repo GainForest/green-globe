@@ -88,10 +88,6 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
     loadJsonFiles(activeProjectData?.project?.name)
   }, [activeProjectData])
 
-  useEffect(() => {
-    console.log(allData)
-  }, [allData])
-
   return (
     <InfoBox mediaSize={mediaSize}>
       <HeaderContainer>

@@ -1,6 +1,7 @@
 import { SmallChart } from './SmallChart'
 import { SpatialResolution } from './SpatialResolution'
 export const CarbonChart = ({ chartData, projectArea, loading }) => {
+  console.log(chartData)
   if (loading) {
     return <div style={{ margin: '16px' }}>Loading...</div>
   }

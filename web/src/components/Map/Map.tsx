@@ -38,7 +38,7 @@ import { Legend as LayerLegend } from './components/Legend'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
-import { fetchEDNALocations, fetchTreeShapefile } from './mapfetch'
+import { fetchTreeShapefile } from './mapfetch'
 import {
   fetchProjectInfo,
   fetchGainForestCenterpoints,

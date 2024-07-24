@@ -310,7 +310,9 @@ export const TreeCoverChart = ({
           ))}
         </div>
       </div>
-      <NdviChart ndviData={scientificMonitoring} projectArea={projectArea} />
+      {scientificMonitoring && (
+        <NdviChart ndviData={scientificMonitoring} projectArea={projectArea} />
+      )}
     </div>
   )
 }

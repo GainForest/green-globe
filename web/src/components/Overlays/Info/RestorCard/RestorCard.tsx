@@ -63,27 +63,34 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         treeCover: 'tree_cover.json',
         socioEconomic: 'socio_economic.json',
       }
-      try {
-        const dataPromises = Object.entries(jsonFiles).map(([key, file]) =>
-          fetch(`${baseURL}/${file}`).then((response) =>
-            response.json().then((data) => ({ [key]: data[key] }))
-          )
-        )
-        const responses = await Promise.all(dataPromises)
-        const combinedData = responses.reduce(
-          (acc, data) => ({ ...acc, ...data }),
-          {}
-        )
-        setAllData(combinedData)
-        console.log(combinedData)
-      } catch (error) {
-        console.error('Error loading JSON files:', error)
-      }
+      const dataPromises = Object.entries(jsonFiles).map(([key, file]) =>
+        fetch(`${baseURL}/${file}`)
+          .then((response) => {
+            if (response.ok)
+              return response.json().then((data) => ({ [key]: data }))
+            throw new Error(`Failed to load ${key}`)
+          })
+          .catch((error) => {
+            console.error(`Error loading ${key}:`, error)
+            return { [key]: {} } // Return empty object for failed requests
+          })
+      )
+
+      const responses = await Promise.all(dataPromises)
+      const combinedData = responses.reduce(
+        (acc, data) => ({ ...acc, ...data }),
+        {}
+      )
+      setAllData(combinedData)
       setLoading(false)
     }
 
     loadJsonFiles(activeProjectData?.project?.name)
   }, [activeProjectData])
+
+  useEffect(() => {
+    console.log(allData)
+  }, [allData])
 
   return (
     <InfoBox mediaSize={mediaSize}>
@@ -146,38 +153,41 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
       {displayedInsight === 'biodiversity' && (
         <BiodiversityChart
           projectArea={activeProjectData?.project?.area}
-          chartData={allData}
+          ecoregionsBiomes={allData?.ecoregionsBiomes?.ecoregionsBiomes}
+          biodiversity={allData?.biodiversity?.biodiversity}
           loading={loading}
         />
       )}
       {displayedInsight === 'carbon' && (
         <CarbonChart
           projectArea={activeProjectData?.project?.area}
-          chartData={allData?.carbon}
+          chartData={allData?.carbon?.carbon}
           loading={loading}
         />
       )}
       {displayedInsight === 'water' && (
         <WaterChart
           projectArea={activeProjectData?.project?.area}
-          chartData={allData?.water}
+          chartData={allData?.water?.water}
           loading={loading}
         />
       )}
       {displayedInsight === 'treeCover' && (
         <TreeCoverChart
           projectArea={activeProjectData?.project?.area}
-          treeData={allData?.treeCover}
-          ecosystemsData={allData?.ecosystems}
-          scientificMonitoring={allData?.scientificMonitoring}
+          treeData={allData?.treeCover?.treeCover}
+          ecosystemsData={allData?.ecosystems?.ecosystems}
+          scientificMonitoring={
+            allData?.scientificMonitoring?.scientificMonitoring
+          }
           loading={loading}
         />
       )}
       {displayedInsight === 'environment' && (
         <EnvironmentChart
           projectArea={activeProjectData?.project?.area}
-          environmentData={allData.environment}
-          socioEconomicData={allData.socioEconomic}
+          environmentData={allData?.environment?.environment}
+          socioEconomicData={allData?.socioEconomic?.socioEconomic}
           loading={loading}
         />
       )}

@@ -4,7 +4,12 @@ import styled from 'styled-components'
 
 import { SmallChart } from './SmallChart'
 import { SpatialResolution } from './SpatialResolution'
-export const BiodiversityChart = ({ chartData, projectArea, loading }) => {
+export const BiodiversityChart = ({
+  ecoregionsBiomes,
+  biodiversity,
+  projectArea,
+  loading,
+}) => {
   const icons = {
     Plant: '🌿',
     Amphibian: '🐸',
@@ -15,11 +20,13 @@ export const BiodiversityChart = ({ chartData, projectArea, loading }) => {
   if (loading) {
     return <div style={{ margin: '16px' }}>Loading...</div>
   }
-  const { ecoregions, biomes } = chartData['ecoregionsBiomes']
 
-  if (!ecoregions?.data?.values?.length) {
+  if (!ecoregionsBiomes?.ecoregions?.data?.values?.length) {
     return <div style={{ margin: '16px' }}>No data found.</div>
   }
+
+  const { ecoregions, biomes } = ecoregionsBiomes
+  console.log(ecoregions)
 
   const ecoregionsData = {
     labels: ecoregions.data.values.map((entry) => entry.label),
@@ -80,14 +87,14 @@ export const BiodiversityChart = ({ chartData, projectArea, loading }) => {
           <SpeciesBox>
             <CountBox>
               <span style={{ marginRight: '8px' }}>{icons.Plant}</span>
-              {chartData.biodiversity.plantSpeciesCount.data.toLocaleString()}
+              {biodiversity.plantSpeciesCount.data.toLocaleString()}
             </CountBox>
             <p style={{ fontSize: '.8em' }}>Plant species</p>
           </SpeciesBox>
           <SpeciesBox>
             <CountBox>
               <span style={{ marginRight: '8px' }}>{icons.Amphibian}</span>
-              {chartData.biodiversity.amphibianSpeciesCount.data.toLocaleString()}
+              {biodiversity.amphibianSpeciesCount.data.toLocaleString()}
             </CountBox>
             <p style={{ fontSize: '.8em' }}>Amphibian species</p>
           </SpeciesBox>
@@ -96,14 +103,14 @@ export const BiodiversityChart = ({ chartData, projectArea, loading }) => {
           <SpeciesBox>
             <CountBox>
               <span style={{ marginRight: '8px' }}>{icons.Bird}</span>
-              {chartData.biodiversity.birdSpeciesCount.data.toLocaleString()}
+              {biodiversity.birdSpeciesCount.data.toLocaleString()}
             </CountBox>
             <p style={{ fontSize: '.8em' }}>Bird species</p>
           </SpeciesBox>
           <SpeciesBox>
             <CountBox>
               <span style={{ marginRight: '8px' }}>{icons.Mammal}</span>
-              {chartData.biodiversity.mammalSpeciesCount.data.toLocaleString()}
+              {biodiversity.mammalSpeciesCount.data.toLocaleString()}
             </CountBox>
             <p style={{ fontSize: '.8em' }}>Mammal species</p>
           </SpeciesBox>

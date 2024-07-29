@@ -14,7 +14,7 @@ import { EnvironmentChart } from './EnvironmentChart'
 import { TreeCoverChart } from './TreeCoverChart'
 import { WaterChart } from './WaterChart'
 
-const RestorLogo = () => (
+export const RestorLogo = () => (
   <svg
     width="30"
     height="18"
@@ -112,9 +112,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
           onClick={() => setDisplayedInsight('biodiversity')}
           dataTooltipId={'remote-sensing-biodiversity-insight'}
         />
-        <Tooltip id="remote-sensing-evapotranspiration-insight">
-          Biodiversity
-        </Tooltip>
+        <Tooltip id="remote-sensing-biodiversity-insight">Biodiversity</Tooltip>
         <IconButton
           buttonIcon={'forest'}
           active={displayedInsight === 'treeCover'}

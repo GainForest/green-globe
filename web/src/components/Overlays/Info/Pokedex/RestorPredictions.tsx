@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react'
 
 import Modal from 'react-modal'
 import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 
 import { toKebabCase } from 'src/utils/toKebabCase'
+
+import { RestorLogo } from '../RestorCard/RestorCard'
 
 import { KingdomList } from './KingdomList'
 
@@ -42,6 +45,18 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
     setModalList(speciesList)
     setModalIsOpen(true)
   }
+
+  useEffect(() => {
+    console.log(treeList)
+  }, [treeList])
+
+  useEffect(() => {
+    console.log(herbList)
+  }, [herbList])
+
+  useEffect(() => {
+    console.log(loading)
+  }, [loading])
 
   useEffect(() => {
     // 144 is the width of the species card, 4 is the margin, and 72 is the width of the modal border
@@ -129,7 +144,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
                 padding: '0',
               }}
             >
-              See more plants
+              See more {type}s
             </button>
           </div>
         ) : (
@@ -145,6 +160,15 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
       </Modal>
     </div>
   )
+
+  if (loading) {
+    return <Loading />
+  }
+
+  if (!loading && treeList.length == 0 && herbList.length == 0) {
+    return <NoData />
+  }
+
   return (
     <div>
       {treeList?.length > 0 && (
@@ -153,6 +177,47 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
       {herbList?.length > 0 && (
         <Prediction speciesList={herbList} type="herbs" />
       )}
+      <Footer>
+        <span>API provided by</span>
+        <LogoLink
+          href="https://restor.eco"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <RestorLogo />
+        </LogoLink>
+      </Footer>
     </div>
   )
 }
+
+const Loading = () => <Container>Loading...</Container>
+
+const NoData = () => <Container>No species found.</Container>
+
+const Container = styled.div`
+  margin: 16px 0px;
+`
+const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 16px;
+  margin-top: 16px;
+  border-top: 1px solid #e0e0e0;
+  font-size: 12px;
+  color: #666;
+`
+
+const LogoLink = styled.a`
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(102, 150, 41, 0.1);
+  }
+`

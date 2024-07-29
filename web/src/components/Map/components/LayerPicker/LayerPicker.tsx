@@ -94,20 +94,13 @@ const LayerPicker = ({ map }) => {
         if (layer.name === name) {
           const isActive = !layer.isActive
           if (isActive) {
-            if (layer.name === 'NICFI Tiles') {
-              addNICFISource(map, layer)
-            } else {
-              addNamedSource(map, layer)
-            }
+            addNamedSource(map, layer)
+
             if (layer.legend) {
               dispatch(setLegendName(layer.legend))
             }
           } else {
-            if (layer.name === 'NICFI Tiles') {
-              removeNICFISource(map, layer)
-            } else {
-              removeNamedSource(map, layer)
-            }
+            removeNamedSource(map, layer)
             if (layer.legend) {
               dispatch(setLegendName(undefined))
             }
@@ -117,32 +110,6 @@ const LayerPicker = ({ map }) => {
         return layer
       })
     )
-  }
-
-  const addNICFISource = (map, layer) => {
-    const { tileRange, tilePattern, endpoint } = layer
-    for (let x = tileRange.x.min; x <= tileRange.x.max; x++) {
-      for (let y = tileRange.y.min; y <= tileRange.y.max; y++) {
-        const tileName = tilePattern
-          .replace('{x}', x.toString().padStart(4, '0'))
-          .replace('{y}', y)
-        const tileEndpoint = `${endpoint}${tileName}`
-        addNamedSource(map, {
-          ...layer,
-          name: `NICFI_${x}_${y}`,
-          endpoint: tileEndpoint,
-        })
-      }
-    }
-  }
-
-  const removeNICFISource = (map, layer) => {
-    const { tileRange } = layer
-    for (let x = tileRange.x.min; x <= tileRange.x.max; x++) {
-      for (let y = tileRange.y.min; y <= tileRange.y.max; y++) {
-        removeNamedSource(map, { ...layer, name: `NICFI_${x}_${y}` })
-      }
-    }
   }
 
   const handleShowLayers = () => {

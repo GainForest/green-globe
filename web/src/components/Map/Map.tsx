@@ -97,10 +97,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     initializeMapbox('map-container', setMap)
   }, [])
 
-  useEffect(() => {
-    console.log(kebabCasedProjectName)
-  }, [kebabCasedProjectName])
-
   // Fetch all other data that can be fetched after the map is
   // loaded.
   useEffect(() => {
@@ -121,6 +117,13 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (map) {
       const onLoad = () => {
+        map.setFog({
+          color: '#000000',
+          'high-color': 'rgb(36, 92, 223)',
+          'horizon-blend': 0.02,
+          'space-color': 'rgb(11, 11, 25)',
+          'star-intensity': 0.05,
+        })
         addAllSourcesAndLayers(map)
         setSourcesAndLayersLoaded(true)
       }

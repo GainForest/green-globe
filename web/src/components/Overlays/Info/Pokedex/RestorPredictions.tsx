@@ -29,7 +29,7 @@ interface Plant {
 }
 
 export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [treeList, setTreeList] = useState<Plant[]>([])
   const [herbList, setHerbList] = useState<Plant[]>([])
@@ -45,18 +45,6 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
     setModalList(speciesList)
     setModalIsOpen(true)
   }
-
-  useEffect(() => {
-    console.log(treeList)
-  }, [treeList])
-
-  useEffect(() => {
-    console.log(herbList)
-  }, [herbList])
-
-  useEffect(() => {
-    console.log(loading)
-  }, [loading])
 
   useEffect(() => {
     // 144 is the width of the species card, 4 is the margin, and 72 is the width of the modal border
@@ -85,6 +73,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
         setter(plantList)
       } catch (e) {
         console.log(e)
+      } finally {
         setLoading(false)
       }
     }
@@ -144,7 +133,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
                 padding: '0',
               }}
             >
-              See more {type}s
+              See more {type}
             </button>
           </div>
         ) : (

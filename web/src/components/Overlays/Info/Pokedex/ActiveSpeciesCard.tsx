@@ -56,7 +56,7 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
   }
 
   return (
-    <CardContainer mediaSize={mediaSize}>
+    <CardContainer mediaSize={mediaSize} invasive={species.group == 'INVASIVE'}>
       <StyledImage
         src={awsUrl?.length ? awsUrl : `/placeholder${species.category}.png`}
         alt={scientificName}
@@ -145,7 +145,10 @@ const CardContainer = styled.div`
       return '300px'
     }
   }};
-  height: ${(props) => (props.mediaSize > breakpoints.m ? '600px' : '400px')};
+  height: ${(props) => {
+    const baseHeight = props.mediaSize > breakpoints.m ? 496 : 408
+    return `${props.invasive ? baseHeight + 40 : baseHeight}px`
+  }};
   z-index: 4;
   top: 20vh;
   left: 30vw;
@@ -164,10 +167,10 @@ const CardTitle = styled.div`
 
 const InvasiveBar = styled.div`
   background-color: red;
-  font-size: 20px;
+  font-size: 16px;
   padding: 4px;
-  margin: 0 8px 8px 8px;
-  width: 100%;
+  margin: 0 auto;
+  width: 50%;
   text-align: center;
   border-radius: 4px;
 `

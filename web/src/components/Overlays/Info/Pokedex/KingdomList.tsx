@@ -42,10 +42,9 @@ export const KingdomList = ({
           ? '400px'
           : '300px',
       height:
-        mediaSize > breakpoints.xl || mediaSize > breakpoints.m
-          ? '500px'
-          : '300px',
-
+        (mediaSize > breakpoints.m ? 496 : 408) +
+        (activeSpecies?.group == 'INVASIVE' ? 40 : 0) +
+        'px',
       transform: 'translate(-50%, -50%)',
       border: '1px solid #ccc',
       borderRadius: '10px',

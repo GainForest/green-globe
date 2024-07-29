@@ -9,17 +9,26 @@ export const initializeMapbox = (
 ) => {
   // Show offline version if you're running the app locally
   mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
-
-  const map = new mapboxgl.Map({
-    container: containerId,
-    projection: 'globe',
-    style: 'mapbox://styles/mapbox/satellite-v9',
-    zoom: 2,
-    center: [102, 9],
-    bounds,
-  })
-  map.addControl(new mapboxgl.NavigationControl())
-  setMap(map)
+  if (!bounds) {
+    const map = new mapboxgl.Map({
+      container: containerId,
+      projection: 'globe',
+      style: 'mapbox://styles/mapbox/satellite-v9',
+      zoom: 2,
+      center: [102, 9],
+      bounds,
+    })
+    map.addControl(new mapboxgl.NavigationControl())
+    setMap(map)
+  } else {
+    const map = new mapboxgl.Map({
+      container: containerId,
+      style: 'mapbox://styles/mapbox/dark-v11',
+      bounds,
+    })
+    map.addControl(new mapboxgl.NavigationControl())
+    setMap(map)
+  }
 }
 
 export const verraOutlineLayer = (lineColor: string) => ({

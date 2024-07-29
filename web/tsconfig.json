@@ -34,5 +34,6 @@
     "../.redwood/types/includes/all-*",
     "../.redwood/types/includes/web-*",
     "../types",
-    "./types"]
+    "./types"
+, "src/components/Map/sourcesAndLayers/.ts", "src/components/Map/config/.ts"  ]
 }

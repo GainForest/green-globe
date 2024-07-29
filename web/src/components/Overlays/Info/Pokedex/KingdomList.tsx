@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 
 import { breakpoints } from 'src/constants'
+import { Species } from 'src/types'
 
 import { ActiveSpeciesCard } from './ActiveSpeciesCard'
 import { SpeciesCard } from './SpeciesCard'

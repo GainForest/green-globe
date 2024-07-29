@@ -26,6 +26,10 @@ export const SearchOverlay = ({
   const [selectedIndex, setSelectedIndex] = useState(-1)
 
   useEffect(() => {
+    console.log(selectedIndex)
+  }, [selectedIndex])
+
+  useEffect(() => {
     const getProjects = async () => {
       const res = await fetch(
         `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles-new.geojson`
@@ -121,6 +125,8 @@ export const SearchOverlay = ({
               const selectedProject = filteredProjects[selectedIndex]
               handleClick(selectedProject.name)
               setSelectedIndex(-1)
+            } else {
+              setSelectedIndex(-1)
             }
           }}
           style={{
@@ -144,7 +150,7 @@ export const SearchOverlay = ({
             {filteredProjects.slice(0, 4).map((d, i) => (
               <Option
                 key={i}
-                position={i}
+                selected={selectedIndex == i}
                 onClick={() => {
                   handleClick(d.name)
                   setShowListOfProjects(false)
@@ -198,7 +204,7 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   top: 44px;
   border: none;
   left: 182px;
-  background-color: ${(props) => props.theme.colors.hinted};
+  background-color: ${(props) => props.theme.colors.background};
   padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;
   z-index: 3;
@@ -210,7 +216,7 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   }
 `
 
-const Option = styled.button<{ theme; position: number }>`
+const Option = styled.button<{ theme; selected: boolean }>`
   cursor: pointer;
   height: 40px;
   width: 360px;
@@ -219,9 +225,9 @@ const Option = styled.button<{ theme; position: number }>`
   font-size: 12px;
   padding-left: 16px;
   color: ${(props) => props.theme.colors.text};
-  background-color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) =>
+    props.selected ? props.theme.colors.hinted : props.theme.colors.background};
   :hover {
-    color: ${(props) => props.theme.colors.text};
     background-color: ${(props) => props.theme.colors.hinted};
   }
   @media (max-width: 767px) {

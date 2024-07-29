@@ -52,6 +52,11 @@ interface Species {
   iucnCategory: string
   category: string
   awsUrl: string
+  // below are for AnimalPhoto; has that been deprecated?
+  image_url: string
+  common: string
+  scientificname: string
+  redlist: string
 }
 
 // Not the complete interface

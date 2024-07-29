@@ -1,13 +1,6 @@
-import { RedlistStatus } from './biodiversityCardHelpers'
+import { Species } from 'src/types'
 
-interface Species {
-  image_url: string
-  common: string
-  family: string
-  family_common: string
-  scientificname: string
-  redlist: string
-}
+import { RedlistStatus } from './biodiversityCardHelpers'
 
 export const AnimalPhoto = ({
   species,

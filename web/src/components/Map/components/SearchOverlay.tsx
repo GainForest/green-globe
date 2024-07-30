@@ -10,14 +10,13 @@ import { countryToEmoji } from 'src/utils/countryToEmoji'
 
 export const SearchOverlay = ({
   map,
-  allCenterpoints,
   mediaSize,
   searchInput,
   setSearchInput,
 }) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
-  const allProjects = allCenterpoints?.features?.map((d) => d.properties)
+  const [allProjects, setAllProjects] = useState([])
   const [filteredProjects, setFilteredProjects] =
     useState<Array<{ name: string; country: string }>>(allProjects)
   const [showListOfProjects, setShowListOfProjects] = useState<boolean>(false)
@@ -25,15 +24,21 @@ export const SearchOverlay = ({
     mediaSize < breakpoints.m ? false : true
   )
   const [selectedIndex, setSelectedIndex] = useState(-1)
-  const [splicedProjects, setSplicedProjects] = useState<
-    Array<{ name: string; country: string }>
-  >([])
 
   useEffect(() => {
-    if (filteredProjects) {
-      setSplicedProjects(filteredProjects.splice(0, 4))
+    console.log(selectedIndex)
+  }, [selectedIndex])
+
+  useEffect(() => {
+    const getProjects = async () => {
+      const res = await fetch(
+        `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles-new.geojson`
+      )
+      const data = await res.json()
+      setAllProjects(data.features.map((feature) => feature.properties))
     }
-  }, [filteredProjects])
+    getProjects()
+  }, [])
 
   useEffect(() => {
     if (mediaSize < breakpoints.m) {
@@ -59,7 +64,7 @@ export const SearchOverlay = ({
       const filteredProjects = allProjects?.filter((d) => {
         const country = countryToEmoji[d?.country]?.name?.toLowerCase()
         return (
-          d?.name.toLowerCase().includes(searchInput?.toLowerCase()) ||
+          d?.name?.toLowerCase().includes(searchInput?.toLowerCase()) ||
           country.includes(searchInput?.toLowerCase())
         )
       })
@@ -105,7 +110,7 @@ export const SearchOverlay = ({
       {showSearchBar && (
         <SearchInputBox
           onKeyDown={(e) => {
-            const maxIndex = splicedProjects.length - 1
+            const maxIndex = filteredProjects.length - 1
             if (e.key === 'ArrowDown') {
               e.preventDefault()
               setSelectedIndex((prevIndex) =>
@@ -117,8 +122,10 @@ export const SearchOverlay = ({
                 prevIndex > 0 ? prevIndex - 1 : 0
               )
             } else if (e.key === 'Enter' && selectedIndex >= 0) {
-              const selectedProject = splicedProjects[selectedIndex]
+              const selectedProject = filteredProjects[selectedIndex]
               handleClick(selectedProject.name)
+              setSelectedIndex(-1)
+            } else {
               setSelectedIndex(-1)
             }
           }}
@@ -127,7 +134,7 @@ export const SearchOverlay = ({
           }}
           placeholder={'Search for projects or country'}
           onClick={(e) => {
-            setShowListOfProjects(!showListOfProjects)
+            setShowListOfProjects(true)
             e.target.select()
           }}
           onChange={(e) => {
@@ -137,28 +144,18 @@ export const SearchOverlay = ({
           theme={theme}
         />
       )}
-      {showListOfProjects && splicedProjects.length > 0 && (
+      {showListOfProjects && filteredProjects.length > 0 && (
         <>
           <OptionsContainer theme={theme}>
-            {splicedProjects.map((d, i) => (
+            {filteredProjects.slice(0, 4).map((d, i) => (
               <Option
                 key={i}
-                position={i}
+                selected={selectedIndex == i}
                 onClick={() => {
                   handleClick(d.name)
                   setShowListOfProjects(false)
                 }}
                 theme={theme}
-                style={{
-                  backgroundColor:
-                    selectedIndex === i
-                      ? theme.colors.secondaryBackground
-                      : theme.colors.background,
-                  color:
-                    selectedIndex === i
-                      ? theme.colors.textHighlight
-                      : theme.colors.text,
-                }}
               >
                 {d?.name}{' '}
                 <CountrySubtitle>
@@ -188,9 +185,8 @@ const SearchInputBox = styled.input<{ theme }>`
   position: absolute;
   padding: 8px 12px;
   top: 6px;
-  left: 152px;
-  color: #ffffff;
-  background-color: ${(props) => props.theme.colors.hinted};
+  left: 182px;
+  background-color: ${(props) => props.theme.colors.background};
   font-size: 0.875rem;
   font-family: Karla;
 
@@ -207,7 +203,7 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   width: 360px;
   top: 44px;
   border: none;
-  left: 140px;
+  left: 182px;
   background-color: ${(props) => props.theme.colors.background};
   padding: 8px 0;
   border-radius: 0 0 0.5em 0.5em;
@@ -220,7 +216,7 @@ const OptionsContainer = styled.div<{ theme; numOptions: number }>`
   }
 `
 
-const Option = styled.button<{ theme; position: number }>`
+const Option = styled.button<{ theme; selected: boolean }>`
   cursor: pointer;
   height: 40px;
   width: 360px;
@@ -229,10 +225,10 @@ const Option = styled.button<{ theme; position: number }>`
   font-size: 12px;
   padding-left: 16px;
   color: ${(props) => props.theme.colors.text};
-  background-color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) =>
+    props.selected ? props.theme.colors.hinted : props.theme.colors.background};
   :hover {
-    color: ${(props) => props.theme.colors.text};
-    background-color: ${(props) => props.theme.colors.secondaryBackground};
+    background-color: ${(props) => props.theme.colors.hinted};
   }
   @media (max-width: 767px) {
     width: 280px;

@@ -1,7 +1,8 @@
+import { LegendName } from './components/Map/legends/legendMap'
+
 interface State {
   satelliteHistory: {
     enabled: boolean
-    displayedDate: any //dayjs.Date
   }
   shop: {
     basket: number
@@ -10,15 +11,26 @@ interface State {
     info: number | null // The tab number displayed
     basket: boolean
     profile: boolean
+    maximized: boolean
+    legendName: LegendName | undefined
   }
-  display: {
+  map: {
     clickedCoordinates: {
       lat: number
       lon: number
     }
+    hoveredInformation: any
   }
   project: {
     id: string
+    name: string
+  }
+  fullscreenOverlay: {
+    active: boolean
+    source: string
+    type: string
+    component: string
+    props: any
   }
 }
 
@@ -33,6 +45,18 @@ interface Ecosystem {
   price: number
   selectedh3: string[]
   image: string
+}
+
+interface Species {
+  scientificName: string
+  iucnCategory: string
+  category: string
+  awsUrl: string
+  // below are for AnimalPhoto; has that been deprecated?
+  image_url: string
+  common: string
+  scientificname: string
+  redlist: string
 }
 
 // Not the complete interface
@@ -55,4 +79,21 @@ interface Asset {
     default: boolean
     shortName
   }
+}
+
+interface GeospatialLayer {
+  name: string
+  type:
+    | 'choropleth'
+    | 'choropleth_shannon'
+    | 'raster_tif'
+    | 'tms_tile'
+    | 'geojson_line' // eg shapefiles
+    | 'geojson_points'
+    | 'geojson_points_trees'
+    | 'vector_tile'
+  endpoint: string
+  category: string
+  description?: string
+  legend?: LegendName
 }

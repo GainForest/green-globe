@@ -1,5 +1,5 @@
 html {
-  font-family: 'Karla', sans-serif;
+  font-family: 'molengo', sans-serif;
 }
 
 button {
@@ -24,13 +24,28 @@ h3 {
   margin: 0;
 }
 
+h4 {
+  margin: 0;
+}
+
 p {
   margin: 8px 0px;
   font-size: 16px;
 }
 
 input[type=checkbox] {
-    accent-color: #67962A
+    accent-color: #669629
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+figure {
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .gainforest-map-marker {
@@ -66,6 +81,11 @@ input[type=checkbox] {
 .mapboxgl-ctrl-bottom-right {
   margin: 4px;
 }
+
+.mapboxgl-popup-content {
+  color: black;
+}
+
 
 .hive-map-marker {
   background-image: url('../public/hive.png');
@@ -112,14 +132,14 @@ input:focus {
   width: 14px; /* Set a specific slider handle width */
   height: 14px; /* Slider handle height */
   border-radius: 50%;
-  background: #67962A; /* Green background */
+  background: #669629; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
-  background: #67962A; /* Green background */
+  background: #669629; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
 
@@ -160,7 +180,7 @@ margin-top: 4px;
 
 .message-bubble-right {
   border-bottom-right-radius: 0;
-  background-color: #67962A;
+  background-color: #669629;
 }
 
 .message-text {
@@ -200,7 +220,7 @@ margin-top: 4px;
 }
 
 .tree-photo {
-  border-radius: 0px 0px 8px 8px;
+  border-radius: 0 0 8px 8px;
   top: 230px;
   max-height: 320px;
 }
@@ -257,7 +277,7 @@ margin-top: 4px;
   top: 8px;
   width: 16px;
   height: 16px;
-  z-index: 4;
+  z-index: 3;
 }
 
 .chat-menu-button {
@@ -291,6 +311,18 @@ margin-top: 4px;
   max-height: 80%;
 }
 
+.species-overlay {
+  position: absolute;
+  top: 50px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: transparent;
+  scrollbar-width: none;
+  justify-content: center;
+}
 .search-button {
   width: 20px;
   height: 20px;
@@ -333,8 +365,8 @@ filter: brightness(50%)
 }
 
 .info-box::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 0px;
+  height: 0px;
 }
 
 .info-box::-webkit-scrollbar-track {
@@ -358,7 +390,46 @@ background-color: #2b2b2b !important;
 
 }
 
+/* blog audio  */
 
+.audio-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.g-audio--playbutton {
+  width: 23px;
+  height: 23px;
+  border: none;
+  cursor: pointer;
+  background: #1ceafa;
+}
+
+.g-audio-content {
+  display: inline-block;
+  position: relative;
+  padding: 2px 5px;
+  transition: background 0.2s linear;
+  color: white;
+  background: #243f48;
+}
+
+.g-audio-content:hover {
+  color: #ffaa00;
+}
+
+.g-audio-content::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  background: rgba(26, 236, 255, 0.1);
+}
 
 
 @media only screen and (min-width: 480px) {

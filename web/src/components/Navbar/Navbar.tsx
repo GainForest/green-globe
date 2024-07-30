@@ -5,10 +5,10 @@ import { useAuth } from 'src/auth'
 import { breakpoints } from 'src/constants'
 import { showProfile } from 'src/reducers/overlaysReducer'
 
-import DonateButton from './DonateButton'
+import BiodiversityReportButton from './BiodiversityReport'
 import ProfileButton from './ProfileButton'
 
-const Navbar = ({ isAuthenticated, style, mediaSize }) => {
+const Navbar = ({ isAuthenticated, mediaSize }) => {
   const { theme } = useThemeUI()
   const dispatch = useDispatch()
   const location = window.location.origin
@@ -24,7 +24,6 @@ const Navbar = ({ isAuthenticated, style, mediaSize }) => {
         padding: '14px 24px',
         justifyContent: 'space-between',
         backgroundColor: theme.colors.secondaryBackground as string,
-        ...style,
       }}
     >
       <div style={{ width: '88px', paddingLeft: '20px', textAlign: 'center' }}>
@@ -38,16 +37,15 @@ const Navbar = ({ isAuthenticated, style, mediaSize }) => {
         </a>
       </div>
 
-      <div
+      {/* <div
         style={{
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
           height: '100%',
         }}
-      >
-        <DonateButton mediaSize={mediaSize} isLoggedIn={isAuthenticated} />
-      </div>
+      ></div> */}
+      {/* <BiodiversityReportButton /> */}
       {isAuthenticated && (
         <div
           style={{

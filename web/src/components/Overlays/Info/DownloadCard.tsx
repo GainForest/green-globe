@@ -2,9 +2,9 @@ import Button from 'src/components/Map/components/Button'
 
 import { InfoBox } from './InfoBox'
 
-export const DownloadCard = ({ activeProjectData, mediaSize, maximize }) => {
+export const DownloadCard = ({ activeProjectData, mediaSize }) => {
   return (
-    <InfoBox maximize={maximize} mediaSize={mediaSize}>
+    <InfoBox mediaSize={mediaSize}>
       <div style={{ margin: '8px 24px' }}>
         <h1>Forestbench</h1>
         {activeProjectData?.project?.dataDownloadInfo}

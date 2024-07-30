@@ -68,7 +68,7 @@ const useOutsideClick = (ref, callback) => {
   }, [ref, callback])
 }
 
-export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
+export const ChatCard = ({ activeProjectData, mediaSize }) => {
   const [messageLog, setMessageLog] = useState([])
   const { isAuthenticated, userMetadata, signUp } = useAuth()
   const [message, setMessage] = useState({
@@ -167,8 +167,22 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
   }, [isAuthenticated, userMetadata?.email, getChat])
 
   return (
-    <InfoBox maximize={maximize} mediaSize={mediaSize}>
-      <div
+    <InfoBox mediaSize={mediaSize}>
+      {/* Connects to Gainforest Polly */}
+      {window.location.host.includes('localhost') ? (
+        <iframe
+          title={'Polly chatbot'}
+          style={{ height: '100%', width: '100%' }}
+          src="http://localhost:3000"
+        />
+      ) : (
+        <iframe
+          title={'Polly chatbot'}
+          style={{ height: '100%', width: '100%' }}
+          src="https://polly.gainforest.earth/"
+        />
+      )}
+      {/* <div
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -178,7 +192,6 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
       >
         <h1>Chat</h1>
 
-        {/* Message Container */}
         <div
           style={{
             overflowY: 'auto',
@@ -278,7 +291,6 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-        {/* Input Box */}
         <div
           style={{
             position: 'relative',
@@ -308,7 +320,7 @@ export const ChatCard = ({ activeProjectData, mediaSize, maximize }) => {
             </SignupButton>
           )}
         </div>
-      </div>
+      </div> */}
     </InfoBox>
   )
 }

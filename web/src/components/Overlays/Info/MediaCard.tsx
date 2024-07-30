@@ -1,35 +1,88 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { useEffect, useState } from 'react'
+
+import axios from 'axios'
+import * as cheerio from 'cheerio'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { breakpoints } from 'src/constants'
+import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 
-export const WildlifeCard = ({
+export const MediaCard = ({
   activeProjectData,
   mediaSize,
-  maximize,
   toggle,
   setToggle,
-  handleClick,
 }) => {
-  const photos = activeProjectData?.project?.assets?.filter(
-    (d) =>
-      (d.classification.includes('Camera Traps') ||
-        d.classification.includes('Community Photos')) &&
-      d.awsCID.includes('.jpg')
-  )
-  const photoEndpoints = photos?.map((photo) => photo.awsCID)
-  const videos = activeProjectData?.project?.assets?.filter(
-    (d) =>
-      d.classification.includes('Camera Traps') && d.awsCID.includes('.mp4')
-  )
-  const videoEndpoints = videos?.map((video) => video.awsCID || '')
+  const [photoEndpoints, setPhotoEndpoints] = useState([])
+  const [videoEndpoints, setVideoEndpoints] = useState([])
+  const maximized = useSelector((state: State) => state.overlays.maximized)
+
+  useEffect(() => {
+    const setEndpoints = async () => {
+      let videos = []
+      let photos = []
+      if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
+        console.log('fetching media from local server')
+        const formattedProjectName = activeProjectData.project?.name
+          ?.toLowerCase()
+          .replace(/[\s_]+/g, '-')
+        const mediaUrl = `${process.env.AWS_STORAGE}/media/${formattedProjectName}`
+        console.log(mediaUrl)
+        const res = await axios.get(mediaUrl)
+        const $ = cheerio.load(res.data)
+
+        $('a').each((index, element) => {
+          const href = $(element).attr('href')
+          if (
+            href.includes('.jpg') ||
+            href.includes('.jpeg') ||
+            href.includes('.png') ||
+            href.includes('.gif')
+          ) {
+            photos.push(`media/${formattedProjectName}/${href}`)
+          }
+          if (
+            href.includes('.mp4') ||
+            href.includes('.webm') ||
+            href.includes('.ogv')
+          ) {
+            videos.push(`media/${formattedProjectName}/${href}`)
+          }
+        })
+      } else {
+        const photoLinks = activeProjectData?.project?.assets?.filter(
+          (d) =>
+            (d.classification.includes('Camera Traps') ||
+              d.classification.includes('Community Photos')) &&
+            (d.awsCID.includes('.jpg') ||
+              d.awsCID.includes('.JPG') ||
+              d.awsCID.includes('.jpeg') ||
+              d.awsCID.includes('.png') ||
+              d.awsCID.includes('.gif'))
+        )
+        photos = photoLinks?.map((photo) => photo.awsCID)
+        const videoLinks = activeProjectData?.project?.assets?.filter(
+          (d) =>
+            d.classification.includes('Camera Traps') &&
+            d.awsCID.includes('.mp4')
+        )
+        videos = videoLinks?.map((video) => video.awsCID || '')
+      }
+      setPhotoEndpoints(photos)
+      setVideoEndpoints(videos)
+    }
+    setEndpoints()
+  }, [activeProjectData])
 
   return (
-    <InfoBox maximize={maximize} mediaSize={mediaSize}>
-      <div style={{ margin: '16px 24px' }}>
-        <h1 style={{ marginBottom: '8px' }}>Media</h1>
+    <InfoBox mediaSize={mediaSize}>
+      <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
+        <h1 style={{ marginBottom: '8px' }}>Images & Videos</h1>
         <ToggleButton
           active={toggle}
           setToggle={setToggle}
@@ -50,9 +103,8 @@ export const WildlifeCard = ({
               <PhotoCard
                 key={photo}
                 photoEndpoint={photo}
-                handleClick={handleClick}
                 mediaSize={mediaSize}
-                maximize={maximize}
+                maximize={maximized}
               />
             ))}
             {photoEndpoints?.length === 0 && (
@@ -66,9 +118,8 @@ export const WildlifeCard = ({
               <VideoCard
                 key={video}
                 videoEndpoint={video}
-                handleClick={handleClick}
                 mediaSize={mediaSize}
-                maximize={maximize}
+                maximize={maximized}
               />
             ))}
             {videoEndpoints?.length === 0 && (
@@ -81,7 +132,9 @@ export const WildlifeCard = ({
   )
 }
 
-const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
+const PhotoCard = ({ photoEndpoint, mediaSize, maximize }) => {
+  const dispatch = useDispatch()
+
   return (
     <div className="community-photo">
       <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
@@ -93,7 +146,11 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
           cursor: 'pointer',
           width: '100%',
         }}
-        onClick={() => handleClick(photoEndpoint)}
+        onClick={() => {
+          dispatch(
+            setFullscreenOverlay({ source: photoEndpoint, active: true })
+          )
+        }}
       >
         <img
           alt="Wildlife camera still"
@@ -123,12 +180,7 @@ const PhotoCard = ({ photoEndpoint, handleClick, mediaSize, maximize }) => {
   )
 }
 
-export const VideoCard = ({
-  videoEndpoint,
-  handleClick,
-  mediaSize,
-  maximize,
-}) => {
+export const VideoCard = ({ videoEndpoint, mediaSize, maximize }) => {
   return (
     <div className="community-photo">
       <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
@@ -140,7 +192,6 @@ export const VideoCard = ({
           cursor: 'pointer',
           width: '100%',
         }}
-        onClick={() => handleClick(videoEndpoint)}
       >
         <video
           src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}

@@ -19,3 +19,15 @@ api/src/lib/generateGraphiQLHeader.*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+data
+pgdata
+pgdata/**
+
+# Ignore all files in the data folder
+data/**
+
+# Do not ignore .py files in the data folder
+!data/**/*.py
+
+# Do not ignore directories in the data folder
+!data/**/

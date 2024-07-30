@@ -1,13 +1,13 @@
-import mapboxgl from 'mapbox-gl'
+import React from 'react'
 
-import { breakpoints } from 'src/constants'
+import mapboxgl from 'mapbox-gl'
 
 export const initializeMapbox = (
   containerId: string,
   setMap: React.Dispatch<mapboxgl.Map>,
-  mediaSize,
   bounds?: mapboxgl.LngLatBoundsLike
 ) => {
+  // Show offline version if you're running the app locally
   mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN
   if (!bounds) {
     const map = new mapboxgl.Map({
@@ -50,3 +50,21 @@ export const verraSource = (geoJson) => ({
   type: 'geojson',
   data: geoJson,
 })
+
+export const landCoverSource = {
+  type: 'raster',
+  tiles: [
+    `https://services.terrascope.be/wmts/v2?layer=WORLDCOVER_2021_MAP&style=&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:3857:{z}&TileCol={x}&TileRow={y}&TIME=2023-04-12`,
+  ],
+  tileSize: 256,
+  attribution: `<a target="_top" rel="noopener" href="https://gainforest.earth">©2023 GainForest</a>`,
+}
+
+export const landCoverLayer = {
+  id: 'landCoverLayer',
+  type: 'raster',
+  source: `landCoverSource`,
+  layout: {
+    visibility: 'none',
+  },
+}

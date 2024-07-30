@@ -14,9 +14,9 @@ export const ToggleButton = ({
   options,
 }: {
   active: L | R
-  setToggle: (toggle: L | R) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setToggle: any
   options: [L, R]
-  mediaSize: number
 }) => {
   const [firstOption, secondOption] = options
   return (
@@ -49,10 +49,10 @@ export const HalfButton = styled.button<{ active: boolean }>`
   height: 36px;
   cursor: pointer;
   color: ${(props) => (props.active ? '#ffffff' : '#808080')};
-  background-color: ${(props) => (props.active ? '#67962A' : '#f5f5f5')};
+  background-color: ${(props) => (props.active ? '#669629' : '#f5f5f5')};
   :hover {
     background-color: ${(props) =>
-      props.active ? '#67962A' : 'rgba(103, 150, 42, 0.15)'};
+      props.active ? '#669629' : 'rgba(103, 150, 42, 0.15)'};
   }
 
   @media (max-width: ${breakpoints.xl}px) {

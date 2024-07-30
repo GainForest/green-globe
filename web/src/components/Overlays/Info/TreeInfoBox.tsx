@@ -1,34 +1,49 @@
 import { useState } from 'react'
 
+import { useSelector, useDispatch } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
 import { CloseButton } from 'src/components/Buttons/Close'
 import { breakpoints } from 'src/constants'
+import { setHoveredInformation } from 'src/reducers/mapReducer'
+import { State } from 'src/types'
+interface TreeData {
+  treeName: string
+  treeHeight: string
+  treeDBH: string
+  dateOfMeasurement: string
+  treePhotos: string[]
+  fileName: string[] // string of aws endpoints
+}
 
-export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
+export const TreeInfoBox = ({ mediaSize }) => {
+  const hoveredInformation: TreeData = useSelector(
+    (state: State) => state.map.hoveredInformation
+  )
   const { theme } = useThemeUI()
+  const dispatch = useDispatch()
   const [photoIndex, setPhotoIndex] = useState(0)
   if (
-    treeData.treePhotos[photoIndex]?.endsWith('mov') ||
-    treeData.treePhotos[photoIndex]?.endsWith('MOV') ||
-    treeData.treePhotos[photoIndex]?.endsWith('mp4')
+    hoveredInformation.treePhotos[photoIndex]?.endsWith('mov') ||
+    hoveredInformation.treePhotos[photoIndex]?.endsWith('MOV') ||
+    hoveredInformation.treePhotos[photoIndex]?.endsWith('mp4')
   )
     return (
       <div>
         <video
           className="tree-photo"
-          key={treeData.treePhotos[photoIndex]}
+          key={hoveredInformation.treePhotos[photoIndex]}
           style={{
             borderRadius: '8px',
           }}
           autoPlay
         >
           <track kind="captions" />
-          <source src={treeData.treePhotos[photoIndex]} />
+          <source src={hoveredInformation.treePhotos[photoIndex]} />
         </video>
       </div>
     )
-  else
+  else {
     return (
       <>
         <div
@@ -42,7 +57,9 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
             position: 'absolute',
             top: 160,
             right: 8,
-            borderRadius: treeData.treePhotos[0]?.endsWith('taxa_plants.png')
+            borderRadius: hoveredInformation.treePhotos[0]?.endsWith(
+              'taxa_plants.png'
+            )
               ? '8px'
               : '8px 8px 0 0 ',
           }}
@@ -56,37 +73,38 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
           >
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
               <p className="tree-key">Species</p>
-              <p className="tree-val">{treeData.treeName}</p>
+              <p className="tree-val">{hoveredInformation.treeName}</p>
             </div>
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
               <p className="tree-key">Height</p>
-              <p className="tree-val">{treeData.treeHeight}</p>
+              <p className="tree-val">{hoveredInformation.treeHeight}</p>
             </div>
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
               <p className="tree-key">Width</p>
-              <p className="tree-val">{treeData.treeDBH}</p>
+              <p className="tree-val">{hoveredInformation.treeDBH}</p>
             </div>
             <div style={{ margin: '0 4px', flexDirection: 'column' }}>
               <p className="tree-key">Date Measured</p>
-              <p className="tree-val">{treeData.dateOfMeasurement}</p>
+              <p className="tree-val">{hoveredInformation.dateOfMeasurement}</p>
             </div>
             <CloseButton
               style={null}
               fontSize="22px"
               onClick={() => {
-                setTreeData({})
+                dispatch(setHoveredInformation({}))
               }}
             />
           </div>
         </div>
-        {!treeData.treePhotos[0].endsWith('taxa_plants.png') && (
+
+        {!hoveredInformation.treePhotos[0].endsWith('taxa_plants.png') && (
           <div>
             <img
               className="tree-photo"
-              alt={treeData.name}
-              src={treeData.treePhotos[photoIndex]}
+              alt={hoveredInformation.treeName}
+              src={hoveredInformation.treePhotos[photoIndex]}
             />
-            {treeData.treePhotos?.length > 1 && (
+            {hoveredInformation.treePhotos?.length > 1 && (
               <div>
                 <button
                   style={{
@@ -116,7 +134,7 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
                   onClick={() =>
                     setPhotoIndex((photoIndex) =>
                       photoIndex === 0
-                        ? treeData.treePhotos?.length - 1
+                        ? hoveredInformation.treePhotos?.length - 1
                         : photoIndex - 1
                     )
                   }
@@ -150,7 +168,7 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
                   }}
                   onClick={() =>
                     setPhotoIndex((photoIndex) =>
-                      photoIndex === treeData.treePhotos?.length - 1
+                      photoIndex === hoveredInformation.treePhotos?.length - 1
                         ? 0
                         : photoIndex + 1
                     )
@@ -164,4 +182,5 @@ export const TreeInfoBox = ({ treeData, setTreeData, mediaSize }) => {
         )}
       </>
     )
+  }
 }

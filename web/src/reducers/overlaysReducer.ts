@@ -1,12 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+import { State } from 'src/types'
+
 export const overlaysSlice = createSlice({
   name: 'counter',
   initialState: {
     info: null, // either 1-6, or null
     basket: false,
     profile: false,
-  },
+    maximized: false,
+    legendName: undefined,
+  } as State['overlays'],
   reducers: {
     showBasket: (state) => {
       state.basket = true
@@ -16,6 +20,9 @@ export const overlaysSlice = createSlice({
     },
     toggleBasket: (state) => {
       state.basket = !state.basket
+    },
+    setMaximized: (state, action) => {
+      state.maximized = action.payload
     },
     setInfoOverlay: (state, action) => {
       state.info = action.payload
@@ -29,6 +36,9 @@ export const overlaysSlice = createSlice({
     hideProfile: (state) => {
       state.profile = false
     },
+    setLegendName: (state, action) => {
+      state.legendName = action.payload
+    },
   },
 })
 
@@ -37,10 +47,12 @@ export const {
   showBasket,
   hideBasket,
   toggleBasket,
+  setMaximized,
   setInfoOverlay,
   hideInfoOverlay,
   showProfile,
   hideProfile,
+  setLegendName,
 } = overlaysSlice.actions
 
 export default overlaysSlice.reducer

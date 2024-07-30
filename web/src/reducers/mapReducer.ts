@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const displaySlice = createSlice({
-  name: 'counter',
+  name: 'map',
   initialState: {
     clickedCoordinates: {
       lat: undefined,
       lon: undefined,
     },
+    hoveredInformation: {},
   },
   reducers: {
     setClickedCoordinates: (state, action) => {
@@ -27,10 +28,14 @@ export const displaySlice = createSlice({
         lon: action.payload.lon,
       }
     },
+    setHoveredInformation: (state, action) => {
+      state.hoveredInformation = action.payload
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setClickedCoordinates } = displaySlice.actions
+export const { setClickedCoordinates, setHoveredInformation } =
+  displaySlice.actions
 
 export default displaySlice.reducer

@@ -1,11 +1,36 @@
 import geojson2h3 from 'geojson2h3'
 
-export const fetchHiveLocations = (setHiveLocations) => {
-  fetch(`${process.env.AWS_STORAGE}/points-of-interest/hive-locations.geojson`)
-    .then((response) => response.json())
-    .then((hiveLocations) => {
-      setHiveLocations(hiveLocations)
-    })
+export const fetchMeasuredTrees = (
+  activeProjectData,
+  setActiveProjectTreesPlanted
+) => {
+  const projectName = activeProjectData?.project?.name
+  const dashedProjectName = projectName?.toLowerCase().replaceAll(' ', '-')
+  if (dashedProjectName) {
+    const treesEndpoint = `canopy/${dashedProjectName}.geojson`
+    const fetchData = async () => {
+      await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
+    }
+    fetchData().catch(console.error)
+  }
+}
+
+export const fetchHiveLocations = async (map, activeProjectId) => {
+  if (
+    activeProjectId ==
+    '7f7b643aca10dae0c71afc9910b3f67bff441504d97e0d90a12c40db5d2d02c1'
+  ) {
+    let hiveLocations = undefined
+
+    await fetch(
+      `${process.env.AWS_STORAGE}/points-of-interest/hive-locations.geojson`
+    )
+      .then((response) => response.json())
+      .then((res) => {
+        hiveLocations = res
+      })
+    map.getSource('hiveSource')?.setData(hiveLocations)
+  }
 }
 
 export const fetchHexagons = (setHexagons) => {
@@ -20,16 +45,32 @@ export const fetchHexagons = (setHexagons) => {
     })
 }
 
-export const fetchGainForestCenterpoints = (setGeoJson) => {
-  fetch(
-    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
+export const fetchEDNALocations = async (map) => {
+  let ednaLocations = undefined
+
+  await fetch(
+    `${process.env.AWS_STORAGE}/edna/sample-locations-semifinals.geojson`
   )
     .then((response) => response.json())
-    .then((newGeojson) => setGeoJson(newGeojson))
+    .then((res) => (ednaLocations = res))
+
+  map.getSource('ednaSource')?.setData(ednaLocations)
+}
+
+export const fetchGainForestCenterpoints = async (map) => {
+  let gainforestCenterpoints = undefined
+  await fetch(
+    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles-new.geojson`
+  )
+    .then((response) => response.json())
+    .then((res) => (gainforestCenterpoints = res))
+  map.getSource('gainforestMarkerSource')?.setData(gainforestCenterpoints)
 }
 
 export const fetchProjectInfo = async (projectId) => {
-  const response = fetch(`${process.env.GAINFOREST_ENDPOINT}/api/graphql`, {
+  const endpoint = `${process.env.GAINFOREST_ENDPOINT}/api/graphql`
+
+  const response = fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

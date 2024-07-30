@@ -1,28 +1,33 @@
+import { useSelector } from 'react-redux'
+import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { breakpoints } from 'src/constants'
 export const InfoOverlayButton = ({
   buttonIcon,
+  description,
   position,
   active,
   mediaSize,
-  maximize,
   onClick,
 }: {
   buttonIcon: string
+  description: string
   position: number
   active: boolean
   mediaSize?: number
-  maximize?: boolean
   onClick: () => void
 }) => {
+  const maximized = useSelector((state: State) => state.overlays.maximized)
+
   return (
     <StyledButton
       mediaSize={mediaSize}
       active={active}
       position={position}
       onClick={onClick}
-      maximize={maximize}
+      maximize={maximized}
+      data-tooltip-id={`info-button-clipTip-${description}`}
     >
       <span
         className="material-icons-round"
@@ -49,9 +54,19 @@ export const InfoOverlayButton = ({
       >
         {buttonIcon}
       </span>
+      <Tooltip
+        id={`info-button-clipTip-${description}`}
+        delayShow={10}
+        style={{ zIndex: 1000 }}
+      >
+        {description}
+      </Tooltip>
     </StyledButton>
   )
 }
+
+const MAX_NUMBER_OF_BUTTONS = 8 // actually 7 + 1 as the priorities are not 0 indexed.
+// to encompass the width of the card. important as we want the first card to be on the very left.
 
 const StyledButton = styled.button<{
   position: number
@@ -65,10 +80,10 @@ const StyledButton = styled.button<{
   cursor: pointer;
   padding: 0;
   border: none;
-  background-color: ${({ active }) => (active ? '#67962A' : '#ffffff')};
+  background-color: ${({ active }) => (active ? '#669629' : '#ffffff')};
 
   &:hover {
-    background-color: ${({ active }) => (active ? '#67962A' : '#e9f5da')};
+    background-color: ${({ active }) => (active ? '#669629' : '#e9f5da')};
   }
 
   // Conditional styling based on maximize prop
@@ -78,14 +93,14 @@ const StyledButton = styled.button<{
     height: 44px;
     width: 44px;
     top: ${position * 52 - 44 + 48}px;
-    left: 8px;
+    right: 8px;
 
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
       width: 28px;
       bottom: auto;
       top: 60px;
-      left: ${position * 36 - 28}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
@@ -93,7 +108,7 @@ const StyledButton = styled.button<{
       width: 24px;
       bottom: auto;
       top: 54px;
-      left: ${position * 28 - 24}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 28 - 24}px;
     }
   `
       : `
@@ -101,27 +116,27 @@ const StyledButton = styled.button<{
     height: 44px;
     width: 44px;
     bottom: calc(60vh + 44px);
-    left: ${position * 52 - 44}px;
+    right: ${(MAX_NUMBER_OF_BUTTONS - position) * 52 - 44}px;
 
     @media (max-width: ${breakpoints.xl}px) {
       height: 42px;
       width: 42px;
       bottom: calc(60vh + 42px);
-      left: ${position * 52 - 42}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 52 - 42}px;
     }
 
     @media (max-width: ${breakpoints.m}px) {
       height: 28px;
       width: 28px;
       bottom: calc(60vh + 40px);
-      left: ${position * 36 - 28}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 36 - 28}px;
     }
 
     @media (max-width: ${breakpoints.s}px) {
       height: 24px;
       width: 24px;
       bottom: calc(60vh + 40px);
-      left: ${position * 28 - 24 + 5}px;
+      right: ${(MAX_NUMBER_OF_BUTTONS - position) * 28 - 24 + 5}px;
     }
   `}
 `

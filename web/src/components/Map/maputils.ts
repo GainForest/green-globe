@@ -11,30 +11,29 @@ import {
 } from './maptreeutils'
 import { addHiveSourceAndLayers } from './sourcesAndLayers/beehive'
 import { addHistoricalSatelliteSourceAndLayers } from './sourcesAndLayers/historicalSatellite'
-import { addLandCoverSourceAndLayer } from './sourcesAndLayers/landCover'
 import {
   addMeasuredTreesSourceAndLayer,
   toggleMeasuredTreesLayer,
 } from './sourcesAndLayers/measuredTrees'
+import { addProjectMarkers } from './sourcesAndLayers/projectMarkers'
 import {
   addAllSitesSourceAndLayer,
   addHighlightedSiteSourceAndLayer,
 } from './sourcesAndLayers/projectSites'
-import { addTreeCoverSourceAndLayer } from './sourcesAndLayers/treeCover'
 
-export const addAllSourcesAndLayers = (
-  map: mapboxgl.Map,
-  hiveLocations,
-  setMarkers
-) => {
+export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
+  // addEDNASourceAndLayers(map)
   addHistoricalSatelliteSourceAndLayers(map)
-  addLandCoverSourceAndLayer(map)
-  addTreeCoverSourceAndLayer(map)
+  // addLandCoverSourceAndLayer(map)
+  // addTreeCoverSourceAndLayer(map)
   addAllSitesSourceAndLayer(map)
   addHighlightedSiteSourceAndLayer(map)
-  addHiveSourceAndLayers(map, hiveLocations, setMarkers)
+  addProjectMarkers(map)
+  addHiveSourceAndLayers(map)
   addMeasuredTreesSourceAndLayer(map)
 }
+
+// https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=2023-07-15T00:00:00Z&layer=VIIRS_NOAA20_CorrectedReflectance_TrueColor&style=default&tilematrixset=250m&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=1&TileCol=1&TileRow=0
 
 export const toggleOrthomosaic = (map: mapboxgl.Map, visibility) => {
   if (map.getLayer('orthomosaic')) {

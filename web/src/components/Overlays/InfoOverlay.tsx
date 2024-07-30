@@ -2,20 +2,23 @@ import { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
+import { toggleFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ExitButton } from '../Map/components/ExitButton'
 import { MaximizeButton } from '../Map/components/MaximizeButton'
 
-import { BiodiversityCard } from './Info/BiodiversityCard'
+import { BiodiversityCard } from './Info/BiodiversityCard/BiodiversityCard'
 import { ChatCard } from './Info/ChatCard'
 import { CommunityCard } from './Info/CommunityCard'
-// import { DiscordCard } from './Info/DiscordCard'
-// import { HexagonCard } from './Info/HexagonCard'
 import { DownloadCard } from './Info/DownloadCard'
 import { InfoOverlayButton } from './Info/InfoOverlayButton'
+import { LogbookCard } from './Info/LogbookCard'
+import { MediaCard } from './Info/MediaCard'
+import { ActiveSpeciesCard } from './Info/Pokedex/ActiveSpeciesCard'
+import { KingdomList } from './Info/Pokedex/KingdomList'
 import { ProjectCard } from './Info/ProjectCard/ProjectCard'
-import { WildlifeCard } from './Info/WildlifeCard'
+import { RestorCard } from './Info/RestorCard/RestorCard'
 
 export const InfoOverlay = ({
   activeProjectData,
@@ -23,108 +26,108 @@ export const InfoOverlay = ({
   // numHexagons,
   setActiveProjectPolygon,
   mediaSize,
-  maximize,
-  setMaximize,
   selectedSpecies,
   setSelectedSpecies,
 }) => {
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
-  const infoOverlay = useSelector((state: State) => state.overlays.info)
-  // Position of the buttons go from left to right
-  const [fullScreenOverlay, setFullScreenOverlay] = useState<boolean>(false)
-  const [endpoint, setEndpoint] = useState<string>('')
-  const [fileType, setFileType] = useState<string | null>(null)
 
-  const handleClick = (source, type: string | null) => {
-    // optional "type" param if fullScreenOverlay is used outside of WildlifeCard.tsx
-    if (type) {
-      setFileType(type)
-    } else {
-      setFileType(null)
-    }
-    if (fullScreenOverlay) {
-      setFullScreenOverlay(false)
-    } else {
-      setEndpoint(source)
-      setFullScreenOverlay(true)
-    }
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
+  const fullScreenOverlay = useSelector(
+    (state: State) => state.fullscreenOverlay
+  )
+  const { source, type, component, props, active } = fullScreenOverlay
+
+  const handleClick = () => {
+    dispatch(toggleFullscreenOverlay())
   }
+
   return (
     <>
-      {fullScreenOverlay && (
+      {active && (
         <ImageOverlay
           toggle={toggle}
-          endpoint={endpoint}
-          handleClick={handleClick}
-          fileType={fileType}
+          endpoint={source}
+          fileType={type}
+          contentProps={props}
+          ContentComponent={component}
         />
       )}
-      <MaximizeButton
-        mediaSize={mediaSize}
-        maximize={maximize}
-        onClick={() => setMaximize((max) => !max)}
-        style={null}
-      />
+      <MaximizeButton mediaSize={mediaSize} style={null} />
       <ExitButton
         mediaSize={mediaSize}
-        maximize={maximize}
         onClick={() => dispatch(setInfoOverlay(null))}
         style={null}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
-        buttonIcon={'forest'}
-        position={1}
+        description={'Project Info'}
+        buttonIcon={'star'}
+        position={2}
         active={infoOverlay == 1}
         onClick={() => dispatch(setInfoOverlay(1))}
       />
+      {/* <InfoOverlayButton
+        mediaSize={mediaSize}
+        description={'AI Assistant'}
+        buttonIcon={'chat'}
+        position={2}
+        active={infoOverlay == 5}
+        onClick={() => dispatch(setInfoOverlay(5))}
+      /> */}
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
+        description={'Biodiversity'}
         buttonIcon={'pets'}
-        position={2}
+        position={3}
         active={infoOverlay == 2}
         onClick={() => dispatch(setInfoOverlay(2))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
-        buttonIcon={'photo'}
-        position={3}
+        description={'Media'}
+        buttonIcon={'satellite'}
+        position={4}
         active={infoOverlay == 3}
         onClick={() => dispatch(setInfoOverlay(3))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
+        description={'Remote Sensing Analysis'}
+        buttonIcon={'satellite_alt'}
+        position={5}
+        active={infoOverlay == 7}
+        onClick={() => dispatch(setInfoOverlay(7))}
+      />
+      <InfoOverlayButton
+        mediaSize={mediaSize}
+        description={'Community Payments'}
         buttonIcon={'emoji_people'}
-        position={4}
+        position={6}
         active={infoOverlay == 4}
         onClick={() => dispatch(setInfoOverlay(4))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
-        maximize={maximize}
-        buttonIcon={'chat'}
-        position={5}
-        active={infoOverlay == 5}
-        onClick={() => dispatch(setInfoOverlay(5))}
+        description={'Logbook'}
+        buttonIcon={'book'}
+        position={7}
+        active={infoOverlay == 6}
+        onClick={() => dispatch(setInfoOverlay(6))}
       />
+
       {activeProjectData?.project?.dataDownloadUrl && (
         <InfoOverlayButton
           mediaSize={mediaSize}
-          maximize={maximize}
           buttonIcon={'download'}
-          position={6}
-          active={infoOverlay == 6}
-          onClick={() => dispatch(setInfoOverlay(6))}
+          position={8}
+          active={infoOverlay == 8}
+          onClick={() => dispatch(setInfoOverlay(8))}
         />
       )}
+
       {infoOverlay == 1 && (
         <ProjectCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           activeProjectPolygon={activeProjectPolygon}
@@ -134,7 +137,6 @@ export const InfoOverlay = ({
       )}
       {infoOverlay == 2 && (
         <BiodiversityCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
           selectedSpecies={selectedSpecies}
@@ -142,32 +144,36 @@ export const InfoOverlay = ({
         />
       )}
       {infoOverlay == 3 && (
-        <WildlifeCard
-          maximize={maximize}
+        <MediaCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
-          handleClick={handleClick}
           toggle={toggle}
           setToggle={setToggle}
         />
       )}
       {infoOverlay == 4 && (
         <CommunityCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
       {infoOverlay == 5 && (
-        <ChatCard
-          maximize={maximize}
+        <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
+      )}
+      {infoOverlay == 6 && (
+        <LogbookCard
+          activeProjectData={activeProjectData}
+          mediaSize={mediaSize}
+        />
+      )}
+      {infoOverlay == 7 && (
+        <RestorCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
-      {infoOverlay == 6 && activeProjectData?.project?.dataDownloadUrl && (
+      {infoOverlay == 8 && activeProjectData?.project?.dataDownloadUrl && (
         <DownloadCard
-          maximize={maximize}
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
@@ -176,9 +182,53 @@ export const InfoOverlay = ({
   )
 }
 
-export const ImageOverlay = ({ toggle, endpoint, handleClick, fileType }) => {
+export const ImageOverlay = ({
+  toggle,
+  endpoint,
+  fileType,
+  ContentComponent,
+  contentProps,
+}) => {
+  const dispatch = useDispatch()
+  if (fileType === 'component' && ContentComponent) {
+    if (ContentComponent == 'KingdomList') {
+      return (
+        <div className="overlay" style={{ zIndex: 4 }}>
+          <button
+            onClick={() => dispatch(toggleFullscreenOverlay())}
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              background: 'transparent',
+              border: 'none',
+              color: 'white',
+              fontSize: '48px',
+              cursor: 'pointer',
+            }}
+          >
+            &times;
+          </button>
+          <div className="species-overlay">
+            <KingdomList {...contentProps} />
+          </div>
+        </div>
+      )
+    } else if (ContentComponent == 'ActiveSpeciesCard') {
+      // full size version of speciesCard, appears when clicked
+      return (
+        <div className="overlay" style={{ zIndex: 5 }}>
+          <ActiveSpeciesCard {...contentProps} />
+        </div>
+      )
+    }
+  }
   return (
-    <div className="overlay" onClick={handleClick} style={{ zIndex: 4 }}>
+    <div
+      className="overlay"
+      style={{ zIndex: 4 }}
+      onClick={() => dispatch(toggleFullscreenOverlay())}
+    >
       {fileType !== 'video' && toggle == 'Photos' ? (
         <img
           src={`${process.env.AWS_STORAGE}/${endpoint}`}

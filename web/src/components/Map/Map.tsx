@@ -3,15 +3,28 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
 import mapboxgl from 'mapbox-gl'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { navigate } from '@redwoodjs/router'
 
+import LayerPicker from 'src/components/Map/components/LayerPicker'
 import { initializeMapbox } from 'src/mapbox.config'
-// import { setClickedCoordinates } from 'src/reducers/displayReducer'
+import { setHoveredInformation } from 'src/reducers/mapReducer'
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
-import { setProjectId } from 'src/reducers/projectsReducer'
+import { setProjectId, setProjectName } from 'src/reducers/projectsReducer'
+import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { BasketDetails } from '../Overlays/BasketDetails'
 import { TreeInfoBox } from '../Overlays/Info/TreeInfoBox'
@@ -20,13 +33,14 @@ import { ProfileOverlay } from '../Overlays/ProfileOverlay'
 
 import Button from './components/Button'
 import { LandCoverLegend } from './components/LandCoverLegend'
-import { LayerPickerOverlay } from './components/LayerPickerOverlay'
+// import { LayerPickerOverlay } from './components/LayerPickerOverlay'
+import { Legend as LayerLegend } from './components/Legend'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
+import { fetchTreeShapefile } from './mapfetch'
 import {
   fetchProjectInfo,
-  fetchTreeShapefile,
   fetchGainForestCenterpoints,
   fetchProjectPolygon,
   fetchAllSiteData,
@@ -35,42 +49,63 @@ import {
 } from './mapfetch'
 import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
-import {
-  addAllSourcesAndLayers,
-  addClickableMarkers,
-  getTreeInformation,
-} from './maputils'
+import { addAllSourcesAndLayers, getTreeInformation } from './maputils'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
+import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
+  const hoveredInformation = useSelector(
+    (state: State) => state.map.hoveredInformation
+  )
   const setActiveProjectId = (id) => dispatch(setProjectId(id))
   const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [map, setMap] = useState<mapboxgl.Map>()
-  const [markers, setMarkers] = useState([])
-  // TODO: Combine these two following useStates into one
-  const [gainforestCenterpoints, setGainForestCenterpoints] = useState()
+  const [sourcesAndLayersLoaded, setSourcesAndLayersLoaded] =
+    useState<boolean>(false)
+
+  const kebabCasedProjectName = useSelector((state: State) =>
+    toKebabCase(state.project?.name)
+  )
   // const [hexagons, setHexagons] = useState()
-  const [hiveLocations, setHiveLocations] = useState()
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
   const [allSitePolygons, setAllSitePolygons] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
   const [activeProjectTreesPlanted, setActiveProjectTreesPlanted] = useState()
   const [activeProjectMosaic, setActiveProjectMosaic] = useState()
-  const [maximize, setMaximize] = useState<boolean>(false)
-  const [treeData, setTreeData] = useState({})
   const [landCover, setLandCover] = useState(false)
-  const [searchInput, setSearchInput] = useState<string>()
+  const [searchInput, setSearchInput] = useState<string>('')
   const [selectedSpecies, setSelectedSpecies] = useState('')
   // const numHexagons = useRef(0)
 
-  // Fetch all prerequisite data for map initialization
+  // Initialize map, fetch all global data
   useEffect(() => {
-    fetchGainForestCenterpoints(setGainForestCenterpoints)
     // fetchHexagons(setHexagons)
+    initializeMapbox('map-container', setMap)
   }, [])
+
+  // Fetch all other data that can be fetched after the map is
+  // loaded.
+  useEffect(() => {
+    if (sourcesAndLayersLoaded) {
+      fetchGainForestCenterpoints(map)
+      // fetchEDNALocations(map)
+      fetchHiveLocations(map, activeProjectId)
+    }
+  }, [map, activeProjectId, sourcesAndLayersLoaded])
 
   useEffect(() => {
     if (urlProjectId && !activeProjectId) {
@@ -78,16 +113,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [urlProjectId, activeProjectId])
 
-  // Initialize Map
-  useEffect(() => {
-    if (gainforestCenterpoints) {
-      initializeMapbox('map-container', setMap, mediaSize)
-    }
-  }, [gainforestCenterpoints])
-
   // Set initial layers on load
   useEffect(() => {
-    if (map && gainforestCenterpoints) {
+    if (map) {
       const onLoad = () => {
         map.setFog({
           color: '#000000',
@@ -96,36 +124,56 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           'space-color': 'rgb(11, 11, 25)',
           'star-intensity': 0.05,
         })
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
-        const gainForestMarkers = addClickableMarkers(
-          map,
-          dispatch,
-          gainforestCenterpoints,
-          'gainforest',
-          setActiveProjectId
-        )
-
-        setMarkers([...gainForestMarkers])
+        addAllSourcesAndLayers(map)
+        setSourcesAndLayersLoaded(true)
       }
 
       const onStyleData = () => {
-        map.setFog({
-          color: '#000000',
-          'high-color': 'rgb(36, 92, 223)',
-          'horizon-blend': 0.02,
-          'space-color': 'rgb(11, 11, 25)',
-          'star-intensity': 0.05,
-        })
-        addAllSourcesAndLayers(map, hiveLocations, setMarkers)
+        addAllSourcesAndLayers(map)
       }
       map.on('load', onLoad)
       map.on('styledata', onStyleData)
+      // Create a popup, but don't add it to the map yet.
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+      })
+
+      map.on('mousemove', 'gainforestMarkerLayer', (e) => {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer'
+
+        // Copy coordinates array.
+        const coordinates = e.features[0].geometry.coordinates.slice()
+        const description = e.features[0].properties.name
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates).setHTML(description).addTo(map)
+      })
+      map.on('click', 'gainforestMarkerLayer', (e) => {
+        const projectId = e.features[0].properties.projectId
+        setActiveProjectId(projectId)
+        dispatch(setInfoOverlay(1))
+      })
+
+      map.on('mouseleave', 'gainforestMarkerLayer', () => {
+        map.getCanvas().style.cursor = ''
+        popup.remove()
+      })
       return () => {
         map.off('load', onLoad)
         map.off('styledata', onStyleData)
       }
     }
-  }, [map, gainforestCenterpoints, dispatch, hiveLocations])
+  }, [map])
 
   // Rotate the globe
   useEffect(() => {
@@ -173,15 +221,17 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (activeProjectId) {
       navigate(`/${activeProjectId}`)
-      setTreeData({})
+      setHoveredInformation({})
       setSelectedSpecies('')
       const fetchData = async () => {
         const result = await fetchProjectInfo(activeProjectId)
         setActiveProjectData(result)
+        // can probably add in all the data
+        dispatch(setProjectName(result?.project?.name))
         const shapefiles = result?.project?.assets?.filter(
           (d) => d?.classification == 'Shapefiles'
         )
-        const projectPolygonCID = shapefiles.filter(
+        const projectPolygonCID = shapefiles?.filter(
           (d) => d?.shapefile?.default == true
         )?.[0]?.awsCID
         await fetchProjectPolygon(projectPolygonCID, setActiveProjectPolygon)
@@ -191,23 +241,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
           (d) => d.classification == 'Drone Mosaic'
         )?.awsCID
         setActiveProjectMosaic(projectMosaic)
-      }
-      if (
-        activeProjectId ==
-          '7f7b643aca10dae0c71afc9910b3f67bff441504d97e0d90a12c40db5d2d02c1' &&
-        !hiveLocations
-      ) {
-        fetchHiveLocations(setHiveLocations)
-      } else {
-        const nonHiveMarkers = markers.filter((marker) => {
-          if (marker._element.className.includes('hive')) {
-            marker.remove()
-            return false
-          }
-          return true
-        })
-        setMarkers(nonHiveMarkers)
-        setHiveLocations(null)
       }
       fetchData().catch(console.error)
     }
@@ -235,24 +268,20 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, activeProjectPolygon])
 
-  // Fetch tree data
-  useEffect(() => {
-    if (activeProjectData) {
-      const projectName = activeProjectData?.project?.name
-      const dashedProjectName = projectName.toLowerCase().replaceAll(' ', '-')
-      if (dashedProjectName) {
-        const treesEndpoint = `shapefiles/${dashedProjectName}-all-tree-plantings.geojson`
-        const fetchData = async () => {
-          await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
-        }
-        fetchData().catch(console.error)
-      }
-    }
-  }, [activeProjectData])
-
   useEffect(() => {
     addOrthomosaic(map, activeProjectMosaic)
   }, [map, activeProjectMosaic])
+
+  useEffect(() => {
+    if (kebabCasedProjectName) {
+      const treesEndpoint = `shapefiles/${kebabCasedProjectName}-all-tree-plantings.geojson`
+      const fetchData = async () => {
+        await fetchTreeShapefile(treesEndpoint, setActiveProjectTreesPlanted)
+      }
+
+      fetchData().catch(console.error)
+    }
+  }, [kebabCasedProjectName])
 
   useEffect(() => {
     if (!map) return
@@ -282,91 +311,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   useEffect(() => {
     if (map && map.isStyleLoaded()) {
-      let colorExpression
-      let radiusExpression
-      if (selectedSpecies) {
-        colorExpression = [
-          'case',
-          [
-            'all',
-            ['==', ['get', 'species'], selectedSpecies],
-            ['boolean', ['feature-state', 'hover'], false],
-          ],
-          'red', // when isSelectedSpecies && hover
-          ['==', ['get', 'species'], selectedSpecies],
-          '#FF8101', // when isSelectedSpecies && !hover
-          ['boolean', ['feature-state', 'hover'], false],
-          'gray', // when !isSelectedSpecies && hover
-          'gray', // when !isSelectedSpecies && !hover
-        ]
-        radiusExpression = [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          8, // when hover (either isSelectedSpecies or not)
-          ['==', ['get', 'species'], selectedSpecies],
-          6, // when isSelectedSpecies && !hover
-          3, // when !isSelectedSpecies && !hover
-        ]
-      } else {
-        colorExpression = [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          '#0883fe', // when no selectedSpecies && hover
-          '#ff77c1', // when no selectedSpecies && !hover
-        ]
-        radiusExpression = [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          8, // when no selectedSpecies && hover
-          4, // when no selectedSpecies && !hover
-        ]
-      }
-
-      map.setPaintProperty('unclusteredTrees', 'circle-color', colorExpression)
-      map.setPaintProperty(
-        'unclusteredTrees',
-        'circle-radius',
-        radiusExpression
-      )
+      toggleSelectedSpecies(map, selectedSpecies)
     }
   }, [map, selectedSpecies])
-
-  // Hexagon onclick
-  // useEffect(() => {
-  //   if (map) {
-  //     const onClick = (e) => {
-  //       console.log(e)
-  //       const { lat, lng } = e.lngLat
-  //       dispatch(setClickedCoordinates({ lat, lon: lng }))
-  //       dispatch(setInfoOverlay(6))
-  //       const hoveredHexagonId = e.features[0]?.id
-  //       if (
-  //         map.getFeatureState({ source: 'hexagons', id: hoveredHexagonId })
-  //           ?.clicked
-  //       ) {
-  //         map.setFeatureState(
-  //           { source: 'hexagons', id: hoveredHexagonId },
-  //           { clicked: false }
-  //         )
-  //         numHexagons.current = numHexagons.current - 1
-  //       } else {
-  //         map.setFeatureState(
-  //           { source: 'hexagons', id: hoveredHexagonId },
-  //           { clicked: true }
-  //         )
-  //         numHexagons.current = numHexagons.current + 1
-  //       }
-  //     }
-
-  //     map.on('click', 'hexagonHoverFill', onClick)
-
-  //     return () => {
-  //       if (map) {
-  //         map.off('click', 'hexagonHoverFill', onClick)
-  //       }
-  //     }
-  //   }
-  // }, [map])
 
   // Set hovered tree ID on mouse move
   useEffect(() => {
@@ -378,7 +325,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       const onMouseMoveUnclusteredTrees = (e) => {
         if (e.features.length > 0) {
           const treeInformation = getTreeInformation(e, activeProjectId)
-          setTreeData(treeInformation)
+          dispatch(setHoveredInformation(treeInformation))
           if (hoveredTreeId !== null) {
             map.setFeatureState(
               { source: 'trees', id: hoveredTreeId },
@@ -403,73 +350,21 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, activeProjectId, infoOverlay])
 
-  // useEffect(() => {
-  //   if (map) {
-  //     let hoveredHexagonId = null
-  //     const onMouseMoveHexagonHoverFill = (e) => {
-  //       if (e.features.length > 0) {
-  //         if (hoveredHexagonId !== null) {
-  //           map.setFeatureState(
-  //             { source: 'hexagons', id: hoveredHexagonId },
-  //             { hover: false }
-  //           )
-  //         }
-  //         hoveredHexagonId = e.features[0]?.id
-  //         map.setFeatureState(
-  //           { source: 'hexagons', id: hoveredHexagonId },
-  //           { hover: true }
-  //         )
-  //       }
-  //     }
-  //     const onMouseLeaveHexagonHoverFill = () => {
-  //       if (hoveredHexagonId !== null) {
-  //         map.setFeatureState(
-  //           { source: 'hexagons', id: hoveredHexagonId },
-  //           { hover: false }
-  //         )
-  //         hoveredHexagonId = null
-  //       }
-  //     }
-  //     map.on('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
-  //     map.on('mouseleave', 'hexagonHoverFill', onMouseLeaveHexagonHoverFill)
-  //     return () => {
-  //       if (map) {
-  //         map.off('mousemove', 'hexagonHoverFill', onMouseMoveHexagonHoverFill)
-  //         map.off(
-  //           'mouseleave',
-  //           'hexagonHoverFill',
-  //           onMouseLeaveHexagonHoverFill
-  //         )
-  //       }
-  //     }
-  //   }
-  // }, [map])
-
   return (
     <>
-      <div
-        style={{ height: 'calc(100% - 52px)', width: '100%' }}
-        id="map-container"
-      />
+      <div style={{ height: '100%', width: '100%' }} id="map-container" />
       <ProfileOverlay />
       <BasketDetails />
-      {gainforestCenterpoints && (
-        <SearchOverlay
-          map={map}
-          allCenterpoints={gainforestCenterpoints}
-          mediaSize={mediaSize}
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-        />
-      )}
+      <SearchOverlay
+        map={map}
+        mediaSize={mediaSize}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+      />
       {/* <BackToGlobe map={map} /> */}
 
-      {Object.values(treeData)?.length > 0 && (
-        <TreeInfoBox
-          treeData={treeData}
-          setTreeData={setTreeData}
-          mediaSize={mediaSize}
-        />
+      {Object.values(hoveredInformation)?.length > 0 && (
+        <TreeInfoBox mediaSize={mediaSize} />
       )}
       {infoOverlay && (
         <>
@@ -480,8 +375,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
             activeProjectPolygon={activeProjectPolygon}
             setActiveProjectPolygon={setActiveProjectPolygon}
             mediaSize={mediaSize}
-            maximize={maximize}
-            setMaximize={setMaximize}
             selectedSpecies={selectedSpecies}
             setSelectedSpecies={setSelectedSpecies}
           />
@@ -489,22 +382,15 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       )}
       {activeProjectPolygon && !infoOverlay && (
         <Button
-          style={{ position: 'absolute', bottom: '5%', left: '3%' }}
+          style={{ position: 'absolute', bottom: '5%', right: '3%' }}
           onClick={() => dispatch(setInfoOverlay(1))}
         >
           Project Info
         </Button>
       )}
-      {/* <ProjectSeriesPickerOverlay
-        map={map}
-        markers={markers}
-        setDisplayOverlay={setDisplayOverlay}
-        setActiveProject={setActiveProjectId}
-        projectPolygons={gainforestCenterpoints}
-        setMarkers={setMarkers}
-      /> */}
       {landCover && <LandCoverLegend mediaSize={mediaSize} />}
-      <LayerPickerOverlay
+      <LayerPicker map={map} />
+      {/* <LayerPickerOverlay
         map={map}
         activeProjectMosaic={activeProjectMosaic}
         activeProjectData={activeProjectData}
@@ -513,8 +399,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         maximize={maximize}
         landCover={landCover}
         setLandCover={setLandCover}
-      />
+      /> */}
       <TimeSlider map={map} mediaSize={mediaSize} />
+      <LayerLegend />
     </>
   )
 }

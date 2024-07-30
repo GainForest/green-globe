@@ -1,8 +1,14 @@
+import { useDispatch, useSelector } from 'react-redux'
+
 import { breakpoints } from 'src/constants'
+import { setMaximized } from 'src/reducers/overlaysReducer'
 
 import { UnstyledButton } from './UnstyledButton'
 
-export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
+export const MaximizeButton = ({ style, mediaSize }) => {
+  const dispatch = useDispatch()
+  const maximized = useSelector((state: State) => state.overlays.maximized)
+
   const height =
     mediaSize >= breakpoints.xl
       ? '36px'
@@ -41,72 +47,32 @@ export const MaximizeButton = ({ style, onClick, mediaSize, maximize }) => {
 
   const bottom =
     mediaSize >= breakpoints.xl
-      ? 'calc(60vh - 16px)'
+      ? 'calc(60vh - 6px)'
       : mediaSize > breakpoints.m
-      ? 'calc(60vh - 12px)'
+      ? 'calc(60vh - 4px)'
       : mediaSize > breakpoints.s
-      ? 'calc(60vh - 8px)'
-      : 'calc(60vh - 4px)'
+      ? 'calc(60vh)'
+      : 'calc(60vh)'
 
-  const left =
-    mediaSize >= breakpoints.xl
-      ? 280
-      : mediaSize > breakpoints.m
-      ? 230
-      : mediaSize > breakpoints.s
-      ? null
-      : null
-
-  const maxedLeft =
-    mediaSize >= breakpoints.xl
-      ? 660
-      : mediaSize > breakpoints.m
-      ? 620
-      : mediaSize > breakpoints.s
-      ? null
-      : null
-
-  const right =
-    mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.m
-      ? null
-      : mediaSize > breakpoints.s
-      ? '56px'
-      : '52px'
-
-  const maxedRight =
-    mediaSize >= breakpoints.xl
-      ? null
-      : mediaSize > breakpoints.m
-      ? null
-      : mediaSize > breakpoints.s
-      ? '56px'
-      : '56px'
+  const right = mediaSize > breakpoints.m ? 50 : 46
+  const maxedRight = mediaSize > breakpoints.m ? 100 : 46
 
   const maxedTop =
-    mediaSize >= breakpoints.xl
-      ? 64
-      : mediaSize > breakpoints.m
-      ? 80
-      : mediaSize > breakpoints.s
-      ? 100
-      : 100
+    mediaSize >= breakpoints.m ? 59 : mediaSize > breakpoints.s ? 100 : 100
 
   return (
     <UnstyledButton
       style={{
         zIndex: 3,
         textAlign: 'center',
-        left: maximize ? maxedLeft : left,
-        right: maximize ? maxedRight : right,
-        bottom: maximize ? null : bottom,
-        top: maximize ? maxedTop : null,
+        right: maximized ? maxedRight : right,
+        bottom: maximized ? null : bottom,
+        top: maximized ? maxedTop : null,
         height: height,
         width: width,
         ...style,
       }}
-      onClick={onClick}
+      onClick={() => dispatch(setMaximized(!maximized))}
     >
       <div
         style={{

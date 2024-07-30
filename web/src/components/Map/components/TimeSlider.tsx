@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useThemeUI } from 'theme-ui'
 
 import { breakpoints } from 'src/constants'
+import { State } from 'src/types'
 
 export const TimeSlider = ({ map, mediaSize }) => {
   const minDate = dayjs('2020-09-01')
@@ -19,6 +20,14 @@ export const TimeSlider = ({ map, mediaSize }) => {
     maxDate.format('YYYY-MM')
   )
   const [showTooltip, setShowTooltip] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (map && !isSatelliteHistoryEnabled) {
+      if (map.getLayer(`planetLayer${currentDate}`)) {
+        map.setLayoutProperty(`planetLayer${currentDate}`, 'visibility', 'none')
+      }
+    }
+  }, [isSatelliteHistoryEnabled, currentDate, map])
 
   useEffect(() => {
     const showLatestLayer = () => {
@@ -62,7 +71,7 @@ export const TimeSlider = ({ map, mediaSize }) => {
             style={{
               position: 'absolute',
               height: '20px',
-              bottom: mediaSize < breakpoints.m ? 45 : 73,
+              bottom: mediaSize < breakpoints.m ? 54 : 82,
               left:
                 mediaSize < breakpoints.m
                   ? mediaSize / 3 + 10
@@ -85,7 +94,7 @@ export const TimeSlider = ({ map, mediaSize }) => {
             boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
             width: mediaSize < breakpoints.m ? '96vw' : '500px',
             height: '40px',
-            padding: '2px 8px 0 4px',
+            padding: '4px 8px 44px 6px',
             marginBottom: '0',
             bottom: mediaSize < breakpoints.m ? 0 : 28,
             left: mediaSize < breakpoints.m ? 8 : mediaSize / 3,

@@ -31,8 +31,10 @@ interface Plant {
 export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   const [loading, setLoading] = useState(true)
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [treeList, setTreeList] = useState<Plant[]>([])
-  const [herbList, setHerbList] = useState<Plant[]>([])
+  const [nativeTreeList, setNativeTreeList] = useState<Plant[]>([])
+  const [nativeHerbList, setNativeHerbList] = useState<Plant[]>([])
+  const [invasiveTreeList, setInvasiveTreeList] = useState<Plant[]>([])
+  const [invasiveHerbList, setInvasiveHerbList] = useState<Plant[]>([])
   const [modalWidth, setModalWidth] = useState(0)
   const [modalList, setModalList] = useState<Plant[]>([])
 
@@ -53,13 +55,14 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   }, [mediaSize])
 
   useEffect(() => {
-    const getPlantsList = async (type, setter) => {
+    const getPlantsList = async (type, nativeSetter, invasiveSetter) => {
       try {
         const filename = `${kebabCasedProjectName}-${type}.json`
         const response = await fetch(
           `${process.env.AWS_STORAGE}/restor/${filename}`
         )
         const data = await response.json()
+        console.log(data)
         // Display plants with images first
         const hasImage = (obj) => obj.awsUrl && obj.awsUrl.trim() !== ''
         const plantList = data.items
@@ -70,7 +73,11 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
             return hasImage(a) ? -1 : 1
           })
           .map((d) => ({ ...d, category: type }))
-        setter(plantList)
+        console.log(plantList)
+        const invasive = plantList.filter((plant) => plant.group == 'INVASIVE')
+        const native = plantList.filter((plant) => plant.group != 'INVASIVE')
+        nativeSetter(native)
+        invasiveSetter(invasive)
       } catch (e) {
         console.log(e)
       } finally {
@@ -78,8 +85,8 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
       }
     }
     if (activeProjectData) {
-      getPlantsList('trees', setTreeList)
-      getPlantsList('herbs', setHerbList)
+      getPlantsList('trees', setNativeTreeList, setInvasiveTreeList)
+      getPlantsList('herbs', setNativeHerbList, setInvasiveHerbList)
     }
   }, [activeProjectData, kebabCasedProjectName])
 
@@ -150,21 +157,42 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
     </div>
   )
 
+  useEffect(() => {
+    console.log(nativeHerbList)
+  }, [nativeHerbList])
+
+  useEffect(() => {
+    console.log(invasiveHerbList)
+  }, [invasiveHerbList])
+
+  useEffect(() => {
+    console.log(nativeTreeList)
+  }, [nativeTreeList])
+
+  useEffect(() => {
+    console.log(invasiveTreeList)
+  }, [invasiveTreeList])
   if (loading) {
     return <Loading />
   }
 
-  if (!loading && treeList.length == 0 && herbList.length == 0) {
+  if (!loading && nativeTreeList.length == 0 && nativeHerbList.length == 0) {
     return <NoData />
   }
 
   return (
     <div>
-      {treeList?.length > 0 && (
-        <Prediction speciesList={treeList} type="trees" />
+      {nativeTreeList?.length > 0 && (
+        <Prediction speciesList={nativeTreeList} type="native trees" />
       )}
-      {herbList?.length > 0 && (
-        <Prediction speciesList={herbList} type="herbs" />
+      {nativeHerbList?.length > 0 && (
+        <Prediction speciesList={nativeHerbList} type="native herbs" />
+      )}
+      {invasiveTreeList?.length > 0 && (
+        <Prediction speciesList={invasiveTreeList} type="invasive trees" />
+      )}
+      {invasiveHerbList?.length > 0 && (
+        <Prediction speciesList={invasiveHerbList} type="invasive herbs" />
       )}
       <Footer>
         <span>API provided by</span>

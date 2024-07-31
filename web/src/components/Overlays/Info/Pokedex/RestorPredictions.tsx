@@ -57,7 +57,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
   useEffect(() => {
     const getPlantsList = async (type, nativeSetter, invasiveSetter) => {
       try {
-        const filename = `${kebabCasedProjectName}-${type}.json`
+        const filename = `${kebabCasedProjectName}-${type.toLowerCase()}.json`
         const response = await fetch(
           `${process.env.AWS_STORAGE}/restor/${filename}`
         )
@@ -85,8 +85,8 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
       }
     }
     if (activeProjectData) {
-      getPlantsList('trees', setNativeTreeList, setInvasiveTreeList)
-      getPlantsList('herbs', setNativeHerbList, setInvasiveHerbList)
+      getPlantsList('Trees', setNativeTreeList, setInvasiveTreeList)
+      getPlantsList('Herbs', setNativeHerbList, setInvasiveHerbList)
     }
   }, [activeProjectData, kebabCasedProjectName])
 

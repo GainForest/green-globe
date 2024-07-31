@@ -62,7 +62,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
           `${process.env.AWS_STORAGE}/restor/${filename}`
         )
         const data = await response.json()
-        console.log(data)
+
         // Display plants with images first
         const hasImage = (obj) => obj.awsUrl && obj.awsUrl.trim() !== ''
         const plantList = data.items
@@ -73,7 +73,7 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
             return hasImage(a) ? -1 : 1
           })
           .map((d) => ({ ...d, category: type }))
-        console.log(plantList)
+
         const invasive = plantList.filter((plant) => plant.group == 'INVASIVE')
         const native = plantList.filter((plant) => plant.group != 'INVASIVE')
         nativeSetter(native)
@@ -157,21 +157,6 @@ export const RestorPredictions = ({ activeProjectData, mediaSize }) => {
     </div>
   )
 
-  useEffect(() => {
-    console.log(nativeHerbList)
-  }, [nativeHerbList])
-
-  useEffect(() => {
-    console.log(invasiveHerbList)
-  }, [invasiveHerbList])
-
-  useEffect(() => {
-    console.log(nativeTreeList)
-  }, [nativeTreeList])
-
-  useEffect(() => {
-    console.log(invasiveTreeList)
-  }, [invasiveTreeList])
   if (loading) {
     return <Loading />
   }

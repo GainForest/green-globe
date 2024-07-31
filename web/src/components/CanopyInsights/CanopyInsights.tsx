@@ -20,6 +20,7 @@ interface PdfStatus {
 
 export const CanopyInsights = () => {
   const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([])
+  const [loading, setLoading] = useState(true)
   const kebabCasedProjectName = useSelector((state: any) =>
     toKebabCase(state.project.name)
   )
@@ -34,11 +35,13 @@ export const CanopyInsights = () => {
             .then((response) => ({ filename: file, exists: response.ok }))
             .catch(() => ({ filename: file, exists: false }))
         )
-      ).then(setPdfStatuses)
+      )
+        .then(setPdfStatuses)
+        .then(() => setLoading(false))
     }
   }, [kebabCasedProjectName])
 
-  if (!kebabCasedProjectName) {
+  if (loading) {
     return <Loading />
   }
 

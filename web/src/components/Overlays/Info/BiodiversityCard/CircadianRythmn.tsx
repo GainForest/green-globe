@@ -15,6 +15,7 @@ export const CircadianRythmn = () => {
   const projectName = useSelector((state: State) => state.project.name)
   const [kebabCasedProjectName, setKebabCasedProjectName] = useState<string>()
   const [filesExist, setFilesExist] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (projectName) {
@@ -35,6 +36,8 @@ export const CircadianRythmn = () => {
         }
       } catch (e) {
         console.log('cannot fetch from AWS :', e)
+      } finally {
+        setLoading(false)
       }
     }
     if (kebabCasedProjectName) {
@@ -42,7 +45,7 @@ export const CircadianRythmn = () => {
     }
   }, [kebabCasedProjectName])
 
-  if (!kebabCasedProjectName) {
+  if (loading) {
     return (
       <CircadianContainer>Searching for the soundscape...</CircadianContainer>
     )

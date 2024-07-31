@@ -61,6 +61,7 @@ const StyledIframe = styled.iframe`
 export const InsectSpy = () => {
   const [individuals, setIndividuals] = useState<Individual[]>([])
   const [pdfStatuses, setPdfStatuses] = useState<PdfStatus[]>([])
+  const [loading, setLoading] = useState(true)
   const kebabCasedProjectName = useSelector((state: State) =>
     toKebabCase(state.project.name)
   )
@@ -81,11 +82,13 @@ export const InsectSpy = () => {
             .then((response) => ({ filename: file, exists: response.ok }))
             .catch(() => ({ filename: file, exists: false }))
         )
-      ).then(setPdfStatuses)
+      )
+        .then(setPdfStatuses)
+        .then(() => setLoading(false))
     }
   }, [kebabCasedProjectName])
 
-  if (!kebabCasedProjectName) {
+  if (loading) {
     return <Loading />
   }
 

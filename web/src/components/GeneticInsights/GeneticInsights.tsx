@@ -8,11 +8,7 @@ import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { ModalWrapper } from '../ModalWrapper/ModalWrapper'
 
-const PDF_FILES = [
-  'OTU_richness.pdf',
-  'OTU_richness_2.pdf',
-  'OTU_shannon.pdf',
-]
+const PDF_FILES = ['OTU_richness.pdf', 'OTU_richness_2.pdf', 'OTU_shannon.pdf']
 
 const PNG_FILES = [
   'jaccard-heatmap.png',

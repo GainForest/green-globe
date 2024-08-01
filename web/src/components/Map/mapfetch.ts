@@ -68,6 +68,7 @@ export const fetchGainForestCenterpoints = async (map) => {
 }
 
 export const fetchProjectInfo = async (projectId) => {
+  console.log(projectId)
   const endpoint = `${process.env.GAINFOREST_ENDPOINT}/api/graphql`
 
   const response = fetch(endpoint, {
@@ -128,6 +129,7 @@ export const fetchProjectInfo = async (projectId) => {
   })
     .then((res) => res.json())
     .then((result) => {
+      console.log(result.data)
       return result.data
     })
 

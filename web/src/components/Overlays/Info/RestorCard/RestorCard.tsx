@@ -36,6 +36,8 @@ export const RestorLogo = () => (
 )
 
 export const RestorCard = ({ mediaSize, activeProjectData }) => {
+  const dispatch = useDispatch()
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [loading, setLoading] = useState(true)
   const [allData, setAllData] = useState({
     carbon: {},
@@ -48,9 +50,6 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
     treeCover: {},
     socioEconomic: {},
   })
-
-  const dispatch = useDispatch()
-  const infoOverlay = useSelector((state: State) => state.overlays.info)
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {

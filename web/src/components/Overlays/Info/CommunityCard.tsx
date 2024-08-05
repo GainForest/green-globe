@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 
 import * as d3 from 'd3'
 import dayjs from 'dayjs'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip } from 'react-tooltip'
 
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { stringDistance } from 'src/utils/typoCheck'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
@@ -13,7 +14,11 @@ import { ToggleButton } from '../../Map/components/ToggleButton'
 import { InfoBox } from './InfoBox'
 import { PaymentCard } from './PaymentsCard'
 export const CommunityCard = ({ activeProjectData, mediaSize }) => {
-  const [toggle, setToggle] = useState<'Members' | 'Payments'>('Members')
+  const dispatch = useDispatch()
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
+  const [toggle, setToggle] = useState<'Members' | 'Payments'>(
+    infoOverlay.includes('payments') ? 'Payments' : 'Members'
+  )
   const [copied, setCopied] = useState(false)
   const [paymentData, setPaymentData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -32,6 +37,15 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
     return new Date(year, month, day)
   }
 
+  const useToggle = (option) => {
+    if (option == 'Members') {
+      dispatch(setInfoOverlay(`community-members`))
+    }
+    if (option == 'Payments') {
+      dispatch(setInfoOverlay(`community-payments`))
+    }
+    setToggle(option)
+  }
   useEffect(() => {
     const fetchData = async () => {
       const fetchFiatPayments = async () => {
@@ -377,7 +391,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
         <h1 style={{ marginBottom: '8px' }}>Community</h1>
         <ToggleButton
           active={toggle}
-          setToggle={setToggle}
+          setToggle={useToggle}
           options={['Members', 'Payments']}
         />
         {toggle === 'Members' ? (

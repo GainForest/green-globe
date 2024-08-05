@@ -108,7 +108,7 @@ export const InfoOverlay = ({
         buttonIcon={'emoji_people'}
         position={6}
         active={infoOverlay.startsWith('community')}
-        onClick={() => dispatch(setInfoOverlay('community'))}
+        onClick={() => dispatch(setInfoOverlay('community-members'))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}

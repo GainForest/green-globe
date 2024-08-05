@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 
 import { Info } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
 import { InfoBox } from 'src/components/Overlays/Info/InfoBox'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
 import { BiodiversityChart } from './BiodiversityChart'
@@ -34,7 +36,6 @@ export const RestorLogo = () => (
 )
 
 export const RestorCard = ({ mediaSize, activeProjectData }) => {
-  const [displayedInsight, setDisplayedInsight] = useState('biodiversity')
   const [loading, setLoading] = useState(true)
   const [allData, setAllData] = useState({
     carbon: {},
@@ -47,6 +48,9 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
     treeCover: {},
     socioEconomic: {},
   })
+
+  const dispatch = useDispatch()
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
 
   useEffect(() => {
     const loadJsonFiles = async (siteName) => {
@@ -108,29 +112,31 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
       <IconBar>
         <IconButton
           buttonIcon={'pets'}
-          active={displayedInsight === 'biodiversity'}
-          onClick={() => setDisplayedInsight('biodiversity')}
+          active={infoOverlay.startsWith('remoteAnalysis-biodiversity')}
+          onClick={() =>
+            dispatch(setInfoOverlay('remoteAnalysis-biodiversity'))
+          }
           dataTooltipId={'remote-sensing-biodiversity-insight'}
         />
         <Tooltip id="remote-sensing-biodiversity-insight">Biodiversity</Tooltip>
         <IconButton
           buttonIcon={'forest'}
-          active={displayedInsight === 'treeCover'}
-          onClick={() => setDisplayedInsight('treeCover')}
+          active={infoOverlay.startsWith('remoteAnalysis-treeCover')}
+          onClick={() => dispatch(setInfoOverlay('remoteAnalysis-treeCover'))}
           dataTooltipId={'remote-sensing-cover-insight'}
         />
         <Tooltip id="remote-sensing-cover-insight">Land and Tree Cover</Tooltip>
         <IconButton
           buttonIcon={'co2'}
-          active={displayedInsight === 'carbon'}
-          onClick={() => setDisplayedInsight('carbon')}
+          active={infoOverlay.startsWith('remoteAnalysis-carbon')}
+          onClick={() => dispatch(setInfoOverlay('remoteAnalysis-carbon'))}
           dataTooltipId={'remote-sensing-carbon-insight'}
         />
         <Tooltip id="remote-sensing-carbon-insight">Carbon</Tooltip>
         <IconButton
           buttonIcon={'water_drop'}
-          active={displayedInsight === 'water'}
-          onClick={() => setDisplayedInsight('water')}
+          active={infoOverlay.startsWith('remoteAnalysis-water')}
+          onClick={() => dispatch(setInfoOverlay('remoteAnalysis-water'))}
           dataTooltipId={'remote-sensing-evapotranspiration-insight'}
         />
         <Tooltip id="remote-sensing-evapotranspiration-insight">
@@ -138,13 +144,13 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
         </Tooltip>
         <IconButton
           buttonIcon={'emoji_people'}
-          active={displayedInsight === 'environment'}
-          onClick={() => setDisplayedInsight('environment')}
+          active={infoOverlay.startsWith('remoteAnalysis-environment')}
+          onClick={() => dispatch(setInfoOverlay('remoteAnalysis-environment'))}
           dataTooltipId={'remote-sensing-environment-insight'}
         />
         <Tooltip id="remote-sensing-environment-insight">Environment</Tooltip>
       </IconBar>
-      {displayedInsight === 'biodiversity' && (
+      {infoOverlay.startsWith('remoteAnalysis-biodiversity') && (
         <BiodiversityChart
           projectArea={activeProjectData?.project?.area}
           ecoregionsBiomes={allData?.ecoregionsBiomes?.ecoregionsBiomes}
@@ -152,21 +158,21 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
           loading={loading}
         />
       )}
-      {displayedInsight === 'carbon' && (
+      {infoOverlay.startsWith('remoteAnalysis-carbon') && (
         <CarbonChart
           projectArea={activeProjectData?.project?.area}
           chartData={allData?.carbon?.carbon}
           loading={loading}
         />
       )}
-      {displayedInsight === 'water' && (
+      {infoOverlay.startsWith('remoteAnalysis-water') && (
         <WaterChart
           projectArea={activeProjectData?.project?.area}
           chartData={allData?.water?.water}
           loading={loading}
         />
       )}
-      {displayedInsight === 'treeCover' && (
+      {infoOverlay.startsWith('remoteAnalysis-treeCover') && (
         <TreeCoverChart
           projectArea={activeProjectData?.project?.area}
           treeData={allData?.treeCover?.treeCover}
@@ -177,7 +183,7 @@ export const RestorCard = ({ mediaSize, activeProjectData }) => {
           loading={loading}
         />
       )}
-      {displayedInsight === 'environment' && (
+      {infoOverlay.startsWith('remoteAnalysis-environment') && (
         <EnvironmentChart
           projectArea={activeProjectData?.project?.area}
           environmentData={allData?.environment?.environment}

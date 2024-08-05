@@ -56,7 +56,7 @@ export const InfoOverlay = ({
       <MaximizeButton mediaSize={mediaSize} style={null} />
       <ExitButton
         mediaSize={mediaSize}
-        onClick={() => dispatch(setInfoOverlay('null'))}
+        onClick={() => dispatch(setInfoOverlay(null))}
         style={null}
       />
       <InfoOverlayButton
@@ -100,7 +100,7 @@ export const InfoOverlay = ({
         buttonIcon={'satellite_alt'}
         position={5}
         active={infoOverlay.startsWith('remoteAnalysis')}
-        onClick={() => dispatch(setInfoOverlay('remoteAnalysis'))}
+        onClick={() => dispatch(setInfoOverlay('remoteAnalysis-biodiversity'))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}

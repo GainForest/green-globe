@@ -25,15 +25,15 @@ export const BiodiversityCard = ({
   selectedSpecies,
   setSelectedSpecies,
 }) => {
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
   const [toggle, setToggle] = useState<'Predictions' | 'Observations'>(
-    'Observations'
+    infoOverlay?.includes('predictions') ? 'Predictions' : 'Observations'
   )
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
   const dispatch = useDispatch()
-  const infoOverlay = useSelector((state: State) => state.overlays.info)
 
   const useToggle = (option) => {
     if (option == 'Predictions') {
@@ -44,6 +44,12 @@ export const BiodiversityCard = ({
     }
     setToggle(option)
   }
+
+  useEffect(() => {
+    if (infoOverlay == 'biodiversity') {
+      dispatch(setInfoOverlay('biodiversity-observations-pokedex'))
+    }
+  }, [])
 
   useEffect(() => {
     if (!activeProjectData) {

@@ -81,7 +81,10 @@ export const InfoOverlay = ({
         buttonIcon={'pets'}
         position={3}
         active={infoOverlay.startsWith('biodiversity')}
-        onClick={() => dispatch(setInfoOverlay('biodiversity'))}
+        // TODO: move default menu logic to relevant component (so can we just set overlay to 'biodiversity')
+        onClick={() =>
+          dispatch(setInfoOverlay('biodiversity-observations-pokedex'))
+        }
       />
       <InfoOverlayButton
         mediaSize={mediaSize}

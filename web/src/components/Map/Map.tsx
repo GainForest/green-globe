@@ -386,7 +386,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       {activeProjectPolygon && !infoOverlay && (
         <Button
           style={{ position: 'absolute', bottom: '5%', right: '3%' }}
-          onClick={() => dispatch(setInfoOverlay(1))}
+          onClick={() => dispatch(setInfoOverlay('info'))}
         >
           Project Info
         </Button>

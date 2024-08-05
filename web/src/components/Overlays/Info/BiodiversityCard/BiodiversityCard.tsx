@@ -46,12 +46,6 @@ export const BiodiversityCard = ({
   }
 
   useEffect(() => {
-    if (infoOverlay == 'biodiversity') {
-      dispatch(setInfoOverlay('biodiversity-observations-pokedex'))
-    }
-  }, [])
-
-  useEffect(() => {
     if (!activeProjectData) {
       return
     }

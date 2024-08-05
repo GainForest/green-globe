@@ -4,7 +4,7 @@ export const handler = async (event) => {
   const projectName = event.queryStringParameters.projectName
   const folder = event.queryStringParameters.folder
   const params = {
-    Bucket: 'xprize-finals',
+    Bucket: 'gainforest-transparency-dashboard',
     Prefix: `${folder}/${projectName}/`,
   }
 

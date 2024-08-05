@@ -29,30 +29,30 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
     const getPosts = async () => {
       let filenames = []
       try {
-        if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
-          try {
-            const response = await axios.get(
-              `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
-                activeProjectData?.project?.name
-              )}/`
-            )
-            filenames = parseDirectoryListing(response.data)
-          } catch (e) {
-            console.log('cannot fetch from local server: ', e)
-          }
-        } else {
-          try {
-            const response = await fetch(
-              `/api/listS3Objects?folder=logbook&projectName=${toKebabCase(
-                activeProjectData?.project?.name
-              )}`
-            )
-            const data = await response.json()
-            filenames = data.filter((name) => name.endsWith('.md'))
-          } catch (e) {
-            console.log('cannot fetch from AWS :', e)
-          }
+        try {
+          const response = await axios.get(
+            `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
+              activeProjectData?.project?.name
+            )}/`
+          )
+          filenames = parseDirectoryListing(response.data)
+        } catch (e) {
+          console.log('cannot fetch from local server: ', e)
         }
+
+        try {
+          const response = await fetch(
+            `api/listS3Objects?folder=logbook&projectName=${toKebabCase(
+              activeProjectData?.project?.name
+            )}`
+          )
+          const data = await response.json()
+          console.log(data)
+          filenames = data?.filter((name) => name.endsWith('.md'))
+        } catch (e) {
+          console.log('cannot fetch from AWS :', e)
+        }
+
         if (filenames.length == 0) {
           setLoading(false)
           return

@@ -97,6 +97,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     initializeMapbox('map-container', setMap)
   }, [])
 
+  useEffect(() => {
+    console.log(infoOverlay)
+  }, [infoOverlay])
+
   // Fetch all other data that can be fetched after the map is
   // loaded.
   useEffect(() => {

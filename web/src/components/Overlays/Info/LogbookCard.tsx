@@ -140,7 +140,7 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
     >
       <ExitButton
         style={{ zIndex: '4', right: 40, top: 20, left: null }}
-        onClick={() => dispatch(setInfoOverlay(1))}
+        onClick={() => dispatch(setInfoOverlay('info'))}
         mediaSize={mediaSize}
       />
       <Blog posts={posts} loading={loading} />

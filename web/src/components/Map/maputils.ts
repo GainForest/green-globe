@@ -70,7 +70,7 @@ export const addClickableMarkers = (
 
     el.addEventListener('click', () => {
       setActiveProject(feature?.properties?.projectId)
-      dispatch(setInfoOverlay(1))
+      dispatch(setInfoOverlay('info'))
       toggleMeasuredTreesLayer(map, 'visible')
     })
 

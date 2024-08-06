@@ -78,7 +78,7 @@ const Blog = ({ posts, loading }) => {
   }, [])
 
   const handlePostClick = useCallback(
-    (index) => {
+    (index, title) => {
       setOpacity(0)
       setTimeout(() => {
         setOpacity(1)
@@ -87,25 +87,27 @@ const Blog = ({ posts, loading }) => {
         const newPosts = posts?.slice(displayedPosts.length, index + 1)
         setDisplayedPosts([...displayedPosts, ...newPosts])
       }
-      dispatch(setInfoOverlay(`logbook-${index}`))
+      const titleSlug = encodeURIComponent(title)
+      dispatch(setInfoOverlay(`logbook-${titleSlug}`))
       setPostIndex(index)
       setTimeout(() => {
         postRefs.current[index]?.scrollIntoView({
           behavior: 'smooth',
           block: 'start',
         })
-      }, 0)
+      }, 300)
     },
     [dispatch, displayedPosts, posts]
   )
 
   useEffect(() => {
-    if (posts.length > 0) {
+    if (posts.length > 0 && infoOverlay.startsWith('logbook-')) {
       const splitSlug = infoOverlay.split('-')
-      const indexFromURL = splitSlug[splitSlug.length - 1]
-      const currentIndex = parseInt(indexFromURL)
-      if (!isNaN(currentIndex) && currentIndex !== postIndex) {
-        handlePostClick(indexFromURL)
+      const titleFromURL = decodeURIComponent(splitSlug[splitSlug.length - 1])
+      const foundIndex = posts.findIndex((post) => post.title === titleFromURL)
+
+      if (foundIndex !== -1 && foundIndex !== postIndex) {
+        handlePostClick(foundIndex, titleFromURL)
       }
     }
   }, [infoOverlay, handlePostClick, posts])
@@ -125,7 +127,7 @@ const Blog = ({ posts, loading }) => {
           <PostPreview
             key={index}
             selected={index == postIndex}
-            onClick={() => handlePostClick(index)}
+            onClick={() => handlePostClick(index, post.title)}
           >
             {post.categories && (
               <p style={{ fontWeight: 'lighter', fontSize: '12px' }}>

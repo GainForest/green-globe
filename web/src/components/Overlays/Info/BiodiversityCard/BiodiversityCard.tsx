@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Info } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'

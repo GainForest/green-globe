@@ -26,10 +26,6 @@ export const SearchOverlay = ({
   const [selectedIndex, setSelectedIndex] = useState(-1)
 
   useEffect(() => {
-    console.log(selectedIndex)
-  }, [selectedIndex])
-
-  useEffect(() => {
     const getProjects = async () => {
       const res = await fetch(
         `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles-new.geojson`

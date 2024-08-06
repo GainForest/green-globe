@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import axios from 'axios'
 import yaml from 'js-yaml'
+import { act } from 'react-dom/test-utils'
 import { useDispatch } from 'react-redux'
 
 import Blog from 'src/components/Blog/Blog'
@@ -30,24 +31,12 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
       let filenames = []
       try {
         try {
-          const response = await axios.get(
-            `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
-              activeProjectData?.project?.name
-            )}/`
-          )
-          filenames = parseDirectoryListing(response.data)
-        } catch (e) {
-          console.log('cannot fetch from local server: ', e)
-        }
-
-        try {
           const response = await fetch(
-            `api/listS3Objects?folder=logbook&projectName=${toKebabCase(
+            `/api/listS3Objects?folder=logbook&projectName=${toKebabCase(
               activeProjectData?.project?.name
             )}`
           )
           const data = await response.json()
-          console.log(data)
           filenames = data?.filter((name) => name.endsWith('.md'))
         } catch (e) {
           console.log('cannot fetch from AWS :', e)
@@ -95,9 +84,10 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
         setLoading(false)
       }
     }
-
-    getPosts()
-  }, [setLoading])
+    if (activeProjectData) {
+      getPosts()
+    }
+  }, [setLoading, activeProjectData])
 
   const parseDirectoryListing = (html) => {
     const parser = new DOMParser()

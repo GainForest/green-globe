@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useState } from 'react'
 
-import axios from 'axios'
-import * as cheerio from 'cheerio'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { breakpoints } from 'src/constants'
 import { setFullscreenOverlay } from 'src/reducers/fullscreenOverlayReducer'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { ToggleButton } from '../../Map/components/ToggleButton'
 
@@ -21,63 +20,87 @@ export const MediaCard = ({
   const [photoEndpoints, setPhotoEndpoints] = useState([])
   const [videoEndpoints, setVideoEndpoints] = useState([])
   const maximized = useSelector((state: State) => state.overlays.maximized)
+  const isOverlayActive = useSelector((state: State) => state.overlays.active)
+  const dispatch = useDispatch()
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
+
+  const useToggle = (action) => {
+    if (action == 'Photos') {
+      dispatch(setInfoOverlay('media-photos'))
+    } else {
+      dispatch(setInfoOverlay('media-videos'))
+    }
+    setToggle(action)
+  }
 
   useEffect(() => {
     const setEndpoints = async () => {
       let videos = []
       let photos = []
-      if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
-        console.log('fetching media from local server')
-        const formattedProjectName = activeProjectData.project?.name
-          ?.toLowerCase()
-          .replace(/[\s_]+/g, '-')
-        const mediaUrl = `${process.env.AWS_STORAGE}/media/${formattedProjectName}`
-        console.log(mediaUrl)
-        const res = await axios.get(mediaUrl)
-        const $ = cheerio.load(res.data)
+      const photoLinks = activeProjectData?.project?.assets?.filter(
+        (d) =>
+          (d.classification.includes('Camera Traps') ||
+            d.classification.includes('Community Photos')) &&
+          (d.awsCID.includes('.jpg') ||
+            d.awsCID.includes('.JPG') ||
+            d.awsCID.includes('.jpeg') ||
+            d.awsCID.includes('.png') ||
+            d.awsCID.includes('.gif'))
+      )
+      photos = photoLinks?.map((photo) => photo.awsCID)
+      const videoLinks = activeProjectData?.project?.assets?.filter(
+        (d) =>
+          d.classification.includes('Camera Traps') && d.awsCID.includes('.mp4')
+      )
+      videos = videoLinks?.map((video) => video.awsCID || '')
 
-        $('a').each((index, element) => {
-          const href = $(element).attr('href')
-          if (
-            href.includes('.jpg') ||
-            href.includes('.jpeg') ||
-            href.includes('.png') ||
-            href.includes('.gif')
-          ) {
-            photos.push(`media/${formattedProjectName}/${href}`)
-          }
-          if (
-            href.includes('.mp4') ||
-            href.includes('.webm') ||
-            href.includes('.ogv')
-          ) {
-            videos.push(`media/${formattedProjectName}/${href}`)
-          }
-        })
-      } else {
-        const photoLinks = activeProjectData?.project?.assets?.filter(
-          (d) =>
-            (d.classification.includes('Camera Traps') ||
-              d.classification.includes('Community Photos')) &&
-            (d.awsCID.includes('.jpg') ||
-              d.awsCID.includes('.JPG') ||
-              d.awsCID.includes('.jpeg') ||
-              d.awsCID.includes('.png') ||
-              d.awsCID.includes('.gif'))
-        )
-        photos = photoLinks?.map((photo) => photo.awsCID)
-        const videoLinks = activeProjectData?.project?.assets?.filter(
-          (d) =>
-            d.classification.includes('Camera Traps') &&
-            d.awsCID.includes('.mp4')
-        )
-        videos = videoLinks?.map((video) => video.awsCID || '')
-      }
       setPhotoEndpoints(photos)
       setVideoEndpoints(videos)
     }
     setEndpoints()
   }, [activeProjectData])
+
+  const onMediaClick = ({ endpoint, type }) => {
+    dispatch(setFullscreenOverlay({ source: endpoint, active: true }))
+    const filepath = endpoint.split('/')
+    dispatch(setInfoOverlay(`media-${type}-${filepath[filepath.length - 1]}`))
+  }
+
+  //
+  useEffect(() => {
+    if (photoEndpoints?.length > 0 || videoEndpoints?.length > 0) {
+      const urlSlug = infoOverlay.split('-')
+      if (urlSlug.length > 2 && !isOverlayActive) {
+        let source
+        const filename = urlSlug[urlSlug.length - 1]
+        if (toggle == 'Photos') {
+          for (const photo of photoEndpoints) {
+            if (photo.includes(filename)) {
+              source = photo
+            }
+          }
+        } else {
+          for (const video in videoEndpoints) {
+            if (video.includes(filename)) {
+              source = video
+            }
+          }
+        }
+        if (source) {
+          dispatch(setFullscreenOverlay({ source, active: true }))
+        } else {
+          dispatch(setInfoOverlay(`media-${toggle.toLowerCase()}`))
+        }
+      }
+    }
+  }, [
+    photoEndpoints,
+    videoEndpoints,
+    dispatch,
+    isOverlayActive,
+    infoOverlay,
+    toggle,
+  ])
 
   return (
     <InfoBox mediaSize={mediaSize}>
@@ -85,9 +108,8 @@ export const MediaCard = ({
         <h1 style={{ marginBottom: '8px' }}>Images & Videos</h1>
         <ToggleButton
           active={toggle}
-          setToggle={setToggle}
+          setToggle={useToggle}
           options={['Photos', 'Videos']}
-          mediaSize={mediaSize}
         />
         <div
           style={{
@@ -97,7 +119,7 @@ export const MediaCard = ({
             flexWrap: 'wrap',
           }}
         />
-        {toggle == 'Photos' && (
+        {infoOverlay.startsWith('media-photos') && (
           <div style={{ flex: '1 1 50%' }}>
             {photoEndpoints?.map((photo) => (
               <PhotoCard
@@ -105,6 +127,7 @@ export const MediaCard = ({
                 photoEndpoint={photo}
                 mediaSize={mediaSize}
                 maximize={maximized}
+                onMediaClick={onMediaClick}
               />
             ))}
             {photoEndpoints?.length === 0 && (
@@ -112,7 +135,7 @@ export const MediaCard = ({
             )}
           </div>
         )}
-        {toggle == 'Videos' && (
+        {infoOverlay.startsWith('media-videos') && (
           <div style={{ flex: '1 1 50%' }}>
             {videoEndpoints?.map((video) => (
               <VideoCard
@@ -120,6 +143,7 @@ export const MediaCard = ({
                 videoEndpoint={video}
                 mediaSize={mediaSize}
                 maximize={maximized}
+                onMediaClick={onMediaClick}
               />
             ))}
             {videoEndpoints?.length === 0 && (
@@ -132,9 +156,7 @@ export const MediaCard = ({
   )
 }
 
-const PhotoCard = ({ photoEndpoint, mediaSize, maximize }) => {
-  const dispatch = useDispatch()
-
+const PhotoCard = ({ photoEndpoint, mediaSize, maximize, onMediaClick }) => {
   return (
     <div className="community-photo">
       <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
@@ -147,9 +169,7 @@ const PhotoCard = ({ photoEndpoint, mediaSize, maximize }) => {
           width: '100%',
         }}
         onClick={() => {
-          dispatch(
-            setFullscreenOverlay({ source: photoEndpoint, active: true })
-          )
+          onMediaClick({ endpoint: photoEndpoint, type: 'photo' })
         }}
       >
         <img
@@ -180,7 +200,12 @@ const PhotoCard = ({ photoEndpoint, mediaSize, maximize }) => {
   )
 }
 
-export const VideoCard = ({ videoEndpoint, mediaSize, maximize }) => {
+export const VideoCard = ({
+  videoEndpoint,
+  mediaSize,
+  maximize,
+  onMediaClick,
+}) => {
   return (
     <div className="community-photo">
       <img src={'/maximize.png'} alt="maximize" className="maximize-icon" />
@@ -192,6 +217,7 @@ export const VideoCard = ({ videoEndpoint, mediaSize, maximize }) => {
           cursor: 'pointer',
           width: '100%',
         }}
+        onClick={() => onMediaClick({ endpoint: videoEndpoint, type: 'video' })}
       >
         <video
           src={`${process.env.AWS_STORAGE}/${videoEndpoint}`}

@@ -30,9 +30,11 @@ export const InfoOverlay = ({
   setSelectedSpecies,
 }) => {
   const dispatch = useDispatch()
-  const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
-
   const infoOverlay = useSelector((state: State) => state.overlays.info)
+  const [toggle, setToggle] = useState<'Photos' | 'Videos'>(
+    infoOverlay.startsWith('media-videos') ? 'Videos' : 'Photos'
+  )
+
   const fullScreenOverlay = useSelector(
     (state: State) => state.fullscreenOverlay
   )
@@ -81,7 +83,6 @@ export const InfoOverlay = ({
         buttonIcon={'pets'}
         position={3}
         active={infoOverlay.startsWith('biodiversity')}
-        // TODO: move default menu logic to relevant component (so can we just set overlay to 'biodiversity')
         onClick={() =>
           dispatch(setInfoOverlay('biodiversity-observations-pokedex'))
         }
@@ -92,7 +93,7 @@ export const InfoOverlay = ({
         buttonIcon={'satellite'}
         position={4}
         active={infoOverlay.startsWith('media')}
-        onClick={() => dispatch(setInfoOverlay('media'))}
+        onClick={() => dispatch(setInfoOverlay('media-photos'))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
@@ -227,12 +228,13 @@ export const ImageOverlay = ({
       )
     }
   }
+
+  const handleOverlayClick = () => {
+    dispatch(toggleFullscreenOverlay())
+    dispatch(setInfoOverlay(`media-${toggle.toLowerCase()}`))
+  }
   return (
-    <div
-      className="overlay"
-      style={{ zIndex: 4 }}
-      onClick={() => dispatch(toggleFullscreenOverlay())}
-    >
+    <div className="overlay" style={{ zIndex: 4 }} onClick={handleOverlayClick}>
       {fileType !== 'video' && toggle == 'Photos' ? (
         <img
           src={`${process.env.AWS_STORAGE}/${endpoint}`}

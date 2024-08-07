@@ -24,10 +24,7 @@ export const BiodiversityChart = ({
   if (!ecoregionsBiomes?.ecoregions?.data?.values?.length) {
     return <div style={{ margin: '16px' }}>No data found.</div>
   }
-
   const { ecoregions, biomes } = ecoregionsBiomes
-  console.log(ecoregions)
-
   const ecoregionsData = {
     labels: ecoregions.data.values.map((entry) => entry.label),
     datasets: ecoregions.data.values.map((entry) => ({

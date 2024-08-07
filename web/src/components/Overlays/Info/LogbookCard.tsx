@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import axios from 'axios'
 import yaml from 'js-yaml'
+import { act } from 'react-dom/test-utils'
 import { useDispatch } from 'react-redux'
 
 import Blog from 'src/components/Blog/Blog'
@@ -29,30 +30,18 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
     const getPosts = async () => {
       let filenames = []
       try {
-        if (process.env.AWS_STORAGE.startsWith('http://localhost')) {
-          try {
-            const response = await axios.get(
-              `${process.env.AWS_STORAGE}/logbook/${toKebabCase(
-                activeProjectData?.project?.name
-              )}/`
-            )
-            filenames = parseDirectoryListing(response.data)
-          } catch (e) {
-            console.log('cannot fetch from local server: ', e)
-          }
-        } else {
-          try {
-            const response = await fetch(
-              `/api/listS3Objects?folder=logbook&projectName=${toKebabCase(
-                activeProjectData?.project?.name
-              )}`
-            )
-            const data = await response.json()
-            filenames = data.filter((name) => name.endsWith('.md'))
-          } catch (e) {
-            console.log('cannot fetch from AWS :', e)
-          }
+        try {
+          const response = await fetch(
+            `/api/listS3Objects?folder=logbook&projectName=${toKebabCase(
+              activeProjectData?.project?.name
+            )}`
+          )
+          const data = await response.json()
+          filenames = data?.filter((name) => name.endsWith('.md'))
+        } catch (e) {
+          console.log('cannot fetch from AWS :', e)
         }
+
         if (filenames.length == 0) {
           setLoading(false)
           return
@@ -95,9 +84,10 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
         setLoading(false)
       }
     }
-
-    getPosts()
-  }, [setLoading])
+    if (activeProjectData) {
+      getPosts()
+    }
+  }, [setLoading, activeProjectData])
 
   const parseDirectoryListing = (html) => {
     const parser = new DOMParser()
@@ -140,7 +130,7 @@ export const LogbookCard = ({ activeProjectData, mediaSize }) => {
     >
       <ExitButton
         style={{ zIndex: '4', right: 40, top: 20, left: null }}
-        onClick={() => dispatch(setInfoOverlay(1))}
+        onClick={() => dispatch(setInfoOverlay('info'))}
         mediaSize={mediaSize}
       />
       <Blog posts={posts} loading={loading} />

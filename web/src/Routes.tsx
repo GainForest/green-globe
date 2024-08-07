@@ -20,7 +20,7 @@ const Routes = () => {
         <Route path="/methodology" page={MethodologyPage} name="methodology" />
         {/* <Set private unauthenticated="login"> */}
         {/* <Route path="/" page={LandingPage} name="landing" /> */}
-        <Route path="/{urlProjectId:String}/{initialOverlay:Int?}" page={MapPage} name="map" />
+        <Route path="/{urlProjectId:String}/{initialOverlay:String?}" page={MapPage} name="map" />
         <Route path="/{urlProjectId:String}" page={MapPage} name="map" />
         <Route path="/map" page={MapPage} name="map" />
         <Route path="/" page={MapPage} name="map" />

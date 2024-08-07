@@ -161,7 +161,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       map.on('click', 'gainforestMarkerLayer', (e) => {
         const projectId = e.features[0].properties.projectId
         setActiveProjectId(projectId)
-        dispatch(setInfoOverlay(1))
+        dispatch(setInfoOverlay('info'))
       })
 
       map.on('mouseleave', 'gainforestMarkerLayer', () => {
@@ -248,8 +248,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   useEffect(() => {
     if (initialOverlay) {
-      const overlayValue = parseInt(initialOverlay, 10)
-      dispatch(setInfoOverlay(overlayValue))
+      dispatch(setInfoOverlay(initialOverlay))
     }
   }, [initialOverlay, dispatch])
 
@@ -383,7 +382,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       {activeProjectPolygon && !infoOverlay && (
         <Button
           style={{ position: 'absolute', bottom: '5%', right: '3%' }}
-          onClick={() => dispatch(setInfoOverlay(1))}
+          onClick={() => dispatch(setInfoOverlay('info'))}
         >
           Project Info
         </Button>

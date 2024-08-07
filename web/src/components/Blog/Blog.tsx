@@ -1,8 +1,10 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import BlogPost from 'src/components/Blog/BlogPost'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 const Blog = ({ posts, loading }) => {
   const [opacity, setOpacity] = useState(0)
@@ -10,6 +12,9 @@ const Blog = ({ posts, loading }) => {
   const [postIndex, setPostIndex] = useState(0)
   const contentRef = useRef(null)
   const postRefs = useRef([])
+
+  const dispatch = useDispatch()
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
 
   useEffect(() => {
     postRefs.current = postRefs.current.slice(0, displayedPosts.length)
@@ -72,23 +77,40 @@ const Blog = ({ posts, loading }) => {
     return () => clearTimeout(timer)
   }, [])
 
-  const handlePostClick = (post, index) => {
-    setOpacity(0)
-    setTimeout(() => {
-      setOpacity(1)
-    }, 300)
-    if (index > displayedPosts.length - 1) {
-      const newPosts = posts?.slice(displayedPosts.length, index + 1)
-      setDisplayedPosts([...displayedPosts, ...newPosts])
+  const handlePostClick = useCallback(
+    (index, title) => {
+      setOpacity(0)
+      setTimeout(() => {
+        setOpacity(1)
+      }, 300)
+      if (index > displayedPosts.length - 1) {
+        const newPosts = posts?.slice(displayedPosts.length, index + 1)
+        setDisplayedPosts([...displayedPosts, ...newPosts])
+      }
+      const titleSlug = encodeURIComponent(title)
+      dispatch(setInfoOverlay(`logbook-${titleSlug}`))
+      setPostIndex(index)
+      setTimeout(() => {
+        postRefs.current[index]?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }, 300)
+    },
+    [dispatch, displayedPosts, posts]
+  )
+
+  useEffect(() => {
+    if (posts.length > 0 && infoOverlay.startsWith('logbook-')) {
+      const splitSlug = infoOverlay.split('-')
+      const titleFromURL = decodeURIComponent(splitSlug[splitSlug.length - 1])
+      const foundIndex = posts.findIndex((post) => post.title === titleFromURL)
+
+      if (foundIndex !== -1 && foundIndex !== postIndex) {
+        handlePostClick(foundIndex, titleFromURL)
+      }
     }
-    setPostIndex(index)
-    setTimeout(() => {
-      postRefs.current[index]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
-    }, 0)
-  }
+  }, [infoOverlay, handlePostClick, posts])
 
   if (!loading && posts.length == 0) {
     return (
@@ -105,7 +127,7 @@ const Blog = ({ posts, loading }) => {
           <PostPreview
             key={index}
             selected={index == postIndex}
-            onClick={() => handlePostClick(post, index)}
+            onClick={() => handlePostClick(index, post.title)}
           >
             {post.categories && (
               <p style={{ fontWeight: 'lighter', fontSize: '12px' }}>

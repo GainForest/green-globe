@@ -30,9 +30,11 @@ export const InfoOverlay = ({
   setSelectedSpecies,
 }) => {
   const dispatch = useDispatch()
-  const [toggle, setToggle] = useState<'Photos' | 'Videos'>('Photos')
-
   const infoOverlay = useSelector((state: State) => state.overlays.info)
+  const [toggle, setToggle] = useState<'Photos' | 'Videos'>(
+    infoOverlay.startsWith('media-videos') ? 'Videos' : 'Photos'
+  )
+
   const fullScreenOverlay = useSelector(
     (state: State) => state.fullscreenOverlay
   )
@@ -64,56 +66,58 @@ export const InfoOverlay = ({
         description={'Project Info'}
         buttonIcon={'star'}
         position={2}
-        active={infoOverlay == 1}
-        onClick={() => dispatch(setInfoOverlay(1))}
+        active={infoOverlay.startsWith('info')}
+        onClick={() => dispatch(setInfoOverlay('info'))}
       />
       {/* <InfoOverlayButton
         mediaSize={mediaSize}
         description={'AI Assistant'}
         buttonIcon={'chat'}
         position={2}
-        active={infoOverlay == 5}
-        onClick={() => dispatch(setInfoOverlay(5))}
+        active={infoOverlay.startsWith(5})
+        onClick={() => dispatch(setInfoOverlay('5'))}
       /> */}
       <InfoOverlayButton
         mediaSize={mediaSize}
         description={'Biodiversity'}
         buttonIcon={'pets'}
         position={3}
-        active={infoOverlay == 2}
-        onClick={() => dispatch(setInfoOverlay(2))}
+        active={infoOverlay.startsWith('biodiversity')}
+        onClick={() =>
+          dispatch(setInfoOverlay('biodiversity-observations-pokedex'))
+        }
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
         description={'Media'}
         buttonIcon={'satellite'}
         position={4}
-        active={infoOverlay == 3}
-        onClick={() => dispatch(setInfoOverlay(3))}
+        active={infoOverlay.startsWith('media')}
+        onClick={() => dispatch(setInfoOverlay('media-photos'))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
         description={'Remote Sensing Analysis'}
         buttonIcon={'satellite_alt'}
         position={5}
-        active={infoOverlay == 7}
-        onClick={() => dispatch(setInfoOverlay(7))}
+        active={infoOverlay.startsWith('remoteAnalysis')}
+        onClick={() => dispatch(setInfoOverlay('remoteAnalysis-biodiversity'))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
         description={'Community Payments'}
         buttonIcon={'emoji_people'}
         position={6}
-        active={infoOverlay == 4}
-        onClick={() => dispatch(setInfoOverlay(4))}
+        active={infoOverlay.startsWith('community')}
+        onClick={() => dispatch(setInfoOverlay('community-members'))}
       />
       <InfoOverlayButton
         mediaSize={mediaSize}
         description={'Logbook'}
         buttonIcon={'book'}
         position={7}
-        active={infoOverlay == 6}
-        onClick={() => dispatch(setInfoOverlay(6))}
+        active={infoOverlay.startsWith('logbook')}
+        onClick={() => dispatch(setInfoOverlay('logbook'))}
       />
 
       {activeProjectData?.project?.dataDownloadUrl && (
@@ -121,12 +125,12 @@ export const InfoOverlay = ({
           mediaSize={mediaSize}
           buttonIcon={'download'}
           position={8}
-          active={infoOverlay == 8}
-          onClick={() => dispatch(setInfoOverlay(8))}
+          active={infoOverlay.startsWith('download')}
+          onClick={() => dispatch(setInfoOverlay('download'))}
         />
       )}
 
-      {infoOverlay == 1 && (
+      {infoOverlay.startsWith('info') && (
         <ProjectCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
@@ -135,7 +139,7 @@ export const InfoOverlay = ({
           handleClick={handleClick}
         />
       )}
-      {infoOverlay == 2 && (
+      {infoOverlay.startsWith('biodiversity') && (
         <BiodiversityCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
@@ -143,7 +147,7 @@ export const InfoOverlay = ({
           setSelectedSpecies={setSelectedSpecies}
         />
       )}
-      {infoOverlay == 3 && (
+      {infoOverlay.startsWith('media') && (
         <MediaCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
@@ -151,33 +155,34 @@ export const InfoOverlay = ({
           setToggle={setToggle}
         />
       )}
-      {infoOverlay == 4 && (
+      {infoOverlay.startsWith('community') && (
         <CommunityCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
-      {infoOverlay == 5 && (
+      {infoOverlay.startsWith('chat') && (
         <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
       )}
-      {infoOverlay == 6 && (
+      {infoOverlay.startsWith('logbook') && (
         <LogbookCard
           activeProjectData={activeProjectData}
           mediaSize={mediaSize}
         />
       )}
-      {infoOverlay == 7 && (
+      {infoOverlay.startsWith('remoteAnalysis') && (
         <RestorCard
           mediaSize={mediaSize}
           activeProjectData={activeProjectData}
         />
       )}
-      {infoOverlay == 8 && activeProjectData?.project?.dataDownloadUrl && (
-        <DownloadCard
-          mediaSize={mediaSize}
-          activeProjectData={activeProjectData}
-        />
-      )}
+      {infoOverlay.startsWith('download') &&
+        activeProjectData?.project?.dataDownloadUrl && (
+          <DownloadCard
+            mediaSize={mediaSize}
+            activeProjectData={activeProjectData}
+          />
+        )}
     </>
   )
 }
@@ -223,12 +228,13 @@ export const ImageOverlay = ({
       )
     }
   }
+
+  const handleOverlayClick = () => {
+    dispatch(toggleFullscreenOverlay())
+    dispatch(setInfoOverlay(`media-${toggle.toLowerCase()}`))
+  }
   return (
-    <div
-      className="overlay"
-      style={{ zIndex: 4 }}
-      onClick={() => dispatch(toggleFullscreenOverlay())}
-    >
+    <div className="overlay" style={{ zIndex: 4 }} onClick={handleOverlayClick}>
       {fileType !== 'video' && toggle == 'Photos' ? (
         <img
           src={`${process.env.AWS_STORAGE}/${endpoint}`}

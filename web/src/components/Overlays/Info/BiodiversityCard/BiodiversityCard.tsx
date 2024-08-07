@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import { Info } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import { IconButton } from 'src/components/Buttons/IconButton'
 import { ToggleButton } from 'src/components/Map/components/ToggleButton'
+import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 
 import { InfoBox } from '../InfoBox'
 import { RestorPredictions } from '../Pokedex/RestorPredictions'
@@ -23,19 +25,31 @@ export const BiodiversityCard = ({
   selectedSpecies,
   setSelectedSpecies,
 }) => {
+  const infoOverlay = useSelector((state: State) => state.overlays.info)
   const [biodiversity, setBiodiversity] = useState([])
   const [measuredData, setMeasuredData] = useState([])
   const [toggle, setToggle] = useState<'Predictions' | 'Observations'>(
-    'Observations'
+    infoOverlay?.includes('predictions') ? 'Predictions' : 'Observations'
   )
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<'Name' | 'Count'>('Name')
-  const [displayedInsight, setDisplayedInsight] = useState('plants')
+  const dispatch = useDispatch()
+
+  const useToggle = (option) => {
+    if (option == 'Predictions') {
+      dispatch(setInfoOverlay(`biodiversity-predictions-plants`))
+    }
+    if (option == 'Observations') {
+      dispatch(setInfoOverlay(`biodiversity-observations-pokedex`))
+    }
+    setToggle(option)
+  }
 
   useEffect(() => {
     if (!activeProjectData) {
       return
     }
+
     const { project } = activeProjectData
     if (project) {
       fetch(`${process.env.AWS_STORAGE}/mol/${project.id}.json`)
@@ -95,7 +109,7 @@ export const BiodiversityCard = ({
         </h1>
         <ToggleButton
           active={toggle}
-          setToggle={setToggle}
+          setToggle={useToggle}
           options={['Observations', 'Predictions']}
         />
         {toggle === 'Predictions' ? (
@@ -132,15 +146,19 @@ export const BiodiversityCard = ({
         <IconBar>
           <IconButton
             buttonIcon={'eco'}
-            active={displayedInsight === 'plants'}
-            onClick={() => setDisplayedInsight('plants')}
+            active={infoOverlay.startsWith('biodiversity-predictions-plants')}
+            onClick={() =>
+              dispatch(setInfoOverlay('biodiversity-predictions-plants'))
+            }
             dataTooltipId={'biodiversity-plants-insight'}
           />
           <Tooltip id="biodiversity-plants-insight">Plants</Tooltip>
           <IconButton
             buttonIcon={'pets'}
-            active={displayedInsight === 'birds'}
-            onClick={() => setDisplayedInsight('birds')}
+            active={infoOverlay.startsWith('biodiversity-predictions-birds')}
+            onClick={() =>
+              dispatch(setInfoOverlay('biodiversity-predictions-birds'))
+            }
             dataTooltipId={'biodiversity-birds-insight'}
           />
           <Tooltip id="biodiversity-birds-insight">Animals</Tooltip>
@@ -149,13 +167,13 @@ export const BiodiversityCard = ({
       <div style={{ marginLeft: '16px', marginBottom: '8px' }}>
         {toggle === 'Predictions' ? (
           <div>
-            {displayedInsight === 'plants' && (
+            {infoOverlay.startsWith('biodiversity-predictions-plants') && (
               <RestorPredictions
                 mediaSize={mediaSize}
                 activeProjectData={activeProjectData}
               />
             )}
-            {displayedInsight === 'birds' && (
+            {infoOverlay.startsWith('biodiversity-predictions-birds') && (
               <PredictedAnimals mediaSize={mediaSize} />
             )}
           </div>

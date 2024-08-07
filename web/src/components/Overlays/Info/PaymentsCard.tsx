@@ -1,7 +1,4 @@
-import useAxios from 'axios-hooks'
 import dayjs from 'dayjs'
-
-import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
 
 import { InfoTag } from '../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../Map/components/Skeleton'
@@ -9,31 +6,6 @@ import ThemedSkeleton from '../../Map/components/Skeleton'
 import { InfoBox } from './InfoBox'
 
 export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
-  const [
-    { data: attestationData, loading: attestationDataLoading },
-    attestationDataCall,
-  ] = useAxios(
-    {
-      url: CELO_EAS_SCAN_API,
-      method: 'post',
-    },
-    { manual: true }
-  )
-
-  const fetchAttestations = async (recipient: string) => {
-    const celoMessageRes = await attestationDataCall({
-      data: {
-        query: `{
-          attestations(where: {recipient:{equals:"${recipient}"}}) {
-            id
-            decodedDataJson
-        }
-      }`,
-      },
-    })
-    return celoMessageRes.data.data.attestations
-  }
-
   const formatAmount = (amount) => {
     if (Number.isInteger(amount)) {
       return amount.toString()

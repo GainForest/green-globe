@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 
+import useAxios from 'axios-hooks'
 import * as d3 from 'd3'
 import dayjs from 'dayjs'
 import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip } from 'react-tooltip'
 
 import { setInfoOverlay } from 'src/reducers/overlaysReducer'
+import { CELO_EAS_SCAN_API } from 'src/utils/apiUrls'
 import { stringDistance } from 'src/utils/typoCheck'
 
 import ThemedSkeleton from '../../Map/components/Skeleton'
@@ -45,6 +47,35 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
       dispatch(setInfoOverlay(`community-payments`))
     }
     setToggle(option)
+  }
+
+  const [
+    { data: attestationData, loading: attestationDataLoading },
+    attestationDataCall,
+  ] = useAxios(
+    {
+      url: CELO_EAS_SCAN_API,
+      method: 'post',
+    },
+    { manual: true }
+  )
+
+  const fetchAttestations = async (recipients) => {
+    const recipientList = recipients
+      .map((recipient) => `\"${recipient}\"`)
+      .join(',')
+    const celoMessageRes = await attestationDataCall({
+      data: {
+        query: `{
+          attestations(where: {recipient: {in: [${recipientList}], mode: insensitive}}) {
+            id
+            decodedDataJson
+            recipient
+          }
+        }`,
+      },
+    })
+    return celoMessageRes.data.data.attestations
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -206,24 +237,24 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
     const payments = []
     const recipientAttestationData = []
 
-    // for (let i = 0; i < recipients.length; i++) {
-    //   const recipientId = recipients[i]
-    //   const attestationsArr = await fetchAttestations(recipientId)
+    const processAttestations = (attestationsArr) => {
+      attestationsArr.forEach((ele) => {
+        const tempArr = JSON.parse(ele.decodedDataJson)
 
-    //   attestationsArr.forEach((ele) => {
-    //     const tempArr = JSON.parse(ele.decodedDataJson)
+        const messageObj = tempArr.find((e) => e.name === 'message')
+        const transactionObj = tempArr.find((e) => e.name === 'transactionId')
 
-    //     const messageObj = tempArr.find((e) => e.name === 'message')
-    //     const transactionObj = tempArr.find((e) => e.name === 'transactionId')
+        recipientAttestationData.push({
+          recipientId: ele.recipient,
+          message: messageObj?.value?.value,
+          transactionId: transactionObj?.value?.value,
+          uid: ele.id,
+        })
+      })
+    }
 
-    //     recipientAttestationData.push({
-    //       recipientId,
-    //       message: messageObj?.value?.value,
-    //       transactionId: transactionObj?.value?.value,
-    //       uid: ele.id,
-    //     })
-    //   })
-    // }
+    const attestationsArr = await fetchAttestations(recipients)
+    processAttestations(attestationsArr)
 
     for (const address of wallets.Celo) {
       const res = await fetch(
@@ -333,6 +364,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
         profileUrl: memberMap[transaction.receiver.address]['profileUrl'],
         amount: transaction.amount,
         currency: 'Solana',
+        blockchain: 'SOL',
         hash: transaction.transaction.signature,
       }))
       if (transactions.length > 0) {

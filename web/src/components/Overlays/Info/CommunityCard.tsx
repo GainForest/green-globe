@@ -15,6 +15,19 @@ import { ToggleButton } from '../../Map/components/ToggleButton'
 
 import { InfoBox } from './InfoBox'
 import { PaymentCard } from './PaymentsCard'
+
+type Transaction = {
+  amount: number
+  blockchain: string
+  currency: string
+  firstName: string
+  lastName: string
+  hash: string
+  profileUrl: string
+  timestamp: string // YYYY-MM-DD
+  to: string
+}
+
 export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   const dispatch = useDispatch()
   const infoOverlay = useSelector((state: State) => state.overlays.info)
@@ -128,7 +141,6 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
   useEffect(() => {
     const total = {}
     const members = {}
-
     paymentData.forEach((payment) => {
       const currency = payment?.currency
       if (currency && Object.prototype.hasOwnProperty.call(total, currency)) {
@@ -205,6 +217,7 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
                 firstName: item.firstName,
                 lastName: item.lastName,
                 profileUrl: item.profileUrl,
+                communityMemberId: item.id,
               }
             }
             return account
@@ -215,13 +228,16 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
 
     const allPayments = []
     if (celoRecipients.length > 0) {
-      const celoPayments = await fetchCeloPayments(celoRecipients, memberMap)
+      const celoPayments: Transaction[] = await fetchCeloPayments(
+        celoRecipients,
+        memberMap
+      )
       if (celoPayments.length > 0) {
         allPayments.push(...celoPayments)
       }
     }
     if (solanaRecipients.length > 0) {
-      const solanaPayments = await fetchSolanaPayments(
+      const solanaPayments: Transaction[] = await fetchSolanaPayments(
         solanaRecipients,
         memberMap
       )
@@ -366,6 +382,8 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
         currency: 'USDC',
         blockchain: 'Solana',
         hash: transaction.transaction.signature,
+        communityMemberId:
+          memberMap[transaction.receiver.address].communityMemberId,
       }))
       if (transactions.length > 0) {
         payments.push(...transactions)

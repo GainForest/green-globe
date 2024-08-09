@@ -84,7 +84,7 @@ export const InfoOverlay = ({
         position={3}
         active={infoOverlay.startsWith('biodiversity')}
         onClick={() =>
-          dispatch(setInfoOverlay('biodiversity-observations-pokedex'))
+          dispatch(setInfoOverlay('biodiversity-predictions-plants'))
         }
       />
       <InfoOverlayButton

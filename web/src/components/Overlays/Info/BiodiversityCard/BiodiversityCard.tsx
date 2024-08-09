@@ -110,7 +110,7 @@ export const BiodiversityCard = ({
         <ToggleButton
           active={toggle}
           setToggle={useToggle}
-          options={['Observations', 'Predictions']}
+          options={['Predictions', 'Observations']}
         />
         {toggle === 'Predictions' ? (
           <div

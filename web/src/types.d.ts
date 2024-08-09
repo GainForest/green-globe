@@ -8,7 +8,7 @@ interface State {
     basket: number
   }
   overlays: {
-    info: number | null // The tab number displayed
+    info: string // cardName-tabName-subtabName
     basket: boolean
     profile: boolean
     maximized: boolean

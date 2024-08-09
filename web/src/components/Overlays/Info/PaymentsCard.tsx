@@ -16,7 +16,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
 
   const tagColors = {
     Solana: '#9945FF',
-    Celo: '#FCFF52',
+    Celo: '#655947',
     ETH: 'black',
   }
 
@@ -125,7 +125,7 @@ export const PaymentCard = ({ activeProjectData, paymentData, loading }) => {
                       {payment.currency} {formatAmount(payment.amount)}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <InfoTag style={{ color: tagColors[payment.currency] }}>
+                      <InfoTag style={{ color: tagColors[payment.blockchain] }}>
                         {payment.blockchain}
                       </InfoTag>
                       <a

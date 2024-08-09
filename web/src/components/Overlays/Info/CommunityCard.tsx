@@ -363,8 +363,8 @@ export const CommunityCard = ({ activeProjectData, mediaSize }) => {
         lastName: memberMap[transaction.receiver.address]['lastName'],
         profileUrl: memberMap[transaction.receiver.address]['profileUrl'],
         amount: transaction.amount,
-        currency: 'Solana',
-        blockchain: 'SOL',
+        currency: 'USDC',
+        blockchain: 'Solana',
         hash: transaction.transaction.signature,
       }))
       if (transactions.length > 0) {

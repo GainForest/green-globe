@@ -64,7 +64,11 @@ const LayerPicker = ({ map }) => {
           `${awsStorage}/layers/${kebabCasedProjectName}/layerData.json`
         )
         const projectLayers = await projectRes.json()
-        layersData = [...layersData, ...projectLayers.layers]
+        const filteredProjectLayers = projectLayers.layers.filter(
+          (item) =>
+            !item.name.includes('DNA') && !item.name.includes('Raft Deployment')
+        )
+        layersData = [...layersData, ...filteredProjectLayers]
       }
 
       setLayers(

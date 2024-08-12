@@ -45,22 +45,10 @@ export const fetchHexagons = (setHexagons) => {
     })
 }
 
-export const fetchEDNALocations = async (map) => {
-  let ednaLocations = undefined
-
-  await fetch(
-    `${process.env.AWS_STORAGE}/edna/sample-locations-semifinals.geojson`
-  )
-    .then((response) => response.json())
-    .then((res) => (ednaLocations = res))
-
-  map.getSource('ednaSource')?.setData(ednaLocations)
-}
-
 export const fetchGainForestCenterpoints = async (map) => {
   let gainforestCenterpoints = undefined
   await fetch(
-    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles-new.geojson`
+    `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
   )
     .then((response) => response.json())
     .then((res) => (gainforestCenterpoints = res))

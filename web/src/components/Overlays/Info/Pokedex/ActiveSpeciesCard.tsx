@@ -51,7 +51,6 @@ export const ActiveSpeciesCard = ({ species, mediaSize }) => {
   }
 
   const titleCaseToSpaces = (str) => {
-    if (str === 'eDNA') return str
     return str.replace(/([A-Z])/g, ' $1').trim()
   }
 

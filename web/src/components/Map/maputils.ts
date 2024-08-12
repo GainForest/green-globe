@@ -22,7 +22,6 @@ import {
 } from './sourcesAndLayers/projectSites'
 
 export const addAllSourcesAndLayers = (map: mapboxgl.Map) => {
-  // addEDNASourceAndLayers(map)
   addHistoricalSatelliteSourceAndLayers(map)
   // addLandCoverSourceAndLayer(map)
   // addTreeCoverSourceAndLayer(map)

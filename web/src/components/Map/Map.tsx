@@ -102,7 +102,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   useEffect(() => {
     if (sourcesAndLayersLoaded) {
       fetchGainForestCenterpoints(map)
-      // fetchEDNALocations(map)
       fetchHiveLocations(map, activeProjectId)
     }
   }, [map, activeProjectId, sourcesAndLayersLoaded])

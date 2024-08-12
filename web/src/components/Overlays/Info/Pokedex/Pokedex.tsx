@@ -13,6 +13,7 @@ export const Pokedex = ({ mediaSize }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [species, setSpecies] = useState([])
   const [modalWidth, setModalWidth] = useState(0)
+  const [loading, setLoading] = useState(true)
   const kebabCasedProjectName = useSelector((state: State) =>
     toKebabCase(state.project.name)
   )
@@ -32,36 +33,40 @@ export const Pokedex = ({ mediaSize }) => {
 
   useEffect(() => {
     const getCsv = async () => {
-      const data = await d3.csv(
-        `${process.env.AWS_STORAGE}/observations/${kebabCasedProjectName}.csv`
-      )
-      const kingdoms = {}
+      try {
+        const data = await d3.csv(
+          `${process.env.AWS_STORAGE}/observations/${kebabCasedProjectName}.csv`
+        )
+        const kingdoms = {}
 
-      const uniqueSpecies = Object.values(
-        data.reduce((acc, item) => {
-          acc[item.scientificName] = item
-          return acc
-        }, {})
-      )
+        const uniqueSpecies = Object.values(
+          data.reduce((acc, item) => {
+            acc[item.scientificName] = item
+            return acc
+          }, {})
+        )
 
-      uniqueSpecies.forEach((d) => {
-        let kingdom
-        if (d.kingdom === 'Plantae') {
-          kingdom = 'Plant'
-        } else if (d.phylum === 'Arthropoda') {
-          kingdom = 'Insect'
-        } else kingdom = 'Animal'
+        uniqueSpecies.forEach((d) => {
+          let kingdom
+          if (d.kingdom === 'Plantae') {
+            kingdom = 'Plant'
+          } else if (d.phylum === 'Arthropoda') {
+            kingdom = 'Insect'
+          } else kingdom = 'Animal'
 
-        if (!kingdoms[kingdom]) {
-          kingdoms[kingdom] = []
-        }
-        kingdoms[kingdom].push({ ...d, category: kingdom })
-      })
-      const kingdomsArray = Object.entries(kingdoms).map(([name, data]) => ({
-        name,
-        data,
-      }))
-      setAllKingdoms(kingdomsArray)
+          if (!kingdoms[kingdom]) {
+            kingdoms[kingdom] = []
+          }
+          kingdoms[kingdom].push({ ...d, category: kingdom })
+        })
+        const kingdomsArray = Object.entries(kingdoms).map(([name, data]) => ({
+          name,
+          data,
+        }))
+        setAllKingdoms(kingdomsArray)
+      } finally {
+        setLoading(false)
+      }
     }
     getCsv()
   }, [kebabCasedProjectName])
@@ -86,7 +91,7 @@ export const Pokedex = ({ mediaSize }) => {
     },
   }
 
-  if (!kebabCasedProjectName) {
+  if (loading) {
     return <p>Loading....</p>
   }
   return (

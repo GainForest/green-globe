@@ -78,17 +78,6 @@ export const MeasuredDataGrid = ({ mediaSize }) => {
         <Tooltip id="biodiversity-observations-insectspy-insight">
           Insect Insights
         </Tooltip>
-        <IconButton
-          buttonIcon={'biotech'}
-          active={infoOverlay.startsWith('biodiversity-observations-eDNA')}
-          onClick={() =>
-            dispatch(setInfoOverlay('biodiversity-observations-eDNA'))
-          }
-          dataTooltipId={'biodiversity-observations-eDNA-insight'}
-        />
-        <Tooltip id="biodiversity-observations-eDNA-insight">
-          Environmental DNA Insights
-        </Tooltip>
       </IconBar>
       {infoOverlay.startsWith('biodiversity-observations-circadian') && (
         <CircadianRythmn />
@@ -112,9 +101,6 @@ export const MeasuredDataGrid = ({ mediaSize }) => {
       )}
       {infoOverlay.startsWith('biodiversity-observations-pokedex') && (
         <Pokedex mediaSize={mediaSize} />
-      )}
-      {infoOverlay.startsWith('biodiversity-observations-eDNA') && (
-        <GeneticInsights />
       )}
     </div>
   )

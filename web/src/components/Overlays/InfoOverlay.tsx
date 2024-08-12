@@ -8,6 +8,7 @@ import { setInfoOverlay } from 'src/reducers/overlaysReducer'
 import { ExitButton } from '../Map/components/ExitButton'
 import { MaximizeButton } from '../Map/components/MaximizeButton'
 
+import { AiAssistant } from './Info/AiAssistant'
 import { BiodiversityCard } from './Info/BiodiversityCard/BiodiversityCard'
 import { ChatCard } from './Info/ChatCard'
 import { CommunityCard } from './Info/CommunityCard'
@@ -65,18 +66,18 @@ export const InfoOverlay = ({
         mediaSize={mediaSize}
         description={'Project Info'}
         buttonIcon={'star'}
-        position={2}
+        position={1}
         active={infoOverlay.startsWith('info')}
         onClick={() => dispatch(setInfoOverlay('info'))}
       />
-      {/* <InfoOverlayButton
+      <InfoOverlayButton
         mediaSize={mediaSize}
         description={'AI Assistant'}
         buttonIcon={'chat'}
         position={2}
-        active={infoOverlay.startsWith(5})
-        onClick={() => dispatch(setInfoOverlay('5'))}
-      /> */}
+        active={infoOverlay.startsWith('chat')}
+        onClick={() => dispatch(setInfoOverlay('chat'))}
+      />
       <InfoOverlayButton
         mediaSize={mediaSize}
         description={'Biodiversity'}
@@ -161,9 +162,7 @@ export const InfoOverlay = ({
           activeProjectData={activeProjectData}
         />
       )}
-      {infoOverlay.startsWith('chat') && (
-        <ChatCard mediaSize={mediaSize} activeProjectData={activeProjectData} />
-      )}
+      {infoOverlay.startsWith('chat') && <AiAssistant mediaSize={mediaSize} />}
       {infoOverlay.startsWith('logbook') && (
         <LogbookCard
           activeProjectData={activeProjectData}

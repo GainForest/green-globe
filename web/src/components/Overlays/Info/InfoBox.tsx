@@ -25,12 +25,7 @@ export const InfoBox = ({
       ? '85vh'
       : '85vh'
 
-  const width =
-    mediaSize >= breakpoints.xl
-      ? '360px'
-      : mediaSize > breakpoints.m
-      ? '310px'
-      : '98vw'
+  const width = mediaSize >= breakpoints.m ? '400px' : '98vw'
 
   const maxedWidth =
     mediaSize >= breakpoints.xl

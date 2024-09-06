@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react'
+
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
+
 import { breakpoints } from 'src/constants'
 import { countryToEmoji } from 'src/utils/countryToEmoji'
+
 import { InfoTag } from '../../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoBox } from '../InfoBox'
+
 import { ProjectSiteButtons } from './ProjectSiteButtons'
 
 const fetchProjectNumbers = async (projectId) => {
   try {
-    const response = await fetch(`${process.env.AWS_STORAGE}/summary${projectId}.json`)
+    const response = await fetch(
+      `${process.env.AWS_STORAGE}/summary${projectId}.json`
+    )
     if (!response.ok) throw new Error('Failed to fetch project numbers')
     return await response.json()
   } catch (error) {
@@ -75,22 +81,33 @@ const ProjectCardSkeleton = ({ mediaSize }) => (
   <InfoBox mediaSize={mediaSize}>
     <ThemedSkeleton height={250} />
     <ContentContainer>
-      <h1><ThemedSkeleton width="80%" /></h1>
-      <p><ThemedSkeleton width="100px" /></p>
-      <p><ThemedSkeleton count={3.5} /></p>
+      <h1>
+        <ThemedSkeleton width="80%" />
+      </h1>
+      <p>
+        <ThemedSkeleton width="100px" />
+      </p>
+      <p>
+        <ThemedSkeleton count={3.5} />
+      </p>
     </ContentContainer>
   </InfoBox>
 )
 
 const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
-  const splash = activeProjectData?.project?.assets?.find(d =>
-    d.classification?.includes('Splash'))?.awsCID
+  const splash = activeProjectData?.project?.assets?.find((d) =>
+    d.classification?.includes('Splash')
+  )?.awsCID
 
   return (
     <SplashContainer>
       <SplashImage
-        src={splash ? `${process.env.AWS_STORAGE}/${splash}` : `${process.env.AWS_STORAGE}/project-splash/default-project-splash.png`}
-        alt={splash ? "Project Splash" : "Default project splash"}
+        src={
+          splash
+            ? `${process.env.AWS_STORAGE}/${splash}`
+            : `${process.env.AWS_STORAGE}/project-splash/default-project-splash.png`
+        }
+        alt={splash ? 'Project Splash' : 'Default project splash'}
       />
       {promoVideo && (
         <PlayButton onClick={() => handleClick(promoVideo, 'video')}>

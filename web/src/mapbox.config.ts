@@ -18,7 +18,6 @@ export const initializeMapbox = (
       center: [102, 9],
       bounds,
     })
-    map.addControl(new mapboxgl.NavigationControl())
     setMap(map)
   } else {
     const map = new mapboxgl.Map({
@@ -26,7 +25,6 @@ export const initializeMapbox = (
       style: 'mapbox://styles/mapbox/dark-v11',
       bounds,
     })
-    map.addControl(new mapboxgl.NavigationControl())
     setMap(map)
   }
 }

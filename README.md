@@ -9,7 +9,6 @@ yarn install
 Then change into that directory and start the development server:
 
 ```
-cd xprize
 yarn redwood dev
 ```
 

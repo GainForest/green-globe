@@ -56,7 +56,7 @@ export const fetchGainForestCenterpoints = async (map) => {
 }
 
 export const fetchProjectInfo = async (projectId) => {
-  const endpoint = `${process.env.GAINFOREST_ENDPOINT}/api/graphql`
+  const endpoint = `${process.env.DIRECTUS_ENDPOINT}/graphql/items/project`
 
   const response = fetch(endpoint, {
     method: 'POST',
@@ -66,8 +66,8 @@ export const fetchProjectInfo = async (projectId) => {
     body: JSON.stringify({
       query: `
         query {
-          project(id:"${projectId}") {
-            id
+          project(filter: {legacyId:{ _eq: "${projectId}"}}) {
+            id: legacyId
             name
             country
             dataDownloadUrl
@@ -75,40 +75,11 @@ export const fetchProjectInfo = async (projectId) => {
             description
             longDescription
             stripeUrl
-            discordId
             lat
             lon
             area
             objective
-            assets {
-              id
-              name
-              classification
-              awsCID
-              shapefile {
-                default
-                isReference
-                shortName
-              }
-            }
-            communityMembers {
-              id
-              firstName
-              lastName
-              priority
-              role
-              bio
-              Wallet {
-                CeloAccounts
-                SOLAccounts
-              }
-              fundsReceived
-              profileUrl
-            }
-            Wallet {
-              CeloAccounts
-              SOLAccounts
-            }
+
           }
         }
       `,
@@ -116,6 +87,8 @@ export const fetchProjectInfo = async (projectId) => {
   })
     .then((res) => res.json())
     .then((result) => {
+      console.log(result)
+      console.log(response)
       return result.data
     })
 

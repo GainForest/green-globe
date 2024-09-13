@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
+import { setMapBounds } from 'src/reducers/mapReducer'
 import { setLegendName } from 'src/reducers/overlaysReducer'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
@@ -92,7 +93,8 @@ const LayerPicker = ({ map }) => {
     getLayers()
   }, [kebabCasedProjectName])
 
-  const handleToggle = (name: string) => {
+  const handleToggle = async (name: string) => {
+    // Set the new layers
     setLayers((prevLayers) =>
       prevLayers.map((layer) => {
         if (layer.name === name) {
@@ -114,9 +116,21 @@ const LayerPicker = ({ map }) => {
         return layer
       })
     )
+
+    await fetch(
+      'https://4dmyvh57a1.execute-api.us-east-1.amazonaws.com/cog/info?url=https://gainforest-transparency-dashboard.s3.amazonaws.com/layers/oceanus-conservation/oceanus-conservation-2024-08-21.tif',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => dispatch(setMapBounds(data.bounds)))
   }
 
-  const handleShowLayers = () => {
+  const handleShowLayers = async () => {
     setShowLayers((showLayers) => !showLayers)
     setVisible(true)
     setTimeout(() => setVisible(false), 100)

@@ -84,16 +84,20 @@ interface Asset {
 interface GeospatialLayer {
   name: string
   type:
+    | 'geojson_points'
+    | 'geojson_points_trees'
+    | 'geojson_line'
     | 'choropleth'
     | 'choropleth_shannon'
     | 'raster_tif'
     | 'tms_tile'
-    | 'geojson_line' // eg shapefiles
-    | 'geojson_points'
-    | 'geojson_points_trees'
-    | 'vector_tile'
   endpoint: string
+  description: string
   category: string
-  description?: string
-  legend?: LegendName
+  legend?: string
+  tilePattern?: string
+  tileRange?: {
+    x: { min: number; max: number }
+    y: { min: number; max: number }
+  }
 }

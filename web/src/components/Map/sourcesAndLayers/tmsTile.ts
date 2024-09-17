@@ -4,7 +4,7 @@ export const addTMSTileSourceAndLayer = (
   map: mapboxgl.Map,
   layer: { name: string; type: string; endpoint: string }
 ) => {
-  map.addSource(layer.name, {
+  map.addSource(`${process.env.AWS_STORAGE}/${layer.endpoint}`, {
     type: 'raster',
     tiles: [layer.endpoint],
     tileSize: 256, // Tile size, usually 256 or 512

@@ -35,7 +35,7 @@ export const addNamedSource = (map: mapboxgl.Map, layer: GeospatialLayer) => {
     addShannonChoroplethSourceAndLayers(map, layer)
   }
   if (!map.getSource(layer.name) && layer.type == 'geojson_points_trees') {
-    addMeasuredTreesSourceAndLayer(map, layer)
+    addMeasuredTreesSourceAndLayer(map)
   }
   map.moveLayer(layer.name, 'highlightedSiteOutline')
   map.moveLayer('highlightedSiteOutline', 'gainforestMarkerLayer')

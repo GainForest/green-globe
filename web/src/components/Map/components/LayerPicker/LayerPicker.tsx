@@ -6,6 +6,7 @@ import { useThemeUI } from 'theme-ui'
 
 import { setMapBounds } from 'src/reducers/mapReducer'
 import { setLegendName } from 'src/reducers/overlaysReducer'
+import { cleanEndpoint } from 'src/utils/cleanEndpoint'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
 import {
@@ -51,18 +52,16 @@ const LayerPicker = ({ map }) => {
   useEffect(() => {
     const getLayers = async () => {
       let layersData = []
-      const awsStorage = process.env.AWS_STORAGE
-      const titilerEndpoint = process.env.TITILER_ENDPOINT
 
       const globalRes = await fetch(
-        `${awsStorage}/layers/global/layerData.json`
+        `${process.env.AWS_STORAGE}/layers/global/layerData.json`
       )
       const globalLayers = await globalRes.json()
       layersData = globalLayers.layers
 
       if (kebabCasedProjectName) {
         const projectRes = await fetch(
-          `${awsStorage}/layers/${kebabCasedProjectName}/layerData.json`
+          `${process.env.AWS_STORAGE}/layers/${kebabCasedProjectName}/layerData.json`
         )
         const projectLayers = await projectRes.json()
         const filteredProjectLayers = projectLayers.layers.filter(
@@ -74,14 +73,7 @@ const LayerPicker = ({ map }) => {
 
       setLayers(
         layersData.map((layer) => {
-          layer.endpoint = layer.endpoint.replace(
-            '${process.env.AWS_STORAGE}',
-            awsStorage
-          )
-          layer.endpoint = layer.endpoint.replace(
-            '${process.env.TITILER_ENDPOINT}',
-            titilerEndpoint
-          )
+          layer.endpoint = cleanEndpoint(layer.endpoint)
           return {
             ...layer,
             isActive: false,

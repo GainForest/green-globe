@@ -9,7 +9,7 @@ export const addChoroplethSourceAndLayers = (
   if (!map.getSource(layer.name)) {
     map.addSource(layer.name, {
       type: 'geojson',
-      data: layer.endpoint,
+      data: `${process.env.AWS_STORAGE}/${layer.endpoint}`,
     })
   }
 

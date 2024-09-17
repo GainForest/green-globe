@@ -1,7 +1,4 @@
-import { GeospatialLayer } from 'src/types'
-
-export const cleanEndpoint = (layer: GeospatialLayer) => {
-  const endpoint = layer.endpoint
+export const cleanEndpoint = (endpoint: string) => {
   return endpoint.replace(
     /\${process\.env\.(AWS_STORAGE|TITILER_ENDPOINT)}(\/)?/g,
     ''

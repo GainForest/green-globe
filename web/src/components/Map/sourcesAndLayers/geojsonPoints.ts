@@ -7,7 +7,7 @@ export const addGeojsonPointSourceAndLayer = async (
   map: mapboxgl.Map,
   layer: GeospatialLayer
 ) => {
-  const res = await fetch(layer.endpoint)
+  const res = await fetch(`${process.env.AWS_STORAGE}/${layer.endpoint}`)
   const pointsGeojson = await res.json()
 
   if (!map.getSource(layer.name)) {

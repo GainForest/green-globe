@@ -10,7 +10,7 @@ import { InfoTag } from '../../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoBox } from '../InfoBox'
 
-import { ProjectSiteButtons } from './ProjectSiteButtons'
+//import { ProjectSiteButtons } from './ProjectSiteButtons'
 
 const fetchProjectNumbers = async (projectId) => {
   try {
@@ -36,7 +36,7 @@ export const ProjectCard = ({
   const [projectNumbers, setProjectNumbers] = useState(null)
   const { theme } = useThemeUI()
 
-  useEffect(() => {
+  /*useEffect(() => {
     const video = activeProjectData?.project?.assets?.find(
       (d) => d.classification === 'Promotional Video'
     )
@@ -45,7 +45,7 @@ export const ProjectCard = ({
     if (activeProjectData?.project?.id) {
       fetchProjectNumbers(activeProjectData.project.id).then(setProjectNumbers)
     }
-  }, [activeProjectData])
+  }, [activeProjectData])*/
 
   if (!activeProjectData) {
     return <ProjectCardSkeleton mediaSize={mediaSize} />
@@ -55,7 +55,6 @@ export const ProjectCard = ({
     <InfoBox mediaSize={mediaSize}>
       <ProjectSplash
         activeProjectData={activeProjectData}
-        promoVideo={promoVideo}
         handleClick={handleClick}
       />
       <ContentContainer>
@@ -63,11 +62,6 @@ export const ProjectCard = ({
           activeProjectData={activeProjectData}
           mediaSize={mediaSize}
           theme={theme}
-        />
-        <ProjectSiteButtons
-          assets={activeProjectData?.project?.assets}
-          activeShapefile={activeProjectPolygon}
-          setActiveShapefile={setActiveProjectPolygon}
         />
         <Description activeProjectData={activeProjectData} />
         <Objectives activeProjectData={activeProjectData} />
@@ -160,7 +154,7 @@ const Objectives = ({ activeProjectData }) => {
   const objectives = activeProjectData.project?.objective
     ?.split(',')
     ?.filter(Boolean)
-
+    console.log(activeProjectData.project.objective)
   if (!objectives?.length) return null
 
   return (
@@ -188,7 +182,7 @@ const SummaryStatistics = ({ numbers }) => (
     </StatisticsGrid>
   </Section>
 )
-
+/*
 const ProjectLogo = ({ theme, project }) => {
   const [logoAspectRatio, setLogoAspectRatio] = useState(1)
   const logo = project?.assets?.find((d) => d.classification === 'Logo')?.awsCID
@@ -212,7 +206,7 @@ const ProjectLogo = ({ theme, project }) => {
       <Logo src={`${process.env.AWS_STORAGE}/${logo}`} alt="Logo" />
     </LogoContainer>
   )
-}
+}*/
 
 const ContentContainer = styled.div`
   margin: 24px;

@@ -94,6 +94,7 @@ export const fetchProjectInfo = async (projectId) => {
 
   return response
 }
+//
 export const fetchProjectPolygon = async (
   endpoint: string,
   setActiveProjectPolygon

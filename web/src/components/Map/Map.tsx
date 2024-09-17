@@ -89,6 +89,9 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const [landCover, setLandCover] = useState(false)
   const [searchInput, setSearchInput] = useState<string>('')
   const [selectedSpecies, setSelectedSpecies] = useState('')
+
+  const bounds = useSelector((state: State) => state.map.bounds)
+
   // const numHexagons = useRef(0)
 
   // Initialize map, fetch all global data
@@ -173,6 +176,14 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       }
     }
   }, [map])
+
+  useEffect(() => {
+    if (map && bounds) {
+      map.fitBounds(bounds, {
+        padding: { top: 40, bottom: 40, left: 40, right: 40 },
+      })
+    }
+  }, [map, bounds])
 
   // Rotate the globe
   useEffect(() => {

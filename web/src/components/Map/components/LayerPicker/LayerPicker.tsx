@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { useThemeUI } from 'theme-ui'
 
+import { setMapBounds } from 'src/reducers/mapReducer'
 import { setLegendName } from 'src/reducers/overlaysReducer'
+import { cleanEndpoint } from 'src/utils/cleanEndpoint'
 import { toKebabCase } from 'src/utils/toKebabCase'
 
 import {
@@ -50,18 +52,16 @@ const LayerPicker = ({ map }) => {
   useEffect(() => {
     const getLayers = async () => {
       let layersData = []
-      const awsStorage = process.env.AWS_STORAGE
-      const titilerEndpoint = process.env.TITILER_ENDPOINT
 
       const globalRes = await fetch(
-        `${awsStorage}/layers/global/layerData.json`
+        `${process.env.AWS_STORAGE}/layers/global/layerData.json`
       )
       const globalLayers = await globalRes.json()
       layersData = globalLayers.layers
 
       if (kebabCasedProjectName) {
         const projectRes = await fetch(
-          `${awsStorage}/layers/${kebabCasedProjectName}/layerData.json`
+          `${process.env.AWS_STORAGE}/layers/${kebabCasedProjectName}/layerData.json`
         )
         const projectLayers = await projectRes.json()
         const filteredProjectLayers = projectLayers.layers.filter(
@@ -73,14 +73,7 @@ const LayerPicker = ({ map }) => {
 
       setLayers(
         layersData.map((layer) => {
-          layer.endpoint = layer.endpoint.replace(
-            '${process.env.AWS_STORAGE}',
-            awsStorage
-          )
-          layer.endpoint = layer.endpoint.replace(
-            '${process.env.TITILER_ENDPOINT}',
-            titilerEndpoint
-          )
+          layer.endpoint = cleanEndpoint(layer.endpoint)
           return {
             ...layer,
             isActive: false,
@@ -92,7 +85,9 @@ const LayerPicker = ({ map }) => {
     getLayers()
   }, [kebabCasedProjectName])
 
-  const handleToggle = (name: string) => {
+  const handleToggle = async (name: string) => {
+    const currentLayer = layers.find((layer) => layer.name == name)
+    // Set the new layers
     setLayers((prevLayers) =>
       prevLayers.map((layer) => {
         if (layer.name === name) {
@@ -114,9 +109,23 @@ const LayerPicker = ({ map }) => {
         return layer
       })
     )
+
+    await fetch(
+      `https://4dmyvh57a1.execute-api.us-east-1.amazonaws.com/cog/info?url=${process.env.AWS_STORAGE}/${currentLayer.endpoint}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then(
+        (data) => !currentLayer.isActive && dispatch(setMapBounds(data.bounds)) // as this is being computed before the setLayers finished dispatching, we check if the currentLayer is currently not active (as the toggle would make it active)
+      )
   }
 
-  const handleShowLayers = () => {
+  const handleShowLayers = async () => {
     setShowLayers((showLayers) => !showLayers)
     setVisible(true)
     setTimeout(() => setVisible(false), 100)

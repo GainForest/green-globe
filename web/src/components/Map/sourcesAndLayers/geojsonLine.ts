@@ -43,7 +43,7 @@ export const addGeojsonLineSourceAndLayer = async (
   layer: { name: string; endpoint: string; type: string }
 ) => {
   try {
-    const res = await fetch(layer.endpoint)
+    const res = await fetch(`${process.env.AWS_STORAGE}/${layer.endpoint}`)
     const treeCrownGeojson = await res.json()
 
     if (!map.getSource(layer.name)) {

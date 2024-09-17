@@ -8,8 +8,12 @@ export const displaySlice = createSlice({
       lon: undefined,
     },
     hoveredInformation: {},
+    bounds: undefined, // in [west, south, east, north]
   },
   reducers: {
+    setMapBounds: (state, action) => {
+      state.bounds = action.payload
+    },
     setClickedCoordinates: (state, action) => {
       state.clickedCoordinates = {
         lat: action.payload.lat,
@@ -35,7 +39,7 @@ export const displaySlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setClickedCoordinates, setHoveredInformation } =
+export const { setClickedCoordinates, setHoveredInformation, setMapBounds } =
   displaySlice.actions
 
 export default displaySlice.reducer

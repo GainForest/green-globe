@@ -86,6 +86,7 @@ const LayerPicker = ({ map }) => {
   }, [kebabCasedProjectName])
 
   const handleToggle = async (name: string) => {
+    const currentLayer = layers.find((layer) => layer.name == name)
     // Set the new layers
     setLayers((prevLayers) =>
       prevLayers.map((layer) => {
@@ -110,7 +111,7 @@ const LayerPicker = ({ map }) => {
     )
 
     await fetch(
-      'https://4dmyvh57a1.execute-api.us-east-1.amazonaws.com/cog/info?url=https://gainforest-transparency-dashboard.s3.amazonaws.com/layers/oceanus-conservation/oceanus-conservation-2024-08-21.tif',
+      `https://4dmyvh57a1.execute-api.us-east-1.amazonaws.com/cog/info?url=${process.env.AWS_STORAGE}/${currentLayer.endpoint}`,
       {
         method: 'GET',
         headers: {
@@ -119,7 +120,9 @@ const LayerPicker = ({ map }) => {
       }
     )
       .then((response) => response.json())
-      .then((data) => dispatch(setMapBounds(data.bounds)))
+      .then(
+        (data) => !currentLayer.isActive && dispatch(setMapBounds(data.bounds)) // as this is being computed before the setLayers finished dispatching, we check if the currentLayer is currently not active (as the toggle would make it active)
+      )
   }
 
   const handleShowLayers = async () => {

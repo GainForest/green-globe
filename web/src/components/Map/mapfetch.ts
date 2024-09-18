@@ -1,4 +1,17 @@
 import geojson2h3 from 'geojson2h3'
+import mapboxgl from 'mapbox-gl'
+
+import { createGeojsonCenterpoints } from 'src/utils/createGeojsonCenterpoints'
+
+export const fetchAllProjects = async (map: mapboxgl.Map) => {
+  let gainforestCenterpoints = undefined
+  await fetch('https://directus.gainforest.app/items/project')
+    .then((res) => res.json())
+    .then((res) => createGeojsonCenterpoints(res.data))
+    .then((res) => (gainforestCenterpoints = res))
+
+  map.getSource('gainforestMarkerSource')?.setData(gainforestCenterpoints)
+}
 
 export const fetchMeasuredTrees = (
   activeProjectData,

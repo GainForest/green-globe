@@ -38,10 +38,9 @@ import { Legend as LayerLegend } from './components/Legend'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
-import { fetchTreeShapefile } from './mapfetch'
+import { fetchAllProjects, fetchTreeShapefile } from './mapfetch'
 import {
   fetchProjectInfo,
-  fetchGainForestCenterpoints,
   fetchProjectPolygon,
   fetchAllSiteData,
   // fetchHexagons,
@@ -80,7 +79,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   const kebabCasedProjectName = useSelector((state: State) =>
     toKebabCase(state.project?.name)
   )
-  // const [hexagons, setHexagons] = useState()
+
   const [activeProjectPolygon, setActiveProjectPolygon] = useState() // The project's main site
   const [allSitePolygons, setAllSitePolygons] = useState()
   const [activeProjectData, setActiveProjectData] = useState()
@@ -92,8 +91,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   const bounds = useSelector((state: State) => state.map.bounds)
 
-  // const numHexagons = useRef(0)
-
   // Initialize map, fetch all global data
   useEffect(() => {
     // fetchHexagons(setHexagons)
@@ -104,8 +101,8 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   // loaded.
   useEffect(() => {
     if (sourcesAndLayersLoaded) {
-      fetchGainForestCenterpoints(map)
       fetchHiveLocations(map, activeProjectId)
+      fetchAllProjects(map)
     }
   }, [map, activeProjectId, sourcesAndLayersLoaded])
 

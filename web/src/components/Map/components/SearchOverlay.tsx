@@ -28,7 +28,7 @@ export const SearchOverlay = ({
   useEffect(() => {
     const getProjects = async () => {
       const res = await fetch(
-        `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles-new.geojson`
+        `${process.env.AWS_STORAGE}/shapefiles/gainforest-all-shapefiles.geojson`
       )
       const data = await res.json()
       setAllProjects(data.features.map((feature) => feature.properties))

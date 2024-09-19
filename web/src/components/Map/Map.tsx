@@ -42,7 +42,7 @@ import { fetchTreeShapefile } from './mapfetch'
 import {
   fetchProjectInfo,
   fetchGainForestCenterpoints,
- // fetchProjectPolygon,
+  fetchProjectPolygon,
   fetchAllSiteData,
   // fetchHexagons,
   fetchHiveLocations,

@@ -66,7 +66,7 @@ export const fetchProjectInfo = async (projectId) => {
     body: JSON.stringify({
       query: `
         query {
-          project(filter: {legacyId:{ _eq: "${projectId}"}}) {
+        project(filter: {legacyId:{ _eq: "${projectId}"}}) {
             id: legacyId
             name
             country
@@ -88,6 +88,8 @@ export const fetchProjectInfo = async (projectId) => {
     .then((res) => res.json())
     .then((result) => {
       console.log(result)
+      console.log(result.name)
+      console.log(result[0])
       console.log(response)
       return result.data
     })

@@ -121,7 +121,7 @@ export const InfoOverlay = ({
         onClick={() => dispatch(setInfoOverlay('logbook'))}
       />
 
-      {/*{activeProjectData?.project?.dataDownloadUrl && (
+      {activeProjectData?.project?.dataDownloadUrl && (
         <InfoOverlayButton
           mediaSize={mediaSize}
           buttonIcon={'download'}
@@ -129,9 +129,7 @@ export const InfoOverlay = ({
           active={infoOverlay.startsWith('download')}
           onClick={() => dispatch(setInfoOverlay('download'))}
         />
-
-
-      )}*/}
+      )}
 
       {infoOverlay.startsWith('info') && (
         <ProjectCard

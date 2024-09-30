@@ -87,16 +87,12 @@ export const fetchProjectInfo = async (projectId) => {
   })
     .then((res) => res.json())
     .then((result) => {
-      console.log(result)
-      console.log(result.name)
-      console.log(result[0])
-      console.log(response)
       return result.data
     })
 
   return response
 }
-//
+
 export const fetchProjectPolygon = async (
   endpoint: string,
   setActiveProjectPolygon

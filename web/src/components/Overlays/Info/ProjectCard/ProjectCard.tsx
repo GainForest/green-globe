@@ -97,8 +97,6 @@ const ProjectCardSkeleton = ({ mediaSize }) => (
   </InfoBox>
 )
 
-//Will not use assets for now
-//but will use splash art
 const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
   const splash = activeProjectData?.project?.assets?.find((d) =>
     d.classification?.includes('Splash')
@@ -122,7 +120,6 @@ const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
     </SplashContainer>
   )
 }
-
 
 const ProjectHeader = ({ activeProjectData, mediaSize, theme }) => (
   <HeaderContainer>

@@ -37,18 +37,31 @@ def get_asset_id_by_legacy(legacyId):
     print("\n")
     return None
 
+def check_existing_file(disk_filename, file_size):
+    params = {
+        'filter[filename_disk][_eq]': disk_filename,
+        'filter[filesize][_eq]': file_size
+    }
+    response = requests.get(f'{DIRECTUS_URL}/files', headers=headers, params=params)
+    print('1')
+    if response.status_code == 200 and response.json()['data']:
+        print('2')
+        return True  
+    print('3')
+    return False
+
 #GET FILE
 def import_image(legacyId,photo_url,file_name):
   global upload_failures, update_failures
   
   project_id = get_project_id_by_legacy(legacyId)
-  print("Found the projectId ", (project_id), " by filtering legacyId on csv")
+  print("Found the projectId for update", (project_id), " by filtering legacyId on csv")
   if not project_id:
         print(f"Fail to find project with {legacyId}")
         return None
   
   asset_id = get_asset_id_by_legacy(legacyId)
-  print("Found the assetId ", (asset_id), " by filtering legacyId on csv")
+  print("Found the assetId for update", (asset_id), " by filtering legacyId on csv")
   if not project_id:
         print(f"Fail to find asset with {legacyId}")
         return None
@@ -59,16 +72,24 @@ def import_image(legacyId,photo_url,file_name):
         return None
 
   # GET FILE NAME
-  file_name = os.path.basename(photo_url)
-  file_name = f"{os.path.splitext(file_name)[0]}.jpg"
+  #file_name = os.path.basename(photo_url) or f"{file_name}.jpg"
+  temp_file_name = f"{os.path.splitext(file_name)[0]}.jpg"
 
 
   # SAVE TEMP FILE
-  with open(file_name, 'wb') as f:
+  with open(temp_file_name, 'wb') as f:
         f.write(response.content)
 
+  # Verifica o tamanho do arquivo baixado
+  file_size = os.path.getsize(temp_file_name)
+
+  if check_existing_file(file_name, file_size):
+        print(f"File {file_name} already exists and is not corrupted, skipping upload.")
+        os.remove(temp_file_name)
+        return None
+
   # PREPARE TO UPLOAD
-  files = {'file': (file_name, open(file_name, 'rb'), 'image/jpeg')}
+  files = {'file': (file_name, open(temp_file_name, 'rb'), 'image/jpeg')}
   data = {
         'folder': FOLDER_ID
     }
@@ -98,7 +119,7 @@ def import_image(legacyId,photo_url,file_name):
             os.remove(file_name)
             return None
 
-  os.remove(file_name)
+  os.remove(temp_file_name)
 
   # TRY TO UPDATE PROJECT WITH FILE
   for attempt in range(MAX_RETRIES):

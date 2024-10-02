@@ -15,23 +15,28 @@ FOLDER_ID = os.getenv('FOLDER_ID')
 MAX_RETRIES = 5
 RETRY_DELAY = 5
 
+fetch_failures = 0
+check_failures = 0
 upload_failures = 0
 update_failures = 0
+item = 0
 
 headers = {
     'Authorization': f'Bearer {DIRECTUS_TOKEN}'
 }
-
-#GET THE PROJECT ID TO UPDATE
+#GET THE PROJECT ID TO UPDATE REFERENCING THE CURRENT COLLECTION
 def get_project_id_by_legacy(legacyId):
+    global fetch_failures 
     for attempt in range(MAX_RETRIES):
         try:
             response = requests.get(f'{DIRECTUS_URL}/items/project', headers=headers, params={'filter[legacyId][_eq]': legacyId})
             if response.status_code == 200 and response.json()['data']:
                 return response.json()['data'][0]['id']
             else:
+                fetch_failures += 1
                 print(f"Failed to find projectid, will try until max attempts")
         except Exception as e:
+                fetch_failures += 1
                 print(f"Attempt {attempt + 1} to find project failed: {e}")
                 if attempt < MAX_RETRIES - 1:
                     print(f"Waiting {RETRY_DELAY} seconds before retrying...")
@@ -40,15 +45,19 @@ def get_project_id_by_legacy(legacyId):
                     print(f"Max retries reached for finding id")
     return None
 
+#GET ASSET ID ON THE CURRENT COLECTION FOR THE MIGRATION
 def get_asset_id_by_legacy(legacyId):
+    global fetch_failures
     for attempt in range(MAX_RETRIES):
         try:
-            response = requests.get(f'{DIRECTUS_URL}/items/communityPhotos', headers=headers, params={'filter[legacyId][_eq]': legacyId,'filter[name][_eq]': file_name})
+            response = requests.get(f'{DIRECTUS_URL}/items/{COLLECTION_NAME}', headers=headers, params={'filter[legacyId][_eq]': legacyId,'filter[name][_eq]': file_name})
             if response.status_code == 200 and response.json()['data']:
                 return response.json()['data'][0]['id']
             else:
                 print(f"Failed to find projectid, will try until max attempts")
+                fetch_failures += 1
         except Exception as e:
+                fetch_failures += 1
                 print(f"Attempt {attempt + 1} to find project failed: {e}")
                 if attempt < MAX_RETRIES - 1:
                     print(f"Waiting {RETRY_DELAY} seconds before retrying...")
@@ -57,23 +66,51 @@ def get_asset_id_by_legacy(legacyId):
                     print(f"Max retries reached for finding id")
     return None
 
+#VERIFY DUPLICATE AND CORRUPTED FILES BEFORE UPDLOAD
 def check_existing_file(disk_filename, file_size):
+    global check_failures
     params = {
         'filter[filename_download][_eq]': disk_filename,
-        'filter[filesize][_eq]': file_size
     }
-    print(disk_filename)
-    print(file_size)
-    response = requests.get(f'{DIRECTUS_URL}/files', headers=headers, params=params)
-    if response.status_code == 200 and response.json()['data']:
-        print('2')
-        return True  
-    print('3')
+    for attempt in range(MAX_RETRIES):
+        try:
+            response = requests.get(f'{DIRECTUS_URL}/files', headers=headers, params=params)
+
+            if response.status_code == 200:
+                files = response.json().get('data', [])
+                for file in files:
+                    expected_size = file.get('filesize', 0)
+                    expected_size = int(expected_size)
+                    if expected_size > 0:
+                        if file_size == expected_size:
+                            print(f"File {disk_filename} already exists with correct size: {file_size} bytes")
+                            return True
+                        else:
+                            print(f"File {disk_filename} exists but has different size: {file_size} bytes (expected {expected_size} bytes)")
+                            return False
+                print(f"No previous file found with name {disk_filename}")
+                return False
+            elif response.status_code == 503:
+                check_failures += 1
+                print(f"Server unavailable (503), retrying attempt {attempt + 1} of {MAX_RETRIES}")
+            else:
+                print(f"Failed with status code {response.status_code}")
+                return False
+
+        except Exception as e:
+            print(f"Failed to check existing file: {e}")
+
+        if attempt < MAX_RETRIES - 1:
+            time.sleep(RETRY_DELAY)
+        else:
+            print(f"Max retries reached: {MAX_RETRIES} failed attempts")
+            return False
     return False
 
 #GET FILE
 def import_image(legacyId,photo_url,file_name):
-  global upload_failures, update_failures
+  global upload_failures, update_failures, item
+  print("--- Row #",item,"---")  
   
   project_id = get_project_id_by_legacy(legacyId)
   print("Found the projectId for update", (project_id), " by filtering legacyId on csv")
@@ -96,7 +133,6 @@ def import_image(legacyId,photo_url,file_name):
   #file_name = os.path.basename(photo_url) or f"{file_name}.jpg"
   temp_file_name = f"{os.path.splitext(file_name)[0]}.jpg"
 
-
   # SAVE TEMP FILE
   with open(temp_file_name, 'wb') as f:
         f.write(response.content)
@@ -105,7 +141,7 @@ def import_image(legacyId,photo_url,file_name):
   file_size = os.path.getsize(temp_file_name)
 
   if check_existing_file(file_name, file_size):
-        print(f"File {file_name} already exists and is not corrupted, skipping upload.")
+        print(f"File {file_name} already exists, skipping upload.")
         os.remove(temp_file_name)
         return None
 
@@ -122,21 +158,25 @@ def import_image(legacyId,photo_url,file_name):
             response = requests.post(f'{DIRECTUS_URL}/files', headers=headers, files=files, data=data)
 
             if response.status_code == 200:
-                print(f"\nUploaded on attempt: {attempt + 1}\n")
-                file_id = response.json()['data']['id']
-                break
+                    file_id = response.json()['data']['id']
+                    file_info = response.json().get('data', {})
+                    check_size = int(file_info.get('filesize', 0))
+                    if check_size > 0:
+                            print(f"Uploaded on attempt: {attempt + 1}")
+                            break
+                    print('0 bytes, will try again.')
             else:
-                print(f"\nUpload attempt {attempt + 1} failed with response: {response.status_code}\n")
+                print(f"Upload attempt {attempt + 1} failed with response: {response.status_code}\n")
                 upload_failures += 1
         except Exception as e:
-            print(f"\nFailed on attempt: {attempt + 1}: {e}\n")
+            print(f"Failed on attempt: {attempt + 1}: {e}\n")
             upload_failures += 1
 
         if attempt < MAX_RETRIES - 1:
-            print(f"\nWaiting {RETRY_DELAY} seconds before new try...\n")
+            print(f"Waiting {RETRY_DELAY} seconds before new try...\n")
             time.sleep(RETRY_DELAY)
         else:
-            print(f"\nMax attempts reached: {MAX_RETRIES} failed attempts\n")
+            print(f"Max attempts reached: {MAX_RETRIES} failed attempts\n")
             os.remove(file_name)
             return None
 
@@ -152,20 +192,20 @@ def import_image(legacyId,photo_url,file_name):
             }
             response = requests.patch(f'{DIRECTUS_URL}/items/{COLLECTION_NAME}/{asset_id}', headers=headers, json=data)
             if response.status_code == 200:
-                print(f"\nUpdated asset entry {asset_id} on attempt: {attempt + 1}\n")
+                print(f"Updated asset entry {asset_id} on attempt: {attempt + 1}\n")
                 return file_id
             else:
-                print(f"\nUpdate Attempt: {attempt + 1} failed with response: {response.status_code}\n")
+                print(f"Update Attempt: {attempt + 1} failed with response: {response.status_code}\n")
                 update_failures += 1
         except Exception as e:
-            print(f"\nFailed asset update on attempt: {attempt + 1} {e}\n")
+            print(f"Failed asset update on attempt: {attempt + 1} {e}\n")
             update_failures += 1
 
         if attempt < MAX_RETRIES - 1:
-            print(f"\nWaiting {RETRY_DELAY} seconds before new try...\n")
+            print(f"Waiting {RETRY_DELAY} seconds before new try...\n")
             time.sleep(RETRY_DELAY)
         else:
-            print(f"\nFailed to upload asset {asset_id} after {MAX_RETRIES} tries\n")
+            print(f"Failed to upload asset {asset_id} after {MAX_RETRIES} tries\n")
             return None
   return None
   
@@ -173,16 +213,18 @@ def import_image(legacyId,photo_url,file_name):
 with open(CSV_FILE, 'r') as csvfile:
     csvreader = csv.DictReader(csvfile)
     for row in csvreader:
+        item += 1
         project_id = row['legacyId'] #id used for migration
-        photo_url = row['communityPhoto'] #coverPhoto is aws_storage+awsCID
+        photo_url = row['communityPhoto'] #photo_url is aws_storage+awsCID
         file_name = row['name'] #get the name
         result = import_image(project_id,photo_url,file_name)
         if result:
-            print(f"File uploaded\n")
+            print(f"File uploaded\n ---------------\n")
         else:
-            print(f"Failed to upload file\n")
+            print(f"Failed to upload file\n ---------------")
 
 # Log
-print(f"\n--Total upload fails: {upload_failures}--")
-print(f"\n--Total update fails: {update_failures}--")
+print(f"\n--Total upload fails: {upload_failures} --")
+print(f"--Total update fails: {update_failures} --")
+print(f"--Total fetch fails: {fetch_failures} --")
 

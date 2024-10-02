@@ -24,26 +24,47 @@ headers = {
 
 #GET THE PROJECT ID TO UPDATE
 def get_project_id_by_legacy(legacyId):
-    response = requests.get(f'{DIRECTUS_URL}/items/project', headers=headers, params={'filter[legacyId][_eq]': legacyId})
-    if response.status_code == 200 and response.json()['data']:
-        return response.json()['data'][0]['id']
-    print("\n")
+    for attempt in range(MAX_RETRIES):
+        try:
+            response = requests.get(f'{DIRECTUS_URL}/items/project', headers=headers, params={'filter[legacyId][_eq]': legacyId})
+            if response.status_code == 200 and response.json()['data']:
+                return response.json()['data'][0]['id']
+            else:
+                print(f"Failed to find projectid, will try until max attempts")
+        except Exception as e:
+                print(f"Attempt {attempt + 1} to find project failed: {e}")
+                if attempt < MAX_RETRIES - 1:
+                    print(f"Waiting {RETRY_DELAY} seconds before retrying...")
+                    time.sleep(RETRY_DELAY)
+                else:
+                    print(f"Max retries reached for finding id")
     return None
 
 def get_asset_id_by_legacy(legacyId):
-    response = requests.get(f'{DIRECTUS_URL}/items/communityPhotos', headers=headers, params={'filter[legacyId][_eq]': legacyId,'filter[name][_eq]': file_name})
-    if response.status_code == 200 and response.json()['data']:
-        return response.json()['data'][0]['id']
-    print("\n")
+    for attempt in range(MAX_RETRIES):
+        try:
+            response = requests.get(f'{DIRECTUS_URL}/items/communityPhotos', headers=headers, params={'filter[legacyId][_eq]': legacyId,'filter[name][_eq]': file_name})
+            if response.status_code == 200 and response.json()['data']:
+                return response.json()['data'][0]['id']
+            else:
+                print(f"Failed to find projectid, will try until max attempts")
+        except Exception as e:
+                print(f"Attempt {attempt + 1} to find project failed: {e}")
+                if attempt < MAX_RETRIES - 1:
+                    print(f"Waiting {RETRY_DELAY} seconds before retrying...")
+                    time.sleep(RETRY_DELAY)
+                else:
+                    print(f"Max retries reached for finding id")
     return None
 
 def check_existing_file(disk_filename, file_size):
     params = {
-        'filter[filename_disk][_eq]': disk_filename,
+        'filter[filename_download][_eq]': disk_filename,
         'filter[filesize][_eq]': file_size
     }
+    print(disk_filename)
+    print(file_size)
     response = requests.get(f'{DIRECTUS_URL}/files', headers=headers, params=params)
-    print('1')
     if response.status_code == 200 and response.json()['data']:
         print('2')
         return True  

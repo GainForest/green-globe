@@ -294,27 +294,15 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   useEffect(() => {
     if (!map) return
-    const isMounted = true
-    if (map && activeProjectTreesPlanted && isMounted) {
+    if (map && activeProjectTreesPlanted) {
       const normalizedData = { ...activeProjectTreesPlanted }
       normalizedData.features = normalizedData.features.map((feature) => {
         feature.properties.species = getSpeciesName(feature.properties).trim()
         return feature
       })
       if (activeProjectTreesPlanted !== normalizedData) {
-        const updateData = () => {
-          map.getSource('trees')?.setData(normalizedData)
-        }
-        map.on('styledata', updateData)
-        return () => {
-          map.off('styledata', updateData)
-        }
+        map.getSource('trees')?.setData(normalizedData)
       }
-    } else {
-      map.getSource('trees')?.setData({
-        type: 'FeatureCollection',
-        features: [],
-      })
     }
   }, [map, activeProjectTreesPlanted])
 

@@ -10,7 +10,7 @@ import { InfoTag } from '../../../InfoTag/InfoTag'
 import ThemedSkeleton from '../../../Map/components/Skeleton'
 import { InfoBox } from '../InfoBox'
 
-import { ProjectSiteButtons } from './ProjectSiteButtons'
+//import { ProjectSiteButtons } from './ProjectSiteButtons'
 
 const fetchProjectNumbers = async (projectId) => {
   try {
@@ -35,7 +35,9 @@ export const ProjectCard = ({
   const [promoVideo, setPromoVideo] = useState('')
   const [projectNumbers, setProjectNumbers] = useState(null)
   const { theme } = useThemeUI()
+  console.log(activeProjectData)
 
+  //Will not use assets on Directus for now, but can use splashart
   useEffect(() => {
     const video = activeProjectData?.project?.assets?.find(
       (d) => d.classification === 'Promotional Video'
@@ -46,6 +48,7 @@ export const ProjectCard = ({
       fetchProjectNumbers(activeProjectData.project.id).then(setProjectNumbers)
     }
   }, [activeProjectData])
+
 
   if (!activeProjectData) {
     return <ProjectCardSkeleton mediaSize={mediaSize} />
@@ -64,11 +67,11 @@ export const ProjectCard = ({
           mediaSize={mediaSize}
           theme={theme}
         />
-        <ProjectSiteButtons
+        {/*<ProjectSiteButtons
           assets={activeProjectData?.project?.assets}
           activeShapefile={activeProjectPolygon}
           setActiveShapefile={setActiveProjectPolygon}
-        />
+        />*/}
         <Description activeProjectData={activeProjectData} />
         <Objectives activeProjectData={activeProjectData} />
         {projectNumbers && <SummaryStatistics numbers={projectNumbers} />}
@@ -94,6 +97,8 @@ const ProjectCardSkeleton = ({ mediaSize }) => (
   </InfoBox>
 )
 
+//Will not use assets for now
+//but will use splash art
 const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
   const splash = activeProjectData?.project?.assets?.find((d) =>
     d.classification?.includes('Splash')
@@ -118,12 +123,13 @@ const ProjectSplash = ({ activeProjectData, promoVideo, handleClick }) => {
   )
 }
 
+
 const ProjectHeader = ({ activeProjectData, mediaSize, theme }) => (
   <HeaderContainer>
-    <ProjectLogo project={activeProjectData?.project} theme={theme} />
+    <ProjectLogo project={activeProjectData?.project[0]} theme={theme} />
     <div>
       <ProjectTitle mediaSize={mediaSize}>
-        {activeProjectData?.project?.name || ''}
+        {activeProjectData?.project[0].name || ''}
       </ProjectTitle>
       <CountryAndArea theme={theme} activeProjectData={activeProjectData} />
     </div>
@@ -131,8 +137,8 @@ const ProjectHeader = ({ activeProjectData, mediaSize, theme }) => (
 )
 
 const CountryAndArea = ({ activeProjectData, theme }) => {
-  const area = Math.round(activeProjectData?.project?.area / 10000)
-  const country = countryToEmoji[activeProjectData?.project?.country]
+  const area = Math.round(activeProjectData?.project[0].area / 10000)
+  const country = countryToEmoji[activeProjectData?.project[0].country]
 
   return (
     <CountryAreaText>
@@ -151,13 +157,13 @@ const Description = ({ activeProjectData }) => (
   <Section>
     <h3>Description</h3>
     <DescriptionText>
-      {activeProjectData?.project?.longDescription.replaceAll('\\n', '\n')}
+      {activeProjectData?.project[0].longDescription.replaceAll('\\n', '\n')}
     </DescriptionText>
   </Section>
 )
 
 const Objectives = ({ activeProjectData }) => {
-  const objectives = activeProjectData.project?.objective
+  const objectives = activeProjectData?.project[0].objective
     ?.split(',')
     ?.filter(Boolean)
 

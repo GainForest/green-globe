@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import Button from '../../../Map/components/Button'
 import { fetchProjectPolygon } from '../../../Map/mapfetch'
-
+/*
 export const ProjectSiteButtons = ({
   assets,
   activeShapefile,
@@ -78,4 +78,4 @@ export const ProjectSiteButtons = ({
       )}
     </>
   )
-}
+}*/

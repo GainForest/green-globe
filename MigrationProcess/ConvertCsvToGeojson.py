@@ -1,9 +1,11 @@
 import pandas as pd
 import json
+import numpy  as np
 
 df = pd.read_csv('GFtoGeo.csv')
 #df.head()
 
+df = df.replace({np.nan: None})
 # Convert current row into a geojson feature
 def row_to_geojson_feature(row):
     return {
@@ -30,5 +32,5 @@ geojson_str = json.dumps(geojson, indent=4)
 with open('output.geojson', 'w') as geojson_file:
     json.dump(geojson, geojson_file, indent=4)
 
-#print("GeoJSON saved as'output.geojson'.")
+print("GeoJSON saved as'output.geojson'.")
 

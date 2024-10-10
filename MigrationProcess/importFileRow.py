@@ -2,10 +2,13 @@ import csv
 import requests
 import time
 import os
+import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
 
+
+LOG_CSV = 'upload_errors_log.csv'
 DIRECTUS_URL = os.getenv('DIRECTUS_URL')
 DIRECTUS_TOKEN = os.getenv('DIRECTUS_TOKEN')
 CSV_FILE = os.getenv('CSV_FILE')
@@ -24,6 +27,20 @@ item = 0
 headers = {
     'Authorization': f'Bearer {DIRECTUS_TOKEN}'
 }
+
+#GET UPLOAD ERRORS AND STORE FOR ReRun
+def log_error(legacyId, photo_url, file_name):
+    log_data = {
+        'legacyId': [legacyId],
+        'photo_url': [photo_url],
+        'file_name': [file_name]
+    }
+    log_df = pd.DataFrame(log_data)
+    if not os.path.exists(LOG_CSV):
+        log_df.to_csv(LOG_CSV, mode='w', header=True, index=False)
+    else:
+        log_df.to_csv(LOG_CSV, mode='a', header=False, index=False)
+
 #GET THE PROJECT ID TO UPDATE REFERENCING THE CURRENT COLLECTION
 def get_project_id_by_legacy(legacyId):
     global fetch_failures 
@@ -150,40 +167,37 @@ def import_image(legacyId,photo_url,file_name):
   data = {
         'folder': FOLDER_ID
     }
-
+  
   # START TRY UPLOAD IMAGE ON DIRECTUS
-  for attempt in range(MAX_RETRIES):
+  for attempt in range(1):
         try:
-          # UPLOAD TO DIRECTUS FILES
-            response = requests.post(f'{DIRECTUS_URL}/files', headers=headers, files=files, data=data)
-
-            if response.status_code == 200:
-                    file_id = response.json()['data']['id']
-                    file_info = response.json().get('data', {})
-                    check_size = int(file_info.get('filesize', 0))
-                    if check_size > 0:
-                            print(f"Uploaded on attempt: {attempt + 1}")
-                            break
-                    print('0 bytes, will try again.')
-            else:
-                print(f"Upload attempt {attempt + 1} failed with response: {response.status_code}\n")
-                upload_failures += 1
+            # UPLOAD TO DIRECTUS FILES
+                response = requests.post(f'{DIRECTUS_URL}/files', headers=headers, files=files, data=data)
+                if response.status_code == 200:
+                        file_id = response.json()['data']['id']
+                        print(f"Uploaded on attempt: {attempt + 1}")
+                        break
+                else:
+                    print(f"Upload attempt {attempt + 1} failed with response: {response.status_code}\n")
+                    upload_failures += 1
+                    log_error(legacyId,photo_url,file_name)
         except Exception as e:
-            print(f"Failed on attempt: {attempt + 1}: {e}\n")
-            upload_failures += 1
+                print(f"Failed on attempt: {attempt + 1}: {e}\n")
+                log_error(legacyId,photo_url,file_name)
+                upload_failures += 1
 
-        if attempt < MAX_RETRIES - 1:
-            print(f"Waiting {RETRY_DELAY} seconds before new try...\n")
-            time.sleep(RETRY_DELAY)
+        if attempt < 1:
+                print(f"Waiting {RETRY_DELAY} seconds before new try...\n")
+                time.sleep(RETRY_DELAY)
         else:
-            print(f"Max attempts reached: {MAX_RETRIES} failed attempts\n")
-            os.remove(file_name)
-            return None
+                print(f"Max attempts reached: {MAX_RETRIES} failed attempts\n")
+                os.remove(file_name)
+                return None
 
   os.remove(temp_file_name)
 
   # TRY TO UPDATE PROJECT WITH FILE
-  for attempt in range(MAX_RETRIES):
+  for attempt in range(1):
         try:
             # UPDATE THE FILE INTO PROJECT VIA ID
             data = {
@@ -201,11 +215,11 @@ def import_image(legacyId,photo_url,file_name):
             print(f"Failed asset update on attempt: {attempt + 1} {e}\n")
             update_failures += 1
 
-        if attempt < MAX_RETRIES - 1:
-            print(f"Waiting {RETRY_DELAY} seconds before new try...\n")
+        if attempt < 1:
+            print(f"Waiting {RETRY_DELAY} seconds before new continue...\n")
             time.sleep(RETRY_DELAY)
         else:
-            print(f"Failed to upload asset {asset_id} after {MAX_RETRIES} tries\n")
+            print(f"Failed to upload asset {asset_id} after max tries\n")
             return None
   return None
   
@@ -215,13 +229,13 @@ with open(CSV_FILE, 'r') as csvfile:
     for row in csvreader:
         item += 1
         project_id = row['legacyId'] #id used for migration
-        photo_url = row['communityPhoto'] #photo_url is aws_storage+awsCID
-        file_name = row['name'] #get the name
+        photo_url = row['photo_url'] #photo_url is aws_storage+awsCID
+        file_name = row['file_name'] #get the name
         result = import_image(project_id,photo_url,file_name)
         if result:
             print(f"File uploaded\n ---------------\n")
         else:
-            print(f"Failed to upload file\n ---------------")
+            print(f"File not uploaded\n ---------------")
 
 # Log
 print(f"\n--Total upload fails: {upload_failures} --")

@@ -38,6 +38,10 @@ import { Legend as LayerLegend } from './components/Legend'
 import { SearchOverlay } from './components/SearchOverlay'
 import { TimeSlider } from './components/TimeSlider'
 import UrlUpdater from './components/UrlUpdater'
+import {
+  displayProjectNamePopup,
+  removeProjectNamePopup,
+} from './mapEventHandlers'
 import { fetchTreeShapefile } from './mapfetch'
 import {
   fetchProjectInfo,
@@ -141,38 +145,29 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
         closeOnClick: false,
       })
 
-      map.on('mousemove', 'gainforestMarkerLayer', (e) => {
-        // Change the cursor style as a UI indicator.
-        map.getCanvas().style.cursor = 'pointer'
-
-        // Copy coordinates array.
-        const coordinates = e.features[0].geometry.coordinates.slice()
-        const description = e.features[0].properties.name
-
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+      map.on(
+        'mousemove',
+        'gainforestMarkerLayer',
+        (e: mapboxgl.MapMouseEvent) => {
+          displayProjectNamePopup(e, map, popup)
         }
+      )
 
-        // Populate the popup and set its coordinates
-        // based on the feature found.
-        popup.setLngLat(coordinates).setHTML(description).addTo(map)
-      })
+      map.on('mouseleave', 'gainforestMarkerLayer', () =>
+        removeProjectNamePopup(map, popup)
+      )
+
       map.on('click', 'gainforestMarkerLayer', (e) => {
         const projectId = e.features[0].properties.projectId
         setActiveProjectId(projectId)
         dispatch(setInfoOverlay('info'))
       })
 
-      map.on('mouseleave', 'gainforestMarkerLayer', () => {
-        map.getCanvas().style.cursor = ''
-        popup.remove()
-      })
       return () => {
         map.off('load', onLoad)
         map.off('styledata', onStyleData)
+        map.off('mousemove', 'gainforestMarkerLayer', displayProjectNamePopup)
+        map.off('mouseleave', 'gainforestMarkerLayer', removeProjectNamePopup)
       }
     }
   }, [map])

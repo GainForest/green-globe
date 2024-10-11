@@ -51,12 +51,12 @@ import {
   // fetchHexagons,
   fetchHiveLocations,
 } from './mapfetch'
-import { spinGlobe } from './maprotate'
 import { getSpeciesName } from './maptreeutils'
 import { addAllSourcesAndLayers, getTreeInformation } from './maputils'
 import { addOrthomosaic } from './sourcesAndLayers/mapboxOrthomosaic'
 import { toggleMeasuredTreesLayer } from './sourcesAndLayers/measuredTrees'
 import { toggleSelectedSpecies } from './sourcesAndLayers/selectedSpecies'
+import { useGlobeRotation } from './useGlobeRotation'
 
 ChartJS.register(
   CategoryScale,
@@ -96,7 +96,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   const bounds = useSelector((state: State) => state.map.bounds)
 
-  // const numHexagons = useRef(0)
+  useGlobeRotation(map)
 
   // Initialize map, fetch all global data
   useEffect(() => {
@@ -179,39 +179,6 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
       })
     }
   }, [map, bounds])
-
-  // Rotate the globe
-  useEffect(() => {
-    if (map) {
-      // Start the spin
-      let isGlobeSpinning = true
-      spinGlobe(map, isGlobeSpinning)
-
-      // Spin again once the animation is complete
-      const onMoveEnd = () => {
-        spinGlobe(map, isGlobeSpinning)
-      }
-      map.on('moveend', onMoveEnd)
-
-      const onMouseDown = () => {
-        isGlobeSpinning = false
-      }
-      map.on('mousedown', onMouseDown)
-
-      const onTouchStart = () => {
-        isGlobeSpinning = false
-      }
-      map.on('touchstart', onTouchStart)
-
-      return () => {
-        if (map) {
-          map.off('moveend', onMoveEnd)
-          map.off('mousedown', onMouseDown)
-          map.off('touchstart', onTouchStart)
-        }
-      }
-    }
-  }, [map])
 
   useEffect(() => {
     if (map && allSitePolygons) {

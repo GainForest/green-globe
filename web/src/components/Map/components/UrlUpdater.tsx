@@ -6,11 +6,11 @@ import { navigate } from '@redwoodjs/router'
 
 const UrlUpdater = () => {
   const infoOverlay = useSelector((state: State) => state.overlays.info)
-  const urlProjectId = useSelector((state: State) => state.project.id)
+  const projectId = useSelector((state: State) => state.project.id)
 
   useEffect(() => {
     if (infoOverlay != null) {
-      navigate(`/${urlProjectId}/${infoOverlay}`, { replace: true })
+      navigate(`/${projectId}/${infoOverlay}`, { replace: true })
     }
   }, [infoOverlay])
 

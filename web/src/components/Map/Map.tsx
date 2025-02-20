@@ -65,7 +65,7 @@ ChartJS.register(
   Legend
 )
 
-export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
+export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
   const hoveredInformation = useSelector(
@@ -92,7 +92,7 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
 
   const bounds = useSelector((state: State) => state.map.bounds)
 
-  // const numHexagons = useRef(0)
+  const [geojsonData, setGeojsonData] = useState(null)
 
   // Initialize map, fetch all global data
   useEffect(() => {
@@ -110,10 +110,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [map, activeProjectId, sourcesAndLayersLoaded])
 
   useEffect(() => {
-    if (urlProjectId && !activeProjectId) {
-      dispatch(setProjectId(urlProjectId))
+    if (projectId && !activeProjectId) {
+      dispatch(setProjectId(projectId))
     }
-  }, [urlProjectId, activeProjectId])
+  }, [projectId, activeProjectId])
 
   // Set initial layers on load
   useEffect(() => {
@@ -257,10 +257,10 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
   }, [activeProjectId])
 
   useEffect(() => {
-    if (initialOverlay) {
-      dispatch(setInfoOverlay(initialOverlay))
+    if (overlay) {
+      dispatch(setInfoOverlay(overlay))
     }
-  }, [initialOverlay, dispatch])
+  }, [overlay, dispatch])
 
   // If the active project change, zoom in to the default project site and change
   // its color
@@ -347,58 +347,112 @@ export const Map = ({ initialOverlay, urlProjectId, mediaSize }) => {
     }
   }, [map, activeProjectId, infoOverlay])
 
+  // Add new effect to fetch and handle geojsonURL data
+  useEffect(() => {
+    if (geojsonURL && !projectId && map) {
+      const fetchGeojsonData = async () => {
+        try {
+          const response = await fetch(geojsonURL)
+          const data = await response.json()
+          setGeojsonData(data)
+
+          // Add source and layer for the geojson data
+          if (!map.getSource('customGeojson')) {
+            map.addSource('customGeojson', {
+              type: 'geojson',
+              data: data
+            })
+
+            // Add fill layer
+            map.addLayer({
+              id: 'customGeojsonFill',
+              type: 'fill',
+              source: 'customGeojson',
+              paint: {
+                'fill-color': '#088',
+                'fill-opacity': 0.3
+              }
+            })
+
+            // Add outline layer
+            map.addLayer({
+              id: 'customGeojsonOutline',
+              type: 'line',
+              source: 'customGeojson',
+              paint: {
+                'line-color': '#088',
+                'line-width': 2
+              }
+            })
+
+            // Fit bounds to the geojson
+            const bounds = bbox(data)
+            map.fitBounds(bounds, {
+              padding: { top: 40, bottom: 40, left: 40, right: 40 },
+              animate: true
+            })
+          }
+        } catch (error) {
+          console.error('Error fetching geojson:', error)
+        }
+      }
+
+      fetchGeojsonData()
+    }
+
+    // Cleanup
+    return () => {
+      if (map && map.getSource('customGeojson')) {
+        if (map.getLayer('customGeojsonFill')) map.removeLayer('customGeojsonFill')
+        if (map.getLayer('customGeojsonOutline')) map.removeLayer('customGeojsonOutline')
+        map.removeSource('customGeojson')
+      }
+    }
+  }, [map, geojsonURL, projectId])
+
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id="map-container" />
-      <ProfileOverlay />
-      <BasketDetails />
-      <SearchOverlay
-        map={map}
-        mediaSize={mediaSize}
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-      />
-      {/* <BackToGlobe map={map} /> */}
-
-      {Object.values(hoveredInformation)?.length > 0 && (
-        <TreeInfoBox mediaSize={mediaSize} />
-      )}
-      {infoOverlay && (
+      {showUI && (
         <>
-          <UrlUpdater />
-          <InfoOverlay
-            // numHexagons={numHexagons}
-            activeProjectData={activeProjectData}
-            activeProjectPolygon={activeProjectPolygon}
-            setActiveProjectPolygon={setActiveProjectPolygon}
+          <ProfileOverlay />
+          <BasketDetails />
+          <SearchOverlay
+            map={map}
             mediaSize={mediaSize}
-            selectedSpecies={selectedSpecies}
-            setSelectedSpecies={setSelectedSpecies}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
           />
+          {Object.values(hoveredInformation)?.length > 0 && (
+            <TreeInfoBox mediaSize={mediaSize} />
+          )}
+          {infoOverlay && (
+            <>
+              <UrlUpdater />
+              <InfoOverlay
+                activeProjectData={activeProjectData}
+                activeProjectPolygon={activeProjectPolygon}
+                setActiveProjectPolygon={setActiveProjectPolygon}
+                mediaSize={mediaSize}
+                selectedSpecies={selectedSpecies}
+                setSelectedSpecies={setSelectedSpecies}
+              />
+            </>
+          )}
+          {activeProjectPolygon && !infoOverlay && (
+            <Button
+              style={{ position: 'absolute', bottom: '5%', right: '3%' }}
+              onClick={() => dispatch(setInfoOverlay('info'))}
+            >
+              Project Info
+            </Button>
+          )}
+          {landCover && <LandCoverLegend mediaSize={mediaSize} />}
+          <LayerPicker map={map} />
+          <TimeSlider map={map} mediaSize={mediaSize} />
+          <LayerLegend />
         </>
       )}
-      {activeProjectPolygon && !infoOverlay && (
-        <Button
-          style={{ position: 'absolute', bottom: '5%', right: '3%' }}
-          onClick={() => dispatch(setInfoOverlay('info'))}
-        >
-          Project Info
-        </Button>
-      )}
-      {landCover && <LandCoverLegend mediaSize={mediaSize} />}
-      <LayerPicker map={map} />
-      {/* <LayerPickerOverlay
-        map={map}
-        activeProjectMosaic={activeProjectMosaic}
-        activeProjectData={activeProjectData}
-        activeProjectPolygon={activeProjectPolygon}
-        mediaSize={mediaSize}
-        maximize={maximize}
-        landCover={landCover}
-        setLandCover={setLandCover}
-      /> */}
-      <TimeSlider map={map} mediaSize={mediaSize} />
-      <LayerLegend />
     </>
   )
 }

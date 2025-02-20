@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from '@redwoodjs/router'
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import Map from 'src/components/Map/Map'
 
-const MapPage = ({ urlProjectId, initialOverlay }) => {
+const MapPage = ({ projectId, overlay }) => {
   const [mediaSize, setMediaSize] = useState(window.innerWidth)
+  const { search } = useLocation()
+  const geojsonURL = new URLSearchParams(search).get('geojsonURL')
+  const showUI = new URLSearchParams(search).get('showUI') !== 'false'
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,9 +20,11 @@ const MapPage = ({ urlProjectId, initialOverlay }) => {
 
   return (
     <Map
-      urlProjectId={urlProjectId}
-      initialOverlay={initialOverlay}
+      projectId={projectId}
+      overlay={overlay}
       mediaSize={mediaSize}
+      geojsonURL={geojsonURL}
+      showUI={showUI}
     />
   )
 }

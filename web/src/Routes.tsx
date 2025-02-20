@@ -19,10 +19,20 @@ const Routes = () => {
         <Route path="/methodology" page={MethodologyPage} name="methodology" />
         {/* <Set private unauthenticated="login"> */}
         {/* <Route path="/" page={LandingPage} name="landing" /> */}
-        <Route path="/{urlProjectId:String}/{initialOverlay:String?}" page={MapPage} name="map" />
-        <Route path="/{urlProjectId:String}" page={MapPage} name="map" />
-        <Route path="/map" page={MapPage} name="map" />
-        <Route path="/" page={MapPage} name="map" />
+        <Route path="/{projectId:String}/{overlay:String?}" page={MapPage} name="map" />
+        <Route path="/{projectId:String}" page={MapPage} name="map" />
+        <Route
+          path="/map"
+          page={MapPage}
+          name="map"
+          whitelistedSearchParams={['geojsonURL', 'showUI']}
+        />
+        <Route
+          path="/"
+          page={MapPage}
+          name="map"
+          whitelistedSearchParams={['geojsonURL', 'showUI']}
+        />
         <Route notfound page={NotFoundPage} />
       </Set>
     </Router>

@@ -349,12 +349,19 @@ export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }
 
   // Add new effect to fetch and handle geojsonURL data
   useEffect(() => {
+    console.log("=============== USE EFFECT FOR GEOJSON URL ===============")
+    console.log("geojsonURL", geojsonURL)
+    console.log("projectId", projectId)
+    console.log("map", map)
     if (geojsonURL && !projectId && map) {
+      console.log("=============== TRYING TO FETCHING GEOJSON DATA ===============")
       const fetchGeojsonData = async () => {
         try {
           const response = await fetch(geojsonURL)
           const data = await response.json()
           setGeojsonData(data)
+          console.log("=============== GEOJSON DATA FETCHED ===============")
+          console.log("data", data)
 
           // Add source and layer for the geojson data
           if (!map.getSource('customGeojson')) {
@@ -402,7 +409,13 @@ export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }
 
     // Cleanup
     return () => {
+      console.log("=============== CLEANING UP GEOJSON USE EFFECT ===============");
+      console.log("map", map)
+      if (map) {
+        console.log("map.getSource('customGeojson')", map.getSource('customGeojson'))
+      }
       if (map && map.getSource('customGeojson')) {
+        console.log("=============== REMOVING LAYERS AND SOURCE ===============")
         if (map.getLayer('customGeojsonFill')) map.removeLayer('customGeojsonFill')
         if (map.getLayer('customGeojsonOutline')) map.removeLayer('customGeojsonOutline')
         map.removeSource('customGeojson')

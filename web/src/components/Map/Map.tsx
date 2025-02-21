@@ -65,7 +65,7 @@ ChartJS.register(
   Legend
 )
 
-export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }) => {
+export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true }) => {
   const dispatch = useDispatch()
   const activeProjectId = useSelector((state: State) => state.project.id)
   const hoveredInformation = useSelector(
@@ -347,30 +347,29 @@ export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }
     }
   }, [map, activeProjectId, infoOverlay])
 
-  // Add new effect to fetch and handle geojsonURL data
+  // Add new effect to fetch and handle shapefile data
   useEffect(() => {
-    if (geojsonURL && !projectId && map) {
+    if (shapefile && !projectId && map) {
       const fetchGeojsonData = async () => {
         try {
-          const response = await fetch(geojsonURL)
+          const response = await fetch(shapefile)
           const data = await response.json()
           setGeojsonData(data)
 
-          // Add source and layer for the geojson data
           if (!map.getSource('customGeojson')) {
             map.addSource('customGeojson', {
               type: 'geojson',
               data: data
             })
 
-            // Add fill layer
+            // Add fill layer with low opacity
             map.addLayer({
               id: 'customGeojsonFill',
               type: 'fill',
               source: 'customGeojson',
               paint: {
-                'fill-color': '#088',
-                'fill-opacity': 0.3
+                'fill-color': '#FF00FF',
+                'fill-opacity': 0.15
               }
             })
 
@@ -379,13 +378,18 @@ export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }
               id: 'customGeojsonOutline',
               type: 'line',
               source: 'customGeojson',
+              layout: {
+                'line-cap': 'round',
+                'line-join': 'round',
+                'visibility': 'visible'
+              },
               paint: {
-                'line-color': '#088',
+                'line-color': '#FF00FF',
                 'line-width': 2
               }
             })
 
-            // Fit bounds to the geojson
+            // Fit bounds to the shapefile
             const bounds = bbox(data)
             map.fitBounds(bounds, {
               padding: { top: 40, bottom: 40, left: 40, right: 40 },
@@ -393,7 +397,7 @@ export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }
             })
           }
         } catch (error) {
-          console.error('Error fetching geojson:', error)
+          console.error('Error fetching shapefile:', error)
         }
       }
 
@@ -408,7 +412,7 @@ export const Map = ({ overlay, projectId, mediaSize, geojsonURL, showUI = true }
         map.removeSource('customGeojson')
       }
     }
-  }, [map, geojsonURL, projectId])
+  }, [map, shapefile, projectId])
 
   return (
     <>

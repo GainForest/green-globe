@@ -7,7 +7,7 @@ import Map from 'src/components/Map/Map'
 const MapPage = ({ projectId, overlay }) => {
   const [mediaSize, setMediaSize] = useState(window.innerWidth)
   const { search } = useLocation()
-  const geojsonURL = new URLSearchParams(search).get('geojsonURL')
+  const shapefile = new URLSearchParams(search).get('shapefile')
   const showUI = new URLSearchParams(search).get('showUI') !== 'false'
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const MapPage = ({ projectId, overlay }) => {
       projectId={projectId}
       overlay={overlay}
       mediaSize={mediaSize}
-      geojsonURL={geojsonURL}
+      shapefile={shapefile}
       showUI={showUI}
     />
   )

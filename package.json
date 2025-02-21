@@ -28,6 +28,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@turf/bbox": "^6.5.0",
     "@turf/center": "^6.5.0",
+    "@turf/centroid": "^7.2.0",
     "@vercel/kv": "^1.0.1",
     "@what3words/react-components": "^4.1.2",
     "axios-hooks": "^5.0.2",

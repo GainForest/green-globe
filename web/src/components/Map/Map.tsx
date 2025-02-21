@@ -3,6 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useState } from 'react'
 
 import bbox from '@turf/bbox'
+import centroid from '@turf/centroid'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -354,15 +355,27 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
         try {
           const response = await fetch(shapefile)
           const data = await response.json()
-          setGeojsonData(data)
+
+          // Create centroids for each polygon
+          const centroids = {
+            type: 'FeatureCollection',
+            features: data.features.map(feature => centroid(feature))
+          }
 
           if (!map.getSource('customGeojson')) {
+            // Add polygon source
             map.addSource('customGeojson', {
               type: 'geojson',
               data: data
             })
 
-            // Add fill layer with low opacity
+            // Add centroid source
+            map.addSource('polygonCentroids', {
+              type: 'geojson',
+              data: centroids
+            })
+
+            // Add fill layer
             map.addLayer({
               id: 'customGeojsonFill',
               type: 'fill',
@@ -389,6 +402,22 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
               }
             })
 
+            // Add centroid markers
+            map.addLayer({
+              id: 'polygonCentroidMarkers',
+              type: 'circle',
+              source: 'polygonCentroids',
+              paint: {
+                'circle-radius': 10,
+                'circle-color': '#FF00FF',
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF'
+              },
+              layout: {
+                'visibility': 'visible'
+              }
+            })
+
             // Fit bounds to the shapefile
             const bounds = bbox(data)
             map.fitBounds(bounds, {
@@ -407,8 +436,10 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
     // Cleanup
     return () => {
       if (map && map.getSource('customGeojson')) {
+        if (map.getLayer('polygonCentroidMarkers')) map.removeLayer('polygonCentroidMarkers')
         if (map.getLayer('customGeojsonFill')) map.removeLayer('customGeojsonFill')
         if (map.getLayer('customGeojsonOutline')) map.removeLayer('customGeojsonOutline')
+        if (map.getSource('polygonCentroids')) map.removeSource('polygonCentroids')
         map.removeSource('customGeojson')
       }
     }

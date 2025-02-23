@@ -362,17 +362,11 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
             features: data.features.map(feature => centroid(feature))
           }
 
+          // Add polygon sources and layers first
           if (!map.getSource('customGeojson')) {
-            // Add polygon source
             map.addSource('customGeojson', {
               type: 'geojson',
               data: data
-            })
-
-            // Add centroid source
-            map.addSource('polygonCentroids', {
-              type: 'geojson',
-              data: centroids
             })
 
             // Add fill layer
@@ -402,21 +396,15 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
               }
             })
 
-            // Add centroid markers
-            map.addLayer({
-              id: 'polygonCentroidMarkers',
-              type: 'circle',
-              source: 'polygonCentroids',
-              paint: {
-                'circle-radius': 10,
-                'circle-color': '#FF00FF',
-                'circle-stroke-width': 2,
-                'circle-stroke-color': '#FFFFFF'
-              },
-              layout: {
-                'visibility': 'visible'
-              }
-            })
+            // Add markers for each centroid
+            centroids.features.forEach(point => {
+              const marker = new mapboxgl.Marker({
+                color: '#FF00FF',
+                scale: 0.75
+              })
+              .setLngLat(point.geometry.coordinates)
+              .addTo(map);
+            });
 
             // Fit bounds to the shapefile
             const bounds = bbox(data)
@@ -436,10 +424,8 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
     // Cleanup
     return () => {
       if (map && map.getSource('customGeojson')) {
-        if (map.getLayer('polygonCentroidMarkers')) map.removeLayer('polygonCentroidMarkers')
         if (map.getLayer('customGeojsonFill')) map.removeLayer('customGeojsonFill')
         if (map.getLayer('customGeojsonOutline')) map.removeLayer('customGeojsonOutline')
-        if (map.getSource('polygonCentroids')) map.removeSource('polygonCentroids')
         map.removeSource('customGeojson')
       }
     }

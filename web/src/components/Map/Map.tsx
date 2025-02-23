@@ -399,12 +399,59 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
             // Add markers for each centroid
             centroids.features.forEach(point => {
               const marker = new mapboxgl.Marker({
-                color: '#FF00FF',
-                scale: 0.75
+                color: '#FFFFFF',  // White outer pin
+                scale: 0.75,
+                pitchAlignment: 'map',
+                rotationAlignment: 'map',
+                element: createCustomMarkerElement()  // Custom element for inner color
               })
               .setLngLat(point.geometry.coordinates)
               .addTo(map);
             });
+
+            // Helper function to create custom marker element
+            function createCustomMarkerElement() {
+              const markerRoot = document.createElement('div');
+              markerRoot.style.boxSizing = "border-box";
+
+
+              const markerLayout = document.createElement('div');
+              markerLayout.style.position = "relative";
+              markerLayout.style.boxSizing = "border-box";
+
+
+
+              const marker = document.createElement('div');
+              marker.style.boxSizing = "border-box";
+              marker.style.position = "absolute";
+              marker.style.bottom = "0";
+              marker.style.left = "50%";
+              marker.style.backgroundColor = '#FF00FF';  // Magenta inner circle
+              marker.style.width = '20px';
+              marker.style.height = '20px';
+              marker.style.borderRadius = '50%';
+              marker.style.borderBottomRightRadius = "10%";
+              marker.style.border = "2px solid #FFFFFF";
+              marker.style.transform = "translateX(-50%) rotateZ(45deg)";
+              // el.style.margin = '10px';
+
+              const markerDot = document.createElement('div');
+              markerDot.style.boxSizing = "border-box";
+              markerDot.style.position = "absolute";
+              markerDot.style.bottom = "7px";
+              markerDot.style.left = "50%";
+              markerDot.style.transform = "translateX(-50%)";
+              markerDot.style.borderRadius = "100%";
+              markerDot.style.backgroundColor = '#FFFFFF';  // Magenta inner circle
+              markerDot.style.width = '8px';
+              markerDot.style.height = '8px';
+
+
+              markerLayout.appendChild(marker);
+              markerLayout.appendChild(markerDot);
+              markerRoot.appendChild(markerLayout);
+              return markerRoot;
+            }
 
             // Fit bounds to the shapefile
             const bounds = bbox(data)

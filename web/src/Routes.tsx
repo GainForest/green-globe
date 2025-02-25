@@ -25,13 +25,13 @@ const Routes = () => {
           path="/map"
           page={MapPage}
           name="map"
-          whitelistedSearchParams={['geojsonURL', 'showUI']}
+          whitelistedSearchParams={['shapefile', 'showUI']}
         />
         <Route
           path="/"
           page={MapPage}
           name="map"
-          whitelistedSearchParams={['geojsonURL', 'showUI']}
+          whitelistedSearchParams={['shapefile', 'showUI']}
         />
         <Route notfound page={NotFoundPage} />
       </Set>

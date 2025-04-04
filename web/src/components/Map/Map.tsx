@@ -356,17 +356,49 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
           const response = await fetch(shapefile)
           const data = await response.json()
 
+          // Handle both FeatureCollection and MultiPolygon types
+          let features = []
+          if (data.type === 'FeatureCollection') {
+            features = data.features
+          } else if (data.type === 'Feature' && data.geometry.type === 'MultiPolygon') {
+            // Convert MultiPolygon to a FeatureCollection
+            features = [{
+              type: 'Feature',
+              properties: data.properties || {},
+              geometry: data.geometry
+            }]
+          } else {
+            console.error('Unsupported GeoJSON type:', data.type)
+            return
+          }
+
           // Create centroids for each polygon
           const centroids = {
             type: 'FeatureCollection',
-            features: data.features.map(feature => centroid(feature))
+            features: features.map(feature => {
+              // For MultiPolygon, we'll create a centroid for each polygon
+              if (feature.geometry.type === 'MultiPolygon') {
+                return {
+                  type: 'Feature',
+                  properties: feature.properties,
+                  geometry: {
+                    type: 'Point',
+                    coordinates: feature.geometry.coordinates[0][0][0] // Use first point of first polygon
+                  }
+                }
+              }
+              return centroid(feature)
+            })
           }
 
           // Add polygon sources and layers first
           if (!map.getSource('customGeojson')) {
             map.addSource('customGeojson', {
               type: 'geojson',
-              data: data
+              data: {
+                type: 'FeatureCollection',
+                features: features
+              }
             })
 
             // Add fill layer
@@ -414,12 +446,9 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
               const markerRoot = document.createElement('div');
               markerRoot.style.boxSizing = "border-box";
 
-
               const markerLayout = document.createElement('div');
               markerLayout.style.position = "relative";
               markerLayout.style.boxSizing = "border-box";
-
-
 
               const marker = document.createElement('div');
               marker.style.boxSizing = "border-box";
@@ -433,7 +462,6 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
               marker.style.borderBottomRightRadius = "10%";
               marker.style.border = "2px solid #FFFFFF";
               marker.style.transform = "translateX(-50%) rotateZ(45deg)";
-              // el.style.margin = '10px';
 
               const markerDot = document.createElement('div');
               markerDot.style.boxSizing = "border-box";
@@ -446,7 +474,6 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
               markerDot.style.width = '8px';
               markerDot.style.height = '8px';
 
-
               markerLayout.appendChild(marker);
               markerLayout.appendChild(markerDot);
               markerRoot.appendChild(markerLayout);
@@ -454,7 +481,10 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
             }
 
             // Fit bounds to the shapefile
-            const bounds = bbox(data)
+            const bounds = bbox({
+              type: 'FeatureCollection',
+              features: features
+            })
             map.fitBounds(bounds, {
               padding: { top: 40, bottom: 40, left: 40, right: 40 },
               animate: true

@@ -356,12 +356,12 @@ export const Map = ({ overlay, projectId, mediaSize, shapefile, showUI = true })
           const response = await fetch(shapefile)
           const data = await response.json()
 
-          // Handle both FeatureCollection and MultiPolygon types
+          // Handle all GeoJSON types
           let features = []
           if (data.type === 'FeatureCollection') {
             features = data.features
-          } else if (data.type === 'Feature' && data.geometry.type === 'MultiPolygon') {
-            // Convert MultiPolygon to a FeatureCollection
+          } else if (data.type === 'Feature') {
+            // Handle both Polygon and MultiPolygon features
             features = [{
               type: 'Feature',
               properties: data.properties || {},
